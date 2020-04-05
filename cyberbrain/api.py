@@ -14,7 +14,7 @@ _current_frame = sys._getframe()
 
 
 def global_tracer(frame, event, arg):
-    if utils.should_exclude(frame.f_code.co_filename):
+    if utils.should_exclude(frame.f_code.co_filename, frame.f_code.co_name):
         return
     frame.f_trace_opcodes = True
     # print(frame, event, arg)
@@ -26,9 +26,7 @@ def local_tracer(frame, event, arg):
         return
     if event == "opcode":
         # print(frame, event, arg, frame.f_lasti)
-        if frame.f_lasti == 52:
-            print(dis.dis(frame.f_code))
-        execution_log.get_logger().detect_chanages(frame.f_lasti)
+        execution_log.get_logger().detect_chanages(frame)
 
 
 global_frame = None

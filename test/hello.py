@@ -1,6 +1,6 @@
 """Just a hello world."""
 
-import unittest
+from _test_base import TestBase
 
 import cyberbrain
 
@@ -10,9 +10,11 @@ y = x
 cyberbrain.register()
 
 
-class HellowWorldTest(unittest.TestCase):
-    def test_get_logger(self):
-        logger = cyberbrain._get_logger()
+class HellowWorldTest(TestBase):
+    def test_hello_world(self):
+        self.assertEqual(
+            self.logger.mutations, [("x", "hello world"), ("y", "hello world")]
+        )
 
 
 if __name__ == "__main__":

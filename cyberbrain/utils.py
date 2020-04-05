@@ -12,7 +12,7 @@ _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
 
 
 @lru_cache()
-def should_exclude(filename):
+def should_exclude(filename, function_name=None):
     """Determines whether we should log events from file.
 
     As of now, we exclude files from installation path, which usually means:
@@ -22,6 +22,11 @@ def should_exclude(filename):
 
     Also we exclude frozen modules, as well as some weird cases.
     """
+
+    # Don't track cyberbrain.register. This is not ideal, will change it later.
+    if function_name == "register":
+        return True
+
     if any(filename.startswith(path) for path in _INSTALLATION_PATHS) or any(
         name in filename
         for name in (
