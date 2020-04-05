@@ -1,0 +1,5 @@
+[tool.pylint.messages_control]
+disable = """
+bad-continuation,attribute-defined-outside-init,W0511,R0902,R0913,W0622,C0116,C0103,
+R0903,W0631,W0212,W0603,R1710,R0201
+"""
