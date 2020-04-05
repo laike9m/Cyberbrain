@@ -4,6 +4,9 @@ import inspect
 from dis import Instruction
 
 
+loggers = []  # This will be put into each Frame object in the future.
+
+
 class Logger:
     """Execution logger."""
 
@@ -36,7 +39,9 @@ class Logger:
 
         for i in range(self.execution_start_index, last_i, 2):
             instr = self.instructions[i]
-            if instr.opname.startswith("STORE") or instr.opname.startswith("LOAD_CONST"):
+            if instr.opname.startswith("STORE") or instr.opname.startswith(
+                "LOAD_CONST"
+            ):
                 # For STORE_ATTR, we can look at previous instructions and find
                 # LOAD_NAME and LOAD_ATTR.
                 print(self.instructions[i])
@@ -44,3 +49,13 @@ class Logger:
 
         self.record_jump_location_if_exists(self.instructions[last_i])
         self.execution_start_index = last_i
+
+
+def create_logger(frame):
+    # Right now there's only a single frame(global). We should create an logger for each frame.
+    loggers.append(Logger(frame=frame))
+    print(loggers)
+
+
+def get_logger():
+    return loggers[0]

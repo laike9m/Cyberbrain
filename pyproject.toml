@@ -1,15 +1,14 @@
 [tool.poetry]
-name = "cb-experimental"
+name = "cyberbrain"
 version = "0.0.0.1"
 authors = ["laike9m <laike9m@gmail.com>"]
+description = "A Cyberbrain that helps you remember everything."
 
 [tool.poetry.dependencies]
 python = ">= 3.6.7"
 
 [tool.poetry.dev-dependencies]
 tox = "^3.14"
-pytest = "^5.4"
-pytest-xdist = "^1.31"
 tox-pyenv = "^1.1"
 
 [tool.pylint.messages_control]
@@ -17,3 +16,7 @@ disable = """
 bad-continuation,attribute-defined-outside-init,W0511,R0902,R0913,W0622,C0116,C0103,
 R0903,W0631,W0212,W0603,R1710,R0201
 """
+
+[build-system]
+requires = ["poetry>=1.0"]
+build-backend = "poetry.masonry.api"
