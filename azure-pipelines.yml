@@ -1,0 +1,37 @@
+# Using https://github.com/tox-dev/azure-pipelines-template
+# and learned from https://github.com/wasp/waspy/blob/master/azure-pipelines.yml
+
+name: $(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.rr)
+resources:
+  repositories:
+  - repository: tox
+    type: github
+    endpoint: github
+    name: tox-dev/azure-pipelines-template
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+
+pr:
+  branches:
+    include:
+    - master
+
+variables:
+  PYTEST_ADDOPTS: "-v -v -ra --showlocals"
+  PYTEST_XDIST_PROC_NR: 'auto'
+  CI_RUN: 'yes'
+
+jobs:
+- template: run-tox-env.yml@tox
+  parameters:
+    jobs:
+      py36:
+        image: [linux, windows, macOs]
+      py37:
+        image: [linux, windows, macOs]
+      py38:
+        image: [linux, windows, macOs]
