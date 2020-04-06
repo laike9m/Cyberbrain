@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 from typing import Any
 
+_dummy = object()
+
 
 @dataclass
 class Mutation:

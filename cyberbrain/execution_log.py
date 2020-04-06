@@ -7,6 +7,7 @@ from types import FrameType
 from pampy import match, _
 
 from .basis import Mutation
+from .value_stack import ValueStack
 
 
 class Logger:
@@ -17,8 +18,10 @@ class Logger:
             instr.offset: instr
             for instr in dis.get_instructions(inspect.getsource(frame))
         }
-        self.execution_start_index = frame.f_lasti
+        # Skips CALL_METHOD and POP_TOP so that scanning starts after tracer.init().
+        self.execution_start_index = frame.f_lasti + 4
         self.next_jump_location = None
+        self.value_stack = ValueStack()
         self.mutations = []  # TODO: record mutations, like set 'a' to xxx.
 
     def detect_chanages(self, frame: FrameType):
@@ -62,9 +65,11 @@ class Logger:
                     Mutation(target=instr.argval, value=frame.f_locals[instr.argval])),
             _, lambda x: _
         )
+        self.value_stack.handle_instruction(instr)
         # fmt: on
         # For STORE_ATTR, we can look at previous instructions to find
         # LOAD_NAME and LOAD_ATTR.
+        # loop backward, find the first instr that's not LOAD_ATTR,
 
     def _record_jump_location_if_exists(self, instr: Instruction):
         if instr.opcode in dis.hasjrel:

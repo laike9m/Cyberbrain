@@ -7,10 +7,9 @@ import sysconfig
 from functools import lru_cache
 from functools import partial
 
+
 from . import execution_log, utils
-
-
-_dummy = object()
+from .basis import _dummy
 
 
 class Tracer:
@@ -33,7 +32,7 @@ class Tracer:
     @property
     def global_tracer(self):
         def _global_tracer(frame, event, arg):
-            if utils.should_exclude(frame.f_code.co_filename, frame.f_code.co_name):
+            if utils.should_exclude(frame):
                 return
             frame.f_trace_opcodes = True
             # print(frame, event, arg)
@@ -44,10 +43,9 @@ class Tracer:
     @property
     def local_tracer(self):
         def _local_tracer(frame, event, arg):
-            if utils.should_exclude(frame.f_code.co_filename):
+            if utils.should_exclude(frame):
                 return
             if event == "opcode":
-                # print(frame, event, arg, frame.f_lasti)
                 self.logger.detect_chanages(frame)
 
         return _local_tracer
