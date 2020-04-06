@@ -29,8 +29,6 @@ jobs:
 - template: run-tox-env.yml@tox
   parameters:
     jobs:
-      py36:
-        image: [linux, windows, macOs]
       py37:
         image: [linux, windows, macOs]
       py38:

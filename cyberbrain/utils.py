@@ -7,8 +7,6 @@ from functools import lru_cache
 
 
 _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
-# Used when run tests directly with pytest.
-# _INSTALLATION_PATHS.append(os.path.dirname(os.path.abspath(__file__)))
 
 
 @lru_cache()
