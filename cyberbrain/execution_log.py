@@ -9,9 +9,6 @@ from pampy import match, _
 from .basis import Mutation
 
 
-loggers = []  # This will be put into each Frame object in the future.
-
-
 class Logger:
     """Execution logger."""
 
@@ -81,13 +78,4 @@ class Logger:
 def create_logger(frame):
     # Right now there's only a single frame(global). We should create an logger for each
     # frame.
-    loggers.append(Logger(frame=frame))
-
-
-def get_logger():
-    return loggers[0]
-
-
-def clear_logger():
-    """Test only for now."""
-    loggers.clear()
+    return Logger(frame=frame)

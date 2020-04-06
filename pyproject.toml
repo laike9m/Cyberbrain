@@ -11,6 +11,8 @@ pampy = "^0.3.0"
 [tool.poetry.dev-dependencies]
 tox = "^3.14"
 tox-pyenv = "^1.1"
+pytest-xdist = "^1.31"
+pytest = "=5.3.5"  # https://github.com/pytest-dev/pytest/issues/6925
 
 [tool.pylint.messages_control]
 disable = """
