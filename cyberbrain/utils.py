@@ -28,18 +28,6 @@ def should_exclude(frame):
     if filename.endswith("cyberbrain/api.py"):
         return True
 
-    # This is very trick. We cannot just skip "tracer.register()" because, if we skip,
-    # the instruction just before tracer.register() has no chance to be scanned.
-    # Once we implement LOAD_METHOD and CALL_METHOD in ValueStack, we can remove this,
-    # because it will gives us the ability to handle "tracer.init()".
-    try:
-        source_line = inspect.getsourcelines(frame)[0][frame.f_lineno - 1]
-    except IndexError:
-        print(inspect.getsourcelines(frame)[0])
-        print(frame.f_lineno - 1)
-    if "tracer.init()" in source_line:
-        return True
-
     if any(filename.startswith(path) for path in _INSTALLATION_PATHS):
         return True
 

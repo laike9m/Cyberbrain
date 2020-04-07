@@ -100,3 +100,14 @@ class ValueStack:
 
     def _STORE_ATTR_handler(self, instr):
         return self.tos()
+
+    def _CALL_METHOD_handler(self, instr):
+        """
+        For now we assume no argument is passed, so tos is replaced with return value,
+        thus a noop.
+        TODO: Implement full behaviors of CALL_METHOD.
+        """
+        pass
+
+    def _POP_TOP_handler(self, instr):
+        self._pop()
