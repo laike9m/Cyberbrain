@@ -32,7 +32,11 @@ def should_exclude(frame):
     # the instruction just before tracer.register() has no chance to be scanned.
     # Once we implement LOAD_METHOD and CALL_METHOD in ValueStack, we can remove this,
     # because it will gives us the ability to handle "tracer.init()".
-    source_line = inspect.getsourcelines(frame)[0][frame.f_lineno - 1]
+    try:
+        source_line = inspect.getsourcelines(frame)[0][frame.f_lineno - 1]
+    except IndexError:
+        print(source_line)
+        print(frame.f_lineno - 1)
     if "tracer.init()" in source_line:
         return True
 
