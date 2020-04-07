@@ -36,34 +36,34 @@ class ValueStack:
         self._push(new_value)
 
     def handle_instruction(self, instr: dis.Instruction):
-        getattr(self, f"_handle_{instr.opname}")(instr)
+        getattr(self, f"_{instr.opname}_handler")(instr)
 
-    def _handle_LOAD_CONST(self, instr):
+    def _LOAD_CONST_handler(self, instr):
         # For instructions like LOAD_CONST, we just need a placeholder on the stack.
         self._push(_dummy)
 
-    def _handle_STORE_NAME(self, instr):
+    def _STORE_NAME_handler(self, instr):
         self._pop()
 
-    def _handle_LOAD_NAME(self, instr):
+    def _LOAD_NAME_handler(self, instr):
         # Note that we never store the actual rvalue, just name.
         self._push(instr.argrepr)
 
-    def _handle_RETURN_VALUE(self, instr):
+    def _RETURN_VALUE_handler(self, instr):
         self._pop()
 
-    def _handle_LOAD_METHOD(self, instr):
+    def _LOAD_METHOD_handler(self, instr):
         self._pop()
 
-    def _handle_BUILD_TUPLE(self, instr):
+    def _BUILD_TUPLE_handler(self, instr):
         self._handle_BUILD_LIST(instr)
 
-    def _handle_BUILD_LIST(self, instr):
+    def _BUILD_LIST_handler(self, instr):
         for _ in range(instr.arg):
             self._pop()
         self._push(_dummy)
 
-    def _handle_LOAD_ATTR(self, instr):
+    def _LOAD_ATTR_handler(self, instr):
         """Change the behavior of LOAD_ATTR.
 
         The effect of LOAD_ATTR is: Replaces TOS with getattr(TOS, co_names[namei]).
@@ -98,5 +98,5 @@ class ValueStack:
         """
         pass
 
-    def _handle_STORE_ATTR(self, instr):
+    def _STORE_ATTR_handler(self, instr):
         return self.tos()
