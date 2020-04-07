@@ -35,7 +35,7 @@ def should_exclude(frame):
     try:
         source_line = inspect.getsourcelines(frame)[0][frame.f_lineno - 1]
     except IndexError:
-        print(source_line)
+        print(inspect.getsourcelines(frame)[0])
         print(frame.f_lineno - 1)
     if "tracer.init()" in source_line:
         return True
