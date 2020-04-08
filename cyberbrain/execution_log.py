@@ -59,22 +59,30 @@ class Logger:
     def _log_changed_value(self, frame: FrameType, instr: Instruction):
         """Logs changed values by the given instruction, if any."""
         # print(instr)
-        # fmt: off
         # For now I'll deepcopy mutated value, I don't know if there's a better way...
         # https://github.com/seperman/deepdiff/issues/183
         match(
             instr.opname,
-            "STORE_NAME", lambda _:
-                self.mutations.append(
-                    Mutation(instr.argval, deepcopy(frame.f_locals[instr.argval]))),
-            "STORE_ATTR", lambda _:
-                self.mutations.append(
-                    Mutation(self._tos, deepcopy(
-                        self._get_value_in_frame(frame, self._tos)))),
-            _, lambda x: _
+            "STORE_NAME",
+            lambda _: self.mutations.append(
+                Mutation(
+                    target=instr.argval,
+                    value=deepcopy(frame.f_locals[instr.argval]),
+                    source=self._tos,
+                )
+            ),
+            "STORE_ATTR",
+            lambda _: self.mutations.append(
+                Mutation(
+                    target=self._tos,
+                    value=deepcopy(self._get_value_in_frame(frame, self._tos)),
+                    source=self._tos1,
+                )
+            ),
+            _,
+            lambda x: _,
         )
         self.value_stack.handle_instruction(instr)
-        # fmt: on
 
     def _record_jump_location_if_exists(self, instr: Instruction):
         if instr.opcode in dis.hasjrel:
@@ -104,6 +112,10 @@ class Logger:
     @property
     def _tos(self):
         return self.value_stack.tos()
+
+    @property
+    def _tos1(self):
+        return self.value_stack.tos1()
 
 
 def create_logger(frame):

@@ -31,10 +31,18 @@ def test_set_attribute():
         tracer.logger.mutations,
         contains_exactly(
             has_properties(
-                {"target": "a1", "value": has_property("x", has_property("y", 1))}
+                {
+                    "target": "a1",
+                    "value": has_property("x", has_property("y", 1)),
+                    "source": "a2",
+                }
             ),
             has_properties(
-                {"target": "a1", "value": has_property("x", has_property("y", 2))}
+                {
+                    "target": "a1",
+                    "value": has_property("x", has_property("y", 2)),
+                    "source": None,
+                }
             ),
         ),
     )

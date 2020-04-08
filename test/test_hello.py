@@ -12,4 +12,7 @@ tracer.register()
 
 
 def test_hello():
-    assert tracer.logger.mutations == [("x", "hello world"), ("y", "hello world")]
+    assert tracer.logger.mutations == [
+        {"target": "x", "value": "hello world", "source": None},
+        {"target": "y", "value": "hello world", "source": "x"},
+    ]
