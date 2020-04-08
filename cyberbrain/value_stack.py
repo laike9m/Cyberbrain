@@ -3,11 +3,14 @@
 import dis
 import types
 
-from .basis import _dummy
-
 
 class ValueStackException(Exception):
     pass
+
+
+# Sometimes we need to put a _placeholder on TOS because we don't care its value,
+# like LOAD_CONST. Use None to match the default value of `Mutation.source`.
+_placeholder = None
 
 
 class ValueStack:
@@ -21,6 +24,12 @@ class ValueStack:
             return self.stack[-1]
         except IndexError:
             ValueStackException("Value stack should have tos but is empty.")
+
+    def tos1(self):
+        try:
+            return self.stack[-2]
+        except IndexError:
+            ValueStackException("Value stack should have tos1 but does not.")
 
     def _push(self, value):
         self.stack.append(value)
@@ -40,7 +49,7 @@ class ValueStack:
 
     def _LOAD_CONST_handler(self, instr):
         # For instructions like LOAD_CONST, we just need a placeholder on the stack.
-        self._push(_dummy)
+        self._push(_placeholder)
 
     def _STORE_NAME_handler(self, instr):
         self._pop()
@@ -61,7 +70,7 @@ class ValueStack:
     def _BUILD_LIST_handler(self, instr):
         for _ in range(instr.arg):
             self._pop()
-        self._push(_dummy)
+        self._push(_placeholder)
 
     def _LOAD_ATTR_handler(self, instr):
         """Change the behavior of LOAD_ATTR.

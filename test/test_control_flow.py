@@ -13,4 +13,7 @@ tracer.register()
 
 
 def test_if():
-    assert tracer.logger.mutations == [("a", []), ("x", 2)]
+    assert tracer.logger.mutations == [
+        {"target": "a", "value": [], "source": None},
+        {"target": "x", "value": 2, "source": None},
+    ]
