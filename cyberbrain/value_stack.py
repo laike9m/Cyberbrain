@@ -96,7 +96,6 @@ class ValueStack:
         to us, so it's fine if we don't store it. But the "name" of the source object is
         vital, so we need to keep it. Thus, the handler just does nothing.
         """
-        pass
 
     def _STORE_ATTR_handler(self, instr):
         return self.tos()
