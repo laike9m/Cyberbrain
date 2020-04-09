@@ -5,8 +5,6 @@ from copy import deepcopy
 from dis import Instruction
 from types import FrameType
 
-from pampy import match, _
-
 from .basis import Mutation
 from .value_stack import ValueStack
 
@@ -16,8 +14,7 @@ class Logger:
 
     def __init__(self, frame):
         self.instructions = {
-            instr.offset: instr
-            for instr in dis.get_instructions(inspect.getsource(frame))
+            instr.offset: instr for instr in dis.get_instructions(frame.f_code)
         }
         # Skips CALL_METHOD and POP_TOP so that scanning starts after tracer.init().
         self.execution_start_index = frame.f_lasti + 4
@@ -61,27 +58,22 @@ class Logger:
         # print(instr)
         # For now I'll deepcopy mutated value, I don't know if there's a better way...
         # https://github.com/seperman/deepdiff/issues/183
-        match(
-            instr.opname,
-            "STORE_NAME",
-            lambda _: self.mutations.append(
+        if instr.opname in {"STORE_NAME", "STORE_FAST"}:
+            self.mutations.append(
                 Mutation(
                     target=instr.argval,
-                    value=deepcopy(frame.f_locals[instr.argval]),
+                    value=self._deepcopy_from_frame(frame, instr.argval),
                     source=self._tos,
                 )
-            ),
-            "STORE_ATTR",
-            lambda _: self.mutations.append(
+            )
+        elif instr.opname == "STORE_ATTR":
+            self.mutations.append(
                 Mutation(
                     target=self._tos,
-                    value=deepcopy(self._get_value_in_frame(frame, self._tos)),
+                    value=self._deepcopy_from_frame(frame, self._tos),
                     source=self._tos1,
                 )
             ),
-            _,
-            lambda x: _,
-        )
         self.value_stack.handle_instruction(instr)
 
     def _record_jump_location_if_exists(self, instr: Instruction):
@@ -93,7 +85,7 @@ class Logger:
             self.next_jump_location = None
 
     @staticmethod
-    def _get_value_in_frame(frame, name):
+    def _deepcopy_from_frame(frame, name):
         """Given a frame and a name(identifier) saw in this frame, returns its value.
 
         I'm not 100% sure if this will always return the correct value. If we find a
@@ -103,11 +95,11 @@ class Logger:
         Once we have a frame class, we might move this method there.
         """
         if name in frame.f_locals:
-            return frame.f_locals[name]
+            return deepcopy(frame.f_locals[name])
         elif name in frame.f_globals:
-            return frame.f_globals[name]
+            return deepcopy(frame.f_globals[name])
 
-        return frame.f_builtins[name]
+        return deepcopy(frame.f_builtins[name])
 
     @property
     def _tos(self):

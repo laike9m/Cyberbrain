@@ -109,6 +109,12 @@ class ValueStack:
         vital, so we need to keep it. Thus, the handler just does nothing.
         """
 
+    def _LOAD_FAST_handler(self, instr):
+        self._push(instr.argrepr)
+
+    def _STORE_FAST_handler(self, instr):
+        self._pop()
+
     def _LOAD_METHOD_handler(self, instr):
         self._pop()
 

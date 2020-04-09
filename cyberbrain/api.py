@@ -28,6 +28,7 @@ class Tracer:
     def register(self, target=_dummy):
         sys.settrace(None)
         self.global_frame.f_trace = None
+        del self.global_frame
 
     @property
     def global_tracer(self):
@@ -46,6 +47,7 @@ class Tracer:
             if utils.should_exclude(frame):
                 return
             if event == "opcode":
+                # print(frame, event, arg)
                 self.logger.detect_chanages(frame)
 
         return _local_tracer
