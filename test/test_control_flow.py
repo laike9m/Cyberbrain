@@ -1,18 +1,14 @@
-from cyberbrain import Tracer
+def test_if(tracer):
+    tracer.init()
 
-tracer = Tracer()
-tracer.init()
+    a = []
+    if a:
+        x = 1
+    else:
+        x = 2
 
-a = []
-if a:
-    x = 1
-else:
-    x = 2
+    tracer.register()
 
-tracer.register()
-
-
-def test_if():
     assert tracer.logger.mutations == [
         {"target": "a", "value": [], "source": None},
         {"target": "x", "value": 2, "source": None},
