@@ -47,22 +47,25 @@ class ValueStack:
     def handle_instruction(self, instr: dis.Instruction):
         getattr(self, f"_{instr.opname}_handler")(instr)
 
-    def _LOAD_CONST_handler(self, instr):
-        # For instructions like LOAD_CONST, we just need a placeholder on the stack.
-        self._push(_placeholder)
-
-    def _STORE_NAME_handler(self, instr):
+    def _POP_TOP_handler(self, instr):
         self._pop()
-
-    def _LOAD_NAME_handler(self, instr):
-        # Note that we never store the actual rvalue, just name.
-        self._push(instr.argrepr)
 
     def _RETURN_VALUE_handler(self, instr):
         self._pop()
 
-    def _LOAD_METHOD_handler(self, instr):
+    def _STORE_NAME_handler(self, instr):
         self._pop()
+
+    def _STORE_ATTR_handler(self, instr):
+        return self.tos()
+
+    def _LOAD_CONST_handler(self, instr):
+        # For instructions like LOAD_CONST, we just need a placeholder on the stack.
+        self._push(_placeholder)
+
+    def _LOAD_NAME_handler(self, instr):
+        # Note that we never store the actual rvalue, just name.
+        self._push(instr.argrepr)
 
     def _BUILD_TUPLE_handler(self, instr):
         self._handle_BUILD_LIST(instr)
@@ -106,8 +109,8 @@ class ValueStack:
         vital, so we need to keep it. Thus, the handler just does nothing.
         """
 
-    def _STORE_ATTR_handler(self, instr):
-        return self.tos()
+    def _LOAD_METHOD_handler(self, instr):
+        self._pop()
 
     def _CALL_METHOD_handler(self, instr):
         """
@@ -116,6 +119,3 @@ class ValueStack:
         TODO: Implement full behaviors of CALL_METHOD.
         """
         pass
-
-    def _POP_TOP_handler(self, instr):
-        self._pop()
