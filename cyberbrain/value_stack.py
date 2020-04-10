@@ -46,7 +46,8 @@ class ValueStack:
     def _push(self, value):
         """Pushes a value onto the simulated value stack.
 
-        This method will automatically convert non-list value to a list that contains this value.
+        This method will automatically convert single value to a list. _placeholder will
+        be converted to an empty list, so that it never exists on the value stack.
         """
         if value is _placeholder:
             value = []
@@ -63,6 +64,16 @@ class ValueStack:
     def _replace_tos(self, new_value):
         self._pop()
         self._push(new_value)
+
+    def _pop_n_push_one(self, n):
+        """Pops n elements from TOS, and pushes one to TOS.
+
+        The pushed element is expected to originates from the popped elements.
+        """
+        elements = []
+        for _ in range(n):
+            elements.extend(self._pop())  # Flattens elements in TOS.
+        self._push(elements)
 
     def _POP_TOP_handler(self, instr):
         self._pop()
@@ -104,13 +115,19 @@ class ValueStack:
         self._push(instr.argrepr)
 
     def _BUILD_TUPLE_handler(self, instr):
-        self._handle_BUILD_LIST(instr)
+        self._pop_n_push_one(instr.arg)
 
     def _BUILD_LIST_handler(self, instr):
-        elements = []
-        for _ in range(instr.arg):
-            elements.extend(self._pop())  # Flattens elements in TOS.
-        self._push(elements)
+        self._BUILD_TUPLE_handler(instr)
+
+    def _BUILD_SET_handler(self, instr):
+        self._BUILD_TUPLE_handler(instr)
+
+    def _BUILD_MAP_handler(self, instr):
+        self._pop_n_push_one(instr.arg * 2)
+
+    def _BUILD_CONST_KEY_MAP_handler(self, instr):
+        self._pop_n_push_one(instr.arg + 1)
 
     def _LOAD_ATTR_handler(self, instr):
         """Change the behavior of LOAD_ATTR.
