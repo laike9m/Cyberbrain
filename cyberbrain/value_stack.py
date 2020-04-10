@@ -50,6 +50,18 @@ class ValueStack:
     def _POP_TOP_handler(self, instr):
         self._pop()
 
+    def _UNARY_POSITIVE_handler(self, instr):
+        pass
+
+    def _UNARY_NEGATIVE_handler(self, instr):
+        pass
+
+    def _UNARY_NOT_handler(self, instr):
+        pass
+
+    def _UNARY_INVERT_handler(self, instr):
+        pass
+
     def _RETURN_VALUE_handler(self, instr):
         self._pop()
 
