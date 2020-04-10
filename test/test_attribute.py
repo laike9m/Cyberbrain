@@ -23,14 +23,14 @@ def test_set_attribute(tracer):
                 {
                     "target": "a1",
                     "value": has_property("x", has_property("y", 1)),
-                    "source": "a2",
+                    "sources": {"a2"},
                 }
             ),
             has_properties(
                 {
                     "target": "a1",
                     "value": has_property("x", has_property("y", 2)),
-                    "source": None,
+                    "sources": set(),
                 }
             ),
         ),

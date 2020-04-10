@@ -1,6 +1,8 @@
 """Some basic data structures used throughout the project."""
 
-from dataclasses import dataclass
+from __future__ import annotations
+
+from dataclasses import dataclass, field
 from typing import Any
 
 _dummy = object()
@@ -9,20 +11,21 @@ _dummy = object()
 @dataclass
 class Mutation:
     target: str
-    value: Any
-    source: Any = None  # Source can be empty, like a = 1
+    value: Any = _dummy
+
+    sources: set[str] = field(default_factory=set)  # Source can be empty, like a = 1
 
     def __eq__(self, other):
         if isinstance(other, Mutation):
-            return (self.target, self.value, self.source) == (
+            return (self.target, self.value, self.sources) == (
                 other.target,
                 other.value,
-                other.source,
+                other.sources,
             )
         if isinstance(other, dict):
-            return (self.target, self.value, self.source) == (
+            return (self.target, self.value, self.sources) == (
                 other["target"],
                 other["value"],
-                other["source"],
+                other["sources"],
             )
         return False

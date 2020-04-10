@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import dis
 import inspect
 
@@ -20,7 +22,7 @@ class Logger:
         self.execution_start_index = frame.f_lasti + 4
         self.next_jump_location = None
         self.value_stack = ValueStack()
-        self.mutations = []
+        self.mutations: list[Mutation] = []
 
     def detect_chanages(self, frame: FrameType):
         """Prints names whose values changed since this function is called last time.
@@ -56,25 +58,12 @@ class Logger:
     def _log_changed_value(self, frame: FrameType, instr: Instruction):
         """Logs changed values by the given instruction, if any."""
         # print(instr)
-        # For now I'll deepcopy mutated value, I don't know if there's a better way...
-        # https://github.com/seperman/deepdiff/issues/183
-        if instr.opname in {"STORE_NAME", "STORE_FAST"}:
-            self.mutations.append(
-                Mutation(
-                    target=instr.argval,
-                    value=self._deepcopy_from_frame(frame, instr.argval),
-                    source=self._tos,
-                )
-            )
-        elif instr.opname == "STORE_ATTR":
-            self.mutations.append(
-                Mutation(
-                    target=self._tos,
-                    value=self._deepcopy_from_frame(frame, self._tos),
-                    source=self._tos1,
-                )
-            ),
-        self.value_stack.handle_instruction(instr)
+        # For now I'll deepcopy the mutated value, I don't know if there's a better way.
+        # Maybe... https://github.com/seperman/deepdiff/issues/183
+        mutation = self.value_stack.emit_mutation(instr)
+        if mutation:
+            mutation.value = self._deepcopy_from_frame(frame, mutation.target)
+            self.mutations.append(mutation)
 
     def _record_jump_location_if_exists(self, instr: Instruction):
         if instr.opcode in dis.hasjrel:
@@ -85,7 +74,7 @@ class Logger:
             self.next_jump_location = None
 
     @staticmethod
-    def _deepcopy_from_frame(frame, name):
+    def _deepcopy_from_frame(frame, name: str):
         """Given a frame and a name(identifier) saw in this frame, returns its value.
 
         The value has to be deep copied to avoid being changed by code coming later.

@@ -10,6 +10,6 @@ def test_if(tracer):
     tracer.register()
 
     assert tracer.logger.mutations == [
-        {"target": "a", "value": [], "source": None},
-        {"target": "x", "value": 2, "source": None},
+        {"target": "a", "value": [], "sources": set()},
+        {"target": "x", "value": 2, "sources": set()},
     ]
