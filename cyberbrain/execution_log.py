@@ -88,6 +88,8 @@ class Logger:
     def _deepcopy_from_frame(frame, name):
         """Given a frame and a name(identifier) saw in this frame, returns its value.
 
+        The value has to be deep copied to avoid being changed by code coming later.
+
         I'm not 100% sure if this will always return the correct value. If we find a
         case where it returns the wrong value due to name collisions, we can modify
         code and store names with their scopes, like (a, local), (b, global).
