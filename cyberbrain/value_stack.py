@@ -26,6 +26,11 @@ class ValueStack:
     def emit_mutation(self, instr) -> Optional[Mutation]:
         """Given a instruction, emits mutation(s), if any."""
 
+        # Binary operations are all the same, no need to define handlers individually.
+        if instr.opname.startswith("BINARY_"):
+            self._BINARY_operation_handler(instr)
+            return
+
         # emits mutation and updates value stack.
         return getattr(self, f"_{instr.opname}_handler")(instr)
 
@@ -92,6 +97,9 @@ class ValueStack:
 
     def _UNARY_INVERT_handler(self, instr):
         pass
+
+    def _BINARY_operation_handler(self, instr):
+        self._pop_n_push_one(2)
 
     def _RETURN_VALUE_handler(self, instr):
         self._pop()
