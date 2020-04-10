@@ -10,9 +10,9 @@ def test_unary_operations(tracer):
     tracer.register()
 
     assert tracer.logger.mutations == [
-        {"target": "a", "value": 1, "source": None},
-        {"target": "b", "value": 1, "source": "a"},
-        {"target": "b", "value": -1, "source": "a"},
-        {"target": "b", "value": False, "source": "a"},
-        {"target": "b", "value": -2, "source": "a"},
+        {"target": "a", "value": 1, "sources": set()},
+        {"target": "b", "value": 1, "sources": {"a"}},
+        {"target": "b", "value": -1, "sources": {"a"}},
+        {"target": "b", "value": False, "sources": {"a"}},
+        {"target": "b", "value": -2, "sources": {"a"}},
     ]

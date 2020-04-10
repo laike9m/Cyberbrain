@@ -3,13 +3,17 @@
 import dis
 import types
 
+from typing import Optional
+
+from .basis import Mutation
+
 
 class ValueStackException(Exception):
     pass
 
 
-# Sometimes we need to put a _placeholder on TOS because we don't care its value,
-# like LOAD_CONST. Use None to match the default value of `Mutation.source`.
+# Sometimes we need to put a _placeholder on TOS because we don't care about its value,
+# like LOAD_CONST. We convert it to [] when putting it on the stack.
 _placeholder = None
 
 
@@ -19,12 +23,20 @@ class ValueStack:
     def __init__(self):
         self.stack = []
 
+    def emit_mutation(self, instr) -> Optional[Mutation]:
+        """Given a instruction, emits mutation(s), if any."""
+
+        # emits mutation and updates value stack.
+        return getattr(self, f"_{instr.opname}_handler")(instr)
+
+    @property
     def tos(self):
         try:
             return self.stack[-1]
         except IndexError:
             ValueStackException("Value stack should have tos but is empty.")
 
+    @property
     def tos1(self):
         try:
             return self.stack[-2]
@@ -32,6 +44,14 @@ class ValueStack:
             ValueStackException("Value stack should have tos1 but does not.")
 
     def _push(self, value):
+        """Pushes a value onto the simulated value stack.
+
+        This method will automatically convert non-list value to a list that contains this value.
+        """
+        if value is _placeholder:
+            value = []
+        elif not isinstance(value, list):
+            value = [value]
         self.stack.append(value)
 
     def _pop(self):
@@ -44,11 +64,11 @@ class ValueStack:
         self._pop()
         self._push(new_value)
 
-    def handle_instruction(self, instr: dis.Instruction):
-        getattr(self, f"_{instr.opname}_handler")(instr)
-
     def _POP_TOP_handler(self, instr):
         self._pop()
+
+    def _DUP_TOP_handler(self, instr):
+        self._push(self.tos)
 
     def _UNARY_POSITIVE_handler(self, instr):
         pass
@@ -66,10 +86,14 @@ class ValueStack:
         self._pop()
 
     def _STORE_NAME_handler(self, instr):
+        mutation = Mutation(target=instr.argval, sources=set(self.tos))
         self._pop()
+        return mutation
 
     def _STORE_ATTR_handler(self, instr):
-        return self.tos()
+        assert len(self.tos) == 1
+        mutation = Mutation(target=self.tos[0], sources=set(self.tos1))
+        return mutation
 
     def _LOAD_CONST_handler(self, instr):
         # For instructions like LOAD_CONST, we just need a placeholder on the stack.
@@ -83,9 +107,10 @@ class ValueStack:
         self._handle_BUILD_LIST(instr)
 
     def _BUILD_LIST_handler(self, instr):
+        elements = []
         for _ in range(instr.arg):
-            self._pop()
-        self._push(_placeholder)
+            elements.extend(self._pop())  # Flattens elements in TOS.
+        self._push(elements)
 
     def _LOAD_ATTR_handler(self, instr):
         """Change the behavior of LOAD_ATTR.
@@ -125,7 +150,7 @@ class ValueStack:
         self._push(instr.argrepr)
 
     def _STORE_FAST_handler(self, instr):
-        self._pop()
+        return self._STORE_NAME_handler(instr)
 
     def _LOAD_METHOD_handler(self, instr):
         self._pop()

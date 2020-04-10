@@ -5,6 +5,6 @@ def test_hello(tracer):
     tracer.register()
 
     assert tracer.logger.mutations == [
-        {"target": "x", "value": "hello world", "source": None},
-        {"target": "y", "value": "hello world", "source": "x"},
+        {"target": "x", "value": "hello world", "sources": set()},
+        {"target": "y", "value": "hello world", "sources": {"x"}},
     ]
