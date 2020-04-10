@@ -6,7 +6,6 @@ description = "A Cyberbrain that helps you remember everything."
 
 [tool.poetry.dependencies]
 python = ">=3.7.0"
-pampy = "^0.3.0"
 
 [tool.poetry.dev-dependencies]
 tox = "^3.14"
