@@ -41,9 +41,9 @@ class Logger:
         # So if the next instruction can potentially lead to a jump, we record the
         # jump target(bytecode offset). Now, next instruction comes, if the offset
         # matches the jump target, we know a jump just happened, and we move the
-        # execution_start_index to what it should be, which is the jump target.
-        # No scanning happens in this case, because jump instruction doesn't change
-        # any var's value.
+        # execution_start_index to where it should be, which is the jump target.
+        # No need to scan instructions and find mutations in this case, because jump
+        # instruction won't cause any mutation.
         if last_i == self.next_jump_location:
             self.execution_start_index = last_i
             self._record_jump_location_if_exists(self.instructions[last_i])
@@ -91,14 +91,6 @@ class Logger:
             return deepcopy(frame.f_globals[name])
 
         return deepcopy(frame.f_builtins[name])
-
-    @property
-    def _tos(self):
-        return self.value_stack.tos()
-
-    @property
-    def _tos1(self):
-        return self.value_stack.tos1()
 
 
 def create_logger(frame):
