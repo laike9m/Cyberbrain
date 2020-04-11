@@ -16,12 +16,22 @@ class ValueStackException(Exception):
 # like LOAD_CONST. We convert it to [] when putting it on the stack.
 _placeholder = None
 
+# TODO: implement debug version that prints stack changes.
+
 
 class ValueStack:
     """This class simulates the intepreter's value stack."""
 
     def __init__(self):
         self.stack = []
+
+        # Stores extended args, insertion order = order of appearances. e.g.
+        #   0 EXTENDED_ARG 1
+        #   2 EXTENDED_ARG 2
+        # extended_args is [1, 2].
+        #
+        # Handler *MUST* clear stored args once it's consumed !!!!!
+        self.extended_args = []
 
     def emit_mutation(self, instr) -> Optional[Mutation]:
         """Given a instruction, emits mutation(s), if any."""
@@ -60,9 +70,12 @@ class ValueStack:
             value = [value]
         self.stack.append(value)
 
-    def _pop(self):
+    def _pop(self, n=1):
+        """Pops and returns n item from stack."""
         try:
-            return self.stack.pop()
+            if n == 1:
+                return self.stack.pop()
+            return [self.stack.pop() for _ in range(n)]
         except IndexError:
             ValueStackException("Value stack should have tos but is empty.")
 
@@ -80,8 +93,22 @@ class ValueStack:
             elements.extend(self._pop())  # Flattens elements in TOS.
         self._push(elements)
 
+    def _pop_one_push_n(self, n):
+        """Pops one elements from TOS, and pushes n elements to TOS.
+
+        The pushed elements are expected to originates from the popped element.
+        """
+        tos = self._pop()
+        for _ in range(n):
+            self._push(tos)
+
     def _POP_TOP_handler(self, instr):
         self._pop()
+
+    def _ROT_TWO_handler(self, instr):
+        tos, tos1 = self._pop(2)
+        self._push(tos)
+        self._push(tos1)
 
     def _DUP_TOP_handler(self, instr):
         self._push(self.tos)
@@ -108,6 +135,17 @@ class ValueStack:
         mutation = Mutation(target=instr.argval, sources=set(self.tos))
         self._pop()
         return mutation
+
+    def _UNPACK_SEQUENCE_handler(self, instr):
+        self._pop_one_push_n(instr.arg)
+
+    def _UNPACK_EX_handler(self, instr):
+        # sum(self.extended_args) is the number of values after *receiver,
+        # instr.arg is number of values before *receiver, plus *receiver itself.
+        assert len(self.extended_args) <= 1
+        number_of_receivers = sum(self.extended_args) + 1 + instr.arg
+        self._pop_one_push_n(number_of_receivers)
+        self.extended_args.clear()
 
     def _STORE_ATTR_handler(self, instr):
         assert len(self.tos) == 1
@@ -187,3 +225,6 @@ class ValueStack:
         TODO: Implement full behaviors of CALL_METHOD.
         """
         pass
+
+    def _EXTENDED_ARG_handler(self, instr):
+        self.extended_args.append(instr.arg)

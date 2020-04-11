@@ -9,6 +9,8 @@ def test_container(tracer):
     d = {a: a, a: b, a: c}  # BUILD_MAP
     d = {1: a, 2: b, 3: c}  # BUILD_CONST_KEY_MAP
 
+    # test slicing
+
     tracer.register()
 
     assert tracer.logger.mutations == [
