@@ -29,8 +29,7 @@ class ValueStack:
         #   0 EXTENDED_ARG 1
         #   2 EXTENDED_ARG 2
         # extended_args is [1, 2].
-        #
-        # Handler *MUST* clear stored args once it's consumed !!!!!
+        # extended_args is cleared after it's been consumed.
         self.extended_args = []
 
     def emit_mutation(self, instr) -> Optional[Mutation]:
@@ -40,6 +39,21 @@ class ValueStack:
         if instr.opname.startswith("BINARY_"):
             self._BINARY_operation_handler(instr)
             return
+
+        if instr.opname == "EXTENDED_ARG":
+            self.extended_args.append(instr.arg)
+            return
+
+        # Calculates real arg value.
+        if self.extended_args:
+            assert len(self.extended_args) <= 3
+            instr_attrs = instr._asdict()
+            arg = instr.arg
+            for i, extended_arg in enumerate(reversed(self.extended_args), 1):
+                arg += extended_arg << (8 * i)
+            instr_attrs["arg"] = arg
+            instr = dis.Instruction(**instr_attrs)
+            self.extended_args.clear()  # Important.
 
         # emits mutation and updates value stack.
         return getattr(self, f"_{instr.opname}_handler")(instr)
@@ -140,12 +154,10 @@ class ValueStack:
         self._pop_one_push_n(instr.arg)
 
     def _UNPACK_EX_handler(self, instr):
-        # sum(self.extended_args) is the number of values after *receiver,
-        # instr.arg is number of values before *receiver, plus *receiver itself.
-        assert len(self.extended_args) <= 1
-        number_of_receivers = sum(self.extended_args) + 1 + instr.arg
+        assert instr.arg <= 65535  # At most one extended arg.
+        higher_byte, lower_byte = instr.arg >> 8, instr.arg & 0x00FF
+        number_of_receivers = lower_byte + 1 + higher_byte
         self._pop_one_push_n(number_of_receivers)
-        self.extended_args.clear()
 
     def _STORE_ATTR_handler(self, instr):
         assert len(self.tos) == 1
@@ -225,6 +237,3 @@ class ValueStack:
         TODO: Implement full behaviors of CALL_METHOD.
         """
         pass
-
-    def _EXTENDED_ARG_handler(self, instr):
-        self.extended_args.append(instr.arg)
