@@ -140,6 +140,16 @@ class ValueStack:
     def _BINARY_operation_handler(self, instr):
         self._pop_n_push_one(2)
 
+    def _STORE_SUBSCR_handler(self, instr):
+        tos, tos1, tos2 = self._pop(3)
+        assert len(tos1) == 1
+        return Mutation(target=tos1[0], sources=set(tos + tos2))
+
+    def _DELETE_SUBSCR_handler(self, instr):
+        tos, tos1 = self._pop(2)
+        assert len(tos1) == 1
+        return Mutation(target=tos1[0], sources=set(tos))
+
     def _RETURN_VALUE_handler(self, instr):
         self._pop()
 
