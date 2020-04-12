@@ -4,13 +4,13 @@ def test_container(tracer):
 
     tracer.init()
 
-    d = [a, b]
-    d = (a, b)
-    d = {a, b}
+    d = [a, b]  # BUILD_LIST
+    d = (a, b)  # BUILD_TUPLE
+    d = {a, b}  # BUILD_SET
     d = {a: a, a: b}  # BUILD_MAP
     d = {1: a, 2: b}  # BUILD_CONST_KEY_MAP
-    d[a] = c
-    del d[a]
+    d[a] = c  # STORE_SUBSCR
+    del d[a]  # DELETE_SUBSCR
 
     tracer.register()
 

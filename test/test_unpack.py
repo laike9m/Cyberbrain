@@ -4,13 +4,13 @@ def test_unpack(tracer):
 
     tracer.init()
 
-    a, b = "hi"
-    a, b = l1
-    a, b = b, a
-    first, *rest = numbers
-    *beginning, last = numbers
-    head, *middle, tail = numbers
-    l2, (x, y) = (l1, (a, b))
+    a, b = "hi"  # UNPACK_SEQUENCE
+    a, b = l1  # UNPACK_SEQUENCE
+    a, b = b, a  # ROT_TWO
+    first, *rest = numbers  # UNPACK_EX
+    *beginning, last = numbers  # UNPACK_EX
+    head, *middle, tail = numbers  # UNPACK_EX
+    l2, (x, y) = (l1, (a, b))  # UNPACK_SEQUENCE
 
     # TODO: Test dictionary items() unpack once iter_xx, call_xx, block_xx are done.
 

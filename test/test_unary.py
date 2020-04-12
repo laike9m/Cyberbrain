@@ -1,16 +1,16 @@
 def test_unary_operations(tracer):
+    a = 1
+
     tracer.init()
 
-    a = 1
-    b = +a
-    b = -a
-    b = not a
-    b = ~a
+    b = +a  # UNARY_POSITIVE
+    b = -a  # UNARY_NEGATIVE
+    b = not a  # UNARY_NOT
+    b = ~a  # UNARY_INVERT
 
     tracer.register()
 
     assert tracer.logger.mutations == [
-        {"target": "a", "value": 1, "sources": set()},
         {"target": "b", "value": 1, "sources": {"a"}},
         {"target": "b", "value": -1, "sources": {"a"}},
         {"target": "b", "value": False, "sources": {"a"}},
