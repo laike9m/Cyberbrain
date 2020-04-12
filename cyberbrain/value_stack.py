@@ -185,6 +185,9 @@ class ValueStack:
     def _BUILD_CONST_KEY_MAP_handler(self, instr):
         self._pop_n_push_one(instr.arg + 1)
 
+    def _BUILD_STRING_handler(self, instr):
+        self._pop_n_push_one(instr.arg)
+
     def _LOAD_ATTR_handler(self, instr):
         """Change the behavior of LOAD_ATTR.
 
@@ -235,3 +238,11 @@ class ValueStack:
         TODO: Implement full behaviors of CALL_METHOD.
         """
         pass
+
+    def _FORMAT_VALUE_handler(self, instr):
+        # See https://git.io/JvjTg to learn what this opcode is doing.
+        elements = []
+        if (instr.arg & 0x04) == 0x04:
+            elements.extend(self._pop())
+        elements.extend(self._pop())
+        self._push(elements)
