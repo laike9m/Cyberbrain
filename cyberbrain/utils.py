@@ -5,6 +5,11 @@ import os
 import sysconfig
 
 from functools import lru_cache
+from pprint import pformat
+
+from pygments import highlight
+from pygments.lexers import PythonLexer
+from pygments.formatters import Terminal256Formatter
 
 
 _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
@@ -43,3 +48,17 @@ def should_exclude(frame):
         return True
 
     return False
+
+
+def pprint(*args):
+    output = ""
+    for arg in args:
+        if isinstance(arg, str):
+            output += arg + "\n"
+        else:
+            # Outputs syntax-highlighted object. See
+            # https://gist.github.com/EdwardBetts/0814484fdf7bbf808f6f
+            output += (
+                highlight(pformat(arg), PythonLexer(), Terminal256Formatter()) + "\n"
+            )
+    print(output)

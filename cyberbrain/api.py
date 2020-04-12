@@ -1,5 +1,6 @@
 """Cyberbrain public API and tracer setup."""
 
+import argparse
 import dis
 import sys
 import inspect
@@ -7,20 +8,39 @@ import sysconfig
 from functools import lru_cache
 from functools import partial
 
-
 from . import execution_log, utils
 from .basis import _dummy
 
+_debug_mode = False
+
+# This is to allow using debug mode in both test and non-test code.
+# Flag will conflict, so only execute it if not running a test.
+if "pytest" not in sys.modules:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--debug_mode",
+        dest="debug_mode",
+        action="store_true",
+        help="Whether to log more stuff for debugging.",
+    )
+    parser.set_defaults(debug_mode=False)
+    args, _ = parser.parse_known_args()
+    _debug_mode = args.debug_mode
+
 
 class Tracer:
-    def __init__(self):
+    def __init__(self, debug_mode=_debug_mode):
         self.global_frame = None
         self.logger = None
+        self.debug_mode = debug_mode
 
     def init(self):
         """Initializes tracing."""
         self.global_frame = sys._getframe(1)
-        self.logger = execution_log.create_logger(self.global_frame)
+        # TODO: create a logger for each frame.
+        self.logger = execution_log.Logger(
+            self.global_frame, debug_mode=self.debug_mode
+        )
         self.global_frame.f_trace_opcodes = True
         self.global_frame.f_trace = self.local_tracer
         sys.settrace(self.global_tracer)

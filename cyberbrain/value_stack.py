@@ -16,8 +16,6 @@ class ValueStackException(Exception):
 # like LOAD_CONST. We convert it to [] when putting it on the stack.
 _placeholder = None
 
-# TODO: implement debug version that prints stack changes.
-
 
 class ValueStack:
     """This class simulates the intepreter's value stack."""
@@ -55,7 +53,7 @@ class ValueStack:
             instr = dis.Instruction(**instr_attrs)
             self.extended_args.clear()  # Important.
 
-        # emits mutation and updates value stack.
+        # Emits mutation and updates value stack.
         return getattr(self, f"_{instr.opname}_handler")(instr)
 
     @property
