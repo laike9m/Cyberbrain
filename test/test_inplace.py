@@ -4,18 +4,18 @@ def test_inplace_operations(tracer):
 
     tracer.init()
 
-    a1 **= b
-    a2 *= b
-    a3 //= b
-    a4 /= b
-    a5 %= b
-    a6 += b
-    a7 -= b
-    a8 <<= b
-    a9 >>= b
-    a10 &= b
-    a11 ^= b
-    a12 |= b
+    a1 **= b  # INPLACE_POWER
+    a2 *= b  # INPLACE_MULTIPLY
+    a3 //= b  # INPLACE_FLOOR_DIVIDE
+    a4 /= b  # INPLACE_TRUE_DIVIDE
+    a5 %= b  # INPLACE_MODULO
+    a6 += b  # INPLACE_ADD
+    a7 -= b  # INPLACE_SUBTRACT
+    a8 <<= b  # INPLACE_LSHIFT
+    a9 >>= b  # INPLACE_RSHIFT
+    a10 &= b  # INPLACE_AND
+    a11 ^= b  # INPLACE_XOR
+    a12 |= b  # INPLACE_OR
 
     tracer.register()
 

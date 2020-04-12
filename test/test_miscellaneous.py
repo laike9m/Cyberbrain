@@ -6,7 +6,7 @@ def test_string(tracer):
 
     tracer.init()
 
-    x = f"{a} {b:4} {c!r} {d!r:4}"
+    x = f"{a} {b:4} {c!r} {d!r:4}"  # FORMAT_VALUE, BUILD_STRING
 
     tracer.register()
 

@@ -11,8 +11,8 @@ def test_set_attribute(tracer):
 
     tracer.init()
 
-    a1.x = a2
-    a1.x.y = 2
+    a1.x = a2  # STORE_ATTR
+    a1.x.y = 2  # LOAD_ATTR, STORE_ATTR
 
     tracer.register()
 

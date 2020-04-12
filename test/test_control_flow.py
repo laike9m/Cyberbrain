@@ -1,15 +1,15 @@
 def test_if(tracer):
+    a = []
+
     tracer.init()
 
-    a = []
-    if a:
-        x = 1
+    if a:  # POP_JUMP_IF_FALSE
+        x = 1  # JUMP_FORWARD
     else:
         x = 2
 
     tracer.register()
 
     assert tracer.logger.mutations == [
-        {"target": "a", "value": [], "sources": set()},
         {"target": "x", "value": 2, "sources": set()},
     ]

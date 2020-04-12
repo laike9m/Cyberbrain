@@ -1,7 +1,7 @@
 def test_hello(tracer):
     tracer.init()
-    x = "hello world"
-    y = x
+    x = "hello world"  # LOAD_CONST, STORE_FAST
+    y = x  # LOAD_FAST, STORE_FAST
     tracer.register()
 
     assert tracer.logger.mutations == [
