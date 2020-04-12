@@ -7,14 +7,17 @@ from copy import deepcopy
 from dis import Instruction
 from types import FrameType
 
+from crayons import yellow, cyan
+
 from .basis import Mutation
 from .value_stack import ValueStack
+from .utils import pprint
 
 
 class Logger:
     """Execution logger."""
 
-    def __init__(self, frame):
+    def __init__(self, frame, debug_mode=False):
         self.instructions = {
             instr.offset: instr for instr in dis.get_instructions(frame.f_code)
         }
@@ -23,6 +26,7 @@ class Logger:
         self.next_jump_location = None
         self.value_stack = ValueStack()
         self.mutations: list[Mutation] = []
+        self.debug_mode = debug_mode
 
     def detect_chanages(self, frame: FrameType):
         """Prints names whose values changed since this function is called last time.
@@ -65,6 +69,14 @@ class Logger:
             mutation.value = self._deepcopy_from_frame(frame, mutation.target)
             self.mutations.append(mutation)
 
+        if self.debug_mode:
+            pprint(
+                f"{cyan('Executed instruction:')}",
+                instr,
+                f"{yellow('Current stack:')}",
+                self.value_stack.stack,
+            )
+
     def _record_jump_location_if_exists(self, instr: Instruction):
         if instr.opcode in dis.hasjrel:
             self.next_jump_location = instr.offset + 2 + instr.arg
@@ -91,9 +103,3 @@ class Logger:
             return deepcopy(frame.f_globals[name])
 
         return deepcopy(frame.f_builtins[name])
-
-
-def create_logger(frame):
-    # Right now there's only a single frame(global). We should create an logger for each
-    # frame.
-    return Logger(frame=frame)
