@@ -34,7 +34,7 @@ class ValueStack:
         """Given a instruction, emits mutation(s), if any."""
 
         # Binary operations are all the same, no need to define handlers individually.
-        if instr.opname.startswith("BINARY_"):
+        if instr.opname.startswith("BINARY") or instr.opname.startswith("INPLACE"):
             self._BINARY_operation_handler(instr)
             return
 
