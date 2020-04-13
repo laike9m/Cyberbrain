@@ -1,7 +1,7 @@
 from hamcrest import *
 
 
-def test_set_attribute(tracer):
+def test_attribute(tracer):
     class A:
         pass
 

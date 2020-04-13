@@ -17,8 +17,45 @@ class ValueStackException(Exception):
 _placeholder = None
 
 
-class ValueStack:
-    """This class simulates the intepreter's value stack."""
+class JumpHandler:
+    """Class that handles jump related instructions.
+
+    The difference is, for jump instructions, we may need to use runtime information to
+    decide what to do with the stack.
+    """
+
+    def emit_mutation_and_update_stack(self, instr, jumped=False) -> Optional[Mutation]:
+        try:
+            return getattr(JumpHandler, f"_{instr.opname}_handler")(self, instr, jumped)
+        except AttributeError:
+            return super().emit_mutation_and_update_stack(instr)
+
+    def _JUMP_FORWARD_handler(self, instr, jumped):
+        pass
+
+    def _POP_JUMP_IF_TRUE_handler(self, instr, jumped):
+        self._pop()
+
+    def _POP_JUMP_IF_FALSE_handler(self, instr, jumped):
+        self._pop()
+
+    def _JUMP_IF_TRUE_OR_POP_handler(self, instr, jumped):
+        if not jumped:
+            self._pop()
+
+    def _JUMP_IF_FALSE_OR_POP_handler(self, instr, jumped):
+        if not jumped:
+            self._pop()
+
+    def _JUMP_ABSOLUTE_handler(self, instr, jumped):
+        pass
+
+
+class GeneralValueStack:
+    """Class that simulates the intepreter's value stack.
+
+    This class handles instructions that don't require special processing.
+    """
 
     def __init__(self):
         self.stack = []
@@ -38,6 +75,19 @@ class ValueStack:
             self._BINARY_operation_handler(instr)
             return
 
+        updated_instr_or_none = self._process_extended_arg(instr)
+        if updated_instr_or_none is None:
+            return
+
+        # Emits mutation and updates value stack.
+        try:
+            return getattr(self, f"_{instr.opname}_handler")(updated_instr_or_none)
+        except AttributeError:
+            raise AttributeError(
+                f"Please add\ndef _{instr.opname}_handler(self, instr):"
+            )
+
+    def _process_extended_arg(self, instr) -> Optional[dis.Instruction]:
         if instr.opname == "EXTENDED_ARG":
             self.extended_args.append(instr.arg)
             return
@@ -53,13 +103,7 @@ class ValueStack:
             instr = dis.Instruction(**instr_attrs)
             self.extended_args.clear()  # Important.
 
-        # Emits mutation and updates value stack.
-        try:
-            return getattr(self, f"_{instr.opname}_handler")(instr)
-        except AttributeError:
-            raise AttributeError(
-                f"Please add\ndef _{instr.opname}_handler(self, instr):"
-            )
+        return instr
 
     @property
     def tos(self):
@@ -256,13 +300,6 @@ class ValueStack:
     def _COMPARE_OP_handler(self, instr):
         return self._BINARY_operation_handler(instr)
 
-    def _POP_JUMP_IF_FALSE_handler(self, instr):
-        self._pop()
-
-    def _JUMP_IF_FALSE_OR_POP_handler(self, instr):
-        if self.tos:
-            self._pop()
-
     def _LOAD_FAST_handler(self, instr):
         self._push(instr.argrepr)
 
@@ -287,3 +324,7 @@ class ValueStack:
             elements.extend(self._pop())
         elements.extend(self._pop())
         self._push(elements)
+
+
+class ValueStack(JumpHandler, GeneralValueStack):
+    pass

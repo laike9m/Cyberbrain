@@ -7,8 +7,7 @@ def test_miscellaneous(tracer):
     tracer.init()
 
     x = f"{a} {b:4} {c!r} {d!r:4}"  # FORMAT_VALUE, BUILD_STRING
-    # x = a == b == c  # ROT_THREE, COMPARE_OP
-    # x = a != b != c  # ROT_THREE, COMPARE_OP, JUMP_IF_FALSE_OR_POP
+    x = a == b == c  # ROT_THREE, COMPARE_OP
 
     tracer.register()
 
@@ -16,5 +15,5 @@ def test_miscellaneous(tracer):
 
     assert tracer.logger.mutations == [
         {"target": "x", "value": "a b    'c' 'd' ", "sources": {"a", "b", "d", "c"}},
-        # {"target": "x", "value": False, "sources": {"a", "b"}},
+        {"target": "x", "value": False, "sources": {"a", "b"}},
     ]

@@ -89,7 +89,7 @@ class Logger:
         # - Skipped instructions are skipped (in this case, LOAD_CONST and STORE_NAME).
         if last_i == self.next_jump_location:
             self._log_changed_value(
-                frame, self.instructions[self.execution_start_index]
+                frame, self.instructions[self.execution_start_index], jumped=True
             )
             self.execution_start_index = last_i
             self._record_jump_location_if_exists(self.instructions[last_i])
@@ -101,12 +101,12 @@ class Logger:
         self._record_jump_location_if_exists(self.instructions[last_i])
         self.execution_start_index = last_i
 
-    def _log_changed_value(self, frame: FrameType, instr: Instruction):
+    def _log_changed_value(self, frame: FrameType, instr: Instruction, jumped=False):
         """Logs changed values by the given instruction, if any."""
         # print(instr)
         # For now I'll deepcopy the mutated value, I don't know if there's a better way.
         # Maybe... https://github.com/seperman/deepdiff/issues/44
-        mutation = self.value_stack.emit_mutation_and_update_stack(instr)
+        mutation = self.value_stack.emit_mutation_and_update_stack(instr, jumped)
         if mutation:
             mutation.value = self._deepcopy_from_frame(frame, mutation.target)
             self.mutations.append(mutation)
