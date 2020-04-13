@@ -39,7 +39,7 @@ def should_exclude(frame):
     if any(
         name in filename
         for name in (
-            "importlib._boostrap",
+            "importlib._bootstrap",
             "importlib._bootstrap_external",
             "zipimport",
             "<string>",  # Dynamically generated frames

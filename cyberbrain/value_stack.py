@@ -149,10 +149,6 @@ class GeneralValueStack:
         except IndexError:
             ValueStackException("Value stack should have tos but is empty.")
 
-    def _replace_tos(self, new_value):
-        self._pop()
-        self._push(new_value)
-
     def _pop_n_push_one(self, n):
         """Pops n elements from TOS, and pushes one to TOS.
 
@@ -182,6 +178,11 @@ class GeneralValueStack:
 
     def _DUP_TOP_handler(self, instr):
         self._push(self.tos)
+
+    def _DUP_TOP_TWO_handler(self, instr):
+        tos1, tos = self.tos1, self.tos
+        self._push(tos1)
+        self._push(tos)
 
     def _ROT_THREE_handler(self, instr):
         self.stack[-3], self.stack[-2], self.stack[-1] = (
@@ -216,6 +217,10 @@ class GeneralValueStack:
         return Mutation(target=tos1[0], sources=set(tos))
 
     def _RETURN_VALUE_handler(self, instr):
+        self._pop()
+
+    def _IMPORT_STAR_handler(self, instr):
+        # It's impossible to know what names are loaded, and we don't really care.
         self._pop()
 
     def _STORE_NAME_handler(self, instr):
@@ -300,6 +305,13 @@ class GeneralValueStack:
     def _COMPARE_OP_handler(self, instr):
         return self._BINARY_operation_handler(instr)
 
+    def _IMPORT_NAME_handler(self, instr):
+        self._pop_n_push_one(2)
+
+    def _IMPORT_FROM_handler(self, instr):
+        self._pop()
+        self._push(_placeholder)
+
     def _LOAD_FAST_handler(self, instr):
         self._push(instr.argrepr)
 
@@ -315,7 +327,7 @@ class GeneralValueStack:
         thus a noop.
         TODO: Implement full behaviors of CALL_METHOD.
         """
-        pass
+        self._push(_placeholder)
 
     def _FORMAT_VALUE_handler(self, instr):
         # See https://git.io/JvjTg to learn what this opcode is doing.

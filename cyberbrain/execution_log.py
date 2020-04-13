@@ -9,7 +9,7 @@ from types import FrameType
 
 from crayons import yellow, cyan
 
-from .basis import Mutation
+from .basis import Mutation, _dummy
 from .value_stack import ValueStack
 from .utils import pprint
 
@@ -139,9 +139,16 @@ class Logger:
 
         Once we have a frame class, we might move this method there.
         """
+        value = _dummy
         if name in frame.f_locals:
-            return deepcopy(frame.f_locals[name])
+            value = frame.f_locals[name]
         elif name in frame.f_globals:
-            return deepcopy(frame.f_globals[name])
+            value = frame.f_globals[name]
+        else:
+            value = frame.f_builtins[name]
 
-        return deepcopy(frame.f_builtins[name])
+        # There are certain things you can't copy, like module.
+        try:
+            return deepcopy(value)
+        except TypeError:
+            return repr(value)
