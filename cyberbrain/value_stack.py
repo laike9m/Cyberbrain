@@ -30,8 +30,8 @@ class ValueStack:
         # extended_args is cleared after it's been consumed.
         self.extended_args = []
 
-    def emit_mutation(self, instr) -> Optional[Mutation]:
-        """Given a instruction, emits mutation(s), if any."""
+    def emit_mutation_and_update_stack(self, instr) -> Optional[Mutation]:
+        """Given a instruction, emits mutation(s) if any, and updates the stack."""
 
         # Binary operations are all the same, no need to define handlers individually.
         if instr.opname.startswith("BINARY") or instr.opname.startswith("INPLACE"):
@@ -54,21 +54,35 @@ class ValueStack:
             self.extended_args.clear()  # Important.
 
         # Emits mutation and updates value stack.
-        return getattr(self, f"_{instr.opname}_handler")(instr)
+        try:
+            return getattr(self, f"_{instr.opname}_handler")(instr)
+        except AttributeError:
+            raise AttributeError(
+                f"Please add\ndef _{instr.opname}_handler(self, instr):"
+            )
 
     @property
     def tos(self):
-        try:
-            return self.stack[-1]
-        except IndexError:
-            ValueStackException("Value stack should have tos but is empty.")
+        return self._tos(0)
 
     @property
     def tos1(self):
+        return self._tos(1)
+
+    @property
+    def tos2(self):
+        return self._tos(2)
+
+    def _tos(self, n):
+        """Returns the i-th element on the stack. Stack keeps unchanged."""
+        index = -1 - n
         try:
-            return self.stack[-2]
+            return self.stack[index]
         except IndexError:
-            ValueStackException("Value stack should have tos1 but does not.")
+            ValueStackException(
+                f"Value stack should at least have {-index} elements",
+                ", but only has {len(self.stack)}.",
+            )
 
     def _push(self, value):
         """Pushes a value onto the simulated value stack.
@@ -124,6 +138,13 @@ class ValueStack:
 
     def _DUP_TOP_handler(self, instr):
         self._push(self.tos)
+
+    def _ROT_THREE_handler(self, instr):
+        self.stack[-3], self.stack[-2], self.stack[-1] = (
+            self.tos,
+            self.tos2,
+            self.tos1,
+        )
 
     def _UNARY_POSITIVE_handler(self, instr):
         pass
@@ -231,6 +252,16 @@ class ValueStack:
         to us, so it's fine if we don't store it. But the "name" of the source object is
         vital, so we need to keep it. Thus, the handler just does nothing.
         """
+
+    def _COMPARE_OP_handler(self, instr):
+        return self._BINARY_operation_handler(instr)
+
+    def _POP_JUMP_IF_FALSE_handler(self, instr):
+        self._pop()
+
+    def _JUMP_IF_FALSE_OR_POP_handler(self, instr):
+        if self.tos:
+            self._pop()
 
     def _LOAD_FAST_handler(self, instr):
         self._push(instr.argrepr)
