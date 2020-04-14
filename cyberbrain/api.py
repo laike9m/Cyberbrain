@@ -68,6 +68,6 @@ class Tracer:
                 return
             if event == "opcode":
                 # print(frame, event, arg)
-                self.logger.detect_chanages(frame)
+                self.logger.detect_changes(frame)
 
         return _local_tracer

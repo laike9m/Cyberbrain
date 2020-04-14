@@ -18,7 +18,7 @@ def test_container(tracer):
         {"target": "d", "value": [1, 1], "sources": {"a", "b"}},
         {"target": "d", "value": (1, 1), "sources": {"a", "b"}},
         {"target": "d", "value": {1}, "sources": {"a", "b"}},
-        {"target": "d", "value": {1: 1}, "sources": {"a", "b"},},
+        {"target": "d", "value": {1: 1}, "sources": {"a", "b"}},
         {"target": "d", "value": {1: 1, 2: 1}, "sources": {"a", "b"}},
         {"target": "d", "value": {1: 2, 2: 1}, "sources": {"a", "c"}},
         {"target": "d", "value": {2: 1}, "sources": {"a"}},

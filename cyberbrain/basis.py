@@ -29,3 +29,15 @@ class Mutation:
                 other["sources"],
             )
         return False
+
+
+@dataclass
+class Deletion:
+    target: str
+
+    def __eq__(self, other):
+        if isinstance(other, Deletion):
+            return self.target == other.target
+        if isinstance(other, dict):
+            return self.target == other["target"]
+        return False
