@@ -19,7 +19,7 @@ def test_inplace_operations(tracer):
 
     tracer.register()
 
-    assert tracer.logger.mutations == [
+    assert tracer.logger.changes == [
         {"target": "a1", "value": 4, "sources": {"a1", "b"}},
         {"target": "a2", "value": 4, "sources": {"a2", "b"}},
         {"target": "a3", "value": 1, "sources": {"a3", "b"}},

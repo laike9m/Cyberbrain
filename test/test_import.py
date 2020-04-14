@@ -10,8 +10,10 @@ def test_import(tracer):
 
     tracer.register()
 
+    print(os, path)  # To disable PyCharm auto removing unused imports.
+
     assert_that(
-        tracer.logger.mutations,
+        tracer.logger.changes,
         contains_exactly(
             has_properties(
                 {"target": "os", "value": starts_with("<module 'os'"), "sources": set()}

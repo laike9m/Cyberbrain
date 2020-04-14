@@ -20,7 +20,7 @@ def test_jump(tracer):
 
     tracer.register()
 
-    assert tracer.logger.mutations == [
+    assert tracer.logger.changes == [
         {"target": "x", "value": 1, "sources": set()},
         {"target": "x", "value": 2, "sources": set()},
         # This is a known defect. We have no way to know `x` comes from `a`, because

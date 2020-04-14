@@ -14,7 +14,7 @@ def test_container(tracer):
 
     tracer.register()
 
-    assert tracer.logger.mutations == [
+    assert tracer.logger.changes == [
         {"target": "d", "value": [1, 1], "sources": {"a", "b"}},
         {"target": "d", "value": (1, 1), "sources": {"a", "b"}},
         {"target": "d", "value": {1}, "sources": {"a", "b"}},

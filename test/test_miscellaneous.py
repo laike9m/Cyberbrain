@@ -20,11 +20,11 @@ def test_miscellaneous(tracer):
 
     tracer.register()
 
-    assert tracer.logger.mutations == [
+    assert tracer.logger.changes == [
         {"target": "x", "value": "a b    'c' 'd' ", "sources": {"a", "b", "d", "c"}},
         {"target": "x", "value": False, "sources": {"a", "b"}},
         {"target": "e", "value": [4, 2], "sources": {"e"}},
         {"target": "e"},
         {"target": "g", "value": 1, "sources": set()},
-        {"target": "g"}
+        {"target": "g"},
     ]

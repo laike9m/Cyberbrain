@@ -4,10 +4,11 @@ import dis
 from copy import deepcopy
 from dis import Instruction
 from types import FrameType
+from typing import Union
 
 from crayons import yellow, cyan
 
-from .basis import Mutation, _dummy
+from .basis import Mutation, Deletion, _dummy
 from .utils import pprint
 from .value_stack import ValueStack
 
@@ -23,7 +24,7 @@ class Logger:
         self.execution_start_index = frame.f_lasti + 4
         self.next_jump_location = None
         self.value_stack = ValueStack()
-        self.mutations: list[Mutation] = []
+        self.changes: list[Union[Mutation, Deletion]] = []
         self.debug_mode = debug_mode
 
     def detect_changes(self, frame: FrameType):
@@ -43,7 +44,7 @@ class Logger:
         # jump target(bytecode offset). Now, next instruction comes, if the offset
         # matches the jump target, we know a jump just happened, and we move the
         # execution_start_index to where it should be, which is the jump target.
-        # No need to scan instructions and find mutations in this case, because jump
+        # No need to scan instructions and find changes in this case, because jump
         # instruction won't cause any mutation.
         #
         # Note that jump instruction can also update the value stack, so we need to call
@@ -108,7 +109,7 @@ class Logger:
         if change:
             if isinstance(change, Mutation):
                 change.value = self._deepcopy_from_frame(frame, change.target)
-            self.mutations.append(change)
+            self.changes.append(change)
 
         if self.debug_mode:
             pprint(
