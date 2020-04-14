@@ -20,7 +20,7 @@ def test_binary_operation(tracer):
 
     tracer.register()
 
-    assert tracer.logger.mutations == [
+    assert tracer.logger.changes == [
         {"target": "c", "value": 1, "sources": {"a", "b"}},
         {"target": "c", "value": 1, "sources": {"a", "b"}},
         {"target": "c", "value": 1, "sources": {"a", "b"}},

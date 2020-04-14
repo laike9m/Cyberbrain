@@ -16,7 +16,7 @@ def test_unpack(tracer):
 
     tracer.register()
 
-    assert tracer.logger.mutations == [
+    assert tracer.logger.changes == [
         {"target": "a", "value": "h", "sources": set()},
         {"target": "b", "value": "i", "sources": set()},
         {"target": "a", "value": 1, "sources": {"l1"}},

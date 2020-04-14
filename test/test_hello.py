@@ -4,7 +4,7 @@ def test_hello(tracer):
     y = x  # LOAD_FAST, STORE_FAST
     tracer.register()
 
-    assert tracer.logger.mutations == [
+    assert tracer.logger.changes == [
         {"target": "x", "value": "hello world", "sources": set()},
         {"target": "y", "value": "hello world", "sources": {"x"}},
     ]

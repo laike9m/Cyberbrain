@@ -12,4 +12,4 @@ tracer.register()
 
 
 def test_delete_name():
-    assert tracer.logger.mutations == [{"target": "x"}]
+    assert tracer.logger.changes == [{"target": "x"}]
