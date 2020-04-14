@@ -1,11 +1,9 @@
 """A self maintained value stack."""
 
 import dis
-import types
-
 from typing import Optional
 
-from .basis import Mutation
+from .basis import Mutation, Deletion
 
 
 class ValueStackException(Exception):
@@ -24,11 +22,11 @@ class JumpHandler:
     decide what to do with the stack.
     """
 
-    def emit_mutation_and_update_stack(self, instr, jumped=False) -> Optional[Mutation]:
+    def emit_change_and_update_stack(self, instr, jumped=False) -> Optional[Mutation]:
         try:
             return getattr(JumpHandler, f"_{instr.opname}_handler")(self, instr, jumped)
         except AttributeError:
-            return super().emit_mutation_and_update_stack(instr)
+            return super().emit_change_and_update_stack(instr)
 
     def _JUMP_FORWARD_handler(self, instr, jumped):
         pass
@@ -67,7 +65,7 @@ class GeneralValueStack:
         # extended_args is cleared after it's been consumed.
         self.extended_args = []
 
-    def emit_mutation_and_update_stack(self, instr) -> Optional[Mutation]:
+    def emit_change_and_update_stack(self, instr) -> Optional[Mutation]:
         """Given a instruction, emits mutation(s) if any, and updates the stack."""
 
         # Binary operations are all the same, no need to define handlers individually.
@@ -228,6 +226,9 @@ class GeneralValueStack:
         self._pop()
         return mutation
 
+    def _DELETE_NAME_handler(self, instr):
+        return Deletion(target=instr.argrepr)
+
     def _UNPACK_SEQUENCE_handler(self, instr):
         self._pop_one_push_n(instr.arg)
 
@@ -239,8 +240,17 @@ class GeneralValueStack:
 
     def _STORE_ATTR_handler(self, instr):
         assert len(self.tos) == 1
-        mutation = Mutation(target=self.tos[0], sources=set(self.tos1))
-        return mutation
+        return Mutation(target=self.tos[0], sources=set(self.tos1))
+
+    def _DELETE_ATTR_handler(self, instr):
+        assert len(self.tos) == 1
+        return Mutation(target=self.tos[0])
+
+    def _STORE_GLOBAL_handler(self, instr):
+        return self._STORE_NAME_handler(instr)
+
+    def _DELETE_GLOBAL_handler(self, instr):
+        return Deletion(instr.argrepr)
 
     def _LOAD_CONST_handler(self, instr):
         # For instructions like LOAD_CONST, we just need a placeholder on the stack.
@@ -272,7 +282,7 @@ class GeneralValueStack:
         """Change the behavior of LOAD_ATTR.
 
         The effect of LOAD_ATTR is: Replaces TOS with getattr(TOS, co_names[namei]).
-        However, this will make backtracing hard, because it eliminates the information
+        However, this will make back tracing hard, because it eliminates the information
         about the source object, where the attribute originates from.
 
         Example: a = b.x
@@ -317,6 +327,9 @@ class GeneralValueStack:
 
     def _STORE_FAST_handler(self, instr):
         return self._STORE_NAME_handler(instr)
+
+    def _DELETE_FAST_handler(self, instr):
+        return Deletion(target=instr.argrepr)
 
     def _LOAD_METHOD_handler(self, instr):
         self._pop()

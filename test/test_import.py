@@ -14,11 +14,7 @@ def test_import(tracer):
         tracer.logger.mutations,
         contains_exactly(
             has_properties(
-                {
-                    "target": "os",
-                    "value": starts_with("<module 'os'"),
-                    "sources": set(),
-                }
+                {"target": "os", "value": starts_with("<module 'os'"), "sources": set()}
             ),
             has_properties(
                 {

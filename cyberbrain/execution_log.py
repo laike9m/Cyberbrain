@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import dis
-import inspect
-
 from copy import deepcopy
 from dis import Instruction
 from types import FrameType
@@ -10,8 +8,8 @@ from types import FrameType
 from crayons import yellow, cyan
 
 from .basis import Mutation, _dummy
-from .value_stack import ValueStack
 from .utils import pprint
+from .value_stack import ValueStack
 
 
 class Logger:
@@ -28,7 +26,7 @@ class Logger:
         self.mutations: list[Mutation] = []
         self.debug_mode = debug_mode
 
-    def detect_chanages(self, frame: FrameType):
+    def detect_changes(self, frame: FrameType):
         """Prints names whose values changed since this function is called last time.
 
         This function scans through instructions in the frame the logger belongs to,
@@ -106,10 +104,11 @@ class Logger:
         # print(instr)
         # For now I'll deepcopy the mutated value, I don't know if there's a better way.
         # Maybe... https://github.com/seperman/deepdiff/issues/44
-        mutation = self.value_stack.emit_mutation_and_update_stack(instr, jumped)
-        if mutation:
-            mutation.value = self._deepcopy_from_frame(frame, mutation.target)
-            self.mutations.append(mutation)
+        change = self.value_stack.emit_change_and_update_stack(instr, jumped)
+        if change:
+            if isinstance(change, Mutation):
+                change.value = self._deepcopy_from_frame(frame, change.target)
+            self.mutations.append(change)
 
         if self.debug_mode:
             pprint(
@@ -146,6 +145,8 @@ class Logger:
             value = frame.f_globals[name]
         else:
             value = frame.f_builtins[name]
+
+        assert value is not _dummy
 
         # There are certain things you can't copy, like module.
         try:

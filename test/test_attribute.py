@@ -13,6 +13,7 @@ def test_attribute(tracer):
 
     a1.x = a2  # STORE_ATTR
     a1.x.y = 2  # LOAD_ATTR, STORE_ATTR
+    del a1.x  # DELETE_ATTR
 
     tracer.register()
 
@@ -32,6 +33,9 @@ def test_attribute(tracer):
                     "value": has_property("x", has_property("y", 2)),
                     "sources": set(),
                 }
+            ),
+            has_properties(
+                {"target": "a1", "value": not_(has_property("x")), "sources": set()}
             ),
         ),
     )
