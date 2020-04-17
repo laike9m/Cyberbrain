@@ -217,6 +217,9 @@ class GeneralValueStack:
     def _RETURN_VALUE_handler(self, instr):
         self._pop()
 
+    def _SETUP_ANNOTATIONS_handler(self, instr):
+        pass
+
     def _IMPORT_STAR_handler(self, instr):
         # It's impossible to know what names are loaded, and we don't really care.
         self._pop()

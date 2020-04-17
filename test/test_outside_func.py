@@ -8,8 +8,12 @@ x = 1
 
 tracer.init()
 del x
+y: int
 tracer.register()
 
 
 def test_delete_name():
-    assert tracer.logger.changes == [{"target": "x"}]
+    assert tracer.logger.changes == [
+        {"target": "x"},
+        {"target": "__annotations__", "value": {"y": int}, "sources": {"int"}},
+    ]
