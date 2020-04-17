@@ -278,6 +278,18 @@ class GeneralValueStack:
     def _BUILD_STRING_handler(self, instr):
         self._pop_n_push_one(instr.arg)
 
+    def _BUILD_TUPLE_UNPACK_handler(self, instr):
+        self._pop_n_push_one(instr.arg)
+
+    def _BUILD_LIST_UNPACK_handler(self, instr):
+        self._pop_n_push_one(instr.arg)
+
+    def _BUILD_SET_UNPACK_handler(self, instr):
+        self._pop_n_push_one(instr.arg)
+
+    def _BUILD_MAP_UNPACK_handler(self, instr):
+        self._pop_n_push_one(instr.arg)
+
     def _LOAD_ATTR_handler(self, instr):
         """Change the behavior of LOAD_ATTR.
 
