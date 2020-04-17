@@ -113,7 +113,7 @@ class Logger:
 
         if self.debug_mode:
             pprint(
-                f"{cyan('Executed instruction:')}",
+                f"{cyan('Executed instruction')} at line {frame.f_lineno}:",
                 instr,
                 f"{yellow('Current stack:')}",
                 self.value_stack.stack,
