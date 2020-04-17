@@ -50,7 +50,7 @@ class JumpHandler:
 
 
 class GeneralValueStack:
-    """Class that simulates the intepreter's value stack.
+    """Class that simulates the interpreter's value stack.
 
     This class handles instructions that don't require special processing.
     """
@@ -341,6 +341,12 @@ class GeneralValueStack:
         TODO: Implement full behaviors of CALL_METHOD.
         """
         self._push(_placeholder)
+
+    def _BUILD_SLICE_handler(self, instr):
+        if instr.arg == 2:
+            self._pop_n_push_one(2)
+        elif instr.arg == 3:
+            self._pop_n_push_one(3)
 
     def _FORMAT_VALUE_handler(self, instr):
         # See https://git.io/JvjTg to learn what this opcode is doing.
