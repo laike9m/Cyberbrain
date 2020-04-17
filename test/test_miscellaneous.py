@@ -1,4 +1,4 @@
-g: int
+g = 0
 
 
 def test_miscellaneous(tracer):
@@ -15,6 +15,7 @@ def test_miscellaneous(tracer):
     e[0] += e.pop()  # DUP_TOP_TWO
     del e  # DELETE_FAST
     global g
+    x = g
     g = 1  # STORE_GLOBAL
     del g  # DELETE_GLOBAL
 
@@ -25,6 +26,7 @@ def test_miscellaneous(tracer):
         {"target": "x", "value": False, "sources": {"a", "b"}},
         {"target": "e", "value": [4, 2], "sources": {"e"}},
         {"target": "e"},
+        {"target": "x", "value": 0, "sources": {"g"}},
         {"target": "g", "value": 1, "sources": set()},
         {"target": "g"},
     ]

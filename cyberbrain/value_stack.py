@@ -322,6 +322,9 @@ class GeneralValueStack:
         self._pop()
         self._push(_placeholder)
 
+    def _LOAD_GLOBAL_handler(self, instr):
+        self._push(instr.argrepr)
+
     def _LOAD_FAST_handler(self, instr):
         self._push(instr.argrepr)
 
