@@ -105,7 +105,7 @@ class Logger:
         # print(instr)
         # For now I'll deepcopy the mutated value, I don't know if there's a better way.
         # Maybe... https://github.com/seperman/deepdiff/issues/44
-        change = self.value_stack.emit_change_and_update_stack(instr, jumped)
+        change = self.value_stack.emit_change_and_update_stack(instr, frame, jumped)
         if change:
             if isinstance(change, Mutation):
                 change.value = self._deepcopy_from_frame(frame, change.target)
