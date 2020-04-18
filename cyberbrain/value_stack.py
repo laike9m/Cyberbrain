@@ -1,6 +1,7 @@
 """A self maintained value stack."""
 
 import dis
+import inspect
 from typing import Optional
 
 from .basis import Mutation, Deletion
@@ -22,11 +23,16 @@ class JumpHandler:
     decide what to do with the stack.
     """
 
-    def emit_change_and_update_stack(self, instr, jumped=False) -> Optional[Mutation]:
+    def emit_change_and_update_stack(
+            self, instr, frame, jumped=False
+    ) -> Optional[Mutation]:
         try:
             return getattr(JumpHandler, f"_{instr.opname}_handler")(self, instr, jumped)
         except AttributeError:
-            return super().emit_change_and_update_stack(instr)
+            return super().emit_change_and_update_stack(instr, frame)
+
+    def _POP_BLOCK_handler(self, instr, jumped):
+        pass
 
     def _JUMP_FORWARD_handler(self, instr, jumped):
         pass
@@ -48,6 +54,12 @@ class JumpHandler:
     def _JUMP_ABSOLUTE_handler(self, instr, jumped):
         pass
 
+    def _FOR_ITER_handler(self, instr, jumped):
+        if jumped:
+            self._pop()
+        else:
+            self._push(self.tos)
+
 
 class GeneralValueStack:
     """Class that simulates the interpreter's value stack.
@@ -65,7 +77,7 @@ class GeneralValueStack:
         # extended_args is cleared after it's been consumed.
         self.extended_args = []
 
-    def emit_change_and_update_stack(self, instr) -> Optional[Mutation]:
+    def emit_change_and_update_stack(self, instr, frame) -> Optional[Mutation]:
         """Given a instruction, emits mutation(s) if any, and updates the stack."""
 
         # Binary operations are all the same, no need to define handlers individually.
@@ -79,7 +91,12 @@ class GeneralValueStack:
 
         # Emits mutation and updates value stack.
         try:
-            return getattr(self, f"_{instr.opname}_handler")(updated_instr_or_none)
+            handler = getattr(self, f"_{instr.opname}_handler")
+            # For handlers that receive a frame parameter, passes in current frame.
+            if "frame" in inspect.getfullargspec(handler).args:
+                return handler(updated_instr_or_none, frame)
+            else:
+                return handler(updated_instr_or_none)
         except AttributeError:
             raise AttributeError(
                 f"Please add\ndef _{instr.opname}_handler(self, instr):"
@@ -199,6 +216,9 @@ class GeneralValueStack:
         pass
 
     def _UNARY_INVERT_handler(self, instr):
+        pass
+
+    def _GET_ITER_handler(self, instr):
         pass
 
     def _BINARY_operation_handler(self, instr):
@@ -337,8 +357,16 @@ class GeneralValueStack:
         self._pop()
         self._push(_placeholder)
 
-    def _LOAD_GLOBAL_handler(self, instr):
-        self._push(instr.argrepr)
+    def _LOAD_GLOBAL_handler(self, instr, frame):
+        # Exclude builtin types like "range" so they don't become a source of mutations.
+        if instr.argval in frame.f_builtins:
+            self._push([])
+        else:
+            self._push(instr.argrepr)
+
+    # TODO: Create block stack.
+    def _SETUP_LOOP_handler(self, instr):
+        pass
 
     def _LOAD_FAST_handler(self, instr):
         self._push(instr.argrepr)
@@ -351,6 +379,10 @@ class GeneralValueStack:
 
     def _LOAD_METHOD_handler(self, instr):
         self._pop()
+
+    def _CALL_FUNCTION_handler(self, instr):
+        # TODO: Deal with callsite.
+        self._pop_n_push_one(instr.arg + 1)
 
     def _CALL_METHOD_handler(self, instr):
         """
