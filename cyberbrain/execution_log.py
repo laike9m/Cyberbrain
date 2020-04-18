@@ -86,7 +86,7 @@ class Logger:
         # As explained above, with jump handling:
         # - The stack change caused by jump instruction is always taken care of.
         # - Skipped instructions are skipped (in this case, LOAD_CONST and STORE_NAME).
-        if last_i == self.next_jump_location:
+        if self._jump(last_i):
             self._log_changed_value(
                 frame, self.instructions[self.execution_start_index], jumped=True
             )
@@ -102,10 +102,9 @@ class Logger:
 
     def _log_changed_value(self, frame: FrameType, instr: Instruction, jumped=False):
         """Logs changed values by the given instruction, if any."""
-        # print(instr)
         # For now I'll deepcopy the mutated value, I don't know if there's a better way.
         # Maybe... https://github.com/seperman/deepdiff/issues/44
-        change = self.value_stack.emit_change_and_update_stack(instr, frame, jumped)
+        change = self.value_stack.emit_change_and_update_stack(instr, jumped, frame)
         if change:
             if isinstance(change, Mutation):
                 change.value = self._deepcopy_from_frame(frame, change.target)
@@ -124,8 +123,18 @@ class Logger:
             self.next_jump_location = instr.offset + 2 + instr.arg
         elif instr.opcode in dis.hasjabs:
             self.next_jump_location = instr.arg
+        elif instr.opname == "BREAK_LOOP":
+            self.next_jump_location = "BREAK"
         else:
             self.next_jump_location = None
+
+    def _jump(self, last_i):
+        """Determines whether a jump has just happened."""
+        if last_i == self.next_jump_location:
+            return True
+        elif self.next_jump_location == "BREAK":
+            return True
+        return False
 
     @staticmethod
     def _deepcopy_from_frame(frame, name: str):
