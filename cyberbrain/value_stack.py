@@ -409,6 +409,9 @@ class GeneralValueStack:
     def _BREAK_LOOP_handler(self, instr):
         pass
 
+    def _CONTINUE_LOOP_handler(self, instr):
+        pass
+
 
 class ValueStack(JumpHandler, GeneralValueStack):
     pass
