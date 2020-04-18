@@ -24,12 +24,12 @@ class JumpHandler:
     """
 
     def emit_change_and_update_stack(
-            self, instr, frame, jumped=False
+            self, instr, jumped=False, *args
     ) -> Optional[Mutation]:
         try:
             return getattr(JumpHandler, f"_{instr.opname}_handler")(self, instr, jumped)
         except AttributeError:
-            return super().emit_change_and_update_stack(instr, frame)
+            return super().emit_change_and_update_stack(instr, *args)
 
     def _POP_BLOCK_handler(self, instr, jumped):
         pass
@@ -364,7 +364,6 @@ class GeneralValueStack:
         else:
             self._push(instr.argrepr)
 
-    # TODO: Create block stack.
     def _SETUP_LOOP_handler(self, instr):
         pass
 
@@ -405,6 +404,10 @@ class GeneralValueStack:
             elements.extend(self._pop())
         elements.extend(self._pop())
         self._push(elements)
+
+    # 3.7 Only
+    def _BREAK_LOOP_handler(self, instr):
+        pass
 
 
 class ValueStack(JumpHandler, GeneralValueStack):
