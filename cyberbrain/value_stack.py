@@ -1,6 +1,5 @@
 """A self maintained value stack."""
 
-import dis
 import inspect
 from typing import Optional
 
@@ -89,40 +88,18 @@ class GeneralValueStack:
             self._BINARY_operation_handler(instr)
             return
 
-        updated_instr_or_none = self._process_extended_arg(instr)
-        if updated_instr_or_none is None:
-            return
-
         # Emits mutation and updates value stack.
         try:
             handler = getattr(self, f"_{instr.opname}_handler")
             # For handlers that receive a frame parameter, passes in current frame.
             if "frame" in inspect.getfullargspec(handler).args:
-                return handler(updated_instr_or_none, frame)
+                return handler(instr, frame)
             else:
-                return handler(updated_instr_or_none)
+                return handler(instr)
         except AttributeError:
             raise AttributeError(
                 f"Please add\ndef _{instr.opname}_handler(self, instr):"
             )
-
-    def _process_extended_arg(self, instr) -> Optional[dis.Instruction]:
-        if instr.opname == "EXTENDED_ARG":
-            self.extended_args.append(instr.arg)
-            return
-
-        # Calculates real arg value.
-        if self.extended_args:
-            assert len(self.extended_args) <= 3
-            instr_attrs = instr._asdict()
-            arg = instr.arg
-            for i, extended_arg in enumerate(reversed(self.extended_args), 1):
-                arg += extended_arg << (8 * i)
-            instr_attrs["arg"] = arg
-            instr = dis.Instruction(**instr_attrs)
-            self.extended_args.clear()  # Important.
-
-        return instr
 
     @property
     def tos(self):
@@ -266,12 +243,14 @@ class GeneralValueStack:
         self._pop_one_push_n(number_of_receivers)
 
     def _STORE_ATTR_handler(self, instr):
-        assert len(self.tos) == 1
-        return Mutation(target=self.tos[0], sources=set(self.tos1))
+        tos, tos1 = self._pop(2)
+        assert len(tos) == 1
+        return Mutation(target=tos[0], sources=set(tos1))
 
     def _DELETE_ATTR_handler(self, instr):
-        assert len(self.tos) == 1
-        return Mutation(target=self.tos[0])
+        tos = self._pop()
+        assert len(tos) == 1
+        return Mutation(target=tos[0])
 
     def _STORE_GLOBAL_handler(self, instr):
         return self._STORE_NAME_handler(instr)
@@ -408,6 +387,10 @@ class GeneralValueStack:
             self._pop_n_push_one(2)
         elif instr.arg == 3:
             self._pop_n_push_one(3)
+
+    def _EXTENDED_ARG_handler(self, instr):
+        # Instruction.arg already contains the final value of arg, so this is a no op.
+        pass
 
     def _FORMAT_VALUE_handler(self, instr):
         # See https://git.io/JvjTg to learn what this opcode is doing.
