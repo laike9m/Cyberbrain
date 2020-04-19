@@ -12,6 +12,10 @@ from .basis import Mutation, Deletion, _dummy
 from .utils import pprint
 from .value_stack import ValueStack
 
+# These instructions lead to implicit jump.
+_implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS"}
+_implicit_jump_location = _dummy
+
 
 class Logger:
     """Execution logger."""
@@ -20,8 +24,18 @@ class Logger:
         self.instructions = {
             instr.offset: instr for instr in dis.get_instructions(frame.f_code)
         }
-        # Skips CALL_METHOD and POP_TOP so that scanning starts after tracer.init().
-        self.execution_start_index = frame.f_lasti + 4
+
+        # tracer.init() contains the following instructions:
+        #               0 LOAD_FAST                0 (tracer)
+        #               2 LOAD_METHOD              0 (init)
+        #               4 CALL_METHOD              0
+        #               6 POP_TOP
+        # However logger is initialized before executing CALL_METHOD, last_i is already
+        # at 4. This will make value stack don't have enough elements. So we need to
+        # move the execution_start_index back to LOAD_FAST, and make sure LOAD_FAST and
+        # LOAD_METHOD are scanned, so that value stack can be in correct state.
+        self.execution_start_index = frame.f_lasti - 4
+
         self.next_jump_location = None
         self.value_stack = ValueStack()
         self.changes: list[Union[Mutation, Deletion]] = []
@@ -86,7 +100,11 @@ class Logger:
         # As explained above, with jump handling:
         # - The stack change caused by jump instruction is always taken care of.
         # - Skipped instructions are skipped (in this case, LOAD_CONST and STORE_NAME).
-        if self._jump(last_i):
+
+        if self._jumped(last_i):
+            if self.debug_mode:
+                print(f"Jumped to instruction at offset: {last_i}")
+
             self._log_changed_value(
                 frame, self.instructions[self.execution_start_index], jumped=True
             )
@@ -123,16 +141,16 @@ class Logger:
             self.next_jump_location = instr.offset + 2 + instr.arg
         elif instr.opcode in dis.hasjabs:
             self.next_jump_location = instr.arg
-        elif instr.opname == "BREAK_LOOP":
-            self.next_jump_location = "BREAK"
+        elif instr.opname in _implicit_jump_ops:
+            self.next_jump_location = _implicit_jump_location
         else:
             self.next_jump_location = None
 
-    def _jump(self, last_i):
+    def _jumped(self, last_i) -> bool:
         """Determines whether a jump has just happened."""
         if last_i == self.next_jump_location:
             return True
-        elif self.next_jump_location == "BREAK":
+        elif self.next_jump_location == _implicit_jump_location:
             return True
         return False
 

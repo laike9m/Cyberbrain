@@ -1,4 +1,4 @@
-from hamcrest import *  # IMPORT_STAR
+from hamcrest import *
 
 
 def test_import(tracer):
