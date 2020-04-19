@@ -31,7 +31,7 @@ def test_loop(tracer):
     ]
 
 
-def test_exception_handling(tracer):
+def test_basic_try_except(tracer):
     tracer.init()
 
     try:  # SETUP_EXCEPT (3.7), SETUP_FINALLY (3.8)
@@ -43,3 +43,31 @@ def test_exception_handling(tracer):
     tracer.register()
 
     assert tracer.logger.changes == []
+
+
+def test_try_except_finally(tracer):
+    tracer.init()
+
+    try:  # SETUP_EXCEPT + SETUP_FINALLY (3.7), SETUP_FINALLY (3.8)
+        raise IndexError("error")  # RAISE_VARARGS
+    except IndexError:
+        pass  # POP_EXCEPT
+    finally:  # BEGIN_FINALLY (3.8)
+        b = 1  # END_FINALLY
+
+    tracer.register()
+
+    assert tracer.logger.changes == [
+        {"target": "b", "value": 1, "sources": set()},
+    ]
+
+# def test_statements_in_finally(tracer):
+#     tracer.init()
+#
+#     for x in range(2):
+#         try:
+#             pass
+#         finally:
+#             break  # BREAK_LOOP (3.7) POP_FINALLY (3.8)
+#
+#     tracer.register()

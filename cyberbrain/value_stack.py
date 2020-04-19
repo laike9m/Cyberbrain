@@ -4,6 +4,7 @@ import inspect
 from typing import Optional
 
 from .basis import Mutation, Deletion
+from .block_stack import BlockStack
 
 
 class ValueStackException(Exception):
@@ -31,11 +32,25 @@ class JumpHandler:
             return super().emit_change_and_update_stack(instr, *args)
 
     def _POP_BLOCK_handler(self, instr, jumped):
-        pass
+        self._pop_block()
 
     def _POP_EXCEPT_handler(self, instr, jumped):
-        # TODO: We might need to pop extraneous values from the value stack.
-        self._pop(3)
+        self._pop_block()
+
+    def _POP_FINALLY_handler(self, instr, jumped):
+        # TODO: Implement full behaviors
+        preserve_tos = instr.arg
+        tos = self.tos
+        self._pop_block()
+        if preserve_tos != 0:
+            self._push(tos)
+
+    def _BEGIN_FINALLY_handler(self, instr, jumped):
+        self._push(_placeholder)
+
+    def _END_FINALLY_handler(self, instr, jumped):
+        # Is the implementation correct?
+        self._pop_block()
 
     def _JUMP_FORWARD_handler(self, instr, jumped):
         pass
@@ -65,20 +80,14 @@ class JumpHandler:
 
 
 class GeneralValueStack:
-    """Class that simulates the interpreter's value stack.
+    """Class that simulates the a frame's value stack.
 
     This class handles instructions that don't require special processing.
     """
 
     def __init__(self):
         self.stack = []
-
-        # Stores extended args, insertion order = order of appearances. e.g.
-        #   0 EXTENDED_ARG 1
-        #   2 EXTENDED_ARG 2
-        # extended_args is [1, 2].
-        # extended_args is cleared after it's been consumed.
-        self.extended_args = []
+        self.block_stack = BlockStack()
 
     def emit_change_and_update_stack(self, instr, frame) -> Optional[Mutation]:
         """Given a instruction, emits mutation(s) if any, and updates the stack."""
@@ -163,6 +172,16 @@ class GeneralValueStack:
         tos = self._pop()
         for _ in range(n):
             self._push(tos)
+
+    def _push_block_stack(self):
+        self.block_stack.push(b_level=len(self.stack))
+
+    def _pop_block(self):
+        """Pops a block and cleans up value stack."""
+        b_level = self.block_stack.pop().b_level
+        print(f"Clean up value block: {self.stack[b_level:]}")
+        # block unwinding
+        del self.stack[b_level:]
 
     def _POP_TOP_handler(self, instr):
         self._pop()
@@ -346,11 +365,8 @@ class GeneralValueStack:
         else:
             self._push(instr.argrepr)
 
-    def _SETUP_LOOP_handler(self, instr):
-        pass
-
     def _SETUP_FINALLY_handler(self, instr):
-        pass
+        self._push_block_stack()
 
     def _LOAD_FAST_handler(self, instr):
         self._push(instr.argrepr)
@@ -401,14 +417,17 @@ class GeneralValueStack:
         self._push(elements)
 
     # 3.7 Only
+    def _SETUP_LOOP_handler(self, instr):
+        self._push_block_stack()
+
     def _BREAK_LOOP_handler(self, instr):
-        pass
+        self._pop_block()
 
     def _CONTINUE_LOOP_handler(self, instr):
         pass
 
     def _SETUP_EXCEPT_handler(self, instr):
-        pass
+        self._push_block_stack()
 
 
 class ValueStack(JumpHandler, GeneralValueStack):
