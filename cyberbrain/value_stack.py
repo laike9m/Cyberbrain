@@ -1,6 +1,7 @@
 """A self maintained value stack."""
 
 import inspect
+import sys
 from typing import Optional
 
 from .basis import Mutation, Deletion
@@ -16,67 +17,13 @@ class ValueStackException(Exception):
 _placeholder = None
 
 
-class JumpHandler:
-    """Class that handles jump related instructions.
+class _NullClass:
+    def __repr__(self):
+        return "NULL"
 
-    The difference is, for jump instructions, we may need to use runtime information to
-    decide what to do with the stack.
-    """
 
-    def emit_change_and_update_stack(
-            self, instr, jumped=False, *args
-    ) -> Optional[Mutation]:
-        try:
-            return getattr(JumpHandler, f"_{instr.opname}_handler")(self, instr, jumped)
-        except AttributeError:
-            return super().emit_change_and_update_stack(instr, *args)
-
-    def _POP_BLOCK_handler(self, instr, jumped):
-        self._pop_block()
-
-    def _POP_EXCEPT_handler(self, instr, jumped):
-        self._pop_block()
-
-    def _POP_FINALLY_handler(self, instr, jumped):
-        # TODO: Implement full behaviors
-        preserve_tos = instr.arg
-        tos = self.tos
-        self._pop_block()
-        if preserve_tos != 0:
-            self._push(tos)
-
-    def _BEGIN_FINALLY_handler(self, instr, jumped):
-        self._push(_placeholder)
-
-    def _END_FINALLY_handler(self, instr, jumped):
-        # Is the implementation correct?
-        self._pop_block()
-
-    def _JUMP_FORWARD_handler(self, instr, jumped):
-        pass
-
-    def _POP_JUMP_IF_TRUE_handler(self, instr, jumped):
-        self._pop()
-
-    def _POP_JUMP_IF_FALSE_handler(self, instr, jumped):
-        self._pop()
-
-    def _JUMP_IF_TRUE_OR_POP_handler(self, instr, jumped):
-        if not jumped:
-            self._pop()
-
-    def _JUMP_IF_FALSE_OR_POP_handler(self, instr, jumped):
-        if not jumped:
-            self._pop()
-
-    def _JUMP_ABSOLUTE_handler(self, instr, jumped):
-        pass
-
-    def _FOR_ITER_handler(self, instr, jumped):
-        if jumped:
-            self._pop()
-        else:
-            self._push(self.tos)
+# The NULL value pushed by BEGIN_FINALLY, WITH_CLEANUP_FINISH, LOAD_METHOD.
+NULL = _NullClass()
 
 
 class GeneralValueStack:
@@ -89,7 +36,7 @@ class GeneralValueStack:
         self.stack = []
         self.block_stack = BlockStack()
 
-    def emit_change_and_update_stack(self, instr, frame) -> Optional[Mutation]:
+    def emit_change_and_update_stack(self, instr, jumped, frame) -> Optional[Mutation]:
         """Given a instruction, emits mutation(s) if any, and updates the stack."""
 
         # Binary operations are all the same, no need to define handlers individually.
@@ -100,11 +47,13 @@ class GeneralValueStack:
         # Emits mutation and updates value stack.
         try:
             handler = getattr(self, f"_{instr.opname}_handler")
-            # For handlers that receive a frame parameter, passes in current frame.
+            # Pass arguments on demand.
+            args = [instr]  # TODO: make instr optional.
+            if "jumped" in inspect.getfullargspec(handler).args:
+                args.append(jumped)
             if "frame" in inspect.getfullargspec(handler).args:
-                return handler(instr, frame)
-            else:
-                return handler(instr)
+                args.append(frame)
+            return handler(*args)
         except AttributeError:
             raise AttributeError(
                 f"Please add\ndef _{instr.opname}_handler(self, instr):"
@@ -133,17 +82,19 @@ class GeneralValueStack:
                 ", but only has {len(self.stack)}.",
             )
 
-    def _push(self, value):
-        """Pushes a value onto the simulated value stack.
+    def _push(self, *values):
+        """Pushes values onto the simulated value stack.
 
         This method will automatically convert single value to a list. _placeholder will
         be converted to an empty list, so that it never exists on the value stack.
         """
-        if value is _placeholder:
-            value = []
-        elif not isinstance(value, list):
-            value = [value]
-        self.stack.append(value)
+        for value in values:
+            if value is _placeholder:
+                value = []
+            elif isinstance(value, str):  # For representing identifiers.
+                value = [value]
+            # For NULL or int used by block related handlers, keep the original value.
+            self.stack.append(value)
 
     def _pop(self, n=1):
         """Pops and returns n item from stack."""
@@ -161,7 +112,10 @@ class GeneralValueStack:
         """
         elements = []
         for _ in range(n):
-            elements.extend(self._pop())  # Flattens elements in TOS.
+            tos = self._pop()
+            if isinstance(tos, list):
+                # Flattens identifiers in TOS, leave out others (NULL, int).
+                elements.extend(tos)
         self._push(elements)
 
     def _pop_one_push_n(self, n):
@@ -387,8 +341,11 @@ class GeneralValueStack:
         # We need to push 6 elements: (tb, value, exctype, tb, value, exctype)
         # to the value stack. See
         # https://github.com/nedbat/byterun/blob/master/byterun/pyvm2.py#L285-L293
-        for _ in range(6):
-            self._push(_placeholder)
+        # Note that we don't really care about the exact exception type. As long as we
+        # push any Exception, other handlers like END_FINALLY will behave correctly.
+        self._push(
+            _placeholder, _placeholder, Exception, _placeholder, _placeholder, Exception
+        )
 
     def _CALL_FUNCTION_handler(self, instr):
         # TODO: Deal with callsite.
@@ -416,7 +373,57 @@ class GeneralValueStack:
         elements.extend(self._pop())
         self._push(elements)
 
-    # 3.7 Only
+    # Jump, block related instructions.
+    def _POP_BLOCK_handler(self, instr, jumped):
+        self._pop_block()
+
+    def _POP_EXCEPT_handler(self, instr, jumped):
+        self._pop_block()
+
+    def _BEGIN_FINALLY_handler(self, instr, jumped):
+        self._push(NULL)
+
+    def _END_FINALLY_handler(self, instr, jumped):
+        if self.tos is NULL:
+            self._pop()
+        elif isinstance(self.tos, int):
+            self._pop_block()
+        elif inspect.isclass(self.tos) and issubclass(self.tos, Exception):
+            self._pop(6)
+            self._pop_block()
+        else:
+            raise ValueStackException(f"TOS has wrong value: {self.tos}")
+
+    def _JUMP_FORWARD_handler(self, instr, jumped):
+        pass
+
+    def _POP_JUMP_IF_TRUE_handler(self, instr, jumped):
+        self._pop()
+
+    def _POP_JUMP_IF_FALSE_handler(self, instr, jumped):
+        self._pop()
+
+    def _JUMP_IF_TRUE_OR_POP_handler(self, instr, jumped):
+        if not jumped:
+            self._pop()
+
+    def _JUMP_IF_FALSE_OR_POP_handler(self, instr, jumped):
+        if not jumped:
+            self._pop()
+
+    def _JUMP_ABSOLUTE_handler(self, instr, jumped):
+        pass
+
+    def _FOR_ITER_handler(self, instr, jumped):
+        if jumped:
+            self._pop()
+        else:
+            self._push(self.tos)
+
+
+class Py37ValueStack(GeneralValueStack):
+    """Value stack for Python 3.7."""
+
     def _SETUP_LOOP_handler(self, instr):
         self._push_block_stack()
 
@@ -430,5 +437,23 @@ class GeneralValueStack:
         self._push_block_stack()
 
 
-class ValueStack(JumpHandler, GeneralValueStack):
-    pass
+class Py38ValueStack(GeneralValueStack):
+    """Value stack for Python 3.8."""
+
+    # >= 3.8
+    # def _POP_FINALLY_handler(self, instr, jumped):
+    #     # TODO: Implement full behaviors
+    #     preserve_tos = instr.arg
+    #     tos = self.tos
+    #     self._pop_block()
+    #     if preserve_tos != 0:
+    #         self._push(tos)
+
+
+def create_value_stack():
+    if sys.version_info[:2] == (3, 7):
+        return Py37ValueStack()
+    elif sys.version_info[:2] == (3, 8):
+        return Py38ValueStack()
+    else:
+        raise Exception(f"Unsupported Python version: {sys.version}")
