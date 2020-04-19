@@ -120,11 +120,11 @@ class Logger:
 
     def _log_changed_value(self, frame: FrameType, instr: Instruction, jumped=False):
         """Logs changed values by the given instruction, if any."""
-        # For now I'll deepcopy the mutated value, I don't know if there's a better way.
-        # Maybe... https://github.com/seperman/deepdiff/issues/44
         change = self.value_stack.emit_change_and_update_stack(instr, jumped, frame)
         if change:
             if isinstance(change, Mutation):
+                # For now I'll deepcopy the mutated value, will replace it with
+                # https://github.com/seperman/deepdiff/issues/44 once it's implemented.
                 change.value = self._deepcopy_from_frame(frame, change.target)
             self.changes.append(change)
 
