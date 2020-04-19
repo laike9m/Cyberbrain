@@ -41,17 +41,20 @@ class GeneralValueStack:
 
         # Binary operations are all the same, no need to define handlers individually.
         if instr.opname.startswith("BINARY") or instr.opname.startswith("INPLACE"):
-            self._BINARY_operation_handler(instr)
+            self._BINARY_operation_handler()
             return
 
         # Emits mutation and updates value stack.
         try:
             handler = getattr(self, f"_{instr.opname}_handler")
             # Pass arguments on demand.
-            args = [instr]  # TODO: make instr optional.
-            if "jumped" in inspect.getfullargspec(handler).args:
+            args = []
+            arg_spec = inspect.getfullargspec(handler).args
+            if "instr" in arg_spec:
+                args.append(instr)
+            if "jumped" in arg_spec:
                 args.append(jumped)
-            if "frame" in inspect.getfullargspec(handler).args:
+            if "frame" in arg_spec:
                 args.append(frame)
             return handler(*args)
         except AttributeError:
@@ -137,23 +140,23 @@ class GeneralValueStack:
         # block unwinding
         del self.stack[b_level:]
 
-    def _POP_TOP_handler(self, instr):
+    def _POP_TOP_handler(self):
         self._pop()
 
-    def _ROT_TWO_handler(self, instr):
+    def _ROT_TWO_handler(self):
         tos, tos1 = self._pop(2)
         self._push(tos)
         self._push(tos1)
 
-    def _DUP_TOP_handler(self, instr):
+    def _DUP_TOP_handler(self):
         self._push(self.tos)
 
-    def _DUP_TOP_TWO_handler(self, instr):
+    def _DUP_TOP_TWO_handler(self):
         tos1, tos = self.tos1, self.tos
         self._push(tos1)
         self._push(tos)
 
-    def _ROT_THREE_handler(self, instr):
+    def _ROT_THREE_handler(self):
         self.stack[-3], self.stack[-2], self.stack[-1] = (
             self.tos,
             self.tos2,
@@ -175,26 +178,26 @@ class GeneralValueStack:
     def _GET_ITER_handler(self, instr):
         pass
 
-    def _BINARY_operation_handler(self, instr):
+    def _BINARY_operation_handler(self):
         self._pop_n_push_one(2)
 
-    def _STORE_SUBSCR_handler(self, instr):
+    def _STORE_SUBSCR_handler(self):
         tos, tos1, tos2 = self._pop(3)
         assert len(tos1) == 1
         return Mutation(target=tos1[0], sources=set(tos + tos2))
 
-    def _DELETE_SUBSCR_handler(self, instr):
+    def _DELETE_SUBSCR_handler(self):
         tos, tos1 = self._pop(2)
         assert len(tos1) == 1
         return Mutation(target=tos1[0], sources=set(tos))
 
-    def _RETURN_VALUE_handler(self, instr):
+    def _RETURN_VALUE_handler(self):
         self._pop()
 
-    def _SETUP_ANNOTATIONS_handler(self, instr):
+    def _SETUP_ANNOTATIONS_handler(self):
         pass
 
-    def _IMPORT_STAR_handler(self, instr):
+    def _IMPORT_STAR_handler(self):
         # It's impossible to know what names are loaded, and we don't really care.
         self._pop()
 
@@ -215,12 +218,12 @@ class GeneralValueStack:
         number_of_receivers = lower_byte + 1 + higher_byte
         self._pop_one_push_n(number_of_receivers)
 
-    def _STORE_ATTR_handler(self, instr):
+    def _STORE_ATTR_handler(self):
         tos, tos1 = self._pop(2)
         assert len(tos) == 1
         return Mutation(target=tos[0], sources=set(tos1))
 
-    def _DELETE_ATTR_handler(self, instr):
+    def _DELETE_ATTR_handler(self):
         tos = self._pop()
         assert len(tos) == 1
         return Mutation(target=tos[0])
@@ -231,7 +234,7 @@ class GeneralValueStack:
     def _DELETE_GLOBAL_handler(self, instr):
         return Deletion(instr.argrepr)
 
-    def _LOAD_CONST_handler(self, instr):
+    def _LOAD_CONST_handler(self):
         # For instructions like LOAD_CONST, we just need a placeholder on the stack.
         self._push(_placeholder)
 
@@ -303,13 +306,13 @@ class GeneralValueStack:
         vital, so we need to keep it. Thus, the handler just does nothing.
         """
 
-    def _COMPARE_OP_handler(self, instr):
-        return self._BINARY_operation_handler(instr)
+    def _COMPARE_OP_handler(self):
+        return self._BINARY_operation_handler()
 
-    def _IMPORT_NAME_handler(self, instr):
+    def _IMPORT_NAME_handler(self):
         self._pop_n_push_one(2)
 
-    def _IMPORT_FROM_handler(self, instr):
+    def _IMPORT_FROM_handler(self):
         self._push(_placeholder)
 
     def _LOAD_GLOBAL_handler(self, instr, frame):
@@ -319,7 +322,7 @@ class GeneralValueStack:
         else:
             self._push(instr.argrepr)
 
-    def _SETUP_FINALLY_handler(self, instr):
+    def _SETUP_FINALLY_handler(self):
         self._push_block_stack()
 
     def _LOAD_FAST_handler(self, instr):
@@ -331,7 +334,7 @@ class GeneralValueStack:
     def _DELETE_FAST_handler(self, instr):
         return Deletion(target=instr.argrepr)
 
-    def _LOAD_METHOD_handler(self, instr):
+    def _LOAD_METHOD_handler(self):
         # TODO: Implement full behaviors.
         self._push(self.tos)
 
@@ -374,16 +377,16 @@ class GeneralValueStack:
         self._push(elements)
 
     # Jump, block related instructions.
-    def _POP_BLOCK_handler(self, instr, jumped):
+    def _POP_BLOCK_handler(self):
         self._pop_block()
 
-    def _POP_EXCEPT_handler(self, instr, jumped):
+    def _POP_EXCEPT_handler(self):
         self._pop_block()
 
-    def _BEGIN_FINALLY_handler(self, instr, jumped):
+    def _BEGIN_FINALLY_handler(self):
         self._push(NULL)
 
-    def _END_FINALLY_handler(self, instr, jumped):
+    def _END_FINALLY_handler(self):
         if self.tos is NULL:
             self._pop()
         elif isinstance(self.tos, int):
@@ -397,24 +400,24 @@ class GeneralValueStack:
     def _JUMP_FORWARD_handler(self, instr, jumped):
         pass
 
-    def _POP_JUMP_IF_TRUE_handler(self, instr, jumped):
+    def _POP_JUMP_IF_TRUE_handler(self):
         self._pop()
 
-    def _POP_JUMP_IF_FALSE_handler(self, instr, jumped):
+    def _POP_JUMP_IF_FALSE_handler(self):
         self._pop()
 
-    def _JUMP_IF_TRUE_OR_POP_handler(self, instr, jumped):
+    def _JUMP_IF_TRUE_OR_POP_handler(self, jumped):
         if not jumped:
             self._pop()
 
-    def _JUMP_IF_FALSE_OR_POP_handler(self, instr, jumped):
+    def _JUMP_IF_FALSE_OR_POP_handler(self, jumped):
         if not jumped:
             self._pop()
 
     def _JUMP_ABSOLUTE_handler(self, instr, jumped):
         pass
 
-    def _FOR_ITER_handler(self, instr, jumped):
+    def _FOR_ITER_handler(self, jumped):
         if jumped:
             self._pop()
         else:
@@ -424,16 +427,16 @@ class GeneralValueStack:
 class Py37ValueStack(GeneralValueStack):
     """Value stack for Python 3.7."""
 
-    def _SETUP_LOOP_handler(self, instr):
+    def _SETUP_LOOP_handler(self):
         self._push_block_stack()
 
-    def _BREAK_LOOP_handler(self, instr):
+    def _BREAK_LOOP_handler(self):
         self._pop_block()
 
     def _CONTINUE_LOOP_handler(self, instr):
         pass
 
-    def _SETUP_EXCEPT_handler(self, instr):
+    def _SETUP_EXCEPT_handler(self):
         self._push_block_stack()
 
 
