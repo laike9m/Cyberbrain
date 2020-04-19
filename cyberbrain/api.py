@@ -42,7 +42,7 @@ class Tracer:
 
     def register(self, target=_dummy):
         # Checks the value stack is in correct state: no extra elements left on stack.
-        assert self.logger.value_stack.stack == [['tracer'], ['tracer']]
+        assert self.logger.value_stack.stack == [["tracer"], ["tracer"]]
         sys.settrace(None)
         self.global_frame.f_trace = None
         del self.global_frame

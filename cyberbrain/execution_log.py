@@ -8,11 +8,12 @@ from typing import Union
 
 from crayons import yellow, cyan
 
+from . import value_stack
 from .basis import Mutation, Deletion, _dummy
 from .utils import pprint
-from .value_stack import ValueStack
 
 # These instructions lead to implicit jump.
+# TODO: might need to add END_FINALLY, because it can set bytecode counter.
 _implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS"}
 _implicit_jump_location = _dummy
 
@@ -37,7 +38,7 @@ class Logger:
         self.execution_start_index = frame.f_lasti - 4
 
         self.next_jump_location = None
-        self.value_stack = ValueStack()
+        self.value_stack = value_stack.create_value_stack()
         self.changes: list[Union[Mutation, Deletion]] = []
         self.debug_mode = debug_mode
 
