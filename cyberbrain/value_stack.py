@@ -34,6 +34,10 @@ class JumpHandler:
     def _POP_BLOCK_handler(self, instr, jumped):
         pass
 
+    def _POP_EXCEPT_handler(self, instr, jumped):
+        # TODO: We might need to pop extraneous values from the value stack.
+        self._pop(3)
+
     def _JUMP_FORWARD_handler(self, instr, jumped):
         pass
 
@@ -138,7 +142,7 @@ class GeneralValueStack:
         try:
             return self.stack[index]
         except IndexError:
-            ValueStackException(
+            raise ValueStackException(
                 f"Value stack should at least have {-index} elements",
                 ", but only has {len(self.stack)}.",
             )
@@ -162,7 +166,7 @@ class GeneralValueStack:
                 return self.stack.pop()
             return [self.stack.pop() for _ in range(n)]
         except IndexError:
-            ValueStackException("Value stack should have tos but is empty.")
+            raise ValueStackException("Value stack should have tos but is empty.")
 
     def _pop_n_push_one(self, n):
         """Pops n elements from TOS, and pushes one to TOS.
@@ -354,7 +358,6 @@ class GeneralValueStack:
         self._pop_n_push_one(2)
 
     def _IMPORT_FROM_handler(self, instr):
-        self._pop()
         self._push(_placeholder)
 
     def _LOAD_GLOBAL_handler(self, instr, frame):
@@ -367,6 +370,9 @@ class GeneralValueStack:
     def _SETUP_LOOP_handler(self, instr):
         pass
 
+    def _SETUP_FINALLY_handler(self, instr):
+        pass
+
     def _LOAD_FAST_handler(self, instr):
         self._push(instr.argrepr)
 
@@ -377,19 +383,25 @@ class GeneralValueStack:
         return Deletion(target=instr.argrepr)
 
     def _LOAD_METHOD_handler(self, instr):
-        self._pop()
+        # TODO: Implement full behaviors.
+        self._push(self.tos)
+
+    def _RAISE_VARARGS_handler(self, instr):
+        self._pop(instr.arg)
+
+        # We need to push 6 elements: (tb, value, exctype, tb, value, exctype)
+        # to the value stack. See
+        # https://github.com/nedbat/byterun/blob/master/byterun/pyvm2.py#L285-L293
+        for _ in range(6):
+            self._push(_placeholder)
 
     def _CALL_FUNCTION_handler(self, instr):
         # TODO: Deal with callsite.
         self._pop_n_push_one(instr.arg + 1)
 
     def _CALL_METHOD_handler(self, instr):
-        """
-        For now we assume no argument is passed, so tos is replaced with return value,
-        thus a noop.
-        TODO: Implement full behaviors of CALL_METHOD.
-        """
-        self._push(_placeholder)
+        # TODO: Deal with callsite.
+        self._pop_n_push_one(instr.arg + 2)
 
     def _BUILD_SLICE_handler(self, instr):
         if instr.arg == 2:
@@ -410,6 +422,9 @@ class GeneralValueStack:
         pass
 
     def _CONTINUE_LOOP_handler(self, instr):
+        pass
+
+    def _SETUP_EXCEPT_handler(self, instr):
         pass
 
 

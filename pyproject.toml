@@ -13,7 +13,7 @@ crayons = "^0.3.0"
 tox = "^3.14"
 tox-pyenv = "^1.1"
 pytest-xdist = "^1.31"
-pytest = "=5.3.5"  # https://github.com/pytest-dev/pytest/issues/6925
+pytest = "*"
 pyhamcrest = "^2.0.2"
 
 [tool.pylint.messages_control]

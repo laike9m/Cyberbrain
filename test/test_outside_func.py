@@ -7,7 +7,7 @@ tracer = Tracer()
 x = 1
 
 tracer.init()
-del x
+del x  # DELETE_NAME
 y: int
 tracer.register()
 

@@ -1,12 +1,7 @@
 """Cyberbrain public API and tracer setup."""
 
 import argparse
-import dis
 import sys
-import inspect
-import sysconfig
-from functools import lru_cache
-from functools import partial
 
 from . import execution_log, utils
 from .basis import _dummy
@@ -46,6 +41,8 @@ class Tracer:
         sys.settrace(self.global_tracer)
 
     def register(self, target=_dummy):
+        # Checks the value stack is in correct state: no extra elements left on stack.
+        # assert self.logger.value_stack.stack == [['tracer'], ['tracer']]
         sys.settrace(None)
         self.global_frame.f_trace = None
         del self.global_frame
