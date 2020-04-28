@@ -15,6 +15,7 @@ tox-pyenv = "^1.1"
 pytest-xdist = "^1.31"
 pytest = "*"
 pyhamcrest = "^2.0.2"
+pytest-cov = "^2.8.1"
 
 [tool.pylint.messages_control]
 disable = """
