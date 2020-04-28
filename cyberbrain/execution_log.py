@@ -52,6 +52,8 @@ class Logger:
         """
         last_i = frame.f_lasti
 
+        print(f"last_i is {last_i}")
+
         # Why do we care about jump?
         #
         # Because you don't want to scan the instructions that were *not* executed.

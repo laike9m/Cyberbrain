@@ -1,9 +1,11 @@
 """Test instructions that create blocks."""
 
+import sys
+
 import pytest
 
 
-@pytest.mark.skip(reason="Not implemented yet.")
+@pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
 def test_loop(tracer):
     tracer.init()
 
@@ -34,22 +36,22 @@ def test_loop(tracer):
     ]
 
 
-@pytest.mark.skip(reason="Not implemented yet.")
+@pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
 def test_basic_try_except(tracer):
     tracer.init()
 
     try:  # SETUP_EXCEPT (3.7), SETUP_FINALLY (3.8)
         raise IndexError("error")  # RAISE_VARARGS
-        a = 1
+        a = 1  # POP_BLOCK
     except IndexError:
-        pass  # POP_EXCEPT
+        pass  # POP_EXCEPT, END_FINALLY
 
     tracer.register()
 
     assert tracer.logger.changes == []
 
 
-@pytest.mark.skip(reason="Not implemented yet.")
+@pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
 def test_try_except_finally(tracer):
     tracer.init()
 
@@ -65,7 +67,7 @@ def test_try_except_finally(tracer):
     assert tracer.logger.changes == [{"target": "b", "value": 1, "sources": set()}]
 
 
-@pytest.mark.skip(reason="Not implemented yet.")
+@pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
 def test_statements_in_finally(tracer):
     tracer.init()
 

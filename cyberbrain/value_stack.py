@@ -5,7 +5,7 @@ import sys
 from typing import Optional
 
 from .basis import Mutation, Deletion
-from .block_stack import BlockStack
+from .block_stack import BlockStack, BlockType, Block
 
 
 class ValueStackException(Exception):
@@ -39,6 +39,8 @@ class GeneralValueStack:
     def emit_change_and_update_stack(self, instr, jumped, frame) -> Optional[Mutation]:
         """Given a instruction, emits mutation(s) if any, and updates the stack."""
 
+        print(instr)
+
         # Binary operations are all the same, no need to define handlers individually.
         if instr.opname.startswith("BINARY") or instr.opname.startswith("INPLACE"):
             self._BINARY_operation_handler()
@@ -61,6 +63,12 @@ class GeneralValueStack:
             raise AttributeError(
                 f"Please add\ndef _{instr.opname}_handler(self, instr):"
             )
+        finally:
+            del frame
+
+    @property
+    def stack_level(self):
+        return len(self.stack)
 
     @property
     def tos(self):
@@ -82,7 +90,7 @@ class GeneralValueStack:
         except IndexError:
             raise ValueStackException(
                 f"Value stack should at least have {-index} elements",
-                ", but only has {len(self.stack)}.",
+                f", but only has {len(self.stack)}.",
             )
 
     def _push(self, *values):
@@ -130,15 +138,15 @@ class GeneralValueStack:
         for _ in range(n):
             self._push(tos)
 
-    def _push_block_stack(self):
-        self.block_stack.push(b_level=len(self.stack))
-
-    def _pop_block(self):
-        """Pops a block and cleans up value stack."""
-        b_level = self.block_stack.pop().b_level
-        print(f"Clean up value block: {self.stack[b_level:]}")
-        # block unwinding
-        del self.stack[b_level:]
+    def _push_block(self, instr, b_type: BlockType):
+        self.block_stack.push(
+            Block(
+                b_level=self.stack_level,
+                b_type=b_type,
+                start=instr.offset,
+                end=instr.offset + instr.arg,
+            )
+        )
 
     def _POP_TOP_handler(self):
         self._pop()
@@ -317,13 +325,21 @@ class GeneralValueStack:
 
     def _LOAD_GLOBAL_handler(self, instr, frame):
         # Exclude builtin types like "range" so they don't become a source of mutations.
-        if instr.argval in frame.f_builtins:
-            self._push([])
-        else:
-            self._push(instr.argrepr)
+        # TODO: this method (and other LOAD_XXX methods) seriously need rewriting.
+        # Because in the end we need to handle values based on their type.
+        val = _placeholder
 
-    def _SETUP_FINALLY_handler(self):
-        self._push_block_stack()
+        if instr.argval in frame.f_builtins:
+            if issubclass(frame.f_builtins[instr.argval], BaseException):
+                # Keeps exceptions so that they can be identified.
+                val = frame.f_builtins[instr.argval]
+            else:
+                val = []
+        else:
+            val = instr.argrepr
+
+        self._push(val)
+        del frame
 
     def _LOAD_FAST_handler(self, instr):
         self._push(instr.argrepr)
@@ -338,21 +354,21 @@ class GeneralValueStack:
         # TODO: Implement full behaviors.
         self._push(self.tos)
 
-    def _RAISE_VARARGS_handler(self, instr):
-        self._pop(instr.arg)
-
-        # We need to push 6 elements: (tb, value, exctype, tb, value, exctype)
-        # to the value stack. See
-        # https://github.com/nedbat/byterun/blob/master/byterun/pyvm2.py#L285-L293
-        # Note that we don't really care about the exact exception type. As long as we
-        # push any Exception, other handlers like END_FINALLY will behave correctly.
-        self._push(
-            _placeholder, _placeholder, Exception, _placeholder, _placeholder, Exception
-        )
-
     def _CALL_FUNCTION_handler(self, instr):
         # TODO: Deal with callsite.
-        self._pop_n_push_one(instr.arg + 1)
+        args = self._pop(instr.arg)
+        callable_obj = self._pop()
+        if inspect.isclass(callable_obj) and issubclass(callable_obj, BaseException):
+            # In `raise IndexError()`
+            # We need to make sure the result of `IndexError()` is an exception inst,
+            # so that _do_raise sees the correct value type.
+            self._push(callable_obj())
+        else:
+            elements = []
+            for arg in args:
+                if isinstance(arg, list):
+                    elements.extend(tos)
+            self._push(elements)
 
     def _CALL_METHOD_handler(self, instr):
         # TODO: Deal with callsite.
@@ -375,27 +391,6 @@ class GeneralValueStack:
             elements.extend(self._pop())
         elements.extend(self._pop())
         self._push(elements)
-
-    # Jump, block related instructions.
-    def _POP_BLOCK_handler(self):
-        self._pop_block()
-
-    def _POP_EXCEPT_handler(self):
-        self._pop_block()
-
-    def _BEGIN_FINALLY_handler(self):
-        self._push(NULL)
-
-    def _END_FINALLY_handler(self):
-        if self.tos is NULL:
-            self._pop()
-        elif isinstance(self.tos, int):
-            self._pop_block()
-        elif inspect.isclass(self.tos) and issubclass(self.tos, Exception):
-            self._pop(6)
-            self._pop_block()
-        else:
-            raise ValueStackException(f"TOS has wrong value: {self.tos}")
 
     def _JUMP_FORWARD_handler(self, instr, jumped):
         pass
@@ -428,7 +423,7 @@ class Py37ValueStack(GeneralValueStack):
     """Value stack for Python 3.7."""
 
     def _SETUP_LOOP_handler(self):
-        self._push_block_stack()
+        self._push_block()
 
     def _BREAK_LOOP_handler(self):
         self._pop_block()
@@ -437,20 +432,133 @@ class Py37ValueStack(GeneralValueStack):
         pass
 
     def _SETUP_EXCEPT_handler(self):
-        self._push_block_stack()
+        self._push_block()
 
 
 class Py38ValueStack(GeneralValueStack):
     """Value stack for Python 3.8."""
 
-    # >= 3.8
-    # def _POP_FINALLY_handler(self, instr, jumped):
-    #     # TODO: Implement full behaviors
-    #     preserve_tos = instr.arg
-    #     tos = self.tos
-    #     self._pop_block()
-    #     if preserve_tos != 0:
-    #         self._push(tos)
+    last_exception = None
+
+    def _do_raise(self, exc, cause) -> bool:
+        # See https://github.com/nedbat/byterun/blob/master/byterun/pyvm2.py#L806
+        if exc is None:  # reraise
+            exc_type, val, tb = self.last_exception
+            return exc_type is not None
+        elif type(exc) == type:
+            # As in `raise ValueError`
+            exc_type = exc
+            val = exc()  # Make an instance.
+        elif isinstance(exc, BaseException):
+            # As in `raise ValueError('foo')`
+            val = exc
+            exc_type = type(exc)
+        else:
+            return False  # error
+
+        # If you reach this point, you're guaranteed that
+        # val is a valid exception instance and exc_type is its class.
+        # Now do a similar thing for the cause, if present.
+        if cause:
+            if type(cause) == type:
+                cause = cause()
+            elif not isinstance(cause, BaseException):
+                return False
+
+            val.__cause__ = cause
+
+        self.last_exception = exc_type, val, val.__traceback__
+        return False
+
+    def _unwind_except_handler(self, b: Block):
+        assert self.stack_level >= b.b_level + 3
+        while self.stack_level > b.b_level + 3:
+            self._pop()
+        tb, value, exctype = self._pop(3)
+        self.last_exception = exctype, value, tb
+
+    def _unwind_block(self, b: Block):
+        while self.stack_level > b.b_level:
+            self._pop()
+
+    def _exception_unwind(self, instr):
+        print("inside _exception_unwind")
+        while not self.block_stack.is_empty():
+            block = self.block_stack.pop()
+
+            if block.b_type is BlockType.EXCEPT_HANDLER:
+                self._unwind_except_handler(block)
+                continue
+
+            self._unwind_block(block)
+
+            if block.b_type is BlockType.SETUP_FINALLY:
+                self._push_block(instr, b_type=BlockType.EXCEPT_HANDLER)
+                exctype, value, tb = self.last_exception
+                self._push(tb, value, exctype)
+                self._push(tb, value, exctype)
+                break  # goto main_loop.
+
+    def _pop_block(self):
+        return self.block_stack.pop()
+
+    def _SETUP_FINALLY_handler(self, instr):
+        self._push_block(instr, b_type=BlockType.SETUP_FINALLY)
+
+    def _RAISE_VARARGS_handler(self, instr):
+        cause = exc = None
+        if instr.arg == 2:
+            cause, exc = self._pop(2)
+        elif instr.arg == 1:
+            exc = self._pop()
+
+        # In CPython's source code, it uses the result of _do_raise to decide whether to
+        # raise an exception, then execute exception_unwind. Our value stack doesn't
+        # need to actually raise an exception.
+        self._do_raise(exc, cause)
+        self._exception_unwind(instr)
+
+    def _POP_EXCEPT_handler(self):
+        block = self._pop_block()
+        assert block.b_type == BlockType.EXCEPT_HANDLER
+        assert block.b_level + 3 <= self.stack_level <= block.b_level + 4
+        exc_type, exc_value, exc_tb = self._pop(3)
+        self.last_exception = exc_type, exc_value, exc_tb
+
+    def _POP_FINALLY_handler(self, instr):
+        preserve_tos = instr.arg
+        if preserve_tos:
+            res = self._pop()
+
+        if self.tos is NULL or isinstance(self.tos, int):
+            exc = self._pop()
+        else:
+            _, _, _ = self._pop(3)
+            block = self._pop_block()
+            assert block.b_type is BlockType.EXCEPT_HANDLER
+            assert self.stack_level == block.b_level + 3
+            exc_type, exc_value, exc_tb = self._pop(3)
+            self.last_exception = exc_type, exc_value, exc_tb
+
+        if preserve_tos:
+            self._push(res)
+
+    def _POP_BLOCK_handler(self):
+        self._pop_block()
+
+    def _BEGIN_FINALLY_handler(self):
+        self._push(NULL)
+
+    def _END_FINALLY_handler(self):
+        if self.tos is NULL:
+            self._pop()
+        elif isinstance(self.tos, int):
+            self._pop_block()
+        elif inspect.isclass(self.tos) and issubclass(self.tos, Exception):
+            self._pop(6)
+            self._pop_block()
+        else:
+            raise ValueStackException(f"TOS has wrong value: {self.tos}")
 
 
 def create_value_stack():
