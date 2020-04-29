@@ -39,8 +39,6 @@ class GeneralValueStack:
     def emit_change_and_update_stack(self, instr, jumped, frame) -> Optional[Mutation]:
         """Given a instruction, emits mutation(s) if any, and updates the stack."""
 
-        print(instr)
-
         # Binary operations are all the same, no need to define handlers individually.
         if instr.opname.startswith("BINARY") or instr.opname.startswith("INPLACE"):
             self._BINARY_operation_handler()

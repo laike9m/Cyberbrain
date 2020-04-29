@@ -4,7 +4,7 @@ import dis
 from copy import deepcopy
 from dis import Instruction
 from types import FrameType
-from typing import Union
+from typing import Union, Optional
 
 from crayons import yellow, cyan
 
@@ -15,7 +15,6 @@ from .utils import pprint
 # These instructions lead to implicit jump.
 # TODO: might need to add END_FINALLY, because it can set bytecode counter.
 _implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS"}
-_implicit_jump_location = _dummy
 
 
 class Logger:
@@ -33,11 +32,10 @@ class Logger:
         #               6 POP_TOP
         # However logger is initialized before executing CALL_METHOD, last_i is already
         # at 4. This will make value stack don't have enough elements. So we need to
-        # move the execution_start_index back to LOAD_FAST, and make sure LOAD_FAST and
-        # LOAD_METHOD are scanned, so that value stack can be in correct state.
-        self.execution_start_index = frame.f_lasti - 4
+        # move the instr_pointer back to LOAD_FAST, and make sure LOAD_FAST and LOAD_METHOD
+        # are scanned, so that value stack can be in correct state.
+        self.instr_pointer = frame.f_lasti - 4
 
-        self.next_jump_location = None
         self.value_stack = value_stack.create_value_stack()
         self.changes: list[Union[Mutation, Deletion]] = []
         self.debug_mode = debug_mode
@@ -52,15 +50,16 @@ class Logger:
         """
         last_i = frame.f_lasti
 
-        print(f"last_i is {last_i}")
+        # print(f"last_i is {last_i}")
 
+        # TODO: update documentation.
         # Why do we care about jump?
         #
         # Because you don't want to scan the instructions that were *not* executed.
         # So if the next instruction can potentially lead to a jump, we record the
         # jump target(bytecode offset). Now, next instruction comes, if the offset
         # matches the jump target, we know a jump just happened, and we move the
-        # execution_start_index to where it should be, which is the jump target.
+        # instr_pointer to where it should be, which is the jump target.
         # No need to scan instructions and find changes in this case, because jump
         # instruction won't cause any mutation.
         #
@@ -69,7 +68,7 @@ class Logger:
         # found the coming instruction matches the recorded jump location, because at
         # this point we know that previous instruction must be the instruction that
         # leads to the jump. Here by "previous" we mean the instruction at previous
-        # "execution_start_index".
+        # "instr_pointer".
         #
         # Example
         #
@@ -86,7 +85,7 @@ class Logger:
         #       >>    8 LOAD_CONST               1 (None) <--- ⓷
         #            10 RETURN_VALUE
         #
-        # ⓵: last_i is 2, we assign last_i to execution_start_index, so it's also 2.
+        # ⓵: last_i is 2, we assign last_i to instr_pointer, so it's also 2.
         #     instr.opcode `POP_JUMP_IF_FALSE` is in dis.hasjabs, so we record
         #     next_jump_location = 8
         #
@@ -96,66 +95,69 @@ class Logger:
         # ⓷: If `a` evaluates to false, code comes here. Since
         #    last_i == next_jump_location == 8, we enter the if clause.
         #    The first thing we do in the if clause is to call _log_changed_value with
-        #    the instruction at execution_start_index. The value is 2, and points to
+        #    the instruction at instr_pointer. The value is 2, and points to
         #    POP_JUMP_IF_FALSE, so we update the value stack with POP_JUMP_IF_FALSE.
-        #    Next, we update execution_start_index normally.
+        #    Next, we update instr_pointer normally.
         #
         # As explained above, with jump handling:
         # - The stack change caused by jump instruction is always taken care of.
         # - Skipped instructions are skipped (in this case, LOAD_CONST and STORE_NAME).
 
-        if self._jumped(last_i):
-            if self.debug_mode:
-                print(f"Jumped to instruction at offset: {last_i}")
+        # We need to at least run once in case there's a jump backwards.
+        while True:
+            instr = self.instructions[self.instr_pointer]
+            jumped = False
 
-            self._log_changed_value(
-                frame, self.instructions[self.execution_start_index], jumped=True
-            )
-            self.execution_start_index = last_i
-            self._record_jump_location_if_exists(self.instructions[last_i])
-            return
+            if self._jump_occurred(instr, last_i):
+                jumped = True
+                self.instr_pointer = last_i
+            else:
+                self.instr_pointer += 2
 
-        for i in range(self.execution_start_index, last_i, 2):
-            self._log_changed_value(frame, self.instructions[i])
+            self._log_changed_value(frame, instr, jumped)
+            if self.instr_pointer >= last_i:
+                break
 
-        self._record_jump_location_if_exists(self.instructions[last_i])
-        self.execution_start_index = last_i
+    def _debug_log(self, *msg):
+        if self.debug_mode:
+            pprint(*msg)
 
     def _log_changed_value(self, frame: FrameType, instr: Instruction, jumped=False):
         """Logs changed values by the given instruction, if any."""
+        self._debug_log(
+            f"{cyan('Executed instruction')} at line {frame.f_lineno}:", instr
+        )
+
         change = self.value_stack.emit_change_and_update_stack(instr, jumped, frame)
         if change:
             if isinstance(change, Mutation):
                 # For now I'll deepcopy the mutated value, will replace it with
                 # https://github.com/seperman/deepdiff/issues/44 once it's implemented.
+                print(cyan(str(change)))
                 change.value = self._deepcopy_from_frame(frame, change.target)
             self.changes.append(change)
 
-        if self.debug_mode:
-            pprint(
-                f"{cyan('Executed instruction')} at line {frame.f_lineno}:",
-                instr,
-                f"{yellow('Current stack:')}",
-                self.value_stack.stack,
-            )
+        self._debug_log(f"{yellow('Current stack:')}", self.value_stack.stack)
 
-    def _record_jump_location_if_exists(self, instr: Instruction):
+    def _jump_occurred(self, instr: Instruction, last_i):
+        if not any(
+            [
+                instr.opcode in dis.hasjrel,
+                instr.opcode in dis.hasjabs,
+                instr.opname in _implicit_jump_ops,
+            ]
+        ):
+            return False
+
+        jump_location = last_i  # For implicit_jump_ops, we assume it's last_i.
         if instr.opcode in dis.hasjrel:
-            self.next_jump_location = instr.offset + 2 + instr.arg
+            jump_location = instr.offset + 2 + instr.arg
         elif instr.opcode in dis.hasjabs:
-            self.next_jump_location = instr.arg
-        elif instr.opname in _implicit_jump_ops:
-            self.next_jump_location = _implicit_jump_location
-        else:
-            self.next_jump_location = None
+            jump_location = instr.arg
 
-    def _jumped(self, last_i) -> bool:
-        """Determines whether a jump has just happened."""
-        if last_i == self.next_jump_location:
+        if jump_location == last_i:
+            self._debug_log(f"Jumped to instruction at offset: {jump_location}")
             return True
-        elif self.next_jump_location == _implicit_jump_location:
-            return True
-        return False
 
     @staticmethod
     def _deepcopy_from_frame(frame, name: str):
