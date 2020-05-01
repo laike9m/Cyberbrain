@@ -3,16 +3,26 @@
 import inspect
 import os
 import sysconfig
-
-from functools import lru_cache
 from pprint import pformat
 
 from pygments import highlight
-from pygments.lexers import PythonLexer
 from pygments.formatters import Terminal256Formatter
-
+from pygments.lexers import PythonLexer
 
 _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
+
+
+def is_exception(obj) -> bool:
+    """Checks whether the given obj is an exception instance or class."""
+    if isinstance(obj, BaseException):
+        return True
+
+    return is_exception_class(obj)
+
+
+def is_exception_class(obj) -> bool:
+    """Checks whether the given obj is an exception class."""
+    return inspect.isclass(obj) and issubclass(obj, BaseException)
 
 
 def should_exclude(frame):

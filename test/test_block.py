@@ -52,6 +52,22 @@ def test_basic_try_except(tracer):
 
 
 @pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
+def test_nested_try_except(tracer):
+    tracer.init()
+
+    try:
+        try:
+            raise IndexError
+        finally:
+            a = 1
+    except IndexError:
+        pass
+
+    tracer.register()
+    assert tracer.logger.changes == [{"target": "a", "value": 1, "sources": set()}]
+
+
+@pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
 def test_try_except_finally(tracer):
     tracer.init()
 
