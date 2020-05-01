@@ -16,19 +16,18 @@ class Block:
         "END_FINALLY": {BlockType.SETUP_FINALLY},
     }
 
-    def __init__(self, b_level: int, b_type: BlockType, start: int, end: int):
+    def __init__(self, b_level: int, b_type: BlockType):
         """
         Args:
             b_level: The # of elements that were on the value stack when this block was
             created.
             b_type: The type of block.
-            start: Start bytecode offset of this block.
-            end: End bytecode offset of this block, inclusive.
         """
         self.b_level = b_level
         self.b_type = b_type
-        self.start = start
-        self.end = end
+
+    def __repr__(self):
+        return f"Block(b_level={self.b_level}, b_type={self.b_type})"
 
 
 class BlockStack:
@@ -62,9 +61,13 @@ class BlockStack:
         self.stack = []
 
     def push(self, block: Block):
+        print(f"Pushed block stack: {block}")
         self.stack.append(block)
+        print(f"Current block stack: {self.stack}")
 
     def pop(self):
+        print(f"Popped block stack: {self.tos}")
+        print(f"Current block stack: {self.stack[:-1]}")
         return self.stack.pop()
 
     @property

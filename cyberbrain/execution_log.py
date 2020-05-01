@@ -4,7 +4,7 @@ import dis
 from copy import deepcopy
 from dis import Instruction
 from types import FrameType
-from typing import Union, Optional
+from typing import Union
 
 from crayons import yellow, cyan
 
@@ -13,8 +13,7 @@ from .basis import Mutation, Deletion, _dummy
 from .utils import pprint
 
 # These instructions lead to implicit jump.
-# TODO: might need to add END_FINALLY, because it can set bytecode counter.
-_implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS"}
+_implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS", "END_FINALLY"}
 
 
 class Logger:
@@ -50,7 +49,7 @@ class Logger:
         """
         last_i = frame.f_lasti
 
-        # print(f"last_i is {last_i}")
+        print(f"last_i is {last_i}")
 
         # TODO: update documentation.
         # Why do we care about jump?
