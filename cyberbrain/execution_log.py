@@ -12,7 +12,6 @@ from . import value_stack
 from .basis import Mutation, Deletion, _dummy
 from .utils import pprint
 
-# These instructions lead to implicit jump.
 _implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS", "END_FINALLY"}
 
 
@@ -31,8 +30,8 @@ class Logger:
         #               6 POP_TOP
         # However logger is initialized before executing CALL_METHOD, last_i is already
         # at 4. This will make value stack don't have enough elements. So we need to
-        # move the instr_pointer back to LOAD_FAST, and make sure LOAD_FAST and LOAD_METHOD
-        # are scanned, so that value stack can be in correct state.
+        # move the instr_pointer back to LOAD_FAST, and make sure LOAD_FAST and
+        # LOAD_METHOD are scanned, so that value stack can be in correct state.
         self.instr_pointer = frame.f_lasti - 4
 
         self.value_stack = value_stack.create_value_stack()
@@ -51,58 +50,59 @@ class Logger:
 
         print(f"last_i is {last_i}")
 
-        # TODO: update documentation.
         # Why do we care about jump?
         #
-        # Because you don't want to scan the instructions that were *not* executed.
-        # So if the next instruction can potentially lead to a jump, we record the
-        # jump target(bytecode offset). Now, next instruction comes, if the offset
-        # matches the jump target, we know a jump just happened, and we move the
-        # instr_pointer to where it should be, which is the jump target.
-        # No need to scan instructions and find changes in this case, because jump
-        # instruction won't cause any mutation.
+        # Because we only want to handle the instructions that were actually executed.
+        # In most cases where there is no jump, scanning from instr_pointer to last_i
+        # is enough. Before instr_pointer hits last_i, the instruction scanned is the
+        # the instruction executed.
         #
-        # Note that jump instruction can also update the value stack, so we need to call
-        # _log_changed_value to keep the stack in correct state. We do this when we
-        # found the coming instruction matches the recorded jump location, because at
-        # this point we know that previous instruction must be the instruction that
-        # leads to the jump. Here by "previous" we mean the instruction at previous
-        # "instr_pointer".
+        # Things get more complicated when jump is involved. Generally speaking, jump
+        # instructions complicate instruction scanning in two ways:
+        #   - Instructions jumped over are between [instr_pointer, last_i], but were
+        #     not executed, thus should be ignored;
+        #   - If there was a jump backward (like `continue`), last_i will be smaller
+        #     than instr_pointer.
         #
-        # Example
+        # To solve the above issues, we rely on this fact (observation, to be exact):
+        # frame.last_i is always updated after a jump (explicit or implicit, explained
+        # later), and points to the destination of the jump.
         #
-        #   if a:
-        #       x = 1
+        # It is important to know that, due to the PREDICT(op) optimization, sometimes
+        # last_i is not updated in time. So if last_i is p when this function is called,
+        # next time it could be i+4 instead of i+2. However, this situation won't
+        # happen:
+        #   p:      jump instruction    <---- last_i
+        #   p + 2:  other instruction
+        #   p + 4:                      <---- new last_i
+        # Because we know if a jump occurred, last_i will be updated in time, and this
+        # function will be called. This can happen:
+        #   p:      other instruction   <---- last_i
+        #   p + 2:  jump instruction
+        #   p + 4:                      <---- new last_i
         #
-        # Instructions
+        # Now back the the solution. We still iterate from instr_pointer to last_i,
+        # but we also check whether the scanned instruction is a jump that *happened*.
+        # This is important, cause not all jump instruction lead to a jump, it's
+        # conditional sometimes (e.g. POP_JUMP_IF_FALSE). Luckily, we know if a jump
+        # just happened, last_i points to the jump destination. So we compare the jump
+        # destination calculated from current instruction with last_i. If they match,
+        # we know a jump has just happened, then we set instr_pointer to last_i.
         #
-        # 1           0 LOAD_NAME                0 (a)
-        #             2 POP_JUMP_IF_FALSE        8      <----- ⓵
+        # The solution is simple and easy to understand. However there are two cases
+        # we need to consider.
         #
-        # 2           4 LOAD_CONST               0 (1)  <----- ⓶
-        #             6 STORE_NAME               1 (x)
-        #       >>    8 LOAD_CONST               1 (None) <--- ⓷
-        #            10 RETURN_VALUE
+        # First is the aforementioned "jump backwards". We solve this by using a while
+        # loop in stead of range(instr_pointer, last_i), and break the loop when
+        # instr_pointer >= last_i. In this way, scanning can take place, and when a jump
+        # backwards sets instr_pointer to last_i, the loop can break.
         #
-        # ⓵: last_i is 2, we assign last_i to instr_pointer, so it's also 2.
-        #     instr.opcode `POP_JUMP_IF_FALSE` is in dis.hasjabs, so we record
-        #     next_jump_location = 8
-        #
-        # ⓶: If `a` evaluates to true, code comes here, and we update the value stack
-        #     with POP_JUMP_IF_FALSE.
-        #
-        # ⓷: If `a` evaluates to false, code comes here. Since
-        #    last_i == next_jump_location == 8, we enter the if clause.
-        #    The first thing we do in the if clause is to call _log_changed_value with
-        #    the instruction at instr_pointer. The value is 2, and points to
-        #    POP_JUMP_IF_FALSE, so we update the value stack with POP_JUMP_IF_FALSE.
-        #    Next, we update instr_pointer normally.
-        #
-        # As explained above, with jump handling:
-        # - The stack change caused by jump instruction is always taken care of.
-        # - Skipped instructions are skipped (in this case, LOAD_CONST and STORE_NAME).
+        # Second is what I call "implicit jump". These instructions are not included in
+        # `dis.hasjrel` or `dis.hasjabs`, but can change bytecode counter, including
+        # "BREAK_LOOP", "RAISE_VARARGS", "END_FINALLY". Regardless of jump happened or
+        # not, we set instr_pointer to last_i, because last_i == (instr_pointer + 2)
+        # if jump didn't happen.
 
-        # We need to at least run once in case there's a jump backwards.
         while True:
             instr = self.instructions[self.instr_pointer]
             jumped = False
