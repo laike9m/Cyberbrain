@@ -482,9 +482,7 @@ class Py38ValueStack(GeneralValueStack):
         exc_type = self._pop()
         value = self._pop()
         tb = self._pop()
-        self.last_exception = ExceptionInfo(
-            type=exc_type, value=value, traceback=tb
-        )
+        self.last_exception = ExceptionInfo(type=exc_type, value=value, traceback=tb)
 
     def _unwind_block(self, b: Block):
         while self.stack_level > b.b_level:
@@ -538,9 +536,7 @@ class Py38ValueStack(GeneralValueStack):
         exc_type = self._pop()
         value = self._pop()
         tb = self._pop()
-        self.last_exception = ExceptionInfo(
-            type=exc_type, value=value, traceback=tb
-        )
+        self.last_exception = ExceptionInfo(type=exc_type, value=value, traceback=tb)
 
     def _POP_FINALLY_handler(self, instr):
         preserve_tos = instr.arg
@@ -548,11 +544,8 @@ class Py38ValueStack(GeneralValueStack):
             res = self._pop()
 
         if self.tos is NULL or isinstance(self.tos, int):
-            print("🐑")
             exc = self._pop()
         else:
-            # TODO: test this branch.
-            print("🐅")
             _, _, _ = self._pop(3)
             block = self._pop_block()
             assert block.b_type is BlockType.EXCEPT_HANDLER

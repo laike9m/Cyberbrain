@@ -84,7 +84,7 @@ def test_try_except_finally(tracer):
 
 
 @pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
-def test_statements_in_finally(tracer):
+def test_break_in_finally(tracer):
     tracer.init()
 
     for x in range(2):
@@ -94,3 +94,24 @@ def test_statements_in_finally(tracer):
             break  # BREAK_LOOP (3.7) POP_FINALLY (3.8)
 
     tracer.register()
+
+    assert tracer.logger.changes == [{"target": "x", "value": 0, "sources": set()}]
+
+
+@pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
+def test_break_in_finally_with_exception(tracer):
+    """Tests POP_FINALLY when tos is an exception."""
+
+    tracer.init()
+
+    # If the finally clause executes a return, break or continue statement, the saved
+    # exception is discarded.
+    for x in range(2):
+        try:
+            raise IndexError
+        finally:
+            break  # BREAK_LOOP (3.7) POP_FINALLY (3.8)
+
+    tracer.register()
+
+    assert tracer.logger.changes == [{"target": "x", "value": 0, "sources": set()}]
