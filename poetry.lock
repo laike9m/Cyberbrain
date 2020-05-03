@@ -57,6 +57,24 @@ version = "0.3.0"
 colorama = "*"
 
 [[package]]
+category = "main"
+description = "Deep Difference and Search of any Python object/data."
+name = "deepdiff"
+optional = false
+python-versions = ">=3.5"
+version = "5.0.0"
+
+[package.dependencies]
+ordered-set = ">=3.1.1"
+
+[package.extras]
+murmur = ["mmh3"]
+
+[package.source]
+reference = "4e1f53f9e2ebba2d43e193b40054603aa321dcb0"
+type = "git"
+url = "https://github.com/seperman/deepdiff"
+[[package]]
 category = "dev"
 description = "Distribution utilities"
 name = "distlib"
@@ -109,6 +127,14 @@ name = "more-itertools"
 optional = false
 python-versions = ">=3.5"
 version = "8.2.0"
+
+[[package]]
+category = "main"
+description = "A set that remembers its order, and allows looking up its items by their index in that order."
+name = "ordered-set"
+optional = false
+python-versions = ">=3.5"
+version = "4.0.1"
 
 [[package]]
 category = "dev"
@@ -321,7 +347,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "8f4715bd604686ad0f1616950b4c03cc2745c4dd19e5b81fcaacd27526230427"
+content-hash = "56312cb11405e1234f48dd909d5c6ac5a7425ee7455ca0a6d70392d0bae9d2e8"
 python-versions = ">=3.7.0"
 
 [metadata.files]
@@ -349,6 +375,7 @@ crayons = [
     {file = "crayons-0.3.0-py2.py3-none-any.whl", hash = "sha256:8c9e4a3a607bc10e9a9140d496ecd16c6805088dd16c852c378f1f1d5db7aeb6"},
     {file = "crayons-0.3.0.tar.gz", hash = "sha256:50e5fa729d313e2c607ae8bf7b53bb487652e10bd8e7a1e08c4bc8bf62755ffc"},
 ]
+deepdiff = []
 distlib = [
     {file = "distlib-0.3.0.zip", hash = "sha256:2e166e231a26b36d6dfe35a48c4464346620f8645ed0ace01ee31822b288de21"},
 ]
@@ -367,6 +394,9 @@ importlib-metadata = [
 more-itertools = [
     {file = "more-itertools-8.2.0.tar.gz", hash = "sha256:b1ddb932186d8a6ac451e1d95844b382f55e12686d51ca0c68b6f61f2ab7a507"},
     {file = "more_itertools-8.2.0-py3-none-any.whl", hash = "sha256:5dd8bcf33e5f9513ffa06d5ad33d78f31e1931ac9a18f33d37e77a180d393a7c"},
+]
+ordered-set = [
+    {file = "ordered-set-4.0.1.tar.gz", hash = "sha256:a31008c57f9c9776b12eb8841b1f61d1e4d70dfbbe8875ccfa2403c54af3d51b"},
 ]
 packaging = [
     {file = "packaging-20.3-py2.py3-none-any.whl", hash = "sha256:82f77b9bee21c1bafbf35a84905d604d5d1223801d639cf3ed140bd651c08752"},
