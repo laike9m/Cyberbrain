@@ -13,7 +13,7 @@ tracer.register()
 
 
 def test_delete_name():
-    assert tracer.logger.changes == [
+    assert tracer.changes == [
         {"target": "x"},
         {"target": "__annotations__", "value": {"y": int}, "sources": {"int"}},
     ]

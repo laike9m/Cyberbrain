@@ -5,7 +5,7 @@ def test_hello(tracer):
     x, y = y, x  # ROT_TWO
     tracer.register()
 
-    assert tracer.logger.changes == [
+    assert tracer.changes == [
         {"target": "x", "value": "hello world", "sources": set()},
         {"target": "y", "value": "hello world", "sources": {"x"}},
         {"target": "x", "value": "hello world", "sources": {"y"}},

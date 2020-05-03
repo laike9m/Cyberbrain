@@ -24,7 +24,7 @@ def test_continue_in_finally(tracer):
 
     tracer.register()
 
-    assert tracer.logger.changes == [
+    assert tracer.changes == [
         {"target": "x", "value": 0, "sources": set()},
         {"target": "x", "value": 1, "sources": set()},
     ]
@@ -49,7 +49,7 @@ def test_continue_in_finally_with_exception(tracer):
 
     tracer.register()
 
-    assert tracer.logger.changes == [
+    assert tracer.changes == [
         {"target": "x", "value": 0, "sources": set()},
         {"target": "x", "value": 1, "sources": set()},
     ]
