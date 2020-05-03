@@ -15,8 +15,8 @@ from .utils import pprint
 _implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS", "END_FINALLY"}
 
 
-class Logger:
-    """Execution logger."""
+class Frame:
+    """A call frame."""
 
     def __init__(self, frame, debug_mode=False):
         self.instructions = {
@@ -33,12 +33,12 @@ class Logger:
         # move the instr_pointer back to LOAD_FAST, and make sure LOAD_FAST and
         # LOAD_METHOD are scanned, so that value stack can be in correct state.
         self.instr_pointer = frame.f_lasti - 4
-
         self.value_stack = value_stack.create_value_stack()
         self.changes: list[Union[Mutation, Deletion]] = []
         self.debug_mode = debug_mode
+        del frame
 
-    def detect_changes(self, frame: FrameType):
+    def update(self, frame: FrameType):
         """Prints names whose values changed since this function is called last time.
 
         This function scans through instructions in the frame the logger belongs to,
@@ -47,7 +47,6 @@ class Logger:
         like "STORE_NAME" and "STORE_ATTR", and prints them.
         """
         last_i = frame.f_lasti
-
         print(f"last_i is {last_i}")
 
         # Why do we care about jump?
@@ -113,15 +112,16 @@ class Logger:
             else:
                 self.instr_pointer += 2
 
-            self._log_changed_value(frame, instr, jumped)
+            self._get_change(frame, instr, jumped)
             if self.instr_pointer >= last_i:
+                del frame
                 break
 
     def _debug_log(self, *msg):
         if self.debug_mode:
             pprint(*msg)
 
-    def _log_changed_value(self, frame: FrameType, instr: Instruction, jumped=False):
+    def _get_change(self, frame: FrameType, instr: Instruction, jumped=False):
         """Logs changed values by the given instruction, if any."""
         self._debug_log(
             f"{cyan('Executed instruction')} at line {frame.f_lineno}:", instr
@@ -137,14 +137,15 @@ class Logger:
             self.changes.append(change)
 
         self._debug_log(f"{yellow('Current stack:')}", self.value_stack.stack)
+        del frame
 
     def _jump_occurred(self, instr: Instruction, last_i):
         if not any(
-            [
-                instr.opcode in dis.hasjrel,
-                instr.opcode in dis.hasjabs,
-                instr.opname in _implicit_jump_ops,
-            ]
+                [
+                    instr.opcode in dis.hasjrel,
+                    instr.opcode in dis.hasjabs,
+                    instr.opname in _implicit_jump_ops,
+                ]
         ):
             return False
 
@@ -179,6 +180,7 @@ class Logger:
             value = frame.f_builtins[name]
 
         assert value is not _dummy
+        del frame
 
         # There are certain things you can't copy, like module.
         try:

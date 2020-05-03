@@ -3,7 +3,7 @@
 import argparse
 import sys
 
-from . import execution_log, utils
+from . import frame, utils
 from .basis import _dummy
 
 _debug_mode = False
@@ -26,14 +26,13 @@ if "pytest" not in sys.modules:
 class Tracer:
     def __init__(self, debug_mode=_debug_mode):
         self.global_frame = None
-        self.logger = None
+        self.frame = None
         self.debug_mode = debug_mode
 
     def init(self):
         """Initializes tracing."""
         self.global_frame = sys._getframe(1)
-        # TODO: create a logger for each frame.
-        self.logger = execution_log.Logger(
+        self.frame = frame.Frame(
             self.global_frame, debug_mode=self.debug_mode
         )
         self.global_frame.f_trace_opcodes = True
@@ -42,7 +41,7 @@ class Tracer:
 
     def register(self, target=_dummy):
         # Checks the value stack is in correct state: no extra elements left on stack.
-        assert self.logger.value_stack.stack == [["tracer"], ["tracer"]]
+        assert self.frame.value_stack.stack == [["tracer"], ["tracer"]]
         sys.settrace(None)
         self.global_frame.f_trace = None
         del self.global_frame
@@ -50,7 +49,7 @@ class Tracer:
     @property
     def changes(self):
         """Test only. Provide access to logged changes."""
-        return self.logger.changes
+        return self.frame.changes
 
     @property
     def global_tracer(self):
@@ -70,6 +69,6 @@ class Tracer:
                 return
             if event == "opcode":
                 # print(frame, event, arg)
-                self.logger.detect_changes(frame)
+                self.frame.update(frame)
 
         return _local_tracer
