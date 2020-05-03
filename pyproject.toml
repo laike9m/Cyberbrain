@@ -8,6 +8,8 @@ description = "A Cyberbrain that helps you remember everything."
 python = ">=3.7.0"
 pygments = "^2.6.1"
 crayons = "^0.3.0"
+# TODO: use normal dependency after deepdiff is 5.0 released.
+deepdiff = {git = "https://github.com/seperman/deepdiff", rev = "dev"}
 
 [tool.poetry.dev-dependencies]
 tox = "^3.14"
