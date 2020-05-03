@@ -26,7 +26,7 @@ def test_loop(tracer):
 
     tracer.register()
 
-    assert tracer.logger.changes == [
+    assert tracer.changes == [
         {"target": "x", "value": 0, "sources": set()},
         {"target": "x", "value": 1, "sources": set()},
         {"target": "y", "value": 0, "sources": set()},
@@ -48,7 +48,7 @@ def test_basic_try_except(tracer):
 
     tracer.register()
 
-    assert tracer.logger.changes == []
+    assert tracer.changes == []
 
 
 @pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
@@ -64,7 +64,7 @@ def test_nested_try_except(tracer):
         pass
 
     tracer.register()
-    assert tracer.logger.changes == [{"target": "a", "value": 1, "sources": set()}]
+    assert tracer.changes == [{"target": "a", "value": 1, "sources": set()}]
 
 
 @pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
@@ -80,7 +80,7 @@ def test_try_except_finally(tracer):
 
     tracer.register()
 
-    assert tracer.logger.changes == [{"target": "b", "value": 1, "sources": set()}]
+    assert tracer.changes == [{"target": "b", "value": 1, "sources": set()}]
 
 
 @pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
@@ -95,7 +95,7 @@ def test_break_in_finally(tracer):
 
     tracer.register()
 
-    assert tracer.logger.changes == [{"target": "x", "value": 0, "sources": set()}]
+    assert tracer.changes == [{"target": "x", "value": 0, "sources": set()}]
 
 
 @pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
@@ -114,4 +114,4 @@ def test_break_in_finally_with_exception(tracer):
 
     tracer.register()
 
-    assert tracer.logger.changes == [{"target": "x", "value": 0, "sources": set()}]
+    assert tracer.changes == [{"target": "x", "value": 0, "sources": set()}]
