@@ -10,6 +10,7 @@ from crayons import yellow, cyan
 
 from . import value_stack
 from .basis import Mutation, Deletion, _dummy
+from .frame_state import FrameState
 from .utils import pprint
 
 _implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS", "END_FINALLY"}
@@ -34,6 +35,9 @@ class Frame:
         # LOAD_METHOD are scanned, so that value stack can be in correct state.
         self.instr_pointer = frame.f_lasti - 4
         self.value_stack = value_stack.create_value_stack()
+        self.frame_state = FrameState()
+
+        # Changes are stored here (other than in frame_state) to make test easier.
         self.changes: list[Union[Mutation, Deletion]] = []
         self.debug_mode = debug_mode
         del frame
@@ -112,7 +116,7 @@ class Frame:
             else:
                 self.instr_pointer += 2
 
-            self._get_change(frame, instr, jumped)
+            self._log_changes(frame, instr, jumped)
             if self.instr_pointer >= last_i:
                 del frame
                 break
@@ -121,7 +125,7 @@ class Frame:
         if self.debug_mode:
             pprint(*msg)
 
-    def _get_change(self, frame: FrameType, instr: Instruction, jumped=False):
+    def _log_changes(self, frame: FrameType, instr: Instruction, jumped=False):
         """Logs changed values by the given instruction, if any."""
         self._debug_log(
             f"{cyan('Executed instruction')} at line {frame.f_lineno}:", instr
@@ -134,6 +138,7 @@ class Frame:
                 # https://github.com/seperman/deepdiff/issues/44 once it's implemented.
                 print(cyan(str(change)))
                 change.value = self._deepcopy_from_frame(frame, change.target)
+            self.frame_state.add_new_change(change)
             self.changes.append(change)
 
         self._debug_log(f"{yellow('Current stack:')}", self.value_stack.stack)
