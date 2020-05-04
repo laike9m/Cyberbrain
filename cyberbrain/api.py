@@ -47,9 +47,9 @@ class Tracer:
         del self.global_frame
 
     @property
-    def changes(self):
-        """Test only. Provide access to logged changes."""
-        return self.frame.changes
+    def events(self):
+        """Test only. Provide access to logged events."""
+        return self.frame.events
 
     @property
     def global_tracer(self):

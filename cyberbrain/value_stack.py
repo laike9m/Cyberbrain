@@ -281,7 +281,7 @@ class GeneralValueStack:
         self._pop_n_push_one(instr.arg)
 
     def _LOAD_ATTR_handler(self, instr):
-        """Change the behavior of LOAD_ATTR.
+        """Event the behavior of LOAD_ATTR.
 
         The effect of LOAD_ATTR is: Replaces TOS with getattr(TOS, co_names[namei]).
         However, this will make back tracing hard, because it eliminates the information

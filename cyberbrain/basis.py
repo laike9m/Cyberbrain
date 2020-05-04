@@ -8,14 +8,27 @@ from typing import Any, TypeVar
 _dummy = object()
 
 
-# TODO: Change class should contain the location where the change happened.
+# TODO: Event class should contain the location where the change happened.
 
 
 @dataclass
 class Inheritance:
-    """Identifiers come from other places.
+    """Identifiers come from other places, or simply exist before tracking starts.
 
     e.g. Global variables, passed in arguments.
+
+    This also counts:
+
+    a = 1
+    cyberbrain.init()
+    a = 2  --> emit two events: first Inheritance, then Mutation.
+    cyberbrain.init()
+
+    Compared to this one, which only emits a Creation event.
+
+    cyberbrain.init()
+    a = 2  # 'a' doesn't exist before.
+    cyberbrain.init()
     '"""
     target: str
     value: any
@@ -67,4 +80,4 @@ class Deletion:
         return False
 
 
-Change = TypeVar('Change', Inheritance, Creation, Mutation, Deletion)
+Event = TypeVar('Event', Inheritance, Creation, Mutation, Deletion)

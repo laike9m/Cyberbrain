@@ -19,7 +19,7 @@ def test_unpack(tracer):
 
     tracer.register()
 
-    assert tracer.changes == [
+    assert tracer.events == [
         {"target": "a", "value": "h", "sources": set()},
         {"target": "b", "value": "i", "sources": set()},
         {"target": "a", "value": 1, "sources": {"l1"}},

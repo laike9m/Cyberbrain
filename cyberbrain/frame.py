@@ -37,8 +37,8 @@ class Frame:
         self.value_stack = value_stack.create_value_stack()
         self.frame_state = FrameState()
 
-        # Changes are stored here (other than in frame_state) to make test easier.
-        self.changes: list[Union[Mutation, Deletion]] = []
+        # Events are stored here (other than in frame_state) to make test easier.
+        self.events: list[Union[Mutation, Deletion]] = []
         self.debug_mode = debug_mode
         del frame
 
@@ -116,7 +116,7 @@ class Frame:
             else:
                 self.instr_pointer += 2
 
-            self._log_changes(frame, instr, jumped)
+            self._log_events(frame, instr, jumped)
             if self.instr_pointer >= last_i:
                 del frame
                 break
@@ -125,7 +125,7 @@ class Frame:
         if self.debug_mode:
             pprint(*msg)
 
-    def _log_changes(self, frame: FrameType, instr: Instruction, jumped=False):
+    def _log_events(self, frame: FrameType, instr: Instruction, jumped=False):
         """Logs changed values by the given instruction, if any."""
         self._debug_log(
             f"{cyan('Executed instruction')} at line {frame.f_lineno}:", instr
@@ -139,7 +139,7 @@ class Frame:
                 print(cyan(str(change)))
                 change.value = self._deepcopy_from_frame(frame, change.target)
             self.frame_state.add_new_change(change)
-            self.changes.append(change)
+            self.events.append(change)
 
         self._debug_log(f"{yellow('Current stack:')}", self.value_stack.stack)
         del frame
