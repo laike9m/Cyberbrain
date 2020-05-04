@@ -18,7 +18,7 @@ def test_attribute(tracer):
     tracer.register()
 
     assert_that(
-        tracer.changes,
+        tracer.events,
         contains_exactly(
             has_properties(
                 {

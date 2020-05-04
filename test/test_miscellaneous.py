@@ -21,7 +21,7 @@ def test_miscellaneous(tracer):
 
     tracer.register()
 
-    assert tracer.changes == [
+    assert tracer.events == [
         {"target": "x", "value": "a b    'c' 'd' ", "sources": {"a", "b", "d", "c"}},
         {"target": "x", "value": False, "sources": {"a", "b"}},
         {"target": "e", "value": [4, 2], "sources": {"e"}},
