@@ -60,11 +60,11 @@ class GeneralValueStack:
         self.block_stack = BlockStack()
 
     def emit_event_and_update_stack(
-            self,
-            instr: Instruction,
-            frame: FrameType,
-            evaluation_mode: EvaluationMode,
-            jumped: bool,
+        self,
+        instr: Instruction,
+        frame: FrameType,
+        evaluation_mode: EvaluationMode,
+        jumped: bool,
     ) -> Optional[Event]:
         """Given a instruction, emits mutation(s) if any, and updates the stack.
 
@@ -90,8 +90,8 @@ class GeneralValueStack:
 
         arg_spec = inspect.getfullargspec(handler).args
         if (
-                evaluation_mode is BEFORE_INSTR_EXECUTION
-                and "evaluation_mode" not in arg_spec
+            evaluation_mode is BEFORE_INSTR_EXECUTION
+            and "evaluation_mode" not in arg_spec
         ):
             # When a handler does not have evaluation_mode parameter, it is
             # guaranteed to not emit any event.

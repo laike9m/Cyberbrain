@@ -127,17 +127,18 @@ class Frame:
         del frame
 
     def _log_events(
-        self,
-        frame: FrameType,
-        instr: Instruction,
-        evaluation_mode: EvaluationMode,
-        jumped: bool = False,
+            self,
+            frame: FrameType,
+            instr: Instruction,
+            evaluation_mode: EvaluationMode,
+            jumped: bool = False,
     ):
         """Logs changed values by the given instruction, if any."""
-        if evaluation_mode is AFTER_INSTR_EXECUTION:
-            self._debug_log(
-                f"{cyan('Executed instruction')} at line {frame.f_lineno}:", instr
-            )
+        self._debug_log(
+            f"{cyan('Executed instruction')} at line {frame.f_lineno}:",
+            instr,
+            condition=evaluation_mode is AFTER_INSTR_EXECUTION,
+        )
 
         change = self.value_stack.emit_event_and_update_stack(
             instr=instr, frame=frame, evaluation_mode=evaluation_mode, jumped=jumped
@@ -161,17 +162,20 @@ class Frame:
                 self.frame_state.add_new_event(change)
                 self.events.append(change)
 
-        # if evaluation_mode is AFTER_INSTR_EXECUTION:
-        self._debug_log(f"{yellow('Current stack:')}", self.value_stack.stack)
+        self._debug_log(
+            f"{yellow('Current stack:')}",
+            self.value_stack.stack,
+            condition=evaluation_mode is AFTER_INSTR_EXECUTION,
+        )
         del frame
 
     def _jump_occurred(self, instr: Instruction, last_i):
         if not any(
-            [
-                instr.opcode in dis.hasjrel,
-                instr.opcode in dis.hasjabs,
-                instr.opname in _implicit_jump_ops,
-            ]
+                [
+                    instr.opcode in dis.hasjrel,
+                    instr.opcode in dis.hasjabs,
+                    instr.opname in _implicit_jump_ops,
+                ]
         ):
             return False
 
@@ -219,6 +223,6 @@ class Frame:
             [name in frame.f_locals, name in frame.f_globals, name in frame.f_builtins]
         )
 
-    def _debug_log(self, *msg):
+    def _debug_log(self, *msg, condition=True):
         if self.debug_mode:
             pprint(*msg)
