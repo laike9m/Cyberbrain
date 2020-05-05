@@ -9,9 +9,10 @@ from typing import Union
 from crayons import yellow, cyan
 
 from . import value_stack
-from .basis import Mutation, Deletion, _dummy
+from .basis import Mutation, Deletion, InitialValue
 from .frame_state import FrameState
 from .utils import pprint
+from .value_stack import EvaluationMode, AFTER_INSTR_EXECUTION, BEFORE_INSTR_EXECUTION
 
 _implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS", "END_FINALLY"}
 
@@ -39,7 +40,7 @@ class Frame:
 
         # Events are stored here (other than in frame_state) to make test easier.
         self.events: list[Union[Mutation, Deletion]] = []
-        self.debug_mode = debug_mode
+        self.debug_mode = True
         del frame
 
     def update(self, frame: FrameType):
@@ -116,41 +117,61 @@ class Frame:
             else:
                 self.instr_pointer += 2
 
-            self._log_events(frame, instr, jumped)
+            self._log_events(frame, instr, AFTER_INSTR_EXECUTION, jumped)
             if self.instr_pointer >= last_i:
-                del frame
                 break
 
-    def _debug_log(self, *msg):
-        if self.debug_mode:
-            pprint(*msg)
+        # This is important. We need to log mutation/creation events before it actually
+        # happens so that an identifier's original value is kept.
+        self._log_events(frame, self.instructions[last_i], BEFORE_INSTR_EXECUTION)
+        del frame
 
-    def _log_events(self, frame: FrameType, instr: Instruction, jumped=False):
+    def _log_events(
+        self,
+        frame: FrameType,
+        instr: Instruction,
+        evaluation_mode: EvaluationMode,
+        jumped: bool = False,
+    ):
         """Logs changed values by the given instruction, if any."""
-        self._debug_log(
-            f"{cyan('Executed instruction')} at line {frame.f_lineno}:", instr
+        if evaluation_mode is AFTER_INSTR_EXECUTION:
+            self._debug_log(
+                f"{cyan('Executed instruction')} at line {frame.f_lineno}:", instr
+            )
+
+        change = self.value_stack.emit_event_and_update_stack(
+            instr=instr, frame=frame, evaluation_mode=evaluation_mode, jumped=jumped
         )
-
-        change = self.value_stack.emit_change_and_update_stack(instr, jumped, frame)
         if change:
-            if isinstance(change, Mutation):
-                # For now I'll deepcopy the mutated value, will replace it with
-                # https://github.com/seperman/deepdiff/issues/44 once it's implemented.
-                print(cyan(str(change)))
-                change.value = self._deepcopy_from_frame(frame, change.target)
-            self.frame_state.add_new_change(change)
-            self.events.append(change)
+            if evaluation_mode is BEFORE_INSTR_EXECUTION:
+                if self._name_exist_in_frame(frame, change.target):
+                    self.frame_state.add_new_event(
+                        InitialValue(
+                            target=change.target,
+                            value=self._deepcopy_from_frame(frame, change.target),
+                        )
+                    )
 
+            if evaluation_mode is AFTER_INSTR_EXECUTION:
+                if isinstance(change, Mutation):
+                    # For now I'll deepcopy the mutated value, will replace it with
+                    # https://github.com/seperman/deepdiff/issues/44 once it's done.
+                    print(cyan(str(change)))
+                    change.value = self._deepcopy_from_frame(frame, change.target)
+                self.frame_state.add_new_event(change)
+                self.events.append(change)
+
+        # if evaluation_mode is AFTER_INSTR_EXECUTION:
         self._debug_log(f"{yellow('Current stack:')}", self.value_stack.stack)
         del frame
 
     def _jump_occurred(self, instr: Instruction, last_i):
         if not any(
-                [
-                    instr.opcode in dis.hasjrel,
-                    instr.opcode in dis.hasjabs,
-                    instr.opname in _implicit_jump_ops,
-                ]
+            [
+                instr.opcode in dis.hasjrel,
+                instr.opcode in dis.hasjabs,
+                instr.opname in _implicit_jump_ops,
+            ]
         ):
             return False
 
@@ -164,8 +185,8 @@ class Frame:
             self._debug_log(f"Jumped to instruction at offset: {jump_location}")
             return True
 
-    @staticmethod
-    def _deepcopy_from_frame(frame, name: str):
+    @classmethod
+    def _deepcopy_from_frame(cls, frame, name: str):
         """Given a frame and a name(identifier) saw in this frame, returns its value.
 
         The value has to be deep copied to avoid being changed by code coming later.
@@ -176,7 +197,7 @@ class Frame:
 
         Once we have a frame class, we might move this method there.
         """
-        value = _dummy
+        assert cls._name_exist_in_frame(frame, name)
         if name in frame.f_locals:
             value = frame.f_locals[name]
         elif name in frame.f_globals:
@@ -184,7 +205,6 @@ class Frame:
         else:
             value = frame.f_builtins[name]
 
-        assert value is not _dummy
         del frame
 
         # There are certain things you can't copy, like module.
@@ -192,3 +212,13 @@ class Frame:
             return deepcopy(value)
         except TypeError:
             return repr(value)
+
+    @staticmethod
+    def _name_exist_in_frame(frame, name: str) -> bool:
+        return any(
+            [name in frame.f_locals, name in frame.f_globals, name in frame.f_builtins]
+        )
+
+    def _debug_log(self, *msg):
+        if self.debug_mode:
+            pprint(*msg)
