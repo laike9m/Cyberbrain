@@ -32,9 +32,7 @@ class Tracer:
     def init(self):
         """Initializes tracing."""
         self.global_frame = sys._getframe(1)
-        self.frame = frame.Frame(
-            self.global_frame, debug_mode=self.debug_mode
-        )
+        self.frame = frame.Frame(self.global_frame, debug_mode=self.debug_mode)
         self.global_frame.f_trace_opcodes = True
         self.global_frame.f_trace = self.local_tracer
         sys.settrace(self.global_tracer)

@@ -12,7 +12,7 @@ _dummy = object()
 
 
 @dataclass
-class Inheritance:
+class InitialValue:
     """Identifiers come from other places, or simply exist before tracking starts.
 
     e.g. Global variables, passed in arguments.
@@ -30,6 +30,7 @@ class Inheritance:
     a = 2  # 'a' doesn't exist before.
     cyberbrain.init()
     '"""
+
     target: str
     value: any
     # TODO: Add its source.
@@ -38,6 +39,7 @@ class Inheritance:
 @dataclass
 class Creation:
     """An identifiers is created in the current frame."""
+
     target: str
     value: any
 
@@ -70,6 +72,7 @@ class Mutation:
 @dataclass
 class Deletion:
     """An identifiers is deleted."""
+
     target: str
 
     def __eq__(self, other):
@@ -80,4 +83,4 @@ class Deletion:
         return False
 
 
-Event = TypeVar('Event', Inheritance, Creation, Mutation, Deletion)
+Event = TypeVar("Event", InitialValue, Creation, Mutation, Deletion)
