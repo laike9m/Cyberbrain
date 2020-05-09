@@ -1,6 +1,7 @@
 """A self maintained value stack."""
 
 import enum
+import functools
 import inspect
 import sys
 from dataclasses import dataclass
@@ -49,6 +50,20 @@ BEFORE_INSTR_EXECUTION = EvaluationMode.BEFORE_INSTR_EXECUTION
 AFTER_INSTR_EXECUTION = EvaluationMode.AFTER_INSTR_EXECUTION
 
 
+def event(f):
+    """Decorator used to denote that a handler emits at least one event.
+
+    It is for 1. documenting 2. support checks in emit_event_and_update_stack.
+    """
+
+    @functools.wraps(f)
+    def inner(*args, **kwargs):
+        return f(*args, **kwargs)
+
+    inner.event = True
+    return inner
+
+
 class GeneralValueStack:
     """Class that simulates the a frame's value stack.
 
@@ -88,24 +103,21 @@ class GeneralValueStack:
                     f"Please add\ndef _{instr.opname}_handler(self, instr):"
                 )
 
-        arg_spec = inspect.getfullargspec(handler).args
-        if (
-            evaluation_mode is BEFORE_INSTR_EXECUTION
-            and "evaluation_mode" not in arg_spec
-        ):
-            # When a handler does not have evaluation_mode parameter, it is
-            # guaranteed to not emit any event.
+        if not hasattr(handler, "event") and evaluation_mode is BEFORE_INSTR_EXECUTION:
+            # When a handler does not have evaluation_mode parameter, it is guaranteed
+            # to not emit any event.
             return None
 
         # Pass arguments on demand.
+        parameters = inspect.signature(handler).parameters
         args = []
-        if "instr" in arg_spec:
+        if "instr" in parameters:
             args.append(instr)
-        if "jumped" in arg_spec:
+        if "jumped" in parameters:
             args.append(jumped)
-        if "frame" in arg_spec:
+        if "frame" in parameters:
             args.append(frame)
-        if "evaluation_mode" in arg_spec:
+        if "evaluation_mode" in parameters:
             args.append(evaluation_mode)
         del frame
         return handler(*args)
@@ -226,6 +238,7 @@ class GeneralValueStack:
     def _BINARY_operation_handler(self):
         self._pop_n_push_one(2)
 
+    @event
     def _STORE_SUBSCR_handler(self, evaluation_mode):
         if evaluation_mode is BEFORE_INSTR_EXECUTION:
             return Mutation(target=self.tos1[0], sources=set(self.tos + self.tos2))
@@ -236,6 +249,7 @@ class GeneralValueStack:
             return Mutation(target=tos1[0], sources=set(tos + tos2))
 
     # noinspection DuplicatedCode
+    @event
     def _DELETE_SUBSCR_handler(self, evaluation_mode):
         if evaluation_mode is BEFORE_INSTR_EXECUTION:
             return Mutation(target=self.tos1[0], sources=set(self.tos))
@@ -255,13 +269,15 @@ class GeneralValueStack:
         # It's impossible to know what names are loaded, and we don't really care.
         self._pop()
 
+    @event
     def _STORE_NAME_handler(self, instr, evaluation_mode):
         mutation = Mutation(target=instr.argval, sources=set(self.tos))
         if evaluation_mode is AFTER_INSTR_EXECUTION:
             self._pop()
         return mutation
 
-    def _DELETE_NAME_handler(self, instr, evaluation_mode):
+    @event
+    def _DELETE_NAME_handler(self, instr):
         return Deletion(target=instr.argrepr)
 
     def _UNPACK_SEQUENCE_handler(self, instr):
@@ -274,6 +290,7 @@ class GeneralValueStack:
         self._pop_one_push_n(number_of_receivers)
 
     # noinspection DuplicatedCode
+    @event
     def _STORE_ATTR_handler(self, evaluation_mode):
         if evaluation_mode is BEFORE_INSTR_EXECUTION:
             return Mutation(target=self.tos[0], sources=set(self.tos1))
@@ -283,6 +300,7 @@ class GeneralValueStack:
             assert len(tos) == 1
             return Mutation(target=tos[0], sources=set(tos1))
 
+    @event
     def _DELETE_ATTR_handler(self, evaluation_mode):
         if evaluation_mode is BEFORE_INSTR_EXECUTION:
             return Mutation(target=self.tos[0])
@@ -292,10 +310,12 @@ class GeneralValueStack:
             assert len(tos) == 1
             return Mutation(target=tos[0])
 
+    @event
     def _STORE_GLOBAL_handler(self, instr, evaluation_mode):
         return self._STORE_NAME_handler(instr, evaluation_mode)
 
-    def _DELETE_GLOBAL_handler(self, instr, evaluation_mode):
+    @event
+    def _DELETE_GLOBAL_handler(self, instr):
         return Deletion(instr.argrepr)
 
     def _LOAD_CONST_handler(self):
@@ -399,10 +419,12 @@ class GeneralValueStack:
     def _LOAD_FAST_handler(self, instr):
         self._push(instr.argrepr)
 
+    @event
     def _STORE_FAST_handler(self, instr, evaluation_mode):
         return self._STORE_NAME_handler(instr, evaluation_mode)
 
-    def _DELETE_FAST_handler(self, instr, evaluation_mode):
+    @event
+    def _DELETE_FAST_handler(self, instr):
         return Deletion(target=instr.argrepr)
 
     def _LOAD_METHOD_handler(self):
@@ -425,6 +447,7 @@ class GeneralValueStack:
                     elements.extend(tos)
             self._push(elements)
 
+    @event
     def _CALL_METHOD_handler(self, instr, evaluation_mode):
         # TODO: Deal with callsite.
         if evaluation_mode is AFTER_INSTR_EXECUTION:
