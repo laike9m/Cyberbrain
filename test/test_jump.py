@@ -1,3 +1,6 @@
+from cyberbrain import Mutation, Creation
+
+
 def test_jump(tracer):
     a = []
     b = "b"
@@ -20,13 +23,15 @@ def test_jump(tracer):
 
     tracer.register()
 
-    assert tracer.events == [
-        {"target": "x", "value": 1, "sources": set()},
-        {"target": "x", "value": 2, "sources": set()},
-        # This is a known defect. We have no way to know `x` comes from `a`, because
-        # the result of `a != b` only determines whether to jump to execute `b != c`.
-        # I think it's fine though.
-        {"target": "x", "value": True, "sources": {"b", "c"}},
-        # Same defect here.
-        {"target": "x", "value": "c", "sources": {"c"}},
-    ]
+    assert tracer.events == {
+        "x": [
+            Creation(target="x", value=1, sources=set()),
+            Mutation(target="x", value=2, sources=set()),
+            # This is a known defect. We have no way to know `x` comes from `a`, because
+            # the result of `a != b` only determines whether to jump to execute `b != c`
+            # I think it's fine though.
+            Mutation(target="x", value=True, sources={"b", "c"}),
+            # Same defect here.
+            Mutation(target="x", value="c", sources={"c"}),
+        ]
+    }

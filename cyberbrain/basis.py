@@ -33,7 +33,7 @@ class InitialValue:
 
     target: str
     value: any
-    # TODO: Add its source.
+    # TODO: Add sources if it's a function parameter.
 
 
 @dataclass
@@ -42,6 +42,7 @@ class Creation:
 
     target: str
     value: any
+    sources: set[str] = field(default_factory=set)  # Source can be empty, like a = 1
 
 
 @dataclass
@@ -50,7 +51,6 @@ class Mutation:
 
     target: str
     value: Any = _dummy
-
     sources: set[str] = field(default_factory=set)  # Source can be empty, like a = 1
 
     def __eq__(self, other):

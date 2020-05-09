@@ -1,5 +1,7 @@
 from hamcrest import *
 
+from cyberbrain import Creation
+
 
 def test_import(tracer):
     tracer.init()
@@ -10,21 +12,46 @@ def test_import(tracer):
 
     tracer.register()
 
-    print(os, path)  # To disable PyCharm auto removing unused imports.
+    print(os, path)  # Prevent PyCharm from removing unused imports.
 
     assert_that(
         tracer.events,
-        contains_exactly(
-            has_properties(
-                {"target": "os", "value": starts_with("<module 'os'"), "sources": set()}
-            ),
-            has_properties(
-                {
-                    "target": "path",
-                    "value": all_of(starts_with("<module"), contains_string("path")),
-                    "sources": set(),
-                }
-            ),
-            has_properties({"target": "settrace", "value": settrace, "sources": set()}),
+        has_entries(
+            {
+                "os": contains_exactly(
+                    all_of(
+                        instance_of(Creation),
+                        has_properties(
+                            {
+                                "target": "os",
+                                "value": starts_with("<module 'os'"),
+                                "sources": set(),
+                            }
+                        ),
+                    )
+                ),
+                "path": contains_exactly(
+                    all_of(
+                        instance_of(Creation),
+                        has_properties(
+                            {
+                                "target": "path",
+                                "value": all_of(
+                                    starts_with("<module"), contains_string("path")
+                                ),
+                                "sources": set(),
+                            }
+                        ),
+                    )
+                ),
+                "settrace": contains_exactly(
+                    all_of(
+                        instance_of(Creation),
+                        has_properties(
+                            {"target": "settrace", "value": settrace, "sources": set()}
+                        ),
+                    )
+                ),
+            },
         ),
     )

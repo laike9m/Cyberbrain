@@ -1,3 +1,6 @@
+from cyberbrain import Creation, Mutation
+
+
 def test_unpack(tracer):
     l1 = [1, 2]
     numbers = [1, 2, 3, 4]
@@ -19,20 +22,26 @@ def test_unpack(tracer):
 
     tracer.register()
 
-    assert tracer.events == [
-        {"target": "a", "value": "h", "sources": set()},
-        {"target": "b", "value": "i", "sources": set()},
-        {"target": "a", "value": 1, "sources": {"l1"}},
-        {"target": "b", "value": 2, "sources": {"l1"}},
-        {"target": "first", "value": 1, "sources": {"numbers"}},
-        {"target": "rest", "value": [2, 3, 4], "sources": {"numbers"}},
-        {"target": "beginning", "value": [1, 2, 3], "sources": {"numbers"}},
-        {"target": "last", "value": 4, "sources": {"numbers"}},
-        {"target": "head", "value": 1, "sources": {"numbers"}},
-        {"target": "middle", "value": [2, 3], "sources": {"numbers"}},
-        {"target": "tail", "value": 4, "sources": {"numbers"}},
-        {"target": "a", "value": (1, 2, 1, 2, 3, 4), "sources": {"l1", "numbers"}},
-        {"target": "a", "value": [1, 2, 1, 2, 3, 4], "sources": {"l1", "numbers"}},
-        {"target": "a", "value": {1, 2, 1, 2, 3, 4}, "sources": {"l1", "numbers"}},
-        {"target": "a", "value": {1: 2}, "sources": {"m1", "m2"}},
-    ]
+    assert tracer.events == {
+        "a": [
+            Creation(target="a", value="h", sources=set()),
+            Mutation(target="a", value=1, sources={"l1"}),
+            Mutation(target="a", value=(1, 2, 1, 2, 3, 4), sources={"l1", "numbers"}),
+            Mutation(target="a", value=[1, 2, 1, 2, 3, 4], sources={"l1", "numbers"}),
+            Mutation(target="a", value={1, 2, 1, 2, 3, 4}, sources={"l1", "numbers"}),
+            Mutation(target="a", value={1: 2}, sources={"m1", "m2"}),
+        ],
+        "b": [
+            Creation(target="b", value="i", sources=set()),
+            Mutation(target="b", value=2, sources={"l1"}),
+        ],
+        "first": [Creation(target="first", value=1, sources={"numbers"}), ],
+        "rest": [Creation(target="rest", value=[2, 3, 4], sources={"numbers"}), ],
+        "beginning": [
+            Creation(target="beginning", value=[1, 2, 3], sources={"numbers"}),
+        ],
+        "last": [Creation(target="last", value=4, sources={"numbers"}), ],
+        "head": [Creation(target="head", value=1, sources={"numbers"}), ],
+        "middle": [Creation(target="middle", value=[2, 3], sources={"numbers"}), ],
+        "tail": [Creation(target="tail", value=4, sources={"numbers"}), ],
+    }

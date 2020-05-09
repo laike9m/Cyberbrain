@@ -4,12 +4,11 @@ import dis
 from copy import deepcopy
 from dis import Instruction
 from types import FrameType
-from typing import Union
 
 from crayons import yellow, cyan
 
 from . import value_stack
-from .basis import Mutation, Deletion, InitialValue
+from .basis import Mutation, Creation, InitialValue
 from .frame_state import FrameState
 from .utils import pprint
 from .value_stack import EvaluationMode, AFTER_INSTR_EXECUTION, BEFORE_INSTR_EXECUTION
@@ -36,11 +35,8 @@ class Frame:
         # LOAD_METHOD are scanned, so that value stack can be in correct state.
         self.instr_pointer = frame.f_lasti - 4
         self.value_stack = value_stack.create_value_stack()
-        self.frame_state = FrameState()
-
-        # Events are stored here (other than in frame_state) to make test easier.
-        self.events: list[Union[Mutation, Deletion]] = []
-        self.debug_mode = True
+        self.frame_state: FrameState = FrameState()
+        self.debug_mode = debug_mode
         del frame
 
     def update(self, frame: FrameType):
@@ -127,11 +123,11 @@ class Frame:
         del frame
 
     def _log_events(
-            self,
-            frame: FrameType,
-            instr: Instruction,
-            evaluation_mode: EvaluationMode,
-            jumped: bool = False,
+        self,
+        frame: FrameType,
+        instr: Instruction,
+        evaluation_mode: EvaluationMode,
+        jumped: bool = False,
     ):
         """Logs changed values by the given instruction, if any."""
         self._debug_log(
@@ -144,12 +140,13 @@ class Frame:
             instr=instr, frame=frame, evaluation_mode=evaluation_mode, jumped=jumped
         )
         if change:
+            target = change.target
             if evaluation_mode is BEFORE_INSTR_EXECUTION:
                 if self._name_exist_in_frame(frame, change.target):
                     self.frame_state.add_new_event(
                         InitialValue(
                             target=change.target,
-                            value=self._deepcopy_from_frame(frame, change.target),
+                            value=self._deepcopy_from_frame(frame, target),
                         )
                     )
 
@@ -157,10 +154,20 @@ class Frame:
                 if isinstance(change, Mutation):
                     # For now I'll deepcopy the mutated value, will replace it with
                     # https://github.com/seperman/deepdiff/issues/44 once it's done.
-                    print(cyan(str(change)))
-                    change.value = self._deepcopy_from_frame(frame, change.target)
+                    if self.frame_state.knows(target):
+                        # TODO: If event is a mutation, compare new value with old value
+                        #  , discard event if target's value hasn't change.
+                        change.value = self._deepcopy_from_frame(frame, target)
+                    else:
+                        change = Creation(
+                            target=target,
+                            value=self._deepcopy_from_frame(frame, target),
+                            sources=change.sources,
+                        )
+                        # TODO: Records the InitialValue of sources that frame state
+                        # don't know of.
+                print(cyan(str(change)))
                 self.frame_state.add_new_event(change)
-                self.events.append(change)
 
         self._debug_log(
             f"{yellow('Current stack:')}",
@@ -171,11 +178,11 @@ class Frame:
 
     def _jump_occurred(self, instr: Instruction, last_i):
         if not any(
-                [
-                    instr.opcode in dis.hasjrel,
-                    instr.opcode in dis.hasjabs,
-                    instr.opname in _implicit_jump_ops,
-                ]
+            [
+                instr.opcode in dis.hasjrel,
+                instr.opcode in dis.hasjabs,
+                instr.opname in _implicit_jump_ops,
+            ]
         ):
             return False
 
@@ -224,5 +231,5 @@ class Frame:
         )
 
     def _debug_log(self, *msg, condition=True):
-        if self.debug_mode:
+        if self.debug_mode and condition:
             pprint(*msg)

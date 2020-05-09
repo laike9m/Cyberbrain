@@ -1,3 +1,6 @@
+from cyberbrain import Creation, Mutation
+
+
 def test_hello(tracer):
     tracer.init()
     x = "hello world"  # LOAD_CONST, STORE_FAST
@@ -5,9 +8,13 @@ def test_hello(tracer):
     x, y = y, x  # ROT_TWO
     tracer.register()
 
-    assert tracer.events == [
-        {"target": "x", "value": "hello world", "sources": set()},
-        {"target": "y", "value": "hello world", "sources": {"x"}},
-        {"target": "x", "value": "hello world", "sources": {"y"}},
-        {"target": "y", "value": "hello world", "sources": {"x"}},
-    ]
+    assert tracer.events == {
+        "x": [
+            Creation(target="x", value="hello world"),
+            Mutation(target="x", value="hello world", sources={"y"}),
+        ],
+        "y": [
+            Creation(target="y", value="hello world", sources={"x"}),
+            Mutation(target="y", value="hello world", sources={"x"}),
+        ],
+    }

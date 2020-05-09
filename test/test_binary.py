@@ -1,3 +1,6 @@
+from cyberbrain import Mutation, Creation
+
+
 def test_binary_operation(tracer):
     a = b = 1
     l = [0, 1]
@@ -20,18 +23,20 @@ def test_binary_operation(tracer):
 
     tracer.register()
 
-    assert tracer.events == [
-        {"target": "c", "value": 1, "sources": {"a", "b"}},
-        {"target": "c", "value": 1, "sources": {"a", "b"}},
-        {"target": "c", "value": 1, "sources": {"a", "b"}},
-        {"target": "c", "value": 1, "sources": {"a", "b"}},
-        {"target": "c", "value": 0, "sources": {"a", "b"}},
-        {"target": "c", "value": 2, "sources": {"a", "b"}},
-        {"target": "c", "value": 0, "sources": {"a", "b"}},
-        {"target": "c", "value": 1, "sources": {"a", "l"}},
-        {"target": "c", "value": 2, "sources": {"a", "b"}},
-        {"target": "c", "value": 0, "sources": {"a", "b"}},
-        {"target": "c", "value": 1, "sources": {"a", "b"}},
-        {"target": "c", "value": 0, "sources": {"a", "b"}},
-        {"target": "c", "value": 1, "sources": {"a", "b"}},
-    ]
+    assert tracer.events == {
+        "c": [
+            Creation(target="c", value=1, sources={"a", "b"}),
+            Mutation(target="c", value=1, sources={"a", "b"}),
+            Mutation(target="c", value=1, sources={"a", "b"}),
+            Mutation(target="c", value=1, sources={"a", "b"}),
+            Mutation(target="c", value=0, sources={"a", "b"}),
+            Mutation(target="c", value=2, sources={"a", "b"}),
+            Mutation(target="c", value=0, sources={"a", "b"}),
+            Mutation(target="c", value=1, sources={"a", "l"}),
+            Mutation(target="c", value=2, sources={"a", "b"}),
+            Mutation(target="c", value=0, sources={"a", "b"}),
+            Mutation(target="c", value=1, sources={"a", "b"}),
+            Mutation(target="c", value=0, sources={"a", "b"}),
+            Mutation(target="c", value=1, sources={"a", "b"}),
+        ]
+    }
