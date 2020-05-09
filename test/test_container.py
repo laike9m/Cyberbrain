@@ -1,3 +1,6 @@
+from cyberbrain import Mutation, Creation
+
+
 def test_container(tracer):
     a = b = 1
     c = 2
@@ -17,14 +20,16 @@ def test_container(tracer):
 
     tracer.register()
 
-    assert tracer.events == [
-        {"target": "d", "value": [1, 1], "sources": {"a", "b"}},
-        {"target": "d", "value": (1, 1), "sources": {"a", "b"}},
-        {"target": "d", "value": {1}, "sources": {"a", "b"}},
-        {"target": "d", "value": {1: 1}, "sources": {"a", "b"}},
-        {"target": "d", "value": {1: 1, 2: 1}, "sources": {"a", "b"}},
-        {"target": "d", "value": {1: 2, 2: 1}, "sources": {"a", "c"}},
-        {"target": "d", "value": {2: 1}, "sources": {"a"}},
-        {"target": "d", "value": [1, 1], "sources": {"a", "b", "c", "e"}},
-        {"target": "d", "value": [1, 1], "sources": {"a", "b", "c", "e"}},
-    ]
+    assert tracer.events == {
+        "d": [
+            Creation(target="d", value=[1, 1], sources={"a", "b"}),
+            Mutation(target="d", value=(1, 1), sources={"a", "b"}),
+            Mutation(target="d", value={1}, sources={"a", "b"}),
+            Mutation(target="d", value={1: 1}, sources={"a", "b"}),
+            Mutation(target="d", value={1: 1, 2: 1}, sources={"a", "b"}),
+            Mutation(target="d", value={1: 2, 2: 1}, sources={"a", "c"}),
+            Mutation(target="d", value={2: 1}, sources={"a"}),
+            Mutation(target="d", value=[1, 1], sources={"a", "b", "c", "e"}),
+            Mutation(target="d", value=[1, 1], sources={"a", "b", "c", "e"}),
+        ]
+    }

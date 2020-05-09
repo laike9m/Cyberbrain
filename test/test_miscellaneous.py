@@ -1,3 +1,5 @@
+from cyberbrain import InitialValue, Creation, Mutation, Deletion
+
 g = 0
 
 
@@ -21,12 +23,21 @@ def test_miscellaneous(tracer):
 
     tracer.register()
 
-    assert tracer.events == [
-        {"target": "x", "value": "a b    'c' 'd' ", "sources": {"a", "b", "d", "c"}},
-        {"target": "x", "value": False, "sources": {"a", "b"}},
-        {"target": "e", "value": [4, 2], "sources": {"e"}},
-        {"target": "e"},
-        {"target": "x", "value": 0, "sources": {"g"}},
-        {"target": "g", "value": 1, "sources": set()},
-        {"target": "g"},
-    ]
+    assert tracer.events == {
+        "x": [
+            Creation(target="x", value="a b    'c' 'd' ", sources={"a", "b", "d", "c"}),
+            Mutation(target="x", value=False, sources={"a", "b"}),
+            Mutation(target="x", value=0, sources={"g"}),
+        ],
+        "e": [
+            InitialValue(target="e", value=[1, 2, 3]),
+            Mutation(target="e", value=[1, 2], sources=set()),
+            Mutation(target="e", value=[4, 2], sources={"e"}),
+            Deletion(target="e"),
+        ],
+        "g": [
+            InitialValue(target="g", value=0),
+            Mutation(target="g", value=1, sources=set()),
+            Deletion(target="g"),
+        ],
+    }

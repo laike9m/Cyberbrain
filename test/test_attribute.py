@@ -1,5 +1,7 @@
 from hamcrest import *
 
+from cyberbrain import InitialValue, Mutation
+
 
 def test_attribute(tracer):
     class A:
@@ -19,23 +21,51 @@ def test_attribute(tracer):
 
     assert_that(
         tracer.events,
-        contains_exactly(
-            has_properties(
-                {
-                    "target": "a1",
-                    "value": has_property("x", has_property("y", 1)),
-                    "sources": {"a2"},
-                }
-            ),
-            has_properties(
-                {
-                    "target": "a1",
-                    "value": has_property("x", has_property("y", 2)),
-                    "sources": set(),
-                }
-            ),
-            has_properties(
-                {"target": "a1", "value": not_(has_property("x")), "sources": set()}
-            ),
+        has_entries(
+            {
+                "a1": contains_exactly(
+                    all_of(
+                        instance_of(InitialValue),
+                        has_properties(
+                            {
+                                "target": "a1",
+                                "value": all_of(
+                                    instance_of(A), not_(has_property("x"))
+                                ),
+                            }
+                        ),
+                    ),
+                    all_of(
+                        instance_of(Mutation),
+                        has_properties(
+                            {
+                                "target": "a1",
+                                "value": has_property("x", has_property("y", 1)),
+                                "sources": {"a2"},
+                            }
+                        ),
+                    ),
+                    all_of(
+                        instance_of(Mutation),
+                        has_properties(
+                            {
+                                "target": "a1",
+                                "value": has_property("x", has_property("y", 2)),
+                                "sources": set(),
+                            }
+                        ),
+                    ),
+                    all_of(
+                        instance_of(Mutation),
+                        has_properties(
+                            {
+                                "target": "a1",
+                                "value": not_(has_property("x")),
+                                "sources": set(),
+                            }
+                        ),
+                    ),
+                )
+            }
         ),
     )

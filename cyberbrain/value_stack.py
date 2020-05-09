@@ -261,7 +261,7 @@ class GeneralValueStack:
             self._pop()
         return mutation
 
-    def _DELETE_NAME_handler(self, instr):
+    def _DELETE_NAME_handler(self, instr, evaluation_mode):
         return Deletion(target=instr.argrepr)
 
     def _UNPACK_SEQUENCE_handler(self, instr):
@@ -295,7 +295,7 @@ class GeneralValueStack:
     def _STORE_GLOBAL_handler(self, instr, evaluation_mode):
         return self._STORE_NAME_handler(instr, evaluation_mode)
 
-    def _DELETE_GLOBAL_handler(self, instr):
+    def _DELETE_GLOBAL_handler(self, instr, evaluation_mode):
         return Deletion(instr.argrepr)
 
     def _LOAD_CONST_handler(self):
@@ -402,7 +402,7 @@ class GeneralValueStack:
     def _STORE_FAST_handler(self, instr, evaluation_mode):
         return self._STORE_NAME_handler(instr, evaluation_mode)
 
-    def _DELETE_FAST_handler(self, instr):
+    def _DELETE_FAST_handler(self, instr, evaluation_mode):
         return Deletion(target=instr.argrepr)
 
     def _LOAD_METHOD_handler(self):
@@ -425,9 +425,21 @@ class GeneralValueStack:
                     elements.extend(tos)
             self._push(elements)
 
-    def _CALL_METHOD_handler(self, instr):
+    def _CALL_METHOD_handler(self, instr, evaluation_mode):
         # TODO: Deal with callsite.
-        self._pop_n_push_one(instr.arg + 2)
+        if evaluation_mode is AFTER_INSTR_EXECUTION:
+            args = self._pop(instr.arg)
+            inst_or_callable = self._pop()
+            method_or_null = self._pop()  # method or NULL
+            self._push(utils.flatten(inst_or_callable, method_or_null))
+
+        if evaluation_mode is BEFORE_INSTR_EXECUTION:
+            args = [] if instr.arg == 0 else self.stack[-instr.arg :]
+            inst_or_callable = self.stack[-instr.arg - 1]
+
+        if inst_or_callable[0] == "tracer":  # exclude tracer calls.
+            return
+        return Mutation(target=inst_or_callable[0], sources=set(args))
 
     def _BUILD_SLICE_handler(self, instr):
         if instr.arg == 2:

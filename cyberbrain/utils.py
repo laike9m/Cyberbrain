@@ -1,5 +1,6 @@
 """Utility functions."""
 
+import collections
 import inspect
 import os
 import sysconfig
@@ -10,6 +11,19 @@ from pygments.formatters import Terminal256Formatter
 from pygments.lexers import PythonLexer
 
 _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
+
+
+def flatten(*args):
+    """Flattens the given series of inputs, accepts list or non-list."""
+    result = []
+    for arg in args:
+        if isinstance(arg, collections.abc.Iterable):
+            for elem in arg:
+                result.append(elem)
+        else:
+            result.append(arg)
+
+    return result
 
 
 def is_exception(obj) -> bool:

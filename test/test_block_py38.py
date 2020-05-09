@@ -8,6 +8,8 @@ import sys
 
 import pytest
 
+from cyberbrain import Creation, Mutation
+
 
 @pytest.mark.skipif(
     sys.version_info < (3, 8),
@@ -24,10 +26,12 @@ def test_continue_in_finally(tracer):
 
     tracer.register()
 
-    assert tracer.events == [
-        {"target": "x", "value": 0, "sources": set()},
-        {"target": "x", "value": 1, "sources": set()},
-    ]
+    assert tracer.events == {
+        "x": [
+            Creation(target="x", value=0, sources=set()),
+            Mutation(target="x", value=1, sources=set()),
+        ]
+    }
 
 
 @pytest.mark.skipif(
@@ -49,7 +53,9 @@ def test_continue_in_finally_with_exception(tracer):
 
     tracer.register()
 
-    assert tracer.events == [
-        {"target": "x", "value": 0, "sources": set()},
-        {"target": "x", "value": 1, "sources": set()},
-    ]
+    assert tracer.events == {
+        "x": [
+            Creation(target="x", value=0, sources=set()),
+            Mutation(target="x", value=1, sources=set()),
+        ]
+    }
