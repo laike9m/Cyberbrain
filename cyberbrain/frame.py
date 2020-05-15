@@ -6,6 +6,7 @@ from dis import Instruction
 from types import FrameType
 
 from crayons import yellow, cyan
+from deepdiff import DeepDiff, Delta
 
 from . import value_stack
 from .basis import Mutation, Creation, InitialValue
@@ -142,30 +143,48 @@ class Frame:
         if change:
             target = change.target
             if evaluation_mode is BEFORE_INSTR_EXECUTION:
-                if self._name_exist_in_frame(frame, change.target):
+                if self._name_exist_in_frame(change.target, frame):
                     self.frame_state.add_new_event(
                         InitialValue(
                             target=change.target,
-                            value=self._deepcopy_from_frame(frame, target),
+                            value=self._deepcopy_value_from_frame(target, frame),
                         )
                     )
 
             if evaluation_mode is AFTER_INSTR_EXECUTION:
                 if isinstance(change, Mutation):
-                    # For now I'll deepcopy the mutated value, will replace it with
-                    # https://github.com/seperman/deepdiff/issues/44 once it's done.
                     if self.frame_state.knows(target):
                         # TODO: If event is a mutation, compare new value with old value
                         #  , discard event if target's value hasn't change.
-                        change.value = self._deepcopy_from_frame(frame, target)
+                        #
+                        # TODO: Use DeepDiff.to_delta_dump when possible. If an object
+                        #  can't be pickled, and it should fall back to non-pickling.
+
+                        # Note that we deepcopy the DeepDiff object, because DeepDiff
+                        # object references the original object, which is stored in the
+                        # Delta object. If we don't deepcopy, Delta is subject to change
+                        # when the stored object is mutated from outside. But we want
+                        # Delta object to be immutable, thus deepcopy is necessary.
+                        #
+                        # An alternative is to deepcopy the object sent to DeepDiff.
+                        # However this usually comes with greater cost, because we need
+                        # to copy the entire object, instead of the diff result, which
+                        # is usually smaller.
+                        change.delta = Delta(
+                            diff=deepcopy(DeepDiff(
+                                self.frame_state.latest_value_of(target),
+                                self._get_value_from_frame(target, frame),
+                            ))
+                        )
                     else:
                         change = Creation(
                             target=target,
-                            value=self._deepcopy_from_frame(frame, target),
+                            value=self._deepcopy_value_from_frame(target, frame),
                             sources=change.sources,
                         )
                         # TODO: Records the InitialValue of sources that frame state
-                        # don't know of.
+                        #  don't know of.
+
                 print(cyan(str(change)))
                 self.frame_state.add_new_event(change)
 
@@ -197,7 +216,7 @@ class Frame:
             return True
 
     @classmethod
-    def _deepcopy_from_frame(cls, frame, name: str):
+    def _deepcopy_value_from_frame(cls, name: str, frame):
         """Given a frame and a name(identifier) saw in this frame, returns its value.
 
         The value has to be deep copied to avoid being changed by code coming later.
@@ -208,14 +227,7 @@ class Frame:
 
         Once we have a frame class, we might move this method there.
         """
-        assert cls._name_exist_in_frame(frame, name)
-        if name in frame.f_locals:
-            value = frame.f_locals[name]
-        elif name in frame.f_globals:
-            value = frame.f_globals[name]
-        else:
-            value = frame.f_builtins[name]
-
+        value = cls._get_value_from_frame(name, frame)
         del frame
 
         # There are certain things you can't copy, like module.
@@ -224,8 +236,20 @@ class Frame:
         except TypeError:
             return repr(value)
 
+    @classmethod
+    def _get_value_from_frame(cls, name: str, frame):
+        assert cls._name_exist_in_frame(name, frame)
+        if name in frame.f_locals:
+            value = frame.f_locals[name]
+        elif name in frame.f_globals:
+            value = frame.f_globals[name]
+        else:
+            value = frame.f_builtins[name]
+        del frame
+        return value
+
     @staticmethod
-    def _name_exist_in_frame(frame, name: str) -> bool:
+    def _name_exist_in_frame(name: str, frame) -> bool:
         return any(
             [name in frame.f_locals, name in frame.f_globals, name in frame.f_builtins]
         )

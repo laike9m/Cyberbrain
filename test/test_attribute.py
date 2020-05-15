@@ -3,6 +3,18 @@ from hamcrest import *
 from cyberbrain import InitialValue, Mutation
 
 
+# An edge case that is not handled:
+# x = a.b
+# x.foo = bar
+#
+# a is also changed, but right now we won't be able to know it.
+# We need a Symbol class to handle this case, like: Symbol('x', references={'a'})
+#
+# H: 其实我更多想的时，Symbol 可以引用别的 symbol
+# L: 引用别的 symbol 虽然或许可以让 backtracking 更简单，如果是引用所有相关 symbol 感觉有点滥用， 引
+#    用一些局部（比如同一个 statement）的 symbol 应该是可以的
+
+
 def test_attribute(tracer):
     class A:
         pass
