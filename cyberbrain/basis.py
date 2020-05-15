@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Optional
+
+from deepdiff import Delta
 
 _dummy = object()
 
@@ -32,7 +34,7 @@ class InitialValue:
     '"""
 
     target: str
-    value: any
+    value: Any
     # TODO: Add sources if it's a function parameter.
 
 
@@ -47,11 +49,20 @@ class Creation:
 
 @dataclass
 class Mutation:
-    """An identifiers is mutated."""
+    """An identifier is mutated."""
 
     target: str
-    value: Any = _dummy
+
+    # TODO: Use a regular class, and store pickled delta instead of a Delta object.
+    #   Then use @property to return Delta(pickled_delta).
+    # Represents the diffs from before and after the mutation.
+    delta: Optional[Delta] = None
+
     sources: set[str] = field(default_factory=set)  # Source can be empty, like a = 1
+
+    # Value is optional. It is set on demand during testing. Other code MUSTN'T rely
+    # on it.
+    value: Any = _dummy
 
     def __eq__(self, other):
         if isinstance(other, Mutation):

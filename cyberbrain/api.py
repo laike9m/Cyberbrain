@@ -47,7 +47,7 @@ class Tracer:
     @property
     def events(self):
         """Test only. Provide access to logged events."""
-        return self.frame.frame_state.test_only_events
+        return self.frame.frame_state.accumulated_events
 
     @property
     def global_tracer(self):
