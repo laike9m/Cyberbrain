@@ -159,22 +159,11 @@ class Frame:
                         #
                         # TODO: Use DeepDiff.to_delta_dump when possible. If an object
                         #  can't be pickled, and it should fall back to non-pickling.
-
-                        # Note that we deepcopy the DeepDiff object, because DeepDiff
-                        # object references the original object, which is stored in the
-                        # Delta object. If we don't deepcopy, Delta is subject to change
-                        # when the stored object is mutated from outside. But we want
-                        # Delta object to be immutable, thus deepcopy is necessary.
-                        #
-                        # An alternative is to deepcopy the object sent to DeepDiff.
-                        # However this usually comes with greater cost, because we need
-                        # to copy the entire object, instead of the diff result, which
-                        # is usually smaller.
                         change.delta = Delta(
-                            diff=deepcopy(DeepDiff(
+                            diff=DeepDiff(
                                 self.frame_state.latest_value_of(target),
                                 self._get_value_from_frame(target, frame),
-                            ))
+                            )
                         )
                     else:
                         change = Creation(
