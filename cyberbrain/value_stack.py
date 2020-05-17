@@ -678,7 +678,7 @@ class Py37ValueStack(GeneralValueStack):
                 break
 
             if self.why is Why.EXCEPTION and (
-                    block.b_type in {BlockType.SETUP_EXCEPT, BlockType.SETUP_FINALLY}
+                block.b_type in {BlockType.SETUP_EXCEPT, BlockType.SETUP_FINALLY}
             ):
                 self._push_block(BlockType.EXCEPT_HANDLER)
                 self._push(self.last_exception.traceback)
@@ -709,28 +709,6 @@ class Py37ValueStack(GeneralValueStack):
 
 class Py38ValueStack(GeneralValueStack):
     """Value stack for Python 3.8."""
-
-    def _exception_unwind(self, instr):
-        print("inside _exception_unwind")
-        while self.block_stack.is_not_empty():
-            block = self.block_stack.pop()
-
-            if block.b_type is BlockType.EXCEPT_HANDLER:
-                self._unwind_except_handler(block)
-                continue
-
-            self._unwind_block(block)
-
-            if block.b_type is BlockType.SETUP_FINALLY:
-                self._push_block(b_type=BlockType.EXCEPT_HANDLER)
-                exc_type, value, tb = (
-                    self.last_exception.type,
-                    self.last_exception.value,
-                    self.last_exception.traceback,
-                )
-                self._push(tb, value, exc_type)
-                self._push(tb, value, exc_type)
-                break  # goto main_loop.
 
     def _RETURN_VALUE_handler(self):
         self.return_value = self._pop()
@@ -802,6 +780,28 @@ class Py38ValueStack(GeneralValueStack):
             self._exception_unwind(instr)
         else:
             raise ValueStackException(f"TOS has wrong value: {self.tos}")
+
+    def _exception_unwind(self, instr):
+        print("inside _exception_unwind")
+        while self.block_stack.is_not_empty():
+            block = self.block_stack.pop()
+
+            if block.b_type is BlockType.EXCEPT_HANDLER:
+                self._unwind_except_handler(block)
+                continue
+
+            self._unwind_block(block)
+
+            if block.b_type is BlockType.SETUP_FINALLY:
+                self._push_block(b_type=BlockType.EXCEPT_HANDLER)
+                exc_type, value, tb = (
+                    self.last_exception.type,
+                    self.last_exception.value,
+                    self.last_exception.traceback,
+                )
+                self._push(tb, value, exc_type)
+                self._push(tb, value, exc_type)
+                break  # goto main_loop.
 
 
 def create_value_stack():
