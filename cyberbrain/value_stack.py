@@ -73,6 +73,8 @@ class GeneralValueStack:
     def __init__(self):
         self.stack = []
         self.block_stack = BlockStack()
+        self.last_exception: Optional[ExceptionInfo] = None
+        self.return_value = _placeholder
 
     def emit_event_and_update_stack(
         self,
@@ -197,8 +199,15 @@ class GeneralValueStack:
         for _ in range(n):
             self._push(tos)
 
-    def _push_block(self, instr, b_type: BlockType):
+    def _push_block(self, b_type: BlockType):
         self.block_stack.push(Block(b_level=self.stack_level, b_type=b_type))
+
+    def _pop_block(self):
+        return self.block_stack.pop()
+
+    def _unwind_block(self, b: Block):
+        while self.stack_level > b.b_level:
+            self._pop()
 
     def _POP_TOP_handler(self):
         self._pop()
@@ -261,9 +270,6 @@ class GeneralValueStack:
             tos, tos1 = self._pop(2)
             assert len(tos1) == 1
             return Mutation(target=tos1[0], sources=set(tos))
-
-    def _RETURN_VALUE_handler(self):
-        self._pop()
 
     def _SETUP_ANNOTATIONS_handler(self):
         pass
@@ -511,27 +517,14 @@ class GeneralValueStack:
         else:
             self._push(self.tos)
 
-
-class Py37ValueStack(GeneralValueStack):
-    """Value stack for Python 3.7."""
-
-    def _SETUP_LOOP_handler(self):
-        raise NotImplementedError
-
-    def _BREAK_LOOP_handler(self):
-        raise NotImplementedError
-
-    def _CONTINUE_LOOP_handler(self, instr):
-        raise NotImplementedError
-
-    def _SETUP_EXCEPT_handler(self):
-        raise NotImplementedError
-
-
-class Py38ValueStack(GeneralValueStack):
-    """Value stack for Python 3.8."""
-
-    last_exception: Optional[ExceptionInfo] = None
+    def _unwind_except_handler(self, b: Block):
+        assert self.stack_level >= b.b_level + 3
+        while self.stack_level > b.b_level + 3:
+            self._pop()
+        exc_type = self._pop()
+        value = self._pop()
+        tb = self._pop()
+        self.last_exception = ExceptionInfo(type=exc_type, value=value, traceback=tb)
 
     def _do_raise(self, exc, cause) -> bool:
         # See https://github.com/nedbat/byterun/blob/master/byterun/pyvm2.py#L806
@@ -569,46 +562,56 @@ class Py38ValueStack(GeneralValueStack):
         )
         return False
 
-    def _unwind_except_handler(self, b: Block):
-        assert self.stack_level >= b.b_level + 3
-        while self.stack_level > b.b_level + 3:
-            self._pop()
-        exc_type = self._pop()
-        value = self._pop()
-        tb = self._pop()
-        self.last_exception = ExceptionInfo(type=exc_type, value=value, traceback=tb)
 
-    def _unwind_block(self, b: Block):
-        while self.stack_level > b.b_level:
-            self._pop()
+class Why(enum.Enum):
+    UNINITIALIZED = 0
+    NOT = 1  # No error
+    EXCEPTION = 2  # Exception occurred
+    RETURN = 3  # 'return' statement
+    BREAK = 4  # 'break' statement
+    CONTINUE = 5  # 'continue' statement
+    YIELD = 6  # 'yield' operator
+    SILENCED = 8  # Exception silenced by 'with'
 
-    def _exception_unwind(self, instr):
-        print("inside _exception_unwind")
-        while not self.block_stack.is_empty():
-            block = self.block_stack.pop()
 
-            if block.b_type is BlockType.EXCEPT_HANDLER:
-                self._unwind_except_handler(block)
-                continue
+class Py37ValueStack(GeneralValueStack):
+    """Value stack for Python 3.7."""
 
-            self._unwind_block(block)
+    def __init__(self):
+        self.why = Why.UNINITIALIZED
+        super().__init__()
 
-            if block.b_type is BlockType.SETUP_FINALLY:
-                self._push_block(instr, b_type=BlockType.EXCEPT_HANDLER)
-                exc_type, value, tb = (
-                    self.last_exception.type,
-                    self.last_exception.value,
-                    self.last_exception.traceback,
-                )
-                self._push(tb, value, exc_type)
-                self._push(tb, value, exc_type)
-                break  # goto main_loop.
+    def _RETURN_VALUE_handler(self):
+        self.return_value = self._pop()
+        self.why = Why.RETURN
+        self._fast_block_end()
 
-    def _pop_block(self):
-        return self.block_stack.pop()
+    def _SETUP_LOOP_handler(self):
+        self._push_block(BlockType.SETUP_LOOP)
 
-    def _SETUP_FINALLY_handler(self, instr):
-        self._push_block(instr, b_type=BlockType.SETUP_FINALLY)
+    def _SETUP_EXCEPT_handler(self):
+        self._push_block(BlockType.SETUP_EXCEPT)
+
+    def _SETUP_FINALLY_handler(self):
+        self._push_block(BlockType.SETUP_FINALLY)
+
+    def _POP_BLOCK_handler(self):
+        self._unwind_block(self._pop_block())
+
+    def _BREAK_LOOP_handler(self):
+        self.why = Why.BREAK
+        self._fast_block_end()
+
+    def _CONTINUE_LOOP_handler(self, instr):
+        self.return_value = instr.arg
+        assert self.return_value is not NULL
+        self.why = Why.CONTINUE
+        self._fast_block_end()
+
+    def _POP_EXCEPT_handler(self):
+        block = self._pop_block()
+        assert block.b_type is BlockType.EXCEPT_HANDLER
+        self._unwind_except_handler(block)
 
     def _RAISE_VARARGS_handler(self, instr):
         cause = exc = None
@@ -619,7 +622,135 @@ class Py38ValueStack(GeneralValueStack):
 
         # In CPython's source code, it uses the result of _do_raise to decide whether to
         # raise an exception, then execute exception_unwind. Our value stack doesn't
-        # need to actually raise an exception.
+        # need to actually raise an exception. If _do_raise returns false, it breaks
+        # out of the switch clause, then jumps to label "error", which is above
+        # _fast_block_end. So _fast_block_end will be executed anyway.
+        self._do_raise(exc, cause)
+        self.why = Why.EXCEPTION
+        self._fast_block_end()
+
+    def _END_FINALLY_handler(self):
+        status = self._pop()
+        if isinstance(status, Why):
+            self.why = status
+            assert self.why not in {Why.YIELD, Why.EXCEPTION}
+            if self.why in {Why.RETURN, Why.CONTINUE}:
+                self.return_value = self._pop()
+            if self.why is Why.SILENCED:
+                block = self._pop_block()
+                assert block.type is BlockType.EXCEPT_HANDLER
+                self._unwind_except_handler(block)
+                self.why = Why.NOT
+            self._fast_block_end()
+        elif utils.is_exception_class(status):
+            exc_type = status
+            value = self._pop()
+            tb = self._pop()
+            self.last_exception = ExceptionInfo(
+                type=exc_type, value=value, traceback=tb
+            )
+            self.why = Why.EXCEPTION
+            self._fast_block_end()
+
+        assert status is not None
+
+    def _fast_block_end(self):
+        print("inside _fast_block_end")
+        assert self.why is not Why.NOT
+
+        while self.block_stack.is_not_empty():
+            block = self.block_stack.tos
+            assert self.why is not Why.YIELD
+
+            if block.b_type is BlockType.SETUP_LOOP and self.why is Why.CONTINUE:
+                self.why = Why.NOT
+                break
+
+            self.block_stack.pop()
+            if block.b_type is BlockType.EXCEPT_HANDLER:
+                self._unwind_except_handler(block)
+                continue
+
+            self._unwind_block(block)
+
+            if block.b_type is BlockType.SETUP_LOOP and self.why is Why.BREAK:
+                self.why = Why.NOT
+                break
+
+            if self.why is Why.EXCEPTION and (
+                    block.b_type in {BlockType.SETUP_EXCEPT, BlockType.SETUP_FINALLY}
+            ):
+                self._push_block(BlockType.EXCEPT_HANDLER)
+                self._push(self.last_exception.traceback)
+                self._push(self.last_exception.value)
+                if self.last_exception.type is not NULL:
+                    self._push(self.last_exception.type)
+                else:
+                    self._push(None)
+
+                exc_type, value, tb = (
+                    self.last_exception.type,
+                    self.last_exception.value,
+                    self.last_exception.traceback,
+                )
+                # PyErr_NormalizeException is ignored, add it if needed.
+                self._push(tb, value, exc_type)
+                self.why = Why.NOT
+                break
+
+            if block.b_type is BlockType.SETUP_FINALLY:
+                if self.why in {Why.RETURN, Why.CONTINUE}:
+                    self._push(self.return_value)
+                print("☀️")
+                self._push(self.why)
+                self.why = Why.NOT
+                break
+
+
+class Py38ValueStack(GeneralValueStack):
+    """Value stack for Python 3.8."""
+
+    def _exception_unwind(self, instr):
+        print("inside _exception_unwind")
+        while self.block_stack.is_not_empty():
+            block = self.block_stack.pop()
+
+            if block.b_type is BlockType.EXCEPT_HANDLER:
+                self._unwind_except_handler(block)
+                continue
+
+            self._unwind_block(block)
+
+            if block.b_type is BlockType.SETUP_FINALLY:
+                self._push_block(b_type=BlockType.EXCEPT_HANDLER)
+                exc_type, value, tb = (
+                    self.last_exception.type,
+                    self.last_exception.value,
+                    self.last_exception.traceback,
+                )
+                self._push(tb, value, exc_type)
+                self._push(tb, value, exc_type)
+                break  # goto main_loop.
+
+    def _RETURN_VALUE_handler(self):
+        self.return_value = self._pop()
+        # TODO: add exit_returning
+
+    def _SETUP_FINALLY_handler(self):
+        self._push_block(b_type=BlockType.SETUP_FINALLY)
+
+    def _RAISE_VARARGS_handler(self, instr):
+        cause = exc = None
+        if instr.arg == 2:
+            cause, exc = self._pop(2)
+        elif instr.arg == 1:
+            exc = self._pop()
+
+        # In CPython's source code, it uses the result of _do_raise to decide whether to
+        # raise an exception, then execute exception_unwind. Our value stack doesn't
+        # need to actually raise an exception. If _do_raise returns false, it breaks
+        # out of the switch clause, then jumps to label "error", which is above
+        # _exception_unwind. So _exception_unwind will be executed anyway.
         self._do_raise(exc, cause)
         self._exception_unwind(instr)
 

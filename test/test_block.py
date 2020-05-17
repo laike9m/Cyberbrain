@@ -1,13 +1,8 @@
 """Test instructions that create blocks."""
 
-import sys
-
-import pytest
-
 from cyberbrain import Creation, Mutation
 
 
-@pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
 def test_loop(tracer):
     tracer.init()
 
@@ -42,7 +37,6 @@ def test_loop(tracer):
     }
 
 
-@pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
 def test_basic_try_except(tracer):
     tracer.init()
 
@@ -57,7 +51,6 @@ def test_basic_try_except(tracer):
     assert tracer.events == {}
 
 
-@pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
 def test_nested_try_except(tracer):
     tracer.init()
 
@@ -73,7 +66,6 @@ def test_nested_try_except(tracer):
     assert tracer.events == {"a": [Creation(target="a", value=1, sources=set())]}
 
 
-@pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
 def test_try_except_finally(tracer):
     tracer.init()
 
@@ -89,7 +81,6 @@ def test_try_except_finally(tracer):
     assert tracer.events == {"b": [Creation(target="b", value=1, sources=set())]}
 
 
-@pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
 def test_break_in_finally(tracer):
     tracer.init()
 
@@ -104,7 +95,6 @@ def test_break_in_finally(tracer):
     assert tracer.events == {"x": [Creation(target="x", value=0, sources=set())]}
 
 
-@pytest.mark.skipif(sys.version_info < (3, 8), reason="3.7 not implemented yet.")
 def test_break_in_finally_with_exception(tracer):
     """Tests POP_FINALLY when tos is an exception."""
 
