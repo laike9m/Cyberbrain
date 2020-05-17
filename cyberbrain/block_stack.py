@@ -9,19 +9,12 @@ class BlockType(Enum):
 
 
 class Block:
-    opname_to_b_type = {
-        "BREAK_LOOP": {BlockType.SETUP_LOOP},
-        "POP_BLOCK": {BlockType.SETUP_LOOP, BlockType.SETUP_FINALLY},
-        "POP_EXCEPT": {BlockType.SETUP_EXCEPT, BlockType.SETUP_FINALLY},
-        "END_FINALLY": {BlockType.SETUP_FINALLY},
-    }
-
     def __init__(self, b_level: int, b_type: BlockType):
         """
         Args:
             b_level: The # of elements that were on the value stack when this block was
             created.
-            b_type: The type of block.
+            b_type: Type of this block.
         """
         self.b_level = b_level
         self.b_type = b_type
@@ -74,5 +67,5 @@ class BlockStack:
     def tos(self) -> Block:
         return self.stack[-1]
 
-    def is_empty(self):
-        return len(self.stack) == 0
+    def is_not_empty(self):
+        return len(self.stack) > 0
