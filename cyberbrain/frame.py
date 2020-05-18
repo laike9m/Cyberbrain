@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import dis
+import sysconfig
 from copy import deepcopy
 from dis import Instruction
 from types import FrameType
+from typing import Optional
 
 from crayons import yellow, cyan
 from deepdiff import DeepDiff, Delta
@@ -37,6 +39,9 @@ class Frame:
         self.instr_pointer = frame.f_lasti - 4
         self.value_stack = value_stack.create_value_stack()
         self.frame_state: FrameState = FrameState()
+        self.jump_detector = JumpDetector(
+            instructions=self.instructions, debug_mode=debug_mode
+        )
         self.debug_mode = debug_mode
         del frame
 
@@ -106,14 +111,8 @@ class Frame:
 
         while True:
             instr = self.instructions[self.instr_pointer]
-            jumped = False
-
-            if self._jump_occurred(instr, last_i):
-                jumped = True
-                self.instr_pointer = last_i
-            else:
-                self.instr_pointer += 2
-
+            jumped, jump_location = self.jump_detector.detects_jump(instr, last_i)
+            self.instr_pointer = jump_location if jumped else self.instr_pointer + 2
             self._log_events(frame, instr, AFTER_INSTR_EXECUTION, jumped)
             if self.instr_pointer >= last_i:
                 break
@@ -184,26 +183,6 @@ class Frame:
         )
         del frame
 
-    def _jump_occurred(self, instr: Instruction, last_i):
-        if not any(
-            [
-                instr.opcode in dis.hasjrel,
-                instr.opcode in dis.hasjabs,
-                instr.opname in _implicit_jump_ops,
-            ]
-        ):
-            return False
-
-        jump_location = last_i  # For implicit_jump_ops, we assume it's last_i.
-        if instr.opcode in dis.hasjrel:
-            jump_location = instr.offset + 2 + instr.arg
-        elif instr.opcode in dis.hasjabs:
-            jump_location = instr.arg
-
-        if jump_location == last_i:
-            self._debug_log(f"Jumped to instruction at offset: {jump_location}")
-            return True
-
     @classmethod
     def _deepcopy_value_from_frame(cls, name: str, frame):
         """Given a frame and a name(identifier) saw in this frame, returns its value.
@@ -243,6 +222,63 @@ class Frame:
             [name in frame.f_locals, name in frame.f_globals, name in frame.f_builtins]
         )
 
+    def _debug_log(self, *msg, condition=True):
+        if self.debug_mode and condition:
+            pprint(*msg)
+
+
+class JumpDetector:
+    """Detects jump behavior."""
+
+    USE_COMPUTED_GOTOS = sysconfig.get_config_var("USE_COMPUTED_GOTOS") != 0
+
+    PREDICT_MAP = {"FOR_ITER": "POP_BLOCK"}  # TODO: Add more.
+
+    def __init__(self, instructions: dict[int, Instruction], debug_mode):
+        self.instructions = instructions
+        self.debug_mode = debug_mode
+
+    def detects_jump(self, instr: Instruction, last_i) -> (bool, Optional[int]):
+        """
+        Returns: (whether jump occurred, jumped-to location)
+        """
+        jump_location = None
+
+        if instr.opname in _implicit_jump_ops:
+            jump_location = last_i  # For implicit_jump_ops, assume it's last_i.
+        elif instr.opcode in dis.hasjrel:
+            jump_location = instr.offset + 2 + instr.arg
+        elif instr.opcode in dis.hasjabs:
+            jump_location = instr.arg
+        else:
+            return False, jump_location
+
+        computed_last_i = jump_location
+        if self.USE_COMPUTED_GOTOS:
+            # Here we assume that PREDICT happens at most once. I'm not sure if this
+            # is always true. If it's not, we can modify the code.
+            # Example:
+            #              16 GET_ITER
+            #         >>   18 FOR_ITER                 4 (to 24)
+            #              20 STORE_FAST               1 (x)
+            #   5          22 JUMP_ABSOLUTE           18
+            #         >>   24 POP_BLOCK
+            #   7     >>   26 SETUP_LOOP              22 (to 50)
+            #
+            # If USE_COMPUTED_GOTOS, last_i is 26, otherwise it's 24. This is because
+            # `PREDICT(POP_BLOCK)` exists in FOR_ITER's handler.
+            opname_next = self.instructions[jump_location].opname
+            if opname_next == self.PREDICT_MAP.get(instr.opname):
+                print("Found PREDICT!! ☀️")
+                computed_last_i += 2
+
+        if computed_last_i == last_i:
+            self._debug_log(f"Jumped to instruction at offset: {jump_location}")
+            return True, jump_location
+
+        return False, jump_location
+
+    # TODO: Remove duplication.
     def _debug_log(self, *msg, condition=True):
         if self.debug_mode and condition:
             pprint(*msg)
