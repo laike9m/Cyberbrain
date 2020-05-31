@@ -124,10 +124,9 @@ ordered-set = ">=4.0.1"
 murmur = ["mmh3"]
 
 [package.source]
-reference = "3a91682be795a222863d2db841b173259812bb44"
+reference = "23ad575c017f7d65045c2dca4ed8a0e3c48be6d6"
 type = "git"
 url = "https://github.com/seperman/deepdiff"
-
 [[package]]
 category = "dev"
 description = "Dependency resolution for Python"
@@ -174,8 +173,8 @@ category = "dev"
 description = "pathlib for archives"
 name = "dephell-archive"
 optional = false
-python-versions = ">=3.5"
-version = "0.1.6"
+python-versions = ">=3.6"
+version = "0.1.7"
 
 [package.dependencies]
 attrs = "*"
@@ -186,7 +185,7 @@ description = "Argparse on steroids: groups, commands, colors."
 name = "dephell-argparse"
 optional = false
 python-versions = ">=3.5"
-version = "0.1.2"
+version = "0.1.3"
 
 [[package]]
 category = "dev"
@@ -254,8 +253,8 @@ category = "dev"
 description = "Work with python versions"
 name = "dephell-pythons"
 optional = false
-python-versions = ">=3.5"
-version = "0.1.14"
+python-versions = ">=3.6"
+version = "0.1.15"
 
 [package.dependencies]
 attrs = "*"
@@ -268,7 +267,7 @@ description = "Read metainfo from setup.py"
 name = "dephell-setuptools"
 optional = false
 python-versions = ">=3.5"
-version = "0.2.3"
+version = "0.2.4"
 
 [package.dependencies]
 setuptools = "*"
@@ -281,8 +280,8 @@ category = "dev"
 description = "activate virtual environment for current shell"
 name = "dephell-shells"
 optional = false
-python-versions = ">=3.5"
-version = "0.1.4"
+python-versions = ">=3.6"
+version = "0.1.5"
 
 [package.dependencies]
 attrs = "*"
@@ -318,8 +317,8 @@ category = "dev"
 description = "Library for bumping project version like a pro"
 name = "dephell-versioning"
 optional = false
-python-versions = ">=3.5"
-version = "0.1.1"
+python-versions = ">=3.6"
+version = "0.1.2"
 
 [package.dependencies]
 packaging = "*"
@@ -458,7 +457,7 @@ description = "Core utilities for Python packages"
 name = "packaging"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "20.3"
+version = "20.4"
 
 [package.dependencies]
 pyparsing = ">=2.0.2"
@@ -643,7 +642,7 @@ description = "Python 2 and 3 compatibility utilities"
 name = "six"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
-version = "1.14.0"
+version = "1.15.0"
 
 [[package]]
 category = "dev"
@@ -667,15 +666,15 @@ description = "tox is a generic virtualenv management and test command line tool
 name = "tox"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
-version = "3.15.0"
+version = "3.15.1"
 
 [package.dependencies]
 colorama = ">=0.4.1"
-filelock = ">=3.0.0,<4"
+filelock = ">=3.0.0"
 packaging = ">=14"
-pluggy = ">=0.12.0,<1"
-py = ">=1.4.17,<2"
-six = ">=1.14.0,<2"
+pluggy = ">=0.12.0"
+py = ">=1.4.17"
+six = ">=1.14.0"
 toml = ">=0.9.4"
 virtualenv = ">=16.0.0,<20.0.0 || >20.0.0,<20.0.1 || >20.0.1,<20.0.2 || >20.0.2,<20.0.3 || >20.0.3,<20.0.4 || >20.0.4,<20.0.5 || >20.0.5,<20.0.6 || >20.0.6,<20.0.7 || >20.0.7"
 
@@ -684,8 +683,8 @@ python = "<3.8"
 version = ">=0.12,<2"
 
 [package.extras]
-docs = ["sphinx (>=2.0.0,<3)", "towncrier (>=18.5.0)", "pygments-github-lexers (>=0.0.5)", "sphinxcontrib-autoprogram (>=0.1.5)"]
-testing = ["freezegun (>=0.3.11,<1)", "pathlib2 (>=2.3.3,<3)", "pytest (>=4.0.0,<6)", "pytest-cov (>=2.5.1,<3)", "pytest-mock (>=1.10.0,<2)", "pytest-xdist (>=1.22.2,<2)", "pytest-randomly (>=1.0.0,<4)", "flaky (>=3.4.0,<4)", "psutil (>=5.6.1,<6)"]
+docs = ["sphinx (>=2.0.0)", "towncrier (>=18.5.0)", "pygments-github-lexers (>=0.0.5)", "sphinxcontrib-autoprogram (>=0.1.5)"]
+testing = ["freezegun (>=0.3.11)", "pathlib2 (>=2.3.3)", "pytest (>=4.0.0)", "pytest-cov (>=2.5.1)", "pytest-mock (>=1.10.0)", "pytest-xdist (>=1.22.2)", "pytest-randomly (>=1.0.0)", "flaky (>=3.4.0)", "psutil (>=5.6.1)"]
 
 [[package]]
 category = "dev"
@@ -716,7 +715,7 @@ description = "Virtual Python Environment builder"
 name = "virtualenv"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
-version = "20.0.20"
+version = "20.0.21"
 
 [package.dependencies]
 appdirs = ">=1.4.3,<2"
@@ -837,12 +836,12 @@ dephell = [
     {file = "dephell-0.8.3.tar.gz", hash = "sha256:a9fcc528a0c6f9f5d721292bdf846e5338e4dca7cd6fef1551fbe71564dfe61e"},
 ]
 dephell-archive = [
-    {file = "dephell-archive-0.1.6.tar.gz", hash = "sha256:6370a97233d0e4c536b415b88e5d08bc5acf98b2019d878b5b222d2ab34ebebf"},
-    {file = "dephell_archive-0.1.6-py3-none-any.whl", hash = "sha256:bfecd071dd2e8c24b19586ff40b14c6d7b8751f20e6a608a66cc58e9f8234e75"},
+    {file = "dephell-archive-0.1.7.tar.gz", hash = "sha256:bb263492a7d430f9e04cef9a0237b7752cc797ab364bf35e70196af09c73ea37"},
+    {file = "dephell_archive-0.1.7-py3-none-any.whl", hash = "sha256:64a688dd8acb780f7d56cdae4622fa01d1e5910fd65788974b3f70fa9a1e517a"},
 ]
 dephell-argparse = [
-    {file = "dephell_argparse-0.1.2-py3-none-any.whl", hash = "sha256:4a1e99e6b9eae229fc865a2f2ad23d800b4d32f1a6cd30e3a69a490ab6f89a9c"},
-    {file = "dephell_argparse-0.1.2.tar.gz", hash = "sha256:91ec36d46cd696054e0e2702b6fc4d45d83a89e161ca9b977360d5da8cf38df3"},
+    {file = "dephell_argparse-0.1.3-py3-none-any.whl", hash = "sha256:e37a52c511b53e9d6107b606088664754b4b4d9e734578b333e68c46e4ab45b7"},
+    {file = "dephell_argparse-0.1.3.tar.gz", hash = "sha256:2ab9b2441f808bb11c338c4849d22ded898cde8325946800ac9e39d2b138735d"},
 ]
 dephell-changelogs = [
     {file = "dephell_changelogs-0.0.1-py3-none-any.whl", hash = "sha256:963d31346790a3aacc3409bbc7cb0b44cdc0e29c167eec196fb49a131c3035b8"},
@@ -865,16 +864,16 @@ dephell-markers = [
     {file = "dephell_markers-1.0.3.tar.gz", hash = "sha256:525e17914e705acf8652dd8681fccdec912432a747d8def4720f49416817f2d4"},
 ]
 dephell-pythons = [
-    {file = "dephell_pythons-0.1.14-py3-none-any.whl", hash = "sha256:2789b495b1d77e435cf4964a0b3f82698b98321cceaa67c4ec6836f3762fc5e2"},
-    {file = "dephell_pythons-0.1.14.tar.gz", hash = "sha256:a2da1ba905084f0935392be6e1fee019b98f45439429e45278a181174cff93a9"},
+    {file = "dephell_pythons-0.1.15-py3-none-any.whl", hash = "sha256:03132d083d0369683b87d03767dc0f0f88b8d92d5cf19cfdb36d8845b70ecdb2"},
+    {file = "dephell_pythons-0.1.15.tar.gz", hash = "sha256:804c29afa2147322aa23e791f591d0204fd1e9983afa7d91e1d1452fc7be1c5c"},
 ]
 dephell-setuptools = [
-    {file = "dephell_setuptools-0.2.3-py3-none-any.whl", hash = "sha256:c2e9bdaff20ccb7f85a1d0f3ddd07a6002d2865a7d8036973c309767771f1917"},
-    {file = "dephell_setuptools-0.2.3.tar.gz", hash = "sha256:a8f7d22a04abec426db5df8e2852cc696bfc348deabc2da8ac601cb44700e922"},
+    {file = "dephell_setuptools-0.2.4-py3-none-any.whl", hash = "sha256:275f9bec4b276614939ac9efa732a0ae6aef06ae63e3b62371d0f15a19299208"},
+    {file = "dephell_setuptools-0.2.4.tar.gz", hash = "sha256:663629e1ebf7b20bf7e372ee2a2e7ebf1a15aeb3bc6d46ad32e1bcb21044ca29"},
 ]
 dephell-shells = [
-    {file = "dephell_shells-0.1.4-py3-none-any.whl", hash = "sha256:7bd1bdcaad09ab4bb24a3ad8176af0c07221a5025dffdd9eb9431a237e1bd2ba"},
-    {file = "dephell_shells-0.1.4.tar.gz", hash = "sha256:f8254fc21d1b823eaf6f641b4c58480a4205bbff0341582b8b8f6fa2d9f8784c"},
+    {file = "dephell_shells-0.1.5-py3-none-any.whl", hash = "sha256:3bdb8aba72640c51259dc5cb0ee40c4cd948cb644e5ceedd7e725766575a5225"},
+    {file = "dephell_shells-0.1.5.tar.gz", hash = "sha256:77150b732db135d436f41c2c6f12694e6058a8609214117ee80f6c40234ac2d5"},
 ]
 dephell-specifier = [
     {file = "dephell_specifier-0.2.2-py3-none-any.whl", hash = "sha256:021ad2ab3f3f130b5ac5cefa554c12f0e2dbb35d5d52ad9474a1f2c8b420f7c2"},
@@ -885,8 +884,8 @@ dephell-venvs = [
     {file = "dephell_venvs-0.1.17.tar.gz", hash = "sha256:6e12d058f46a9cab0b2fb4f006a085984b9eb62cb49e7be748bc4e6e8c1a826b"},
 ]
 dephell-versioning = [
-    {file = "dephell_versioning-0.1.1-py3-none-any.whl", hash = "sha256:dd22263a273abcf792304093447400f230e69d930ba3a800191173c4b3b3ecd3"},
-    {file = "dephell_versioning-0.1.1.tar.gz", hash = "sha256:c438a39662fdf88b00196b56ece4e542db8fa9b16ee5c164a834451240026848"},
+    {file = "dephell_versioning-0.1.2-py3-none-any.whl", hash = "sha256:28f611bd3ec1644e3d6972f901b9aa67a1fe2ed3fe57566f82afd9c43f5a335a"},
+    {file = "dephell_versioning-0.1.2.tar.gz", hash = "sha256:9ba7636704af7bd64af5a64ab8efb482c8b0bf4868699722f5e2647763edf8e5"},
 ]
 distlib = [
     {file = "distlib-0.3.0.zip", hash = "sha256:2e166e231a26b36d6dfe35a48c4464346620f8645ed0ace01ee31822b288de21"},
@@ -984,8 +983,8 @@ ordered-set = [
     {file = "ordered-set-4.0.1.tar.gz", hash = "sha256:a31008c57f9c9776b12eb8841b1f61d1e4d70dfbbe8875ccfa2403c54af3d51b"},
 ]
 packaging = [
-    {file = "packaging-20.3-py2.py3-none-any.whl", hash = "sha256:82f77b9bee21c1bafbf35a84905d604d5d1223801d639cf3ed140bd651c08752"},
-    {file = "packaging-20.3.tar.gz", hash = "sha256:3c292b474fda1671ec57d46d739d072bfd495a4f51ad01a055121d81e952b7a3"},
+    {file = "packaging-20.4-py2.py3-none-any.whl", hash = "sha256:998416ba6962ae7fbd6596850b80e17859a5753ba17c32284f67bfff33784181"},
+    {file = "packaging-20.4.tar.gz", hash = "sha256:4357f74f47b9c12db93624a82154e9b120fa8293699949152b22065d556079f8"},
 ]
 pexpect = [
     {file = "pexpect-4.8.0-py2.py3-none-any.whl", hash = "sha256:0b48a55dcb3c05f3329815901ea4fc1537514d6ba867a152b581d69ae3710937"},
@@ -1061,8 +1060,8 @@ shellingham = [
     {file = "shellingham-1.3.2.tar.gz", hash = "sha256:576c1982bea0ba82fb46c36feb951319d7f42214a82634233f58b40d858a751e"},
 ]
 six = [
-    {file = "six-1.14.0-py2.py3-none-any.whl", hash = "sha256:8f3cd2e254d8f793e7f3d6d9df77b92252b52637291d0f0da013c76ea2724b6c"},
-    {file = "six-1.14.0.tar.gz", hash = "sha256:236bdbdce46e6e6a3d61a337c0f8b763ca1e8717c03b369e87a7ec7ce1319c0a"},
+    {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
+    {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
 ]
 toml = [
     {file = "toml-0.10.1-py2.py3-none-any.whl", hash = "sha256:bda89d5935c2eac546d648028b9901107a595863cb36bae0c73ac804a9b4ce88"},
@@ -1073,8 +1072,8 @@ tomlkit = [
     {file = "tomlkit-0.6.0.tar.gz", hash = "sha256:74f976908030ff164c0aa1edabe3bf83ea004b3daa5b0940b9c86a060c004e9a"},
 ]
 tox = [
-    {file = "tox-3.15.0-py2.py3-none-any.whl", hash = "sha256:8d97bfaf70053ed3db56f57377288621f1bcc7621446d301927d18df93b1c4c3"},
-    {file = "tox-3.15.0.tar.gz", hash = "sha256:af09c19478e8fc7ce7555b3d802ddf601b82684b874812c5857f774b8aee1b67"},
+    {file = "tox-3.15.1-py2.py3-none-any.whl", hash = "sha256:322dfdf007d7d53323f767badcb068a5cfa7c44d8aabb698d131b28cf44e62c4"},
+    {file = "tox-3.15.1.tar.gz", hash = "sha256:8c9ad9b48659d291c5bc78bcabaa4d680d627687154b812fa52baedaa94f9f83"},
 ]
 tox-pyenv = [
     {file = "tox-pyenv-1.1.0.tar.gz", hash = "sha256:916c2213577aec0b3b5452c5bfb32fd077f3a3196f50a81ad57d7ef3fc2599e4"},
@@ -1085,8 +1084,8 @@ urllib3 = [
     {file = "urllib3-1.22.tar.gz", hash = "sha256:cc44da8e1145637334317feebd728bd869a35285b93cbb4cca2577da7e62db4f"},
 ]
 virtualenv = [
-    {file = "virtualenv-20.0.20-py2.py3-none-any.whl", hash = "sha256:b4c14d4d73a0c23db267095383c4276ef60e161f94fde0427f2f21a0132dde74"},
-    {file = "virtualenv-20.0.20.tar.gz", hash = "sha256:fd0e54dec8ac96c1c7c87daba85f0a59a7c37fe38748e154306ca21c73244637"},
+    {file = "virtualenv-20.0.21-py2.py3-none-any.whl", hash = "sha256:a730548b27366c5e6cbdf6f97406d861cccece2e22275e8e1a757aeff5e00c70"},
+    {file = "virtualenv-20.0.21.tar.gz", hash = "sha256:a116629d4e7f4d03433b8afa27f43deba09d48bc48f5ecefa4f015a178efb6cf"},
 ]
 wcwidth = [
     {file = "wcwidth-0.1.9-py2.py3-none-any.whl", hash = "sha256:cafe2186b3c009a04067022ce1dcd79cb38d8d65ee4f4791b8888d6599d1bbe1"},
