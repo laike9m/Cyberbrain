@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import dis
-import sysconfig
 from copy import deepcopy
 from dis import Instruction
 from types import FrameType
@@ -13,7 +12,7 @@ from deepdiff import DeepDiff, Delta
 from . import value_stack
 from .basis import Mutation, Creation, InitialValue
 from .frame_state import FrameState
-from .utils import pprint
+from .utils import pprint, computed_gotos_enabled
 from .value_stack import EvaluationMode, AFTER_INSTR_EXECUTION, BEFORE_INSTR_EXECUTION
 
 _implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS", "END_FINALLY"}
@@ -230,7 +229,7 @@ class Frame:
 class JumpDetector:
     """Detects jump behavior."""
 
-    USE_COMPUTED_GOTOS = sysconfig.get_config_var("USE_COMPUTED_GOTOS") != 0
+    COMPUTED_GOTOS_ENABLED = computed_gotos_enabled()
 
     PREDICT_MAP = {"FOR_ITER": "POP_BLOCK"}  # TODO: Add more.
 
@@ -254,7 +253,7 @@ class JumpDetector:
             return False, jump_location
 
         computed_last_i = jump_location
-        if self.USE_COMPUTED_GOTOS:
+        if not self.COMPUTED_GOTOS_ENABLED:
             # Here we assume that PREDICT happens at most once. I'm not sure if this
             # is always true. If it's not, we can modify the code.
             # Example:
@@ -265,8 +264,10 @@ class JumpDetector:
             #         >>   24 POP_BLOCK
             #   7     >>   26 SETUP_LOOP              22 (to 50)
             #
-            # If USE_COMPUTED_GOTOS, last_i is 26, otherwise it's 24. This is because
             # `PREDICT(POP_BLOCK)` exists in FOR_ITER's handler.
+            # With COMPUTED_GOTOS, PREDICT is a noop, last_i is 24.
+            # Without COMPUTED_GOTOS, PREDICT causes last_i to not update for POP_BLOCK,
+            # so last_i is 26.
             opname_next = self.instructions[jump_location].opname
             if opname_next == self.PREDICT_MAP.get(instr.opname):
                 print("Found PREDICT!! ☀️")

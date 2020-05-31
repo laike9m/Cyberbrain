@@ -3,6 +3,8 @@
 import collections
 import inspect
 import os
+import subprocess
+import sys
 import sysconfig
 from pprint import pformat
 
@@ -11,6 +13,18 @@ from pygments.formatters import Terminal256Formatter
 from pygments.lexers import PythonLexer
 
 _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
+_PYTHON_EXECUTABLE_PATH = sys.executable
+
+
+def computed_gotos_enabled() -> bool:
+    script_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "internal",
+                               "_detect_computed_goto.py")
+    stdout, _ = subprocess.Popen(
+        [_PYTHON_EXECUTABLE_PATH, script_path], stdout=subprocess.PIPE).communicate()
+
+    # If program prints 40, computed_gotos is enabled. If prints 38, it's disabled.
+    assert stdout in {b'40', b'38'}
+    return stdout == b'40'
 
 
 def flatten(*args):
@@ -83,6 +97,12 @@ def pprint(*args):
             # Outputs syntax-highlighted object. See
             # https://gist.github.com/EdwardBetts/0814484fdf7bbf808f6f
             output += (
-                highlight(pformat(arg), PythonLexer(), Terminal256Formatter()) + "\n"
+                    highlight(pformat(arg), PythonLexer(),
+                              Terminal256Formatter()) + "\n"
             )
     print(output)
+
+
+if __name__ == '__main__':
+    # For development.
+    print(computed_gotos_enabled())
