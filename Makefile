@@ -12,8 +12,8 @@ test:
 	# installed on Windows does not have computed goto, so this also help us
 	# detect potential breakage on Windows.
 	#
-	# To be able to run tests, we need to installed needed libs as well.
+	# To be able to run tests, we need to install needed libs as well.
     #
-    # This approach is not optimal, but pyenv does not support specifying patch
-    # versions, so we have to hard-code the path.
-	/Users/laike9m/.pyenv/versions/3.8.3/bin/python -m pytest --assert=plain -s -vv
+    # Since pyenv doesn't recognize different Python patch versions, here I use an
+    # environment variable to point to the path of Python 3.8.3
+	${python383} -m pytest --assert=plain -s -vv
