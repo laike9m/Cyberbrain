@@ -6,7 +6,10 @@ import sys
 
 def global_tracer(frame, event_type, arg):
     assert event_type == "call"
-    print(frame.f_back.f_lasti, end='')  # Win: 38, Mac: 40
+    last_i = frame.f_back.f_lasti  # Win: 38, Linux and Mac: 40
+    assert last_i in {40, 38}
+    # If program prints 40, computed_gotos is enabled. If prints 38, it's disabled.
+    print(last_i == 40, end='')
 
 
 sys.settrace(global_tracer)
