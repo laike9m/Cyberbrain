@@ -22,9 +22,7 @@ def computed_gotos_enabled() -> bool:
     stdout, _ = subprocess.Popen(
         [_PYTHON_EXECUTABLE_PATH, script_path], stdout=subprocess.PIPE).communicate()
 
-    # If program prints 40, computed_gotos is enabled. If prints 38, it's disabled.
-    assert stdout in {b'40', b'38'}
-    return stdout == b'40'
+    return stdout == b'True'
 
 
 def flatten(*args):
