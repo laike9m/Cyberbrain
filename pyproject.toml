@@ -18,6 +18,11 @@ pytest-xdist = "^1.31"
 pytest = "*"
 pyhamcrest = "^2.0.2"
 dephell = "^0.8.3"
+bytecode = "^0.11.0"
+
+[build-system]
+requires = ["poetry>=1.0"]
+build-backend = "poetry.masonry.api"
 
 [tool.pylint.messages_control]
 disable = """
@@ -29,7 +34,3 @@ R0903,W0631,W0212,W0603,R1710,R0201
 [tool.dephell.main]
 from = {format = "poetry", path = "pyproject.toml"}
 to = {format = "setuppy", path = "setup.py"}
-
-[build-system]
-requires = ["poetry>=1.0"]
-build-backend = "poetry.masonry.api"
