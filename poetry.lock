@@ -131,10 +131,6 @@ ordered-set = ">=4.0.1"
 [package.extras]
 murmur = ["mmh3"]
 
-[package.source]
-reference = "a36cb6e30cddc61b2485a4cddeb6e2daab9ba6ff"
-type = "git"
-url = "https://github.com/seperman/deepdiff"
 [[package]]
 category = "dev"
 description = "Dependency resolution for Python"
@@ -781,7 +777,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "4d967718c7ab05e4ed5bc17fda2b37e5f99f197b38342b39522be389021d0ab7"
+content-hash = "6ef9732c929ba128b007b1282e4fef81aaed897db2f6319a3d39279e6dfa79a7"
 python-versions = ">=3.7.0"
 
 [metadata.files]
@@ -842,7 +838,10 @@ crayons = [
     {file = "crayons-0.3.1-py2.py3-none-any.whl", hash = "sha256:4066ec91fecd6b86755d3f083943815e5958688aecdfae54b24443f190ba6950"},
     {file = "crayons-0.3.1.tar.gz", hash = "sha256:dcb85b87aa03bb65bd3a073d012796b024cabeb086033e616759e2abb769440b"},
 ]
-deepdiff = []
+deepdiff = [
+    {file = "deepdiff-5.0.0-py3-none-any.whl", hash = "sha256:78df0316d42b8fb67a4ac09a959f9364f1d67a5d1a82bb3f505c006b8de4e887"},
+    {file = "deepdiff-5.0.0.tar.gz", hash = "sha256:fa97d1d4f2f55068dcd323252705ddeae0b94b9c164d28dfbda0e9fbf1497a62"},
+]
 dephell = [
     {file = "dephell-0.8.3-py3-none-any.whl", hash = "sha256:3ca3661e2a353b5c67c77034b69b379e360d4c70ce562e8161db32d39064be5a"},
     {file = "dephell-0.8.3.tar.gz", hash = "sha256:a9fcc528a0c6f9f5d721292bdf846e5338e4dca7cd6fef1551fbe71564dfe61e"},
