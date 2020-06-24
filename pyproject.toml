@@ -8,8 +8,7 @@ description = "A Cyberbrain that helps you remember everything."
 python = ">=3.7.0"
 pygments = "^2.6.1"
 crayons = "^0.3.0"
-# TODO: use normal dependency after deepdiff is 5.0 released.
-deepdiff = {git = "https://github.com/seperman/deepdiff", rev = "dev"}
+deepdiff = "^5.0.0"
 
 [tool.poetry.dev-dependencies]
 tox = "^3.14"
@@ -19,10 +18,6 @@ pytest = "*"
 pyhamcrest = "^2.0.2"
 dephell = "^0.8.3"
 bytecode = "^0.11.0"
-
-[build-system]
-requires = ["poetry>=1.0"]
-build-backend = "poetry.masonry.api"
 
 [tool.pylint.messages_control]
 disable = """
@@ -34,3 +29,7 @@ R0903,W0631,W0212,W0603,R1710,R0201
 [tool.dephell.main]
 from = {format = "poetry", path = "pyproject.toml"}
 to = {format = "setuppy", path = "setup.py"}
+[build-system]
+requires = ["poetry>=1.0"]
+build-backend = "poetry.masonry.api"
+
