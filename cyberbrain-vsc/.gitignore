@@ -113,3 +113,7 @@ dist
 # TernJS port file
 .tern-port
 
+# Compiled vsc extension
+*.vsix
+
+out/
