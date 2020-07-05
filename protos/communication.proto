@@ -1,0 +1,23 @@
+syntax = "proto2";
+
+// Interface exported by the server.
+service Communication {
+
+  // Sync state between client and server.
+  rpc SyncState(State) returns (State) {}
+
+  // TODO: implement this.
+  rpc GetFrameBackTrace(Location) returns (FrameBackTrace) {}
+}
+
+message State {
+  optional string status = 1;
+}
+
+message Location {
+  optional string location = 1;
+}
+
+message FrameBackTrace {
+  optional string back_trace = 1;
+}

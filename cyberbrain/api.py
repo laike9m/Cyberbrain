@@ -4,6 +4,8 @@ import argparse
 import sys
 
 from . import frame, utils
+
+# from .rpc import server
 from .basis import _dummy
 
 _debug_mode = False
@@ -43,6 +45,8 @@ class Tracer:
         sys.settrace(None)
         self.global_frame.f_trace = None
         del self.global_frame
+        # if "pytest" not in sys.modules:
+        #     server.run()
 
     @property
     def events(self):

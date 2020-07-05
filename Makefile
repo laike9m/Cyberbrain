@@ -17,3 +17,11 @@ test:
     # environment variable to point to the the Python executable path.
 	${python377} -m pytest --assert=plain -s -vv
 	${python383} -m pytest --assert=plain -s -vv
+
+gen_setup:
+	dephell deps convert
+
+proto_compile:
+	python -m grpc_tools.protoc -I protos --python_out=cyberbrain/rpc \
+           --grpc_python_out=cyberbrain/rpc protos/*.proto
+	cd ./cyberbrain-vsc && ./build-proto.sh
