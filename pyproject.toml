@@ -5,10 +5,12 @@ authors = ["laike9m <laike9m@gmail.com>"]
 description = "A Cyberbrain that helps you remember everything."
 
 [tool.poetry.dependencies]
-python = ">=3.7.0"
+python = "^3.7.0"
 pygments = "^2.6.1"
 crayons = "^0.3.0"
 deepdiff = "^5.0.0"
+grpcio = "^1.30.0"
+protobuf = "^3.12.2"
 
 [tool.poetry.dev-dependencies]
 tox = "^3.14"
@@ -18,6 +20,7 @@ pytest = "*"
 pyhamcrest = "^2.0.2"
 dephell = "^0.8.3"
 bytecode = "^0.11.0"
+grpcio-tools = "^1.30.0"
 
 [tool.pylint.messages_control]
 disable = """
