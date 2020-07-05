@@ -32,13 +32,15 @@ class CommunicationServicer(object):
     """
 
     def SyncState(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Sync state between client and server.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetFrameBackTrace(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """TODO: implement this.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")

@@ -3,7 +3,11 @@
 [![Build Status](https://dev.azure.com/laike9m/laike9m/_apis/build/status/laike9m.cb-experimental?branchName=master)](https://dev.azure.com/laike9m/laike9m/_build/latest?definitionId=2&branchName=master)
 
 
-# Development Environment Setup
+# Development environment setup
+
+## Prerequisites
+
+Make sure you have Python 3.7+ and the latest version of VS Code installed.
 
 ## Protocol Buffer
 - [Install protoc](https://google.github.io/proto-lens/installing-protoc.html)
@@ -17,7 +21,7 @@ This will install dev dependencies as well.
 
 ## VS Code
 
-Make sure you have **Node.js 12** enabled. There's no guarantee that other versions can work.
+Make sure you have **Node.js 12** and npm installed. There's no guarantee that other versions will work.
 
 On Mac, you can `brew install node@12 && brew link --force --overwrite node@12` and add `/usr/local/opt/node@12/bin` to your $PATH.
 
@@ -26,7 +30,7 @@ Then `npm install` inside the `cyberbrain-vsc` folder.
 ### If you're using PyCharm
 Install [Protocol Buffer Editor](https://plugins.jetbrains.com/plugin/14004-protocol-buffer-editor).
 
-# Start Making Changes
+# Start making changes
 
 - `make gen_setup`
    
@@ -34,4 +38,4 @@ Install [Protocol Buffer Editor](https://plugins.jetbrains.com/plugin/14004-prot
     
 - `make proto_compile`
 
-   Generate language specific code for proto. Run this after you've changed any `.proto` file.
+   Generate language specific code for proto. Run it after you've changed any `.proto` file.
