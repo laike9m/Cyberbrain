@@ -115,3 +115,6 @@ legacy/
 
 .idea/
 .vscode/
+
+# Files for development
+cyberbrain/rpc/client.py

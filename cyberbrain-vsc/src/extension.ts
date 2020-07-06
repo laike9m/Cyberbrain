@@ -1,10 +1,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { rpcClient } from "./rpc/rpc_client";
-import { State } from './rpc/communication_pb';
-import * as grpc from '@grpc/grpc-js';
-
+import {State} from './rpc/communication_pb';
+import {RpcClient} from './rpc/rpc_client';
 
 
 // this method is called when your extension is activated
@@ -18,29 +16,17 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('cyberbrain.helloWorld', () => {
+	let disposable = vscode.commands.registerCommand('cyberbrain.helloWorld', async () => {
 		// The code you place here will be executed every time your command is executed
-
 		// Display a message box to the user
 		vscode.window.showInformationMessage('Hello World from cyberbrain!');
 
-		console.log("🐍");
+		let rpcClient = RpcClient.getClient();
+		await rpcClient.waitForReady();
 
 		let state = new State();
 		state.setStatus("client good");
-		rpcClient.syncState(state, function (err, serverState) {
-			if (err !== null) {
-				switch (err.code) {
-					case grpc.status.UNAVAILABLE:
-						console.log(`Server unavailable: ${err.message}`);
-						break;
-					default:
-						console.log(`Error calling syncState: ${err}`);
-				}
-			} else {
-				console.log(serverState?.getStatus());
-			}
-		});
+		await rpcClient.syncState(state);
 	});
 
 	context.subscriptions.push(disposable);

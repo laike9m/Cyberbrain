@@ -5,9 +5,7 @@ from concurrent import futures
 
 import grpc
 
-# TODO: Eventually we want to use relative import.
-import communication_pb2_grpc
-import communication_pb2
+import communication_pb2_grpc, communication_pb2
 
 
 class CyberbrainCommunicationServer(communication_pb2_grpc.CommunicationServicer):
