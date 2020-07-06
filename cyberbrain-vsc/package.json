@@ -5,6 +5,7 @@
 	"version": "0.0.1",
 	"publisher": "laike9m",
 	"repository": "https://github.com/laike9m/cb-experimental",
+	"license": "MIT",
 	"engines": {
 		"vscode": "^1.46.0"
 	},
@@ -12,14 +13,14 @@
 		"Debuggers"
 	],
 	"activationEvents": [
-		"onCommand:cyberbrain.helloWorld"
+		"onCommand:cyberbrain.init"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "cyberbrain.helloWorld",
-				"title": "Hello World"
+				"command": "cyberbrain.init",
+				"title": "Initialize Cyberbrain"
 			}
 		]
 	},
