@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import {State} from './rpc/communication_pb';
 import {RpcClient} from './rpc/rpc_client';
+import {activateWebView} from "./webview";
 
 
 // this method is called when your extension is activated
@@ -30,6 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable);
+	activateWebView(context);
 }
 
 // this method is called when your extension is deactivated

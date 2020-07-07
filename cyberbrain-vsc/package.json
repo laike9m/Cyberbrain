@@ -13,7 +13,7 @@
 		"Debuggers"
 	],
 	"activationEvents": [
-		"onCommand:cyberbrain.init"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -21,6 +21,10 @@
 			{
 				"command": "cyberbrain.init",
 				"title": "Initialize Cyberbrain"
+			},
+			{
+				"command": "catCoding.start",
+				"title": "cat coding"
 			}
 		]
 	},
