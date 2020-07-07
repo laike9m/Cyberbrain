@@ -1,9 +1,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import {State} from './rpc/communication_pb';
-import {RpcClient} from './rpc/rpc_client';
-import {activateWebView} from "./webview";
+import { State } from './rpc/communication_pb';
+import { RpcClient } from './rpc/rpc_client';
+import { activateWebView, postMessageBacktracePanel } from "./webview";
 
 
 // this method is called when your extension is activated
@@ -28,6 +28,8 @@ export function activate(context: vscode.ExtensionContext) {
 		let state = new State();
 		state.setStatus("client good");
 		await rpcClient.syncState(state);
+
+		postMessageBacktracePanel();
 	});
 
 	context.subscriptions.push(disposable);
