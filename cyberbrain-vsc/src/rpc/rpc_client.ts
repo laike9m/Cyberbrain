@@ -1,6 +1,6 @@
 import * as grpc from "@grpc/grpc-js";
-import {CommunicationClient} from "./communication_grpc_pb";
-import {State} from "./communication_pb";
+import { CommunicationClient } from "./communication_grpc_pb";
+import { State } from "./communication_pb";
 
 // Singleton RPC client.
 class RpcClient {
@@ -56,4 +56,4 @@ class RpcClient {
     }
 }
 
-export {RpcClient};
+export { RpcClient };
