@@ -1,17 +1,34 @@
 """
 Server that serves requests from UI (VSC as of now).
 """
+import queue
 from concurrent import futures
+from threading import Timer
 
 import grpc
 
-import communication_pb2_grpc, communication_pb2
+import communication_pb2
+import communication_pb2_grpc
 
 
 class CyberbrainCommunicationServer(communication_pb2_grpc.CommunicationServicer):
+    # Queue that stores state to be published to VSC extension.
+    state_queue = queue.Queue()
+
     def SyncState(self, request, context):
         print(f"request come: {request} \n {context}")
-        return communication_pb2.State(status="server good")
+        yield communication_pb2.State(status=communication_pb2.State.SERVER_READY)
+        Timer(
+            5,  # seconds
+            lambda: CyberbrainCommunicationServer.state_queue.put(
+                # Simulates when program hits cyberbrain.register().
+                communication_pb2.State(
+                    status=communication_pb2.State.EXECUTION_COMPLETE
+                )
+            ),
+        ).start()
+        while True:
+            yield self.state_queue.get()  # block forever.
 
 
 def serve():

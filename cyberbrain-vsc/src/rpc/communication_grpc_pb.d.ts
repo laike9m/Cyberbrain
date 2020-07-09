@@ -15,9 +15,8 @@ export const CommunicationService: ICommunicationService;
 
 export class CommunicationClient extends grpc.Client {
   constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
-  syncState(argument: communication_pb.State, callback: grpc.requestCallback<communication_pb.State>): grpc.ClientUnaryCall;
-  syncState(argument: communication_pb.State, metadataOrOptions: grpc.Metadata | grpc.CallOptions | null, callback: grpc.requestCallback<communication_pb.State>): grpc.ClientUnaryCall;
-  syncState(argument: communication_pb.State, metadata: grpc.Metadata | null, options: grpc.CallOptions | null, callback: grpc.requestCallback<communication_pb.State>): grpc.ClientUnaryCall;
+  syncState(argument: communication_pb.State, metadataOrOptions?: grpc.Metadata | grpc.CallOptions | null): grpc.ClientReadableStream<communication_pb.State>;
+  syncState(argument: communication_pb.State, metadata?: grpc.Metadata | null, options?: grpc.CallOptions | null): grpc.ClientReadableStream<communication_pb.State>;
   getFrameBackTrace(argument: communication_pb.Location, callback: grpc.requestCallback<communication_pb.FrameBackTrace>): grpc.ClientUnaryCall;
   getFrameBackTrace(argument: communication_pb.Location, metadataOrOptions: grpc.Metadata | grpc.CallOptions | null, callback: grpc.requestCallback<communication_pb.FrameBackTrace>): grpc.ClientUnaryCall;
   getFrameBackTrace(argument: communication_pb.Location, metadata: grpc.Metadata | null, options: grpc.CallOptions | null, callback: grpc.requestCallback<communication_pb.FrameBackTrace>): grpc.ClientUnaryCall;

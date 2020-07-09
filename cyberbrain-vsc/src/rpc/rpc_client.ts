@@ -1,6 +1,6 @@
 import * as grpc from "@grpc/grpc-js";
-import { CommunicationClient } from "./communication_grpc_pb";
-import { State } from "./communication_pb";
+import {CommunicationClient} from "./communication_grpc_pb";
+import {State} from "./communication_pb";
 
 // Singleton RPC client.
 class RpcClient {
@@ -34,26 +34,9 @@ class RpcClient {
         });
     }
 
-    async syncState(state: State) {
-        return new Promise((resolve, reject) => {
-            this._innerClient.syncState(state, function (err, serverState) {
-                if (err !== null) {
-                    switch (err.code) {
-                        case grpc.status.UNAVAILABLE:
-                            console.log(`Server unavailable: ${err.message}`);
-                            break;
-                        default:
-                            console.log(`Error calling syncState: ${err}`);
-                    }
-                    reject(err);
-                    return;
-                }
-
-                console.log(`Server status is: ${serverState?.getStatus()}`);
-                resolve();
-            });
-        });
+    syncState(state: State): grpc.ClientReadableStream<State> {
+        return this._innerClient.syncState(state);
     }
 }
 
-export { RpcClient };
+export {RpcClient};

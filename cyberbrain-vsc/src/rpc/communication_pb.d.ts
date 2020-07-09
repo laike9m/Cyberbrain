@@ -6,8 +6,13 @@ import * as jspb from "google-protobuf";
 export class State extends jspb.Message {
   hasStatus(): boolean;
   clearStatus(): void;
-  getStatus(): string | undefined;
-  setStatus(value: string): void;
+  getStatus(): State.StatusMap[keyof State.StatusMap] | undefined;
+  setStatus(value: State.StatusMap[keyof State.StatusMap]): void;
+
+  hasMessage(): boolean;
+  clearMessage(): void;
+  getMessage(): string | undefined;
+  setMessage(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): State.AsObject;
@@ -21,8 +26,18 @@ export class State extends jspb.Message {
 
 export namespace State {
   export type AsObject = {
-    status?: string,
+    status?: State.StatusMap[keyof State.StatusMap],
+    message?: string,
   }
+
+  export interface StatusMap {
+    CLIENT_READY: 1;
+    SERVER_READY: 2;
+    EXECUTION_COMPLETE: 3;
+    BACKTRACING_COMPLETE: 4;
+  }
+
+  export const Status: StatusMap;
 }
 
 export class Location extends jspb.Message {

@@ -1,9 +1,10 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { State } from './rpc/communication_pb';
-import { RpcClient } from './rpc/rpc_client';
-import { activateWebView, postMessageToBacktracePanel } from "./webview";
+import {State} from './rpc/communication_pb';
+import {RpcClient} from './rpc/rpc_client';
+import {activateWebView, postMessageToBacktracePanel} from "./webview";
+import * as grpc from "@grpc/grpc-js";
 
 
 // this method is called when your extension is activated
@@ -26,14 +27,37 @@ export function activate(context: vscode.ExtensionContext) {
         await rpcClient.waitForReady();
 
         let state = new State();
-        state.setStatus("client good");
-        await rpcClient.syncState(state);
-
-        postMessageToBacktracePanel();
+        state.setStatus(State.Status.CLIENT_READY);
+        handleState(rpcClient.syncState(state));
     });
 
     context.subscriptions.push(disposable);
     activateWebView(context);
+}
+
+function handleState(call: grpc.ClientReadableStream<State>) {
+    call.on('data', function (serverState: State) {
+        switch (serverState?.getStatus()) {
+            case State.Status.SERVER_READY:
+                postMessageToBacktracePanel("Server is ready");
+                break;
+            case State.Status.EXECUTION_COMPLETE:
+                postMessageToBacktracePanel("Program execution completes");
+                break;
+            case State.Status.BACKTRACING_COMPLETE:
+                postMessageToBacktracePanel("Backtracing completes");
+                break;
+        }
+    });
+    call.on('end', function () {
+        console.log("syncState call ends");
+    });
+    call.on('error', function (err: any) {
+        console.log(`syncState error: ${err}`);
+    });
+    call.on('status', function (status: any) {
+        console.log(`Received server RPC status: ${status}`);
+    });
 }
 
 // this method is called when your extension is deactivated
