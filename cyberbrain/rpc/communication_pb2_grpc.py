@@ -15,7 +15,7 @@ class CommunicationStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.SyncState = channel.unary_unary(
+        self.SyncState = channel.unary_stream(
             "/Communication/SyncState",
             request_serializer=communication__pb2.State.SerializeToString,
             response_deserializer=communication__pb2.State.FromString,
@@ -32,13 +32,15 @@ class CommunicationServicer(object):
     """
 
     def SyncState(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Sync state between client and server.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetFrameBackTrace(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """TODO: implement this.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
@@ -46,7 +48,7 @@ class CommunicationServicer(object):
 
 def add_CommunicationServicer_to_server(servicer, server):
     rpc_method_handlers = {
-        "SyncState": grpc.unary_unary_rpc_method_handler(
+        "SyncState": grpc.unary_stream_rpc_method_handler(
             servicer.SyncState,
             request_deserializer=communication__pb2.State.FromString,
             response_serializer=communication__pb2.State.SerializeToString,
@@ -80,7 +82,7 @@ class Communication(object):
         timeout=None,
         metadata=None,
     ):
-        return grpc.experimental.unary_unary(
+        return grpc.experimental.unary_stream(
             request,
             target,
             "/Communication/SyncState",
