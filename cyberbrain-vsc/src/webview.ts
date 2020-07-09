@@ -22,15 +22,16 @@ export function activateWebView(context: vscode.ExtensionContext) {
             path.join(context.extensionPath, 'static', 'images', 'loading.gif')
         ));
 
-        currentPanel.webview.html = getInitialContent(loadingGifSrc);
+        currentPanel.webview.html = getInitialContent(loadingGifSrc, "Loading...");
     }
 }
 
-export function postMessageToBacktracePanel() {
+export function postMessageToBacktracePanel(statusText: string) {
     currentPanel!.webview.postMessage({server: 'ready'});
+    currentPanel!.webview.html = getInitialContent(null, statusText);
 }
 
-function getInitialContent(gifSrc: vscode.Uri) {
+function getInitialContent(gifSrc: vscode.Uri | null, statusText: string) {
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,7 +40,7 @@ function getInitialContent(gifSrc: vscode.Uri) {
     <title>Cat Coding</title>
 </head>
 <body>
-    <h1>Loading...</h1>
+    <h1>${statusText}</h1>
     <img src="${gifSrc}" alt="loading" />
     <script>
         window.addEventListener('message', event => {

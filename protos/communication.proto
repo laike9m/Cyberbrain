@@ -4,14 +4,23 @@ syntax = "proto2";
 service Communication {
 
   // Sync state between client and server.
-  rpc SyncState(State) returns (State) {}
+  rpc SyncState(State) returns (stream State) {}
 
   // TODO: implement this.
   rpc GetFrameBackTrace(Location) returns (FrameBackTrace) {}
 }
 
 message State {
-  optional string status = 1;
+  enum Status {
+    CLIENT_READY = 1;
+    SERVER_READY = 2;
+    EXECUTION_COMPLETE = 3;
+    BACKTRACING_COMPLETE = 4;
+  }
+  optional Status status = 1;
+
+  // Arbitrary optional message.
+  optional string message = 2;
 }
 
 message Location {
