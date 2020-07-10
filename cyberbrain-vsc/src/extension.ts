@@ -1,8 +1,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import {State} from './rpc/communication_pb';
-import {RpcClient} from './rpc/rpc_client';
+import {State} from './generated/communication_pb';
+import {RpcClient} from './rpc_client';
 import {activateWebView, postMessageToBacktracePanel} from "./webview";
 import * as grpc from "@grpc/grpc-js";
 
@@ -28,14 +28,14 @@ export function activate(context: vscode.ExtensionContext) {
 
         let state = new State();
         state.setStatus(State.Status.CLIENT_READY);
-        handleState(rpcClient.syncState(state));
+        handleServerState(rpcClient.syncState(state));
     });
 
     context.subscriptions.push(disposable);
     activateWebView(context);
 }
 
-function handleState(call: grpc.ClientReadableStream<State>) {
+function handleServerState(call: grpc.ClientReadableStream<State>) {
     call.on('data', function (serverState: State) {
         switch (serverState?.getStatus()) {
             case State.Status.SERVER_READY:

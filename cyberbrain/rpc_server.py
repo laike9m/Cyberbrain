@@ -7,8 +7,8 @@ from threading import Timer
 
 import grpc
 
-import communication_pb2
-import communication_pb2_grpc
+from generated import communication_pb2
+from generated import communication_pb2_grpc
 
 
 class CyberbrainCommunicationServer(communication_pb2_grpc.CommunicationServicer):

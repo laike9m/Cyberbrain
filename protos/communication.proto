@@ -6,8 +6,10 @@ service Communication {
   // Sync state between client and server.
   rpc SyncState(State) returns (stream State) {}
 
+  rpc FindFrame(CursorPosition) returns (FrameLocaterList) {}
+
   // TODO: implement this.
-  rpc GetFrameBackTrace(Location) returns (FrameBackTrace) {}
+  rpc GetFrame(FrameLocater) returns (Frame) {}
 }
 
 message State {
@@ -23,10 +25,23 @@ message State {
   optional string message = 2;
 }
 
-message Location {
-  optional string location = 1;
+// Current cursor position in VSC editor.
+// See https://code.visualstudio.com/api/references/vscode-api#Position
+message CursorPosition {
+  optional string file_name = 1;
+  optional int32 line = 2;
+  optional int32 character = 3;
 }
 
-message FrameBackTrace {
+// Information to help locate a frame.
+message FrameLocater {
+  optional string frame_id = 1;
+}
+
+message FrameLocaterList {
+  repeated FrameLocater frame_locaters = 1;
+}
+
+message Frame {
   optional string back_trace = 1;
 }
