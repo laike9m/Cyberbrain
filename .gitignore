@@ -117,4 +117,4 @@ legacy/
 .vscode/
 
 # Files for development
-cyberbrain/rpc/client.py
+cyberbrain/generated/client.py

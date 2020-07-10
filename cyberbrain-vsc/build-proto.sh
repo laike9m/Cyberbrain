@@ -1,19 +1,13 @@
 #!/usr/bin/env bash
 
-#TS_OUT=./src/rpc
-#
-#npx grpc_tools_node_protoc \
-#    --js_out=import_style=commonjs,binary:$TS_OUT \
-#    --grpc_out=grpc_js:$TS_OUT \
-#    -I ../protos \
-#    ../protos/*.proto
-
-
 IN_DIR="../protos"
-OUT_DIR="./out/rpc"
-TS_OUT_DIR="./src/rpc"
+OUT_DIR="./out/generated"
+TS_OUT_DIR="./src/generated"
 PROTOC="$(npm bin)/grpc_tools_node_protoc"
 PROTOC_GEN_TS="$(npm bin)/protoc-gen-ts"
+
+mkdir -p $TS_OUT_DIR
+mkdir -p $OUT_DIR
 
 $PROTOC \
     -I=$IN_DIR \

@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import communication_pb2 as communication__pb2
+from . import communication_pb2 as communication__pb2
 
 
 class CommunicationStub(object):
@@ -20,10 +20,15 @@ class CommunicationStub(object):
             request_serializer=communication__pb2.State.SerializeToString,
             response_deserializer=communication__pb2.State.FromString,
         )
+        self.FindFrame = channel.unary_unary(
+            "/Communication/FindFrame",
+            request_serializer=communication__pb2.CursorPosition.SerializeToString,
+            response_deserializer=communication__pb2.FrameLocaterList.FromString,
+        )
         self.GetFrameBackTrace = channel.unary_unary(
             "/Communication/GetFrameBackTrace",
-            request_serializer=communication__pb2.Location.SerializeToString,
-            response_deserializer=communication__pb2.FrameBackTrace.FromString,
+            request_serializer=communication__pb2.FrameLocater.SerializeToString,
+            response_deserializer=communication__pb2.Frame.FromString,
         )
 
 
@@ -34,6 +39,12 @@ class CommunicationServicer(object):
     def SyncState(self, request, context):
         """Sync state between client and server.
         """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def FindFrame(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
@@ -53,10 +64,15 @@ def add_CommunicationServicer_to_server(servicer, server):
             request_deserializer=communication__pb2.State.FromString,
             response_serializer=communication__pb2.State.SerializeToString,
         ),
+        "FindFrame": grpc.unary_unary_rpc_method_handler(
+            servicer.FindFrame,
+            request_deserializer=communication__pb2.CursorPosition.FromString,
+            response_serializer=communication__pb2.FrameLocaterList.SerializeToString,
+        ),
         "GetFrameBackTrace": grpc.unary_unary_rpc_method_handler(
             servicer.GetFrameBackTrace,
-            request_deserializer=communication__pb2.Location.FromString,
-            response_serializer=communication__pb2.FrameBackTrace.SerializeToString,
+            request_deserializer=communication__pb2.FrameLocater.FromString,
+            response_serializer=communication__pb2.Frame.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -98,6 +114,33 @@ class Communication(object):
         )
 
     @staticmethod
+    def FindFrame(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/Communication/FindFrame",
+            communication__pb2.CursorPosition.SerializeToString,
+            communication__pb2.FrameLocaterList.FromString,
+            options,
+            channel_credentials,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
     def GetFrameBackTrace(
         request,
         target,
@@ -113,8 +156,8 @@ class Communication(object):
             request,
             target,
             "/Communication/GetFrameBackTrace",
-            communication__pb2.Location.SerializeToString,
-            communication__pb2.FrameBackTrace.FromString,
+            communication__pb2.FrameLocater.SerializeToString,
+            communication__pb2.Frame.FromString,
             options,
             channel_credentials,
             call_credentials,
