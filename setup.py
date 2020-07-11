@@ -19,7 +19,7 @@ setup(
     python_requires="==3.*,>=3.7.0",
     author="laike9m",
     author_email="laike9m@gmail.com",
-    packages=["cyberbrain", "cyberbrain.rpc"],
+    packages=["cyberbrain"],
     package_dir={"": "."},
     package_data={},
     install_requires=[
