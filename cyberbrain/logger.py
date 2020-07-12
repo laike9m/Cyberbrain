@@ -11,7 +11,7 @@ from deepdiff import DeepDiff, Delta
 
 from . import value_stack
 from .basis import Mutation, Creation, InitialValue
-from .frame_state import Frame
+from .frame import Frame
 from .utils import pprint, computed_gotos_enabled
 from .value_stack import EvaluationMode, AFTER_INSTR_EXECUTION, BEFORE_INSTR_EXECUTION
 
