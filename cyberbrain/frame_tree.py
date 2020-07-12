@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .frame_state import Frame
+from .frame import Frame
 from .generated.communication_pb2 import CursorPosition
 
 
