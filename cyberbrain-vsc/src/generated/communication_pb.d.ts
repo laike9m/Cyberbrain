@@ -77,8 +77,38 @@ export namespace CursorPosition {
 export class FrameLocater extends jspb.Message {
   hasFrameId(): boolean;
   clearFrameId(): void;
-  getFrameId(): string | undefined;
-  setFrameId(value: string): void;
+  getFrameId(): number | undefined;
+  setFrameId(value: number): void;
+
+  hasFilename(): boolean;
+  clearFilename(): void;
+  getFilename(): string | undefined;
+  setFilename(value: string): void;
+
+  hasStartLineno(): boolean;
+  clearStartLineno(): void;
+  getStartLineno(): number | undefined;
+  setStartLineno(value: number): void;
+
+  hasEndLineno(): boolean;
+  clearEndLineno(): void;
+  getEndLineno(): number | undefined;
+  setEndLineno(value: number): void;
+
+  hasCallsiteFilename(): boolean;
+  clearCallsiteFilename(): void;
+  getCallsiteFilename(): string | undefined;
+  setCallsiteFilename(value: string): void;
+
+  hasCallsiteLineno(): boolean;
+  clearCallsiteLineno(): void;
+  getCallsiteLineno(): number | undefined;
+  setCallsiteLineno(value: number): void;
+
+  hasArguments(): boolean;
+  clearArguments(): void;
+  getArguments(): string | undefined;
+  setArguments(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): FrameLocater.AsObject;
@@ -92,7 +122,13 @@ export class FrameLocater extends jspb.Message {
 
 export namespace FrameLocater {
   export type AsObject = {
-    frameId?: string,
+    frameId?: number,
+    filename?: string,
+    startLineno?: number,
+    endLineno?: number,
+    callsiteFilename?: string,
+    callsiteLineno?: number,
+    arguments?: string,
   }
 }
 

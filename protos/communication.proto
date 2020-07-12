@@ -6,7 +6,7 @@ service Communication {
   // Sync state between client and server.
   rpc SyncState(State) returns (stream State) {}
 
-  rpc FindFrame(CursorPosition) returns (FrameLocaterList) {}
+  rpc FindFrames(CursorPosition) returns (FrameLocaterList) {}
 
   // TODO: implement this.
   rpc GetFrame(FrameLocater) returns (Frame) {}
@@ -35,7 +35,26 @@ message CursorPosition {
 
 // Information to help locate a frame.
 message FrameLocater {
-  optional string frame_id = 1;
+  // This field is required.
+  optional int64 frame_id = 1;
+
+  // Filename where the frame is located at.
+  optional string filename = 2;
+
+  // Start line of the frame in filename.
+  optional int64 start_lineno = 3;
+
+  // End line of the frame in filename.
+  optional int64 end_lineno = 4;
+
+  // The file from which the frame is entered.
+  optional string callsite_filename = 5;
+
+  // The line where the callable that generates the frame is called.
+  optional int64 callsite_lineno = 6;
+
+  // Arguments stringified. f(1, b=2) -> "1, b=2"
+  optional string arguments = 7;
 }
 
 message FrameLocaterList {

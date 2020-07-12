@@ -6,441 +6,373 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
+
+
 DESCRIPTOR = _descriptor.FileDescriptor(
-    name="communication.proto",
-    package="",
-    syntax="proto2",
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x13\x63ommunication.proto"\x97\x01\n\x05State\x12\x1d\n\x06status\x18\x01 \x01(\x0e\x32\r.State.Status\x12\x0f\n\x07message\x18\x02 \x01(\t"^\n\x06Status\x12\x10\n\x0c\x43LIENT_READY\x10\x01\x12\x10\n\x0cSERVER_READY\x10\x02\x12\x16\n\x12\x45XECUTION_COMPLETE\x10\x03\x12\x18\n\x14\x42\x41\x43KTRACING_COMPLETE\x10\x04"D\n\x0e\x43ursorPosition\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x0c\n\x04line\x18\x02 \x01(\x05\x12\x11\n\tcharacter\x18\x03 \x01(\x05" \n\x0c\x46rameLocater\x12\x10\n\x08\x66rame_id\x18\x01 \x01(\t"9\n\x10\x46rameLocaterList\x12%\n\x0e\x66rame_locaters\x18\x01 \x03(\x0b\x32\r.FrameLocater"\x1b\n\x05\x46rame\x12\x12\n\nback_trace\x18\x01 \x01(\t2\x91\x01\n\rCommunication\x12\x1f\n\tSyncState\x12\x06.State\x1a\x06.State"\x00\x30\x01\x12\x31\n\tFindFrame\x12\x0f.CursorPosition\x1a\x11.FrameLocaterList"\x00\x12,\n\x11GetFrameBackTrace\x12\r.FrameLocater\x1a\x06.Frame"\x00',
+  name='communication.proto',
+  package='',
+  syntax='proto2',
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_pb=b'\n\x13\x63ommunication.proto\"\x97\x01\n\x05State\x12\x1d\n\x06status\x18\x01 \x01(\x0e\x32\r.State.Status\x12\x0f\n\x07message\x18\x02 \x01(\t\"^\n\x06Status\x12\x10\n\x0c\x43LIENT_READY\x10\x01\x12\x10\n\x0cSERVER_READY\x10\x02\x12\x16\n\x12\x45XECUTION_COMPLETE\x10\x03\x12\x18\n\x14\x42\x41\x43KTRACING_COMPLETE\x10\x04\"D\n\x0e\x43ursorPosition\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x0c\n\x04line\x18\x02 \x01(\x05\x12\x11\n\tcharacter\x18\x03 \x01(\x05\"\xa3\x01\n\x0c\x46rameLocater\x12\x10\n\x08\x66rame_id\x18\x01 \x01(\x03\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x14\n\x0cstart_lineno\x18\x03 \x01(\x03\x12\x12\n\nend_lineno\x18\x04 \x01(\x03\x12\x19\n\x11\x63\x61llsite_filename\x18\x05 \x01(\t\x12\x17\n\x0f\x63\x61llsite_lineno\x18\x06 \x01(\x03\x12\x11\n\targuments\x18\x07 \x01(\t\"9\n\x10\x46rameLocaterList\x12%\n\x0e\x66rame_locaters\x18\x01 \x03(\x0b\x32\r.FrameLocater\"\x1b\n\x05\x46rame\x12\x12\n\nback_trace\x18\x01 \x01(\t2\x89\x01\n\rCommunication\x12\x1f\n\tSyncState\x12\x06.State\x1a\x06.State\"\x00\x30\x01\x12\x32\n\nFindFrames\x12\x0f.CursorPosition\x1a\x11.FrameLocaterList\"\x00\x12#\n\x08GetFrame\x12\r.FrameLocater\x1a\x06.Frame\"\x00'
 )
 
 
+
 _STATE_STATUS = _descriptor.EnumDescriptor(
-    name="Status",
-    full_name="State.Status",
-    filename=None,
-    file=DESCRIPTOR,
-    create_key=_descriptor._internal_create_key,
-    values=[
-        _descriptor.EnumValueDescriptor(
-            name="CLIENT_READY",
-            index=0,
-            number=1,
-            serialized_options=None,
-            type=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="SERVER_READY",
-            index=1,
-            number=2,
-            serialized_options=None,
-            type=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="EXECUTION_COMPLETE",
-            index=2,
-            number=3,
-            serialized_options=None,
-            type=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="BACKTRACING_COMPLETE",
-            index=3,
-            number=4,
-            serialized_options=None,
-            type=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    containing_type=None,
-    serialized_options=None,
-    serialized_start=81,
-    serialized_end=175,
+  name='Status',
+  full_name='State.Status',
+  filename=None,
+  file=DESCRIPTOR,
+  create_key=_descriptor._internal_create_key,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='CLIENT_READY', index=0, number=1,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='SERVER_READY', index=1, number=2,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='EXECUTION_COMPLETE', index=2, number=3,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='BACKTRACING_COMPLETE', index=3, number=4,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+  ],
+  containing_type=None,
+  serialized_options=None,
+  serialized_start=81,
+  serialized_end=175,
 )
 _sym_db.RegisterEnumDescriptor(_STATE_STATUS)
 
 
 _STATE = _descriptor.Descriptor(
-    name="State",
-    full_name="State",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="status",
-            full_name="State.status",
-            index=0,
-            number=1,
-            type=14,
-            cpp_type=8,
-            label=1,
-            has_default_value=False,
-            default_value=1,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="message",
-            full_name="State.message",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[_STATE_STATUS],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto2",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=24,
-    serialized_end=175,
+  name='State',
+  full_name='State',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='status', full_name='State.status', index=0,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=1,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='message', full_name='State.message', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+    _STATE_STATUS,
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=24,
+  serialized_end=175,
 )
 
 
 _CURSORPOSITION = _descriptor.Descriptor(
-    name="CursorPosition",
-    full_name="CursorPosition",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="file_name",
-            full_name="CursorPosition.file_name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="line",
-            full_name="CursorPosition.line",
-            index=1,
-            number=2,
-            type=5,
-            cpp_type=1,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="character",
-            full_name="CursorPosition.character",
-            index=2,
-            number=3,
-            type=5,
-            cpp_type=1,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto2",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=177,
-    serialized_end=245,
+  name='CursorPosition',
+  full_name='CursorPosition',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='file_name', full_name='CursorPosition.file_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='line', full_name='CursorPosition.line', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='character', full_name='CursorPosition.character', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=177,
+  serialized_end=245,
 )
 
 
 _FRAMELOCATER = _descriptor.Descriptor(
-    name="FrameLocater",
-    full_name="FrameLocater",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="frame_id",
-            full_name="FrameLocater.frame_id",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto2",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=247,
-    serialized_end=279,
+  name='FrameLocater',
+  full_name='FrameLocater',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='frame_id', full_name='FrameLocater.frame_id', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='filename', full_name='FrameLocater.filename', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='start_lineno', full_name='FrameLocater.start_lineno', index=2,
+      number=3, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='end_lineno', full_name='FrameLocater.end_lineno', index=3,
+      number=4, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='callsite_filename', full_name='FrameLocater.callsite_filename', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='callsite_lineno', full_name='FrameLocater.callsite_lineno', index=5,
+      number=6, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='arguments', full_name='FrameLocater.arguments', index=6,
+      number=7, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=248,
+  serialized_end=411,
 )
 
 
 _FRAMELOCATERLIST = _descriptor.Descriptor(
-    name="FrameLocaterList",
-    full_name="FrameLocaterList",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="frame_locaters",
-            full_name="FrameLocaterList.frame_locaters",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto2",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=281,
-    serialized_end=338,
+  name='FrameLocaterList',
+  full_name='FrameLocaterList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='frame_locaters', full_name='FrameLocaterList.frame_locaters', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=413,
+  serialized_end=470,
 )
 
 
 _FRAME = _descriptor.Descriptor(
-    name="Frame",
-    full_name="Frame",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="back_trace",
-            full_name="Frame.back_trace",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto2",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=340,
-    serialized_end=367,
+  name='Frame',
+  full_name='Frame',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='back_trace', full_name='Frame.back_trace', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=472,
+  serialized_end=499,
 )
 
-_STATE.fields_by_name["status"].enum_type = _STATE_STATUS
+_STATE.fields_by_name['status'].enum_type = _STATE_STATUS
 _STATE_STATUS.containing_type = _STATE
-_FRAMELOCATERLIST.fields_by_name["frame_locaters"].message_type = _FRAMELOCATER
-DESCRIPTOR.message_types_by_name["State"] = _STATE
-DESCRIPTOR.message_types_by_name["CursorPosition"] = _CURSORPOSITION
-DESCRIPTOR.message_types_by_name["FrameLocater"] = _FRAMELOCATER
-DESCRIPTOR.message_types_by_name["FrameLocaterList"] = _FRAMELOCATERLIST
-DESCRIPTOR.message_types_by_name["Frame"] = _FRAME
+_FRAMELOCATERLIST.fields_by_name['frame_locaters'].message_type = _FRAMELOCATER
+DESCRIPTOR.message_types_by_name['State'] = _STATE
+DESCRIPTOR.message_types_by_name['CursorPosition'] = _CURSORPOSITION
+DESCRIPTOR.message_types_by_name['FrameLocater'] = _FRAMELOCATER
+DESCRIPTOR.message_types_by_name['FrameLocaterList'] = _FRAMELOCATERLIST
+DESCRIPTOR.message_types_by_name['Frame'] = _FRAME
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-State = _reflection.GeneratedProtocolMessageType(
-    "State",
-    (_message.Message,),
-    {
-        "DESCRIPTOR": _STATE,
-        "__module__": "communication_pb2"
-        # @@protoc_insertion_point(class_scope:State)
-    },
-)
+State = _reflection.GeneratedProtocolMessageType('State', (_message.Message,), {
+  'DESCRIPTOR' : _STATE,
+  '__module__' : 'communication_pb2'
+  # @@protoc_insertion_point(class_scope:State)
+  })
 _sym_db.RegisterMessage(State)
 
-CursorPosition = _reflection.GeneratedProtocolMessageType(
-    "CursorPosition",
-    (_message.Message,),
-    {
-        "DESCRIPTOR": _CURSORPOSITION,
-        "__module__": "communication_pb2"
-        # @@protoc_insertion_point(class_scope:CursorPosition)
-    },
-)
+CursorPosition = _reflection.GeneratedProtocolMessageType('CursorPosition', (_message.Message,), {
+  'DESCRIPTOR' : _CURSORPOSITION,
+  '__module__' : 'communication_pb2'
+  # @@protoc_insertion_point(class_scope:CursorPosition)
+  })
 _sym_db.RegisterMessage(CursorPosition)
 
-FrameLocater = _reflection.GeneratedProtocolMessageType(
-    "FrameLocater",
-    (_message.Message,),
-    {
-        "DESCRIPTOR": _FRAMELOCATER,
-        "__module__": "communication_pb2"
-        # @@protoc_insertion_point(class_scope:FrameLocater)
-    },
-)
+FrameLocater = _reflection.GeneratedProtocolMessageType('FrameLocater', (_message.Message,), {
+  'DESCRIPTOR' : _FRAMELOCATER,
+  '__module__' : 'communication_pb2'
+  # @@protoc_insertion_point(class_scope:FrameLocater)
+  })
 _sym_db.RegisterMessage(FrameLocater)
 
-FrameLocaterList = _reflection.GeneratedProtocolMessageType(
-    "FrameLocaterList",
-    (_message.Message,),
-    {
-        "DESCRIPTOR": _FRAMELOCATERLIST,
-        "__module__": "communication_pb2"
-        # @@protoc_insertion_point(class_scope:FrameLocaterList)
-    },
-)
+FrameLocaterList = _reflection.GeneratedProtocolMessageType('FrameLocaterList', (_message.Message,), {
+  'DESCRIPTOR' : _FRAMELOCATERLIST,
+  '__module__' : 'communication_pb2'
+  # @@protoc_insertion_point(class_scope:FrameLocaterList)
+  })
 _sym_db.RegisterMessage(FrameLocaterList)
 
-Frame = _reflection.GeneratedProtocolMessageType(
-    "Frame",
-    (_message.Message,),
-    {
-        "DESCRIPTOR": _FRAME,
-        "__module__": "communication_pb2"
-        # @@protoc_insertion_point(class_scope:Frame)
-    },
-)
+Frame = _reflection.GeneratedProtocolMessageType('Frame', (_message.Message,), {
+  'DESCRIPTOR' : _FRAME,
+  '__module__' : 'communication_pb2'
+  # @@protoc_insertion_point(class_scope:Frame)
+  })
 _sym_db.RegisterMessage(Frame)
 
 
+
 _COMMUNICATION = _descriptor.ServiceDescriptor(
-    name="Communication",
-    full_name="Communication",
-    file=DESCRIPTOR,
+  name='Communication',
+  full_name='Communication',
+  file=DESCRIPTOR,
+  index=0,
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_start=502,
+  serialized_end=639,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='SyncState',
+    full_name='Communication.SyncState',
     index=0,
+    containing_service=None,
+    input_type=_STATE,
+    output_type=_STATE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
-    serialized_start=370,
-    serialized_end=515,
-    methods=[
-        _descriptor.MethodDescriptor(
-            name="SyncState",
-            full_name="Communication.SyncState",
-            index=0,
-            containing_service=None,
-            input_type=_STATE,
-            output_type=_STATE,
-            serialized_options=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.MethodDescriptor(
-            name="FindFrame",
-            full_name="Communication.FindFrame",
-            index=1,
-            containing_service=None,
-            input_type=_CURSORPOSITION,
-            output_type=_FRAMELOCATERLIST,
-            serialized_options=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.MethodDescriptor(
-            name="GetFrameBackTrace",
-            full_name="Communication.GetFrameBackTrace",
-            index=2,
-            containing_service=None,
-            input_type=_FRAMELOCATER,
-            output_type=_FRAME,
-            serialized_options=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-)
+  ),
+  _descriptor.MethodDescriptor(
+    name='FindFrames',
+    full_name='Communication.FindFrames',
+    index=1,
+    containing_service=None,
+    input_type=_CURSORPOSITION,
+    output_type=_FRAMELOCATERLIST,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetFrame',
+    full_name='Communication.GetFrame',
+    index=2,
+    containing_service=None,
+    input_type=_FRAMELOCATER,
+    output_type=_FRAME,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+])
 _sym_db.RegisterServiceDescriptor(_COMMUNICATION)
 
-DESCRIPTOR.services_by_name["Communication"] = _COMMUNICATION
+DESCRIPTOR.services_by_name['Communication'] = _COMMUNICATION
 
 # @@protoc_insertion_point(module_scope)

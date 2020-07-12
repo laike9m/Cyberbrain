@@ -11,14 +11,14 @@ from deepdiff import DeepDiff, Delta
 
 from . import value_stack
 from .basis import Mutation, Creation, InitialValue
-from .frame_state import FrameState
+from .frame_state import Frame
 from .utils import pprint, computed_gotos_enabled
 from .value_stack import EvaluationMode, AFTER_INSTR_EXECUTION, BEFORE_INSTR_EXECUTION
 
 _implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS", "END_FINALLY"}
 
 
-class Frame:
+class FrameLogger:
     """A call frame."""
 
     def __init__(self, frame, debug_mode=False):
@@ -37,7 +37,7 @@ class Frame:
         # LOAD_METHOD are scanned, so that value stack can be in correct state.
         self.instr_pointer = frame.f_lasti - 4
         self.value_stack = value_stack.create_value_stack()
-        self.frame_state: FrameState = FrameState()
+        self.frame_state: Frame = Frame()
         self.jump_detector = JumpDetector(
             instructions=self.instructions, debug_mode=debug_mode
         )
@@ -122,11 +122,11 @@ class Frame:
         del frame
 
     def _log_events(
-        self,
-        frame: FrameType,
-        instr: Instruction,
-        evaluation_mode: EvaluationMode,
-        jumped: bool = False,
+            self,
+            frame: FrameType,
+            instr: Instruction,
+            evaluation_mode: EvaluationMode,
+            jumped: bool = False,
     ):
         """Logs changed values by the given instruction, if any."""
         self._debug_log(

@@ -3,8 +3,7 @@
 import argparse
 import sys
 
-from . import frame, utils
-
+from . import logger, utils
 # from .rpc import server
 from .basis import _dummy
 
@@ -34,7 +33,7 @@ class Tracer:
     def init(self):
         """Initializes tracing."""
         self.global_frame = sys._getframe(1)
-        self.frame = frame.Frame(self.global_frame, debug_mode=self.debug_mode)
+        self.frame = logger.FrameLogger(self.global_frame, debug_mode=self.debug_mode)
         self.global_frame.f_trace_opcodes = True
         self.global_frame.f_trace = self.local_tracer
         sys.settrace(self.global_tracer)

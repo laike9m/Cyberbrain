@@ -7,8 +7,9 @@ from threading import Timer
 
 import grpc
 
-from generated import communication_pb2
-from generated import communication_pb2_grpc
+from .frame_tree import FrameTree
+from .generated import communication_pb2
+from .generated import communication_pb2_grpc
 
 
 class CyberbrainCommunicationServer(communication_pb2_grpc.CommunicationServicer):
@@ -16,7 +17,7 @@ class CyberbrainCommunicationServer(communication_pb2_grpc.CommunicationServicer
     state_queue = queue.Queue()
 
     def SyncState(self, request, context):
-        print(f"request come: {request} \n {context}")
+        print(f"request come: {type(request)} {request}")
         yield communication_pb2.State(status=communication_pb2.State.SERVER_READY)
         Timer(
             5,  # seconds
@@ -29,6 +30,14 @@ class CyberbrainCommunicationServer(communication_pb2_grpc.CommunicationServicer
         ).start()
         while True:
             yield self.state_queue.get()  # block forever.
+
+    def FindFrames(self, request, context):
+        frames = FrameTree.find_frames(request)
+        raise NotImplementedError
+
+    def GetFrame(self, request, context) -> communication_pb2.Frame:
+        # TODO: return accumulated_events + tracing result.
+        pass
 
 
 def serve():
