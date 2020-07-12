@@ -16,20 +16,20 @@ class CommunicationStub(object):
             channel: A grpc.Channel.
         """
         self.SyncState = channel.unary_stream(
-            "/Communication/SyncState",
-            request_serializer=communication__pb2.State.SerializeToString,
-            response_deserializer=communication__pb2.State.FromString,
-        )
-        self.FindFrame = channel.unary_unary(
-            "/Communication/FindFrame",
-            request_serializer=communication__pb2.CursorPosition.SerializeToString,
-            response_deserializer=communication__pb2.FrameLocaterList.FromString,
-        )
-        self.GetFrameBackTrace = channel.unary_unary(
-            "/Communication/GetFrameBackTrace",
-            request_serializer=communication__pb2.FrameLocater.SerializeToString,
-            response_deserializer=communication__pb2.Frame.FromString,
-        )
+                '/Communication/SyncState',
+                request_serializer=communication__pb2.State.SerializeToString,
+                response_deserializer=communication__pb2.State.FromString,
+                )
+        self.FindFrames = channel.unary_unary(
+                '/Communication/FindFrames',
+                request_serializer=communication__pb2.CursorPosition.SerializeToString,
+                response_deserializer=communication__pb2.FrameLocaterList.FromString,
+                )
+        self.GetFrame = channel.unary_unary(
+                '/Communication/GetFrame',
+                request_serializer=communication__pb2.FrameLocater.SerializeToString,
+                response_deserializer=communication__pb2.Frame.FromString,
+                )
 
 
 class CommunicationServicer(object):
@@ -40,129 +40,95 @@ class CommunicationServicer(object):
         """Sync state between client and server.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-    def FindFrame(self, request, context):
+    def FindFrames(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-    def GetFrameBackTrace(self, request, context):
+    def GetFrame(self, request, context):
         """TODO: implement this.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
 
 def add_CommunicationServicer_to_server(servicer, server):
     rpc_method_handlers = {
-        "SyncState": grpc.unary_stream_rpc_method_handler(
-            servicer.SyncState,
-            request_deserializer=communication__pb2.State.FromString,
-            response_serializer=communication__pb2.State.SerializeToString,
-        ),
-        "FindFrame": grpc.unary_unary_rpc_method_handler(
-            servicer.FindFrame,
-            request_deserializer=communication__pb2.CursorPosition.FromString,
-            response_serializer=communication__pb2.FrameLocaterList.SerializeToString,
-        ),
-        "GetFrameBackTrace": grpc.unary_unary_rpc_method_handler(
-            servicer.GetFrameBackTrace,
-            request_deserializer=communication__pb2.FrameLocater.FromString,
-            response_serializer=communication__pb2.Frame.SerializeToString,
-        ),
+            'SyncState': grpc.unary_stream_rpc_method_handler(
+                    servicer.SyncState,
+                    request_deserializer=communication__pb2.State.FromString,
+                    response_serializer=communication__pb2.State.SerializeToString,
+            ),
+            'FindFrames': grpc.unary_unary_rpc_method_handler(
+                    servicer.FindFrames,
+                    request_deserializer=communication__pb2.CursorPosition.FromString,
+                    response_serializer=communication__pb2.FrameLocaterList.SerializeToString,
+            ),
+            'GetFrame': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetFrame,
+                    request_deserializer=communication__pb2.FrameLocater.FromString,
+                    response_serializer=communication__pb2.Frame.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "Communication", rpc_method_handlers
-    )
+            'Communication', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
-# This class is part of an EXPERIMENTAL API.
+ # This class is part of an EXPERIMENTAL API.
 class Communication(object):
     """Interface exported by the server.
     """
 
     @staticmethod
-    def SyncState(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_stream(
-            request,
+    def SyncState(request,
             target,
-            "/Communication/SyncState",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/Communication/SyncState',
             communication__pb2.State.SerializeToString,
             communication__pb2.State.FromString,
-            options,
-            channel_credentials,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def FindFrame(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def FindFrames(request,
             target,
-            "/Communication/FindFrame",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Communication/FindFrames',
             communication__pb2.CursorPosition.SerializeToString,
             communication__pb2.FrameLocaterList.FromString,
-            options,
-            channel_credentials,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def GetFrameBackTrace(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def GetFrame(request,
             target,
-            "/Communication/GetFrameBackTrace",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Communication/GetFrame',
             communication__pb2.FrameLocater.SerializeToString,
             communication__pb2.Frame.FromString,
-            options,
-            channel_credentials,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -22,7 +22,7 @@ class _EventsDict(defaultdict):
         return True
 
 
-class FrameState:
+class Frame:
     """Stores frame state events and checkpoints.
 
     Two major functionalities this class provide:
@@ -40,6 +40,11 @@ class FrameState:
         self.checkpoints: list[CheckPoint] = [
             CheckPoint(events_pointer=defaultdict(lambda: _INITIAL_STATE))
         ]
+        # Frame that generated this frame. Could be empty if this frame is the outermost
+        # frame.
+        self.parent: Optional[Frame] = None
+        # Frames derived from this frame.
+        self.children: list[Frame] = []
 
     def add_new_event(self, event: Event):
         assert event.target
@@ -57,7 +62,10 @@ class FrameState:
         return name in self.raw_events
 
     def latest_value_of(self, name: str) -> Any:
-        """Returns the latest value of an identifier."""
+        """Returns the latest value of an identifier.
+
+        This method is *only* used during the logging process.
+        """
         if name not in self.raw_events:
             raise AttributeError(f"'{name}' does not exist in frame.")
 
@@ -73,7 +81,7 @@ class FrameState:
 
     @property
     def accumulated_events(self):
-        """Returns events who value have been accumulated.
+        """Returns events with accumulated value.
 
         Now that FrameState only stores delta for Mutation event, if we need to know
         the value after a certain mutation (like in tests), the value has to be
@@ -87,7 +95,7 @@ class FrameState:
         Returned accumulated events:
             {'a': [Creation(value=[]), Mutation(delta="append 1", value=[1])]
         """
-        result = defaultdict(list)
+        result: dict[str, list[Event]] = defaultdict(list)
         for name, raw_events in self.raw_events.items():
             for raw_event in raw_events:
                 if not isinstance(raw_event, Mutation):
@@ -104,7 +112,7 @@ class CheckPoint:
     """Represents a frame's state at a certain moment."""
 
     # TODO: checkpoints should contain, but not keyed by code location, because code
-    # location can duplicate.
+    #  location can duplicate.
 
     __slots__ = ["events_pointer", "location"]
 
