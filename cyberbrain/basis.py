@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Any, TypeVar, Optional
+from typing import Any, Optional
 
+import attr
+import shortuuid
 from deepdiff import Delta
 
 _dummy = object()
@@ -13,8 +14,14 @@ _dummy = object()
 # TODO: Event class should contain the location where the change happened.
 
 
-@dataclass
-class InitialValue:
+@attr.s(auto_attribs=True)
+class Event:
+    target: str
+    uid: string = attr.ib(factory=shortuuid.uuid, eq=False)
+
+
+@attr.s(auto_attribs=True)
+class InitialValue(Event):
     """Identifiers come from other places, or simply exist before tracking starts.
 
     e.g. Global variables, passed in arguments.
@@ -33,32 +40,29 @@ class InitialValue:
     cyberbrain.init()
     '"""
 
-    target: str
-    value: Any
+    # kw_only is required to make inheritance work
+    # see https://github.com/python-attrs/attrs/issues/38
+    value: Any = attr.ib(kw_only=True)
     # TODO: Add sources if it's a function parameter.
 
 
-@dataclass
-class Creation:
+@attr.s(auto_attribs=True)
+class Creation(Event):
     """An identifiers is created in the current frame."""
 
-    target: str
-    value: any
-    sources: set[str] = field(default_factory=set)  # Source can be empty, like a = 1
+    value: Any = attr.ib(kw_only=True)
+    sources: set[str] = set()  # Source can be empty, like a = 1
 
 
-@dataclass
-class Mutation:
+# For now, we don't want to compare delta, so disable auto-generation of __eq__.
+@attr.s(auto_attribs=True, eq=False)
+class Mutation(Event):
     """An identifier is mutated."""
 
-    target: str
-
-    # TODO: Use a regular class, and store pickled delta instead of a Delta object.
-    #   Then use @property to return Delta(pickled_delta).
     # Represents the diffs from before and after the mutation.
     delta: Optional[Delta] = None
 
-    sources: set[str] = field(default_factory=set)  # Source can be empty, like a = 1
+    sources: set[str] = set()  # Source can be empty, like a = 1
 
     # Value is optional. It is set on demand during testing. Other code MUSTN'T rely
     # on it.
@@ -80,11 +84,9 @@ class Mutation:
         return False
 
 
-@dataclass
-class Deletion:
+@attr.s(auto_attribs=True, eq=False)
+class Deletion(Event):
     """An identifiers is deleted."""
-
-    target: str
 
     def __eq__(self, other):
         if isinstance(other, Deletion):
@@ -92,6 +94,3 @@ class Deletion:
         if isinstance(other, dict):
             return self.target == other["target"]
         return False
-
-
-Event = TypeVar("Event", InitialValue, Creation, Mutation, Deletion)
