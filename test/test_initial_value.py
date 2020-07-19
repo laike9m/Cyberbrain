@@ -8,10 +8,6 @@ def test_existing_variable_emit_initial_value(tracer):
     tracer.register()
 
     assert tracer.events == {
-        "x": [
-            InitialValue(target="x", value="foo"),
-        ],
-        "y": [
-            Creation(target="y", value="foo", sources={"x"}),
-        ],
+        "x": [InitialValue(target="x", value="foo", lineno=7)],
+        "y": [Creation(target="y", value="foo", sources={"x"}, lineno=7)],
     }

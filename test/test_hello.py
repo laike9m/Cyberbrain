@@ -10,11 +10,11 @@ def test_hello(tracer):
 
     assert tracer.events == {
         "x": [
-            Creation(target="x", value="hello world"),
-            Mutation(target="x", value="hello world", sources={"y"}),
+            Creation(target="x", value="hello world", lineno=6),
+            Mutation(target="x", value="hello world", sources={"y"}, lineno=8),
         ],
         "y": [
-            Creation(target="y", value="hello world", sources={"x"}),
-            Mutation(target="y", value="hello world", sources={"x"}),
+            Creation(target="y", value="hello world", sources={"x"}, lineno=7),
+            Mutation(target="y", value="hello world", sources={"x"}, lineno=8),
         ],
     }

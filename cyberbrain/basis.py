@@ -14,8 +14,9 @@ _dummy = object()
 @attr.s(auto_attribs=True)
 class Event:
     target: str
-    # lineno: int = attr.ib(eq=False)
-    # filename: str = attr.ib(eq=False)
+    # TODO: remove the default values
+    lineno: int = attr.ib(default=0)
+    filename: str = attr.ib(eq=False, default=0)
     uid: string = attr.ib(factory=shortuuid.uuid, eq=False, repr=False)
 
 
@@ -67,29 +68,18 @@ class Mutation(Event):
     # on it.
     value: Any = _dummy
 
-    def __eq__(self, other):
-        if isinstance(other, Mutation):
-            return (self.target, self.value, self.sources) == (
-                other.target,
-                other.value,
-                other.sources,
-            )
-        if isinstance(other, dict):
-            return (self.target, self.value, self.sources) == (
-                other["target"],
-                other["value"],
-                other["sources"],
-            )
-        return False
+    def __eq__(self, other: Mutation):
+        return (self.target, self.value, self.sources, self.lineno) == (
+            other.target,
+            other.value,
+            other.sources,
+            other.lineno,
+        )
 
 
 @attr.s(auto_attribs=True, eq=False)
 class Deletion(Event):
     """An identifiers is deleted."""
 
-    def __eq__(self, other):
-        if isinstance(other, Deletion):
-            return self.target == other.target
-        if isinstance(other, dict):
-            return self.target == other["target"]
-        return False
+    def __eq__(self, other: Deletion):
+        return self.target == other.target
