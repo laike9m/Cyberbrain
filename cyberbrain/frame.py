@@ -48,9 +48,9 @@ class Frame:
 
     def add_new_event(self, event: Event):
         assert event.target
-        if self.raw_events[event.target] and isinstance(event, InitialValue):
-            # Make sure InitialValue is added at most once.
-            return
+        assert not (
+            self.raw_events[event.target] and isinstance(event, InitialValue)
+        ), "InitialValue shouldn't be added twice"
         self.raw_events[event.target].append(event)
 
         # Creates a new checkpoint.
@@ -80,7 +80,7 @@ class Frame:
         return value
 
     @property
-    def accumulated_events(self):
+    def accumulated_events(self) -> dict[str, list[Event]]:
         """Returns events with accumulated value.
 
         Now that FrameState only stores delta for Mutation event, if we need to know
