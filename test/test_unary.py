@@ -1,4 +1,4 @@
-from cyberbrain import Creation, Mutation
+from cyberbrain import Creation, Mutation, InitialValue
 
 
 def test_unary_operations(tracer):
@@ -14,6 +14,7 @@ def test_unary_operations(tracer):
     tracer.register()
 
     assert tracer.events == {
+        'a': [InitialValue(target='a', value=1)],
         "b": [
             Creation(target="b", value=1, sources={"a"}),
             Mutation(target="b", value=-1, sources={"a"}),

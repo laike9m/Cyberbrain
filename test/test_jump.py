@@ -1,4 +1,4 @@
-from cyberbrain import Mutation, Creation
+from cyberbrain import Mutation, Creation, InitialValue
 
 
 def test_jump(tracer):
@@ -24,6 +24,9 @@ def test_jump(tracer):
     tracer.register()
 
     assert tracer.events == {
+        'a': [InitialValue(target='a', value=[])],
+        'b': [InitialValue(target='b', value='b')],
+        'c': [InitialValue(target='c', value='c')],
         "x": [
             Creation(target="x", value=1, sources=set()),
             Mutation(target="x", value=2, sources=set()),
