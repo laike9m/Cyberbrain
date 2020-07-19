@@ -18,7 +18,7 @@ attrs = "^19.3.0"
 tox = "^3.14"
 tox-pyenv = "^1.1"
 pytest-xdist = "^1.31"
-pytest = "*"
+pytest = { git = "https://github.com/pytest-dev/pytest.git", branch = "master" }
 pyhamcrest = "^2.0.2"
 dephell = "^0.8.3"
 bytecode = "^0.11.0"
@@ -34,6 +34,14 @@ R0903,W0631,W0212,W0603,R1710,R0201
 [tool.dephell.main]
 from = {format = "poetry", path = "pyproject.toml"}
 to = {format = "setuppy", path = "setup.py"}
+
+[tool.pytest.ini_options]
+testpaths = [ # Used to speed up test discovery.
+    "test",
+]
+# Not entirely sure if this is useful, but there's no harm adding it.
+norecursedirs = ["cyberbrain-vsc*", ".vscode", "*.egg"]
+
 [build-system]
 requires = ["poetry>=1.0"]
 build-backend = "poetry.masonry.api"
