@@ -14,11 +14,11 @@ def test_unary_operations(tracer):
     tracer.register()
 
     assert tracer.events == {
-        'a': [InitialValue(target='a', value=1)],
+        "a": [InitialValue(target="a", value=1, lineno=9)],
         "b": [
-            Creation(target="b", value=1, sources={"a"}),
-            Mutation(target="b", value=-1, sources={"a"}),
-            Mutation(target="b", value=False, sources={"a"}),
-            Mutation(target="b", value=-2, sources={"a"}),
-        ]
+            Creation(target="b", value=1, sources={"a"}, lineno=9),
+            Mutation(target="b", value=-1, sources={"a"}, lineno=10),
+            Mutation(target="b", value=False, sources={"a"}, lineno=11),
+            Mutation(target="b", value=-2, sources={"a"}, lineno=12),
+        ],
     }

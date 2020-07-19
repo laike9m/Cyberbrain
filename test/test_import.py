@@ -26,6 +26,7 @@ def test_import(tracer):
                                 "target": "os",
                                 "value": starts_with("<module 'os'"),
                                 "sources": set(),
+                                "lineno": 9,
                             }
                         ),
                     )
@@ -40,6 +41,7 @@ def test_import(tracer):
                                     starts_with("<module"), contains_string("path")
                                 ),
                                 "sources": set(),
+                                "lineno": 10,
                             }
                         ),
                     )
@@ -48,10 +50,15 @@ def test_import(tracer):
                     all_of(
                         instance_of(Creation),
                         has_properties(
-                            {"target": "settrace", "value": settrace, "sources": set()}
+                            {
+                                "target": "settrace",
+                                "value": settrace,
+                                "sources": set(),
+                                "lineno": 11,
+                            }
                         ),
                     )
                 ),
-            },
+            }
         ),
     )

@@ -44,6 +44,7 @@ def test_attribute(tracer):
                                 "value": all_of(
                                     instance_of(A), not_(has_property("x"))
                                 ),
+                                "lineno": 28,
                             }
                         ),
                     ),
@@ -54,6 +55,7 @@ def test_attribute(tracer):
                                 "target": "a1",
                                 "value": has_property("x", has_property("y", 1)),
                                 "sources": {"a2"},
+                                "lineno": 28,
                             }
                         ),
                     ),
@@ -64,6 +66,7 @@ def test_attribute(tracer):
                                 "target": "a1",
                                 "value": has_property("x", has_property("y", 2)),
                                 "sources": set(),
+                                "lineno": 29,
                             }
                         ),
                     ),
@@ -74,6 +77,7 @@ def test_attribute(tracer):
                                 "target": "a1",
                                 "value": not_(has_property("x")),
                                 "sources": set(),
+                                "lineno": 30,
                             }
                         ),
                     ),

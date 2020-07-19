@@ -24,8 +24,8 @@ class FrameLogger:
         self.instructions = {
             instr.offset: instr for instr in dis.get_instructions(frame.f_code)
         }
+        self.offset_to_lineno = self._map_bytecode_offset_to_lineno(frame)
         self.filename = frame.f_code.co_filename
-        # TODO: Use dis.findlinestarts(code) to build offset -> lineno mapping
 
         # tracer.init() contains the following instructions:
         #               0 LOAD_FAST                0 (tracer)
@@ -44,6 +44,23 @@ class FrameLogger:
         )
         self.debug_mode = debug_mode
         del frame
+
+    def _map_bytecode_offset_to_lineno(self, frame) -> dict[int, int]:
+        """Maps bytecode offset to lineno in file.
+
+        Note that the lineno may not be accurate for multi-line statements. If we find
+        this to be blocking, we might need to use a Range to represent lineno.
+        """
+        mapping = dict(dis.findlinestarts(frame.f_code))
+        frame_byte_count = len(frame.f_code.co_code)
+        for offset, lineno in mapping.copy().items():
+            while offset <= frame_byte_count:
+                offset += 2
+                if offset in mapping:
+                    break
+                mapping[offset] = lineno
+
+        return mapping
 
     def update(self, frame: FrameType):
         """Prints names whose values changed since this function is called last time.
@@ -139,7 +156,10 @@ class FrameLogger:
         ):
             self.frame_state.add_new_event(
                 InitialValue(
-                    target=target, value=self._deepcopy_value_from_frame(target, frame)
+                    target=target,
+                    value=self._deepcopy_value_from_frame(target, frame),
+                    lineno=self.offset_to_lineno[instr.offset],
+                    filename=self.filename,
                 )
             )
 
@@ -165,11 +185,15 @@ class FrameLogger:
                             self._get_value_from_frame(target, frame),
                         )
                     )
+                    change.filename = self.filename
+                    change.lineno = self.offset_to_lineno[instr.offset]
                 else:
                     change = Creation(
                         target=target,
                         value=self._deepcopy_value_from_frame(target, frame),
                         sources=change.sources,
+                        lineno=self.offset_to_lineno[instr.offset],
+                        filename=self.filename,
                     )
 
             print(cyan(str(change)))
