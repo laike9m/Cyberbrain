@@ -133,21 +133,20 @@ class FrameLogger:
             or target in frame.f_builtins
         ):
             return
+        # Logs InitialValue event if it is not recorded by frame_state yet.
         if self._name_exist_in_frame(target, frame) and not self.frame_state.knows(
             target
         ):
             self.frame_state.add_new_event(
                 InitialValue(
-                    target=target, value=self._deepcopy_value_from_frame(target, frame),
+                    target=target, value=self._deepcopy_value_from_frame(target, frame)
                 )
             )
 
-    def _log_events(
-        self, frame: FrameType, instr: Instruction, jumped: bool = False,
-    ):
+    def _log_events(self, frame: FrameType, instr: Instruction, jumped: bool = False):
         """Logs changed values by the given instruction, if any."""
         self._debug_log(
-            f"{cyan('Executed instruction')} at line {frame.f_lineno}:", instr,
+            f"{cyan('Executed instruction')} at line {frame.f_lineno}:", instr
         )
 
         change = self.value_stack.emit_event_and_update_stack(
@@ -176,9 +175,7 @@ class FrameLogger:
             print(cyan(str(change)))
             self.frame_state.add_new_event(change)
 
-        self._debug_log(
-            f"{yellow('Current stack:')}", self.value_stack.stack,
-        )
+        self._debug_log(f"{yellow('Current stack:')}", self.value_stack.stack)
         del frame
 
     @classmethod
