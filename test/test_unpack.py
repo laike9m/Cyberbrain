@@ -1,4 +1,4 @@
-from cyberbrain import Creation, Mutation
+from cyberbrain import Creation, Mutation, InitialValue
 
 
 def test_unpack(tracer):
@@ -23,6 +23,10 @@ def test_unpack(tracer):
     tracer.register()
 
     assert tracer.events == {
+        'l1': [InitialValue(target='l1', value=[1, 2])],
+        'm1': [InitialValue(target='m1', value={1: 2})],
+        'm2': [InitialValue(target='m2', value={1: 2})],
+        'numbers': [InitialValue(target='numbers', value=[1, 2, 3, 4])],
         "a": [
             Creation(target="a", value="h", sources=set()),
             Mutation(target="a", value=1, sources={"l1"}),
@@ -35,13 +39,13 @@ def test_unpack(tracer):
             Creation(target="b", value="i", sources=set()),
             Mutation(target="b", value=2, sources={"l1"}),
         ],
-        "first": [Creation(target="first", value=1, sources={"numbers"}),],
-        "rest": [Creation(target="rest", value=[2, 3, 4], sources={"numbers"}),],
+        "first": [Creation(target="first", value=1, sources={"numbers"}), ],
+        "rest": [Creation(target="rest", value=[2, 3, 4], sources={"numbers"}), ],
         "beginning": [
             Creation(target="beginning", value=[1, 2, 3], sources={"numbers"}),
         ],
-        "last": [Creation(target="last", value=4, sources={"numbers"}),],
-        "head": [Creation(target="head", value=1, sources={"numbers"}),],
-        "middle": [Creation(target="middle", value=[2, 3], sources={"numbers"}),],
-        "tail": [Creation(target="tail", value=4, sources={"numbers"}),],
+        "last": [Creation(target="last", value=4, sources={"numbers"}), ],
+        "head": [Creation(target="head", value=1, sources={"numbers"}), ],
+        "middle": [Creation(target="middle", value=[2, 3], sources={"numbers"}), ],
+        "tail": [Creation(target="tail", value=4, sources={"numbers"}), ],
     }

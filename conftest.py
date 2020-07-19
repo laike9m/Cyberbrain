@@ -1,6 +1,9 @@
 import sys
 
-collect_ignore = []
+# test_outside_func.py is ignored because it has code in global scope, and is always
+# executed if not ignored.
+# TODO: Add this test to makefile and tox.ini
+collect_ignore = ["test/test_outside_func.py"]
 
 if sys.version_info[:2] < (3, 8):
     collect_ignore.append("test/test_block_py38.py")

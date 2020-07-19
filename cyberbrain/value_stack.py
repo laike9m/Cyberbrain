@@ -39,17 +39,6 @@ class ExceptionInfo:
     traceback: any
 
 
-class EvaluationMode(enum.Enum):
-    """Whether instruction evaluation happens before or after its execution."""
-
-    BEFORE_INSTR_EXECUTION = 1
-    AFTER_INSTR_EXECUTION = 2
-
-
-BEFORE_INSTR_EXECUTION = EvaluationMode.BEFORE_INSTR_EXECUTION
-AFTER_INSTR_EXECUTION = EvaluationMode.AFTER_INSTR_EXECUTION
-
-
 def emit_event(f):
     """Decorator used to denote that a handler emits at least one event.
 
@@ -77,11 +66,7 @@ class GeneralValueStack:
         self.return_value = _placeholder
 
     def emit_event_and_update_stack(
-        self,
-        instr: Instruction,
-        frame: FrameType,
-        evaluation_mode: EvaluationMode,
-        jumped: bool,
+        self, instr: Instruction, frame: FrameType, jumped: bool,
     ) -> Optional[Event]:
         """Given a instruction, emits mutation(s) if any, and updates the stack.
 
@@ -89,8 +74,6 @@ class GeneralValueStack:
             instr: current instruction.
             jumped: whether jump just happened.
             frame: current frame.
-            evaluation_mode: If instruction evaluation happens before it's been
-                             executed, don't modify stack, only emits events.
         """
 
         if instr.opname.startswith("BINARY") or instr.opname.startswith("INPLACE"):
@@ -105,14 +88,6 @@ class GeneralValueStack:
                     f"Please add\ndef _{instr.opname}_handler(self, instr):"
                 )
 
-        if (
-            not hasattr(handler, "emit_event")
-            and evaluation_mode is BEFORE_INSTR_EXECUTION
-        ):
-            # When a handler does not have evaluation_mode parameter, it is guaranteed
-            # to not emit any event.
-            return None
-
         # Pass arguments on demand.
         parameters = inspect.signature(handler).parameters
         args = []
@@ -122,8 +97,6 @@ class GeneralValueStack:
             args.append(jumped)
         if "frame" in parameters:
             args.append(frame)
-        if "evaluation_mode" in parameters:
-            args.append(evaluation_mode)
         del frame
         return handler(*args)
 
@@ -251,25 +224,17 @@ class GeneralValueStack:
         self._pop_n_push_one(2)
 
     @emit_event
-    def _STORE_SUBSCR_handler(self, evaluation_mode):
-        if evaluation_mode is BEFORE_INSTR_EXECUTION:
-            return Mutation(target=self.tos1[0], sources=set(self.tos + self.tos2))
-
-        if evaluation_mode is AFTER_INSTR_EXECUTION:
-            tos, tos1, tos2 = self._pop(3)
-            assert len(tos1) == 1
-            return Mutation(target=tos1[0], sources=set(tos + tos2))
+    def _STORE_SUBSCR_handler(self):
+        tos, tos1, tos2 = self._pop(3)
+        assert len(tos1) == 1
+        return Mutation(target=tos1[0], sources=set(tos + tos2))
 
     # noinspection DuplicatedCode
     @emit_event
-    def _DELETE_SUBSCR_handler(self, evaluation_mode):
-        if evaluation_mode is BEFORE_INSTR_EXECUTION:
-            return Mutation(target=self.tos1[0], sources=set(self.tos))
-
-        if evaluation_mode is AFTER_INSTR_EXECUTION:
-            tos, tos1 = self._pop(2)
-            assert len(tos1) == 1
-            return Mutation(target=tos1[0], sources=set(tos))
+    def _DELETE_SUBSCR_handler(self):
+        tos, tos1 = self._pop(2)
+        assert len(tos1) == 1
+        return Mutation(target=tos1[0], sources=set(tos))
 
     def _SETUP_ANNOTATIONS_handler(self):
         pass
@@ -279,10 +244,9 @@ class GeneralValueStack:
         self._pop()
 
     @emit_event
-    def _STORE_NAME_handler(self, instr, evaluation_mode):
+    def _STORE_NAME_handler(self, instr):
         mutation = Mutation(target=instr.argval, sources=set(self.tos))
-        if evaluation_mode is AFTER_INSTR_EXECUTION:
-            self._pop()
+        self._pop()
         return mutation
 
     @emit_event
@@ -300,28 +264,20 @@ class GeneralValueStack:
 
     # noinspection DuplicatedCode
     @emit_event
-    def _STORE_ATTR_handler(self, evaluation_mode):
-        if evaluation_mode is BEFORE_INSTR_EXECUTION:
-            return Mutation(target=self.tos[0], sources=set(self.tos1))
-
-        if evaluation_mode is AFTER_INSTR_EXECUTION:
-            tos, tos1 = self._pop(2)
-            assert len(tos) == 1
-            return Mutation(target=tos[0], sources=set(tos1))
+    def _STORE_ATTR_handler(self):
+        tos, tos1 = self._pop(2)
+        assert len(tos) == 1
+        return Mutation(target=tos[0], sources=set(tos1))
 
     @emit_event
-    def _DELETE_ATTR_handler(self, evaluation_mode):
-        if evaluation_mode is BEFORE_INSTR_EXECUTION:
-            return Mutation(target=self.tos[0])
-
-        if evaluation_mode is AFTER_INSTR_EXECUTION:
-            tos = self._pop()
-            assert len(tos) == 1
-            return Mutation(target=tos[0])
+    def _DELETE_ATTR_handler(self):
+        tos = self._pop()
+        assert len(tos) == 1
+        return Mutation(target=tos[0])
 
     @emit_event
-    def _STORE_GLOBAL_handler(self, instr, evaluation_mode):
-        return self._STORE_NAME_handler(instr, evaluation_mode)
+    def _STORE_GLOBAL_handler(self, instr):
+        return self._STORE_NAME_handler(instr)
 
     @emit_event
     def _DELETE_GLOBAL_handler(self, instr):
@@ -409,11 +365,11 @@ class GeneralValueStack:
         self._push(_placeholder)
 
     def _LOAD_GLOBAL_handler(self, instr, frame):
-        # Exclude builtin types like "range" so they don't become a source of mutations.
         # TODO: this method (and other LOAD_XXX methods) seriously need rewriting.
         # Because in the end we need to handle values based on their type.
         val = _placeholder
 
+        # Exclude builtin types like "range" so they don't become a source of mutations.
         if instr.argval in frame.f_builtins:
             val = frame.f_builtins[instr.argval]
             if not utils.is_exception(val):
@@ -429,8 +385,8 @@ class GeneralValueStack:
         self._push(instr.argrepr)
 
     @emit_event
-    def _STORE_FAST_handler(self, instr, evaluation_mode):
-        return self._STORE_NAME_handler(instr, evaluation_mode)
+    def _STORE_FAST_handler(self, instr):
+        return self._STORE_NAME_handler(instr)
 
     @emit_event
     def _DELETE_FAST_handler(self, instr):
@@ -457,17 +413,12 @@ class GeneralValueStack:
             self._push(elements)
 
     @emit_event
-    def _CALL_METHOD_handler(self, instr, evaluation_mode):
+    def _CALL_METHOD_handler(self, instr):
         # TODO: Deal with callsite.
-        if evaluation_mode is AFTER_INSTR_EXECUTION:
-            args = self._pop(instr.arg)
-            inst_or_callable = self._pop()
-            method_or_null = self._pop()  # method or NULL
-            self._push(utils.flatten(inst_or_callable, method_or_null))
-
-        if evaluation_mode is BEFORE_INSTR_EXECUTION:
-            args = [] if instr.arg == 0 else self.stack[-instr.arg :]
-            inst_or_callable = self.stack[-instr.arg - 1]
+        args = self._pop(instr.arg)
+        inst_or_callable = self._pop()
+        method_or_null = self._pop()  # method or NULL
+        self._push(utils.flatten(inst_or_callable, method_or_null))
 
         if inst_or_callable[0] == "tracer":  # exclude tracer calls.
             return
