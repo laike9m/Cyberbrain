@@ -23,29 +23,50 @@ def test_unpack(tracer):
     tracer.register()
 
     assert tracer.events == {
-        'l1': [InitialValue(target='l1', value=[1, 2])],
-        'm1': [InitialValue(target='m1', value={1: 2})],
-        'm2': [InitialValue(target='m2', value={1: 2})],
-        'numbers': [InitialValue(target='numbers', value=[1, 2, 3, 4])],
+        "l1": [InitialValue(target="l1", value=[1, 2], lineno=12)],
+        "m1": [InitialValue(target="m1", value={1: 2}, lineno=19)],
+        "m2": [InitialValue(target="m2", value={1: 2}, lineno=19)],
+        "numbers": [InitialValue(target="numbers", value=[1, 2, 3, 4], lineno=13)],
         "a": [
-            Creation(target="a", value="h", sources=set()),
-            Mutation(target="a", value=1, sources={"l1"}),
-            Mutation(target="a", value=(1, 2, 1, 2, 3, 4), sources={"l1", "numbers"}),
-            Mutation(target="a", value=[1, 2, 1, 2, 3, 4], sources={"l1", "numbers"}),
-            Mutation(target="a", value={1, 2, 1, 2, 3, 4}, sources={"l1", "numbers"}),
-            Mutation(target="a", value={1: 2}, sources={"m1", "m2"}),
+            Creation(target="a", value="h", sources=set(), lineno=11),
+            Mutation(target="a", value=1, sources={"l1"}, lineno=12),
+            Mutation(
+                target="a",
+                value=(1, 2, 1, 2, 3, 4),
+                sources={"l1", "numbers"},
+                lineno=16,
+            ),
+            Mutation(
+                target="a",
+                value=[1, 2, 1, 2, 3, 4],
+                sources={"l1", "numbers"},
+                lineno=17,
+            ),
+            Mutation(
+                target="a",
+                value={1, 2, 1, 2, 3, 4},
+                sources={"l1", "numbers"},
+                lineno=18,
+            ),
+            Mutation(target="a", value={1: 2}, sources={"m1", "m2"}, lineno=19),
         ],
         "b": [
-            Creation(target="b", value="i", sources=set()),
-            Mutation(target="b", value=2, sources={"l1"}),
+            Creation(target="b", value="i", sources=set(), lineno=11),
+            Mutation(target="b", value=2, sources={"l1"}, lineno=12),
         ],
-        "first": [Creation(target="first", value=1, sources={"numbers"}), ],
-        "rest": [Creation(target="rest", value=[2, 3, 4], sources={"numbers"}), ],
+        "first": [Creation(target="first", value=1, sources={"numbers"}, lineno=13)],
+        "rest": [
+            Creation(target="rest", value=[2, 3, 4], sources={"numbers"}, lineno=13)
+        ],
         "beginning": [
-            Creation(target="beginning", value=[1, 2, 3], sources={"numbers"}),
+            Creation(
+                target="beginning", value=[1, 2, 3], sources={"numbers"}, lineno=14
+            )
         ],
-        "last": [Creation(target="last", value=4, sources={"numbers"}), ],
-        "head": [Creation(target="head", value=1, sources={"numbers"}), ],
-        "middle": [Creation(target="middle", value=[2, 3], sources={"numbers"}), ],
-        "tail": [Creation(target="tail", value=4, sources={"numbers"}), ],
+        "last": [Creation(target="last", value=4, sources={"numbers"}, lineno=14)],
+        "head": [Creation(target="head", value=1, sources={"numbers"}, lineno=15)],
+        "middle": [
+            Creation(target="middle", value=[2, 3], sources={"numbers"}, lineno=15)
+        ],
+        "tail": [Creation(target="tail", value=4, sources={"numbers"}, lineno=15)],
     }

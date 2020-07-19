@@ -24,24 +24,29 @@ def test_miscellaneous(tracer):
     tracer.register()
 
     assert tracer.events == {
-        'a': [InitialValue(target='a', value='a')],
-        'b': [InitialValue(target='b', value='b')],
-        'c': [InitialValue(target='c', value='c')],
-        'd': [InitialValue(target='d', value='d')],
+        "a": [InitialValue(target="a", value="a", lineno=15)],
+        "b": [InitialValue(target="b", value="b", lineno=15)],
+        "c": [InitialValue(target="c", value="c", lineno=15)],
+        "d": [InitialValue(target="d", value="d", lineno=15)],
         "x": [
-            Creation(target="x", value="a b    'c' 'd' ", sources={"a", "b", "d", "c"}),
-            Mutation(target="x", value=False, sources={"a", "b"}),
-            Mutation(target="x", value=0, sources={"g"}),
+            Creation(
+                target="x",
+                value="a b    'c' 'd' ",
+                sources={"a", "b", "d", "c"},
+                lineno=15,
+            ),
+            Mutation(target="x", value=False, sources={"a", "b"}, lineno=16),
+            Mutation(target="x", value=0, sources={"g"}, lineno=20),
         ],
         "e": [
-            InitialValue(target="e", value=[1, 2, 3]),
-            Mutation(target="e", value=[1, 2], sources=set()),
-            Mutation(target="e", value=[4, 2], sources={"e"}),
-            Deletion(target="e"),
+            InitialValue(target="e", value=[1, 2, 3], lineno=17),
+            Mutation(target="e", value=[1, 2], lineno=17),
+            Mutation(target="e", value=[4, 2], sources={"e"}, lineno=17),
+            Deletion(target="e", lineno=18),
         ],
         "g": [
-            InitialValue(target="g", value=0),
-            Mutation(target="g", value=1, sources=set()),
-            Deletion(target="g"),
+            InitialValue(target="g", value=0, lineno=20),
+            Mutation(target="g", value=1, lineno=21),
+            Deletion(target="g", lineno=22),
         ],
     }

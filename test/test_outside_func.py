@@ -14,9 +14,14 @@ tracer.register()
 
 def test_delete_name():
     assert tracer.events == {
-        "x": [InitialValue(target="x", value=1), Deletion(target="x")],
+        "x": [
+            InitialValue(target="x", value=1, lineno=10),
+            Deletion(target="x", lineno=10),
+        ],
         "__annotations__": [
-            InitialValue(target="__annotations__", value={}),
-            Mutation(target="__annotations__", value={"y": int}, sources={"int"}),
+            InitialValue(target="__annotations__", value={}, lineno=11),
+            Mutation(
+                target="__annotations__", value={"y": int}, sources={"int"}, lineno=11
+            ),
         ],
     }

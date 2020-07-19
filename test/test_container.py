@@ -21,19 +21,19 @@ def test_container(tracer):
     tracer.register()
 
     assert tracer.events == {
-        'a': [InitialValue(target='a', value=1)],
-        'b': [InitialValue(target='b', value=1)],
-        'c': [InitialValue(target='c', value=2)],
-        'e': [InitialValue(target='e', value=0)],
+        "a": [InitialValue(target="a", value=1, lineno=11)],
+        "b": [InitialValue(target="b", value=1, lineno=11)],
+        "c": [InitialValue(target="c", value=2, lineno=16)],
+        "e": [InitialValue(target="e", value=0, lineno=18)],
         "d": [
-            Creation(target="d", value=[1, 1], sources={"a", "b"}),
-            Mutation(target="d", value=(1, 1), sources={"a", "b"}),
-            Mutation(target="d", value={1}, sources={"a", "b"}),
-            Mutation(target="d", value={1: 1}, sources={"a", "b"}),
-            Mutation(target="d", value={1: 1, 2: 1}, sources={"a", "b"}),
-            Mutation(target="d", value={1: 2, 2: 1}, sources={"a", "c"}),
-            Mutation(target="d", value={2: 1}, sources={"a"}),
-            Mutation(target="d", value=[1, 1], sources={"a", "b", "c", "e"}),
-            Mutation(target="d", value=[1, 1], sources={"a", "b", "c", "e"}),
-        ]
+            Creation(target="d", value=[1, 1], sources={"a", "b"}, lineno=11),
+            Mutation(target="d", value=(1, 1), sources={"a", "b"}, lineno=12),
+            Mutation(target="d", value={1}, sources={"a", "b"}, lineno=13),
+            Mutation(target="d", value={1: 1}, sources={"a", "b"}, lineno=14),
+            Mutation(target="d", value={1: 1, 2: 1}, sources={"a", "b"}, lineno=15),
+            Mutation(target="d", value={1: 2, 2: 1}, sources={"a", "c"}, lineno=16),
+            Mutation(target="d", value={2: 1}, sources={"a"}, lineno=17),
+            Mutation(target="d", value=[1, 1], sources={"a", "b", "c", "e"}, lineno=18),
+            Mutation(target="d", value=[1, 1], sources={"a", "b", "c", "e"}, lineno=19),
+        ],
     }

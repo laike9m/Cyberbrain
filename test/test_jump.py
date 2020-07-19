@@ -24,17 +24,17 @@ def test_jump(tracer):
     tracer.register()
 
     assert tracer.events == {
-        'a': [InitialValue(target='a', value=[])],
-        'b': [InitialValue(target='b', value='b')],
-        'c': [InitialValue(target='c', value='c')],
+        "a": [InitialValue(target="a", value=[], lineno=11)],
+        "b": [InitialValue(target="b", value="b", lineno=19)],
+        "c": [InitialValue(target="c", value="c", lineno=19)],
         "x": [
-            Creation(target="x", value=1, sources=set()),
-            Mutation(target="x", value=2, sources=set()),
+            Creation(target="x", value=1, lineno=14),
+            Mutation(target="x", value=2, lineno=17),
             # This is a known defect. We have no way to know `x` comes from `a`, because
             # the result of `a != b` only determines whether to jump to execute `b != c`
             # I think it's fine though.
-            Mutation(target="x", value=True, sources={"b", "c"}),
+            Mutation(target="x", value=True, sources={"b", "c"}, lineno=19),
             # Same defect here.
-            Mutation(target="x", value="c", sources={"c"}),
-        ]
+            Mutation(target="x", value="c", sources={"c"}, lineno=20),
+        ],
     }
