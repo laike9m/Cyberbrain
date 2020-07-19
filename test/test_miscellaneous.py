@@ -24,6 +24,10 @@ def test_miscellaneous(tracer):
     tracer.register()
 
     assert tracer.events == {
+        'a': [InitialValue(target='a', value='a')],
+        'b': [InitialValue(target='b', value='b')],
+        'c': [InitialValue(target='c', value='c')],
+        'd': [InitialValue(target='d', value='d')],
         "x": [
             Creation(target="x", value="a b    'c' 'd' ", sources={"a", "b", "d", "c"}),
             Mutation(target="x", value=False, sources={"a", "b"}),

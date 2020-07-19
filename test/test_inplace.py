@@ -23,6 +23,7 @@ def test_inplace_operations(tracer):
     tracer.register()
 
     assert tracer.events == {
+        'b': [InitialValue(target='b', value=2)],
         "a1": [
             InitialValue(target="a1", value=2),
             Mutation(target="a1", value=4, sources={"a1", "b"}),

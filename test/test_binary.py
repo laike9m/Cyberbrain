@@ -1,9 +1,9 @@
-from cyberbrain import Mutation, Creation
+from cyberbrain import Mutation, Creation, InitialValue
 
 
 def test_binary_operation(tracer):
     a = b = 1
-    l = [0, 1]
+    lst = [0, 1]
 
     tracer.init()
 
@@ -14,7 +14,7 @@ def test_binary_operation(tracer):
     c = a % b  # BINARY_MODULO
     c = a + b  # BINARY_ADD
     c = a - b  # BINARY_SUBTRACT
-    c = l[a]  # BINARY_SUBSCR
+    c = lst[a]  # BINARY_SUBSCR
     c = a << b  # BINARY_LSHIFT
     c = a >> b  # BINARY_RSHIFT
     c = a & b  # BINARY_AND
@@ -24,6 +24,9 @@ def test_binary_operation(tracer):
     tracer.register()
 
     assert tracer.events == {
+        "a": [InitialValue(target='a', value=1)],
+        'b': [InitialValue(target='b', value=1)],
+        'lst': [InitialValue(target='lst', value=[0, 1])],
         "c": [
             Creation(target="c", value=1, sources={"a", "b"}),
             Mutation(target="c", value=1, sources={"a", "b"}),
@@ -32,7 +35,7 @@ def test_binary_operation(tracer):
             Mutation(target="c", value=0, sources={"a", "b"}),
             Mutation(target="c", value=2, sources={"a", "b"}),
             Mutation(target="c", value=0, sources={"a", "b"}),
-            Mutation(target="c", value=1, sources={"a", "l"}),
+            Mutation(target="c", value=1, sources={"a", "lst"}),
             Mutation(target="c", value=2, sources={"a", "b"}),
             Mutation(target="c", value=0, sources={"a", "b"}),
             Mutation(target="c", value=1, sources={"a", "b"}),

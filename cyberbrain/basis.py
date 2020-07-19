@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any
 
 import attr
 import shortuuid
@@ -11,13 +11,12 @@ from deepdiff import Delta
 _dummy = object()
 
 
-# TODO: Event class should contain the location where the change happened.
-
-
 @attr.s(auto_attribs=True)
 class Event:
     target: str
-    uid: string = attr.ib(factory=shortuuid.uuid, eq=False)
+    # lineno: int = attr.ib(eq=False)
+    # filename: str = attr.ib(eq=False)
+    uid: string = attr.ib(factory=shortuuid.uuid, eq=False, repr=False)
 
 
 @attr.s(auto_attribs=True)
@@ -30,7 +29,7 @@ class InitialValue(Event):
 
     a = 1
     cyberbrain.init()
-    a = 2  --> emit two events: first Inheritance, then Mutation.
+    a = 2  --> emit two events: first InitialValue, then Mutation.
     cyberbrain.init()
 
     Compared to this one, which only emits a Creation event.
@@ -54,13 +53,13 @@ class Creation(Event):
     sources: set[str] = set()  # Source can be empty, like a = 1
 
 
-# For now, we don't want to compare delta, so disable auto-generation of __eq__.
+# For now, we don't want to compare delta, so disable auto-generated __eq__.
 @attr.s(auto_attribs=True, eq=False)
 class Mutation(Event):
     """An identifier is mutated."""
 
     # Represents the diffs from before and after the mutation.
-    delta: Optional[Delta] = None
+    delta: Delta = Delta({})
 
     sources: set[str] = set()  # Source can be empty, like a = 1
 

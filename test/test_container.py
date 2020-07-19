@@ -1,4 +1,4 @@
-from cyberbrain import Mutation, Creation
+from cyberbrain import Mutation, Creation, InitialValue
 
 
 def test_container(tracer):
@@ -21,6 +21,10 @@ def test_container(tracer):
     tracer.register()
 
     assert tracer.events == {
+        'a': [InitialValue(target='a', value=1)],
+        'b': [InitialValue(target='b', value=1)],
+        'c': [InitialValue(target='c', value=2)],
+        'e': [InitialValue(target='e', value=0)],
         "d": [
             Creation(target="d", value=[1, 1], sources={"a", "b"}),
             Mutation(target="d", value=(1, 1), sources={"a", "b"}),
