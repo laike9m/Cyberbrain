@@ -10,7 +10,7 @@ from crayons import yellow, cyan
 from deepdiff import DeepDiff, Delta
 
 from . import value_stack
-from .basis import Mutation, Creation, InitialValue
+from .basis import Mutation, Creation, InitialValue, Deletion
 from .frame import Frame
 from .utils import pprint, computed_gotos_enabled
 
@@ -195,6 +195,8 @@ class FrameLogger:
                         lineno=self.offset_to_lineno[instr.offset],
                         filename=self.filename,
                     )
+            elif isinstance(change, Deletion):
+                change.lineno = self.offset_to_lineno[instr.offset]
 
             print(cyan(str(change)))
             self.frame_state.add_new_event(change)

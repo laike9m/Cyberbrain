@@ -82,4 +82,5 @@ class Deletion(Event):
     """An identifiers is deleted."""
 
     def __eq__(self, other: Deletion):
-        return self.target == other.target
+        print(self, other)
+        return (self.target, self.lineno) == (other.target, other.lineno)
