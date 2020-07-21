@@ -3,9 +3,7 @@
 import argparse
 import sys
 
-from . import logger, utils
-
-# from .rpc import server
+from . import logger, utils, rpc_server
 from .basis import _dummy
 
 _debug_mode = False
@@ -31,6 +29,10 @@ class Tracer:
         self.frame_logger = None
         self.debug_mode = debug_mode
 
+        # For now server is put inside Tracer. Later when we need to trace multiple
+        # frames it should be moved to somewhere else.
+        self.server = rpc_server.Server()
+
     def init(self):
         """Initializes tracing."""
         self.global_frame = sys._getframe(1)
@@ -47,12 +49,16 @@ class Tracer:
         sys.settrace(None)
         self.global_frame.f_trace = None
         del self.global_frame
-        # if "pytest" not in sys.modules:
-        #     server.run()
+        if "pytest" in sys.modules:
+            # Picks a random port for testing to allow concurrent test execution.
+            self.server.serve(port=0, block=False)
+        else:
+            # If run in production, let the server wait for termination.
+            self.server.serve(block=True)
 
     @property
     def events(self):
-        """Test only. Provide access to logged events."""
+        """Test only. Provides access to logged events."""
         return self.frame_logger.frame.accumulated_events
 
     @property
