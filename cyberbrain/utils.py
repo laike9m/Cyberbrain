@@ -7,6 +7,8 @@ import subprocess
 import sys
 import sysconfig
 from pprint import pformat
+from types import FrameType
+from copy import deepcopy
 
 from pygments import highlight
 from pygments.formatters import Terminal256Formatter
@@ -102,6 +104,48 @@ def pprint(*args):
                 highlight(pformat(arg), PythonLexer(), Terminal256Formatter()) + "\n"
             )
     print(output)
+
+
+def deepcopy_value_from_frame(name: str, frame: FrameType):
+    """Given a frame and a name(identifier) saw in this frame, returns its value.
+
+    The value has to be deep copied to avoid being changed by code coming later.
+
+    I'm not 100% sure if this will always return the correct value. If we find a
+    case where it returns the wrong value due to name collisions, we can modify
+    code and store names with their scopes, like (a, local), (b, global).
+
+    Once we have a frame class, we might move this method there.
+    """
+    value = get_value_from_frame(name, frame)
+    del frame
+
+    # There are certain things you can't copy, like module.
+    try:
+        return deepcopy(value)
+    except TypeError:
+        return repr(value)
+
+
+def get_value_from_frame(name: str, frame: FrameType):
+    print(name, frame)
+    assert name_exist_in_frame(name, frame)
+    if name in frame.f_locals:
+        value = frame.f_locals[name]
+    elif name in frame.f_globals:
+        value = frame.f_globals[name]
+    else:
+        value = frame.f_builtins[name]
+    del frame
+    return value
+
+
+def name_exist_in_frame(name: str, frame: FrameType) -> bool:
+    result = any(
+        [name in frame.f_locals, name in frame.f_globals, name in frame.f_builtins]
+    )
+    del frame
+    return result
 
 
 if __name__ == "__main__":
