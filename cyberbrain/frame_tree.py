@@ -13,13 +13,23 @@ class FrameTree:
 
     Nodes are also indexed by frames' physical location (file name, line range).
 
-    TODO: add indexes.
+    TODO:
+        - Add indexes.
+        - Implement frame search.
     """
+
+    # For now, assuming frames are keyed by function/callable name.
+    frames: dict[str, Frame] = dict()
+
+    @classmethod
+    def add_frame(cls, frame_name, frame: Frame):
+        cls.frames[frame_name] = frame
 
     @classmethod
     def find_frames(cls, position: CursorPosition) -> list[Frame]:
         pass
 
     @classmethod
-    def get_frame(cls, frame_id: int) -> Frame:
-        pass
+    def get_frame(cls, frame_name) -> Frame:
+        assert cls.frames
+        return cls.frames[frame_name]

@@ -6,9 +6,11 @@ import os
 import subprocess
 import sys
 import sysconfig
+from copy import deepcopy
+from functools import lru_cache
+from pathlib import Path
 from pprint import pformat
 from types import FrameType
-from copy import deepcopy
 
 from pygments import highlight
 from pygments.formatters import Terminal256Formatter
@@ -16,6 +18,11 @@ from pygments.lexers import PythonLexer
 
 _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
 _PYTHON_EXECUTABLE_PATH = sys.executable
+
+
+@lru_cache(maxsize=1)
+def run_as_test() -> bool:
+    return "pytest" in sys.modules
 
 
 def computed_gotos_enabled() -> bool:
@@ -128,7 +135,6 @@ def deepcopy_value_from_frame(name: str, frame: FrameType):
 
 
 def get_value_from_frame(name: str, frame: FrameType):
-    print(name, frame)
     assert name_exist_in_frame(name, frame)
     if name in frame.f_locals:
         value = frame.f_locals[name]
@@ -146,6 +152,13 @@ def name_exist_in_frame(name: str, frame: FrameType) -> bool:
     )
     del frame
     return result
+
+
+def shorten_path(file_path, length):
+    """
+    Split the path into separate parts, select the last 'length' elements and join them
+    """
+    return str(Path(*Path(file_path).parts[-length:]))
 
 
 if __name__ == "__main__":

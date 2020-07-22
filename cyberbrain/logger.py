@@ -1,18 +1,15 @@
 from __future__ import annotations
 
 import dis
-from copy import deepcopy
 from dis import Instruction
 from types import FrameType
 from typing import Optional
 
 from crayons import yellow, cyan
-from deepdiff import DeepDiff, Delta
 
-from . import value_stack
-from .basis import Mutation, Creation, InitialValue, Deletion
 from .frame import Frame
-from .utils import pprint, computed_gotos_enabled
+from .frame_tree import FrameTree
+from .utils import pprint, computed_gotos_enabled, shorten_path
 
 _implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS", "END_FINALLY"}
 
@@ -20,10 +17,12 @@ _implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS", "END_FINALLY"}
 class FrameLogger:
     """Logger for a frame."""
 
-    def __init__(self, frame, debug_mode=False):
+    def __init__(self, frame: FrameType, debug_mode=False):
         self.frame = Frame(
-            frame.f_code.co_filename, self._map_bytecode_offset_to_lineno(frame)
+            shorten_path(frame.f_code.co_filename, 3),
+            self._map_bytecode_offset_to_lineno(frame),
         )
+        FrameTree.add_frame(frame.f_code.co_name, self.frame)
         self.instructions = {
             instr.offset: instr for instr in dis.get_instructions(frame.f_code)
         }
@@ -71,7 +70,7 @@ class FrameLogger:
         like "STORE_NAME" and "STORE_ATTR", and prints them.
         """
         last_i = frame.f_lasti
-        # print(f"last_i is {last_i}")
+        # print(f"{last_i=}, {frame=}")
 
         # Why do we care about jump?
         #
