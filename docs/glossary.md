@@ -17,3 +17,7 @@ Infer and restore how each variable changed during program execution.
 - Tracing Result
 
 The output of tracing which at least contains the change history of variables of interest.
+
+- Events
+
+TODO

@@ -2,10 +2,8 @@ from __future__ import annotations
 
 from collections import defaultdict
 from copy import copy
-from copy import deepcopy
 from typing import Any
 
-from crayons import cyan
 from deepdiff import DeepDiff, Delta
 
 from . import value_stack, utils
@@ -114,7 +112,7 @@ class Frame:
         elif isinstance(change, Deletion):
             change.lineno = self.offset_to_lineno[instr.offset]
 
-        print(cyan(str(change)))
+        # print(cyan(str(change)))
         self._add_new_event(change)
 
         del frame
@@ -126,7 +124,7 @@ class Frame:
         ), "InitialValue shouldn't be added twice"
         self.raw_events[event.target].append(event)
 
-        # Creates a new checkpoint.
+        # Creates a new snapshot.
         new_events_pointer = self.snapshots[-1].events_pointer.copy()
         new_events_pointer[event.target] += 1
         self.snapshots.append(Snapshot(events_pointer=new_events_pointer))
@@ -157,8 +155,8 @@ class Frame:
         """Returns events with accumulated value.
 
         Now that FrameState only stores delta for Mutation event, if we need to know
-        the value after a certain mutation (like in tests), the value has to be
-        re-calculated. This method does exactly that. Other events keep unchanged.
+        the value after a certain Mutation event (like in tests), the value has to be
+        re-calculated. This method serves this purpose. Other events are kept unchanged.
 
         e.g.
 
@@ -226,7 +224,18 @@ class Frame:
             比如
             Mutation(target="y", value="foo", sources={("x", snapshot=...)}, uid='4')
             我们就知道，y 的变化来源于发生变动之前的 x，而不是变动之后的 x
-            这样才能生成正确的 tracing result
+            这样才能生成正确的 tracing result.
+
+        frame_tree 查询逻辑可以先不实现，直接返回唯一一个 frame
+
+        现有的 test 可以沿用，在 assert tracing_result 的时候，因为 event.uid 没办法获知，需要实现
+        从 event 信息反查，即
+        tracing_result = {
+          get_uid(Mutation(target='x', lineno=2)): [
+            get_uid(Creation(target='y', lineno=1)
+          ]
+        }
+        这其实也不难做到
         """
 
 
@@ -238,7 +247,7 @@ class Snapshot:
     e.g. What's `b`'s value when `a` is set to 1
     """
 
-    # TODO: checkpoints should contain, but not keyed by code location, because code
+    # TODO: Snapshot should contain, but not keyed by code location, because code
     #  location can duplicate.
 
     __slots__ = ["events_pointer", "location"]
