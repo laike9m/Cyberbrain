@@ -193,7 +193,7 @@ class JumpDetector:
             # so last_i is 26.
             opname_next = self.instructions[jump_location].opname
             if opname_next == self.PREDICT_MAP.get(instr.opname):
-                print("Found PREDICT!! ☀️")
+                print("Found PREDICT!!")
                 computed_last_i += 2
 
         if computed_last_i == last_i:
