@@ -19,67 +19,6 @@ def test_hello(tracer, rpc_stub):
         ],
     }
 
-    from cyberbrain.generated import communication_pb2
-    from google.protobuf import text_format
+    from utils import assert_GetFrame
 
-    print(rpc_stub.GetFrame(communication_pb2.FrameLocater(frame_name="test_hello")))
-
-    assert rpc_stub.GetFrame(
-        communication_pb2.FrameLocater(frame_name="test_hello")
-    ) == text_format.Parse(
-        """
-        filename: "test_hello.py"
-        events {
-          key: "x"
-          value {
-            events {
-              creation {
-                uid: "test_hello:1"
-                filename: "test_hello.py"
-                lineno: 6
-                target: "x"
-                value: "hello world"
-              }
-            }
-            events {
-              mutation {
-                uid: "test_hello:4"
-                filename: "test_hello.py"
-                lineno: 8
-                target: "x"
-                value: "hello world"
-                delta: "{}"
-                sources: "y"
-              }
-            }
-          }
-        }
-        events {
-          key: "y"
-          value {
-            events {
-              creation {
-                uid: "test_hello:3"
-                filename: "test_hello.py"
-                lineno: 7
-                target: "y"
-                value: "hello world"
-                sources: "x"
-              }
-            }
-            events {
-              mutation {
-                uid: "test_hello:5"
-                filename: "test_hello.py"
-                lineno: 8
-                target: "y"
-                value: "hello world"
-                delta: "{}"
-                sources: "x"
-              }
-            }
-          }
-        }
-        """,
-        communication_pb2.Frame(),
-    )
+    assert_GetFrame(rpc_stub, "test_hello")

@@ -11,13 +11,19 @@ from functools import lru_cache
 from pathlib import Path
 from pprint import pformat
 from types import FrameType
+from typing import Any
 
+import jsonpickle
 from pygments import highlight
 from pygments.formatters import Terminal256Formatter
 from pygments.lexers import PythonLexer
 
 _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
 _PYTHON_EXECUTABLE_PATH = sys.executable
+
+
+def to_json(python_object: Any):
+    return jsonpickle.encode(python_object, unpicklable=False)
 
 
 @lru_cache(maxsize=1)
