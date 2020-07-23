@@ -14,7 +14,6 @@ protobuf = "^3.12.2"
 shortuuid = "^1.0.1"
 attrs = "^19.3.0"
 get-port = "^0.0.5"
-faker = "^4.1.1"
 
 [tool.poetry.dev-dependencies]
 tox = "^3.14"
