@@ -12,7 +12,7 @@ _debug_mode = False
 
 # This is to allow using debug mode in both test and non-test code.
 # Flag will conflict, so only execute it if not running a test.
-if not utils.run_as_test():
+if not utils.run_in_test():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--debug_mode",
@@ -34,7 +34,7 @@ class Tracer:
         # For now server is put inside Tracer. Later when we need to trace multiple
         # frames it should be moved to somewhere else.
         self.server = rpc_server.Server()
-        if utils.run_as_test():
+        if utils.run_in_test():
             # Picks a random port for testing to allow concurrent test execution.
             self.server.serve(port=get_port())
         else:
@@ -56,7 +56,7 @@ class Tracer:
         sys.settrace(None)
         self.global_frame.f_trace = None
         del self.global_frame
-        if not utils.run_as_test():
+        if not utils.run_in_test():
             # If run in production, let the server wait for termination.
             self.server.wait_for_termination()
 

@@ -21,7 +21,7 @@ _PYTHON_EXECUTABLE_PATH = sys.executable
 
 
 @lru_cache(maxsize=1)
-def run_as_test() -> bool:
+def run_in_test() -> bool:
     return "pytest" in sys.modules
 
 

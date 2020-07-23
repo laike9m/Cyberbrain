@@ -28,14 +28,14 @@ def test_hello(tracer, rpc_stub):
         communication_pb2.FrameLocater(frame_name="test_hello")
     ) == text_format.Parse(
         """
-        filename: "cb-experimental/test/test_hello.py"
+        filename: "test_hello.py"
         events {
           key: "x"
           value {
             events {
               creation {
                 uid: "test_hello:1"
-                filename: "cb-experimental/test/test_hello.py"
+                filename: "test_hello.py"
                 lineno: 6
                 target: "x"
                 value: "hello world"
@@ -44,7 +44,7 @@ def test_hello(tracer, rpc_stub):
             events {
               mutation {
                 uid: "test_hello:4"
-                filename: "cb-experimental/test/test_hello.py"
+                filename: "test_hello.py"
                 lineno: 8
                 target: "x"
                 value: "hello world"
@@ -60,7 +60,7 @@ def test_hello(tracer, rpc_stub):
             events {
               creation {
                 uid: "test_hello:3"
-                filename: "cb-experimental/test/test_hello.py"
+                filename: "test_hello.py"
                 lineno: 7
                 target: "y"
                 value: "hello world"
@@ -70,7 +70,7 @@ def test_hello(tracer, rpc_stub):
             events {
               mutation {
                 uid: "test_hello:5"
-                filename: "cb-experimental/test/test_hello.py"
+                filename: "test_hello.py"
                 lineno: 8
                 target: "y"
                 value: "hello world"
