@@ -22,6 +22,8 @@ def test_hello(tracer, rpc_stub):
     from cyberbrain.generated import communication_pb2
     from google.protobuf import text_format
 
+    print(rpc_stub.GetFrame(communication_pb2.FrameLocater(frame_name="test_hello")))
+
     assert rpc_stub.GetFrame(
         communication_pb2.FrameLocater(frame_name="test_hello")
     ) == text_format.Parse(
