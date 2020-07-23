@@ -6,7 +6,9 @@ from concurrent import futures
 from threading import Timer
 
 import grpc
+import jsonpickle
 
+from . import utils
 from .basis import Event, InitialValue, Creation, Mutation, Deletion
 from .frame_tree import FrameTree
 from .generated import communication_pb2
@@ -22,7 +24,7 @@ def transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 filename=event.filename,
                 lineno=event.lineno,
                 target=event.target,
-                value=str(event.value),  # TODO: to JSON.
+                value=utils.to_json(event.value),
             )
         )
     elif isinstance(event, Creation):
@@ -32,7 +34,7 @@ def transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 filename=event.filename,
                 lineno=event.lineno,
                 target=event.target,
-                value=str(event.value),
+                value=utils.to_json(event.value),
                 sources=sorted(event.sources),  # Sorted to make result deterministic.
             )
         )
@@ -43,8 +45,8 @@ def transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 filename=event.filename,
                 lineno=event.lineno,
                 target=event.target,
-                value=str(event.value),
-                delta=str(event.delta.to_dict()),  # TODO: To JSON
+                value=utils.to_json(event.value),
+                delta=jsonpickle.encode(event.delta.to_dict(), unpicklable=False),
                 sources=sorted(event.sources),
             )
         )
