@@ -7,6 +7,7 @@ from typing import Optional
 
 from crayons import yellow, cyan
 
+from . import utils
 from .frame import Frame
 from .frame_tree import FrameTree
 from .utils import pprint, computed_gotos_enabled, shorten_path
@@ -19,7 +20,8 @@ class FrameLogger:
 
     def __init__(self, frame: FrameType, debug_mode=False):
         self.frame = Frame(
-            shorten_path(frame.f_code.co_filename, 3),
+            # For testing, only stores the basename so it's separator agnostic.
+            shorten_path(frame.f_code.co_filename, 1 if utils.run_in_test() else 3),
             self._map_bytecode_offset_to_lineno(frame),
         )
         FrameTree.add_frame(frame.f_code.co_name, self.frame)

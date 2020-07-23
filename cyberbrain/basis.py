@@ -22,7 +22,7 @@ class UUIDGenerator:
     @classmethod
     def generate_uuid(cls) -> str:
         """Generates a 8-char uuid."""
-        if utils.run_as_test():
+        if utils.run_in_test():
             # When run in test, generates predictable uids so we can assert on them.
             test_name = (
                 # When executed in global scope, $PYTEST_CURRENT_TEST is not set.
