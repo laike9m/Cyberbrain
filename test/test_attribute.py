@@ -3,19 +3,7 @@ from hamcrest import *
 from cyberbrain import InitialValue, Mutation
 
 
-# An edge case that is not handled:
-# x = a.b
-# x.foo = bar
-#
-# a is also changed, but right now we won't be able to know it.
-# We need a Symbol class to handle this case, like: Symbol('x', references={'a'})
-#
-# H: 其实我更多想的时，Symbol 可以引用别的 symbol
-# L: 引用别的 symbol 虽然或许可以让 backtracking 更简单，如果是引用所有相关 symbol 感觉有点滥用， 引
-#    用一些局部（比如同一个 statement）的 symbol 应该是可以的
-
-
-def test_attribute(tracer):
+def test_attribute(tracer, rpc_stub):
     class A:
         pass
 
@@ -44,7 +32,7 @@ def test_attribute(tracer):
                                 "value": all_of(
                                     instance_of(A), not_(has_property("x"))
                                 ),
-                                "lineno": 28,
+                                "lineno": 16,
                             }
                         ),
                     ),
@@ -55,7 +43,7 @@ def test_attribute(tracer):
                                 "target": "a1",
                                 "value": has_property("x", has_property("y", 1)),
                                 "sources": {"a2"},
-                                "lineno": 28,
+                                "lineno": 16,
                             }
                         ),
                     ),
@@ -66,7 +54,7 @@ def test_attribute(tracer):
                                 "target": "a1",
                                 "value": has_property("x", has_property("y", 2)),
                                 "sources": set(),
-                                "lineno": 29,
+                                "lineno": 17,
                             }
                         ),
                     ),
@@ -77,7 +65,7 @@ def test_attribute(tracer):
                                 "target": "a1",
                                 "value": not_(has_property("x")),
                                 "sources": set(),
-                                "lineno": 30,
+                                "lineno": 18,
                             }
                         ),
                     ),
@@ -85,3 +73,7 @@ def test_attribute(tracer):
             }
         ),
     )
+
+    from utils import assert_GetFrame
+
+    assert_GetFrame(rpc_stub, "test_attribute")
