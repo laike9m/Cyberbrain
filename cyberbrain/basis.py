@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import enum
 import os
 from collections import defaultdict
 from typing import Any
@@ -38,12 +39,19 @@ class UUIDGenerator:
             return shortuuid.uuid()[:8]
 
 
+class EventType(enum.Enum):
+    InitialValue = 1
+    Creation = 2
+    Mutation = 3
+    Deletion = 4
+
+
 @attr.s(auto_attribs=True)
 class Event:
     target: str
-    # TODO: remove the default values
-    lineno: int = attr.ib(default=0)
-    filename: str = attr.ib(eq=False, default=0)
+    lineno: int
+    # filename is always set, but we don't want to set it in tests.
+    filename: str = attr.ib(eq=False, default="")
     uid: string = attr.ib(factory=UUIDGenerator.generate_uuid, eq=False, repr=False)
 
 
@@ -133,6 +141,7 @@ class Symbol:
     Symbols are specific to a frame.
     """
 
+    # TODO: make snapshot mandatory.
     def __init__(self, name: str, snapshot=None):
         self.name = name
         self.snapshot = snapshot

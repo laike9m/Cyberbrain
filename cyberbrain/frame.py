@@ -7,7 +7,7 @@ from typing import Any
 from deepdiff import DeepDiff, Delta
 
 from . import value_stack, utils
-from .basis import Event, InitialValue, Creation, Mutation, Deletion
+from .basis import Event, InitialValue, Creation, Mutation, Deletion, EventType
 
 _INITIAL_STATE = 0
 
@@ -80,40 +80,48 @@ class Frame:
 
     def log_events(self, frame: FrameType, instr: Instruction, jumped: bool = False):
         """Logs changed values by the given instruction, if any."""
-        change = self.value_stack.emit_event_and_update_stack(
+        event_info = self.value_stack.emit_event_and_update_stack(
             instr=instr, frame=frame, jumped=jumped
         )
-        if not change:
+        if not event_info:
             del frame
             return
 
-        target = change.target
+        target = event_info.target
 
-        if isinstance(change, Mutation):
+        if event_info.type is EventType.Mutation:
             if self._knows(target):
                 # TODO: If event is a mutation, compare new value with old value
                 #  , discard event if target's value hasn't change.
-                change.delta = Delta(
-                    diff=DeepDiff(
-                        self._latest_value_of(target),
-                        utils.get_value_from_frame(target, frame),
-                    )
+                event = Mutation(
+                    target=target,
+                    filename=self.filename,
+                    lineno=self.offset_to_lineno[instr.offset],
+                    delta=Delta(
+                        diff=DeepDiff(
+                            self._latest_value_of(target),
+                            utils.get_value_from_frame(target, frame),
+                        )
+                    ),
+                    sources=event_info.sources,
                 )
-                change.filename = self.filename
-                change.lineno = self.offset_to_lineno[instr.offset]
             else:
-                change = Creation(
+                event = Creation(
                     target=target,
                     value=utils.deepcopy_value_from_frame(target, frame),
-                    sources=change.sources,
-                    lineno=self.offset_to_lineno[instr.offset],
+                    sources=event_info.sources,
                     filename=self.filename,
+                    lineno=self.offset_to_lineno[instr.offset],
                 )
-        elif isinstance(change, Deletion):
-            change.lineno = self.offset_to_lineno[instr.offset]
+        elif event_info.type is EventType.Deletion:
+            event = Deletion(
+                target=target,
+                filename=self.filename,
+                lineno=self.offset_to_lineno[instr.offset],
+            )
 
         # print(cyan(str(change)))
-        self._add_new_event(change)
+        self._add_new_event(event)
 
         del frame
 

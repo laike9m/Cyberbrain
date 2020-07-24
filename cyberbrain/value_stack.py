@@ -1,16 +1,23 @@
 """A self maintained value stack."""
 
+from __future__ import annotations
+
+import dataclasses
 import enum
 import functools
 import inspect
 import sys
-from dataclasses import dataclass
 from dis import Instruction
 from types import FrameType
 from typing import Optional
 
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
+
 from . import utils
-from .basis import Mutation, Deletion, Event
+from .basis import EventType
 from .block_stack import BlockStack, BlockType, Block
 
 
@@ -32,7 +39,7 @@ class _NullClass:
 NULL = _NullClass()
 
 
-@dataclass
+@dataclasses.dataclass
 class ExceptionInfo:
     type: type
     value: Exception
@@ -53,6 +60,17 @@ def emit_event(f):
     return inner
 
 
+MutationType = EventType.Mutation
+DeletionType = EventType.Deletion
+
+
+@dataclasses.dataclass
+class EventInfo:
+    type: Literal[EventType.Mutation, EventType.Deletion]
+    target: str
+    sources: set[str] = dataclasses.field(default_factory=set)
+
+
 class GeneralValueStack:
     """Class that simulates the a frame's value stack.
 
@@ -66,9 +84,9 @@ class GeneralValueStack:
         self.return_value = _placeholder
 
     def emit_event_and_update_stack(
-        self, instr: Instruction, frame: FrameType, jumped: bool,
-    ) -> Optional[Event]:
-        """Given a instruction, emits mutation(s) if any, and updates the stack.
+        self, instr: Instruction, frame: FrameType, jumped: bool
+    ) -> Optional[EventInfo]:
+        """Given a instruction, emits EventInfo if any, and updates the stack.
 
         Args:
             instr: current instruction.
@@ -227,14 +245,14 @@ class GeneralValueStack:
     def _STORE_SUBSCR_handler(self):
         tos, tos1, tos2 = self._pop(3)
         assert len(tos1) == 1
-        return Mutation(target=tos1[0], sources=set(tos + tos2))
+        return EventInfo(type=MutationType, target=tos1[0], sources=set(tos + tos2))
 
     # noinspection DuplicatedCode
     @emit_event
     def _DELETE_SUBSCR_handler(self):
         tos, tos1 = self._pop(2)
         assert len(tos1) == 1
-        return Mutation(target=tos1[0], sources=set(tos))
+        return EventInfo(type=MutationType, target=tos1[0], sources=set(tos))
 
     def _SETUP_ANNOTATIONS_handler(self):
         pass
@@ -245,13 +263,15 @@ class GeneralValueStack:
 
     @emit_event
     def _STORE_NAME_handler(self, instr):
-        mutation = Mutation(target=instr.argval, sources=set(self.tos))
+        mutation = EventInfo(
+            type=MutationType, target=instr.argval, sources=set(self.tos)
+        )
         self._pop()
         return mutation
 
     @emit_event
     def _DELETE_NAME_handler(self, instr):
-        return Deletion(target=instr.argrepr)
+        return EventInfo(type=DeletionType, target=instr.argrepr)
 
     def _UNPACK_SEQUENCE_handler(self, instr):
         self._pop_one_push_n(instr.arg)
@@ -267,13 +287,13 @@ class GeneralValueStack:
     def _STORE_ATTR_handler(self):
         tos, tos1 = self._pop(2)
         assert len(tos) == 1
-        return Mutation(target=tos[0], sources=set(tos1))
+        return EventInfo(type=MutationType, target=tos[0], sources=set(tos1))
 
     @emit_event
     def _DELETE_ATTR_handler(self):
         tos = self._pop()
         assert len(tos) == 1
-        return Mutation(target=tos[0])
+        return EventInfo(type=MutationType, target=tos[0])
 
     @emit_event
     def _STORE_GLOBAL_handler(self, instr):
@@ -281,7 +301,7 @@ class GeneralValueStack:
 
     @emit_event
     def _DELETE_GLOBAL_handler(self, instr):
-        return Deletion(instr.argrepr)
+        return EventInfo(type=DeletionType, target=instr.argrepr)
 
     def _LOAD_CONST_handler(self):
         # For instructions like LOAD_CONST, we just need a placeholder on the stack.
@@ -390,7 +410,7 @@ class GeneralValueStack:
 
     @emit_event
     def _DELETE_FAST_handler(self, instr):
-        return Deletion(target=instr.argrepr)
+        return EventInfo(type=DeletionType, target=instr.argrepr)
 
     def _LOAD_METHOD_handler(self):
         # TODO: Implement full behaviors.
@@ -422,7 +442,9 @@ class GeneralValueStack:
 
         if inst_or_callable[0] == "tracer":  # exclude tracer calls.
             return
-        return Mutation(target=inst_or_callable[0], sources=set(args))
+        return EventInfo(
+            type=MutationType, target=inst_or_callable[0], sources=set(args)
+        )
 
     def _BUILD_SLICE_handler(self, instr):
         if instr.arg == 2:
