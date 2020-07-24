@@ -7,7 +7,7 @@ events {
   value {
     events {
       creation {
-        uid: "test_hello:1"
+        uid: "test_hello:0"
         filename: "test_hello.py"
         lineno: 6
         target: "x"
@@ -16,7 +16,7 @@ events {
     }
     events {
       mutation {
-        uid: "test_hello:4"
+        uid: "test_hello:2"
         filename: "test_hello.py"
         lineno: 8
         target: "x"
@@ -32,7 +32,7 @@ events {
   value {
     events {
       creation {
-        uid: "test_hello:3"
+        uid: "test_hello:1"
         filename: "test_hello.py"
         lineno: 7
         target: "y"
@@ -42,7 +42,7 @@ events {
     }
     events {
       mutation {
-        uid: "test_hello:5"
+        uid: "test_hello:3"
         filename: "test_hello.py"
         lineno: 8
         target: "y"
