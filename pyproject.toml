@@ -15,6 +15,7 @@ shortuuid = "^1.0.1"
 attrs = "^19.3.0"
 get-port = "^0.0.5"
 jsonpickle = "^1.4.1"
+typing-extensions = "^3.7.4"
 
 [tool.poetry.dev-dependencies]
 tox = "^3.14"
