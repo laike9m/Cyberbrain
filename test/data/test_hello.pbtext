@@ -15,13 +15,12 @@ events {
       }
     }
     events {
-      mutation {
+      binding {
         uid: "test_hello:2"
         filename: "test_hello.py"
         lineno: 8
         target: "x"
         value: "\"hello world\""
-        delta: "{}"
         sources: "y"
       }
     }
@@ -41,15 +40,15 @@ events {
       }
     }
     events {
-      mutation {
+      binding {
         uid: "test_hello:3"
         filename: "test_hello.py"
         lineno: 8
         target: "y"
         value: "\"hello world\""
-        delta: "{}"
         sources: "x"
       }
     }
   }
 }
+
