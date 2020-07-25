@@ -9,7 +9,7 @@ from deepdiff import DeepDiff, Delta
 from . import value_stack, utils
 from .basis import Event, InitialValue, Creation, Mutation, Deletion, EventType
 
-_INITIAL_STATE = 0
+_INITIAL_STATE = -1
 
 
 class _EventsDict(defaultdict):
@@ -49,6 +49,7 @@ class Frame:
             # The initial state, where pointer points to zero for every identifier.
             Snapshot(events_pointer=defaultdict(lambda: _INITIAL_STATE))
         ]
+        self._latest_snapshot = self.snapshots[0]
 
         # ################### Relevant frames ####################
         # Frame that generated this frame. Could be empty if this frame is the outermost
@@ -56,6 +57,10 @@ class Frame:
         self.parent: Optional[Frame] = None
         # Frames derived from this frame.
         self.children: list[Frame] = []
+
+    @property
+    def latest_snapshot(self):
+        return self._latest_snapshot
 
     def log_initial_value_events(self, frame: FrameType, instr: Instruction):
         from .api import Tracer
@@ -93,6 +98,7 @@ class Frame:
             if self._knows(target):
                 # TODO: If event is a mutation, compare new value with old value
                 #  , discard event if target's value hasn't change.
+                # noinspection PyArgumentList
                 event = Mutation(
                     target=target,
                     filename=self.filename,
@@ -132,10 +138,12 @@ class Frame:
         ), "InitialValue shouldn't be added twice"
         self.raw_events[event.target].append(event)
 
-        # Creates a new snapshot.
+        # Creates a new snapshot by incrementing the target index.
         new_events_pointer = self.snapshots[-1].events_pointer.copy()
         new_events_pointer[event.target] += 1
-        self.snapshots.append(Snapshot(events_pointer=new_events_pointer))
+        new_snapshot = Snapshot(events_pointer=new_events_pointer)
+        self._latest_snapshot = new_snapshot
+        self.snapshots.append(new_snapshot)
 
     def _knows(self, name: str) -> bool:
         return name in self.raw_events
@@ -221,6 +229,9 @@ class Frame:
                 '2': ['3'],
                 '4': ['2']
             }
+
+        Prerequisite: 需要区分 mutation 和 binding. Binding 的话就不更新 value stack，
+        mutation 的话需要更新
 
         TODO: 可以这样解决。value stack 中不仅记录 identifier，还记录 snapshot
             就这个例子而言，在

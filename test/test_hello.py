@@ -5,7 +5,7 @@ def test_hello(tracer, rpc_stub):
     tracer.init()
     x = "hello world"  # LOAD_CONST, STORE_FAST
     y = x  # LOAD_FAST, STORE_FAST
-    x, y = y, x  # ROT_TWO or BUILD_TUPLE. I don't know how Python compiler decides it.
+    x, y = y, x  # ROT_TWO, STORE_FAST
     tracer.register()
 
     assert tracer.events == {
