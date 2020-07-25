@@ -1,4 +1,4 @@
-from cyberbrain import InitialValue, Creation, Mutation, Deletion
+from cyberbrain import InitialValue, Binding, Mutation, Deletion
 
 g = 0
 
@@ -29,7 +29,7 @@ def test_miscellaneous(tracer):
         "c": [InitialValue(target="c", value="c", lineno=15)],
         "d": [InitialValue(target="d", value="d", lineno=15)],
         "x": [
-            Creation(
+            Binding(
                 target="x",
                 value="a b    'c' 'd' ",
                 sources={"a", "b", "d", "c"},

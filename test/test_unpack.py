@@ -1,4 +1,4 @@
-from cyberbrain import Creation, Mutation, InitialValue
+from cyberbrain import Binding, Mutation, InitialValue
 
 
 def test_unpack(tracer):
@@ -28,7 +28,7 @@ def test_unpack(tracer):
         "m2": [InitialValue(target="m2", value={1: 2}, lineno=19)],
         "numbers": [InitialValue(target="numbers", value=[1, 2, 3, 4], lineno=13)],
         "a": [
-            Creation(target="a", value="h", sources=set(), lineno=11),
+            Binding(target="a", value="h", sources=set(), lineno=11),
             Mutation(target="a", value=1, sources={"l1"}, lineno=12),
             Mutation(
                 target="a",
@@ -51,22 +51,20 @@ def test_unpack(tracer):
             Mutation(target="a", value={1: 2}, sources={"m1", "m2"}, lineno=19),
         ],
         "b": [
-            Creation(target="b", value="i", sources=set(), lineno=11),
+            Binding(target="b", value="i", sources=set(), lineno=11),
             Mutation(target="b", value=2, sources={"l1"}, lineno=12),
         ],
-        "first": [Creation(target="first", value=1, sources={"numbers"}, lineno=13)],
+        "first": [Binding(target="first", value=1, sources={"numbers"}, lineno=13)],
         "rest": [
-            Creation(target="rest", value=[2, 3, 4], sources={"numbers"}, lineno=13)
+            Binding(target="rest", value=[2, 3, 4], sources={"numbers"}, lineno=13)
         ],
         "beginning": [
-            Creation(
-                target="beginning", value=[1, 2, 3], sources={"numbers"}, lineno=14
-            )
+            Binding(target="beginning", value=[1, 2, 3], sources={"numbers"}, lineno=14)
         ],
-        "last": [Creation(target="last", value=4, sources={"numbers"}, lineno=14)],
-        "head": [Creation(target="head", value=1, sources={"numbers"}, lineno=15)],
+        "last": [Binding(target="last", value=4, sources={"numbers"}, lineno=14)],
+        "head": [Binding(target="head", value=1, sources={"numbers"}, lineno=15)],
         "middle": [
-            Creation(target="middle", value=[2, 3], sources={"numbers"}, lineno=15)
+            Binding(target="middle", value=[2, 3], sources={"numbers"}, lineno=15)
         ],
-        "tail": [Creation(target="tail", value=4, sources={"numbers"}, lineno=15)],
+        "tail": [Binding(target="tail", value=4, sources={"numbers"}, lineno=15)],
     }

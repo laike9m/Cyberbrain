@@ -8,7 +8,7 @@ import sys
 
 import pytest
 
-from cyberbrain import Creation, Mutation
+from cyberbrain import Binding, Mutation
 
 
 @pytest.mark.skipif(
@@ -28,7 +28,7 @@ def test_continue_in_finally(tracer):
 
     assert tracer.events == {
         "x": [
-            Creation(target="x", value=0, lineno=21),
+            Binding(target="x", value=0, lineno=21),
             Mutation(target="x", value=1, lineno=21),
         ]
     }
@@ -55,7 +55,7 @@ def test_continue_in_finally_with_exception(tracer):
 
     assert tracer.events == {
         "x": [
-            Creation(target="x", value=0, lineno=48),
+            Binding(target="x", value=0, lineno=48),
             Mutation(target="x", value=1, lineno=48),
         ]
     }
