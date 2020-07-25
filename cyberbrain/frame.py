@@ -95,30 +95,29 @@ class Frame:
         target = event_info.target
 
         if event_info.type is EventType.Mutation:
-            if self._knows(target):
-                # TODO: If event is a mutation, compare new value with old value
-                #  , discard event if target's value hasn't change.
-                # noinspection PyArgumentList
-                event = Mutation(
-                    target=target,
-                    filename=self.filename,
-                    lineno=self.offset_to_lineno[instr.offset],
-                    delta=Delta(
-                        diff=DeepDiff(
-                            self._latest_value_of(target),
-                            utils.get_value_from_frame(target, frame),
-                        )
-                    ),
-                    sources=event_info.sources,
-                )
-            else:
-                event = Binding(
-                    target=target,
-                    value=utils.deepcopy_value_from_frame(target, frame),
-                    sources=event_info.sources,
-                    filename=self.filename,
-                    lineno=self.offset_to_lineno[instr.offset],
-                )
+            # TODO: If event is a mutation, compare new value with old value
+            #  , discard event if target's value hasn't change.
+            # noinspection PyArgumentList
+            event = Mutation(
+                target=target,
+                filename=self.filename,
+                lineno=self.offset_to_lineno[instr.offset],
+                delta=Delta(
+                    diff=DeepDiff(
+                        self._latest_value_of(target),
+                        utils.get_value_from_frame(target, frame),
+                    )
+                ),
+                sources=event_info.sources,
+            )
+        elif event_info.type is EventType.Binding:
+            event = Binding(
+                target=target,
+                value=utils.deepcopy_value_from_frame(target, frame),
+                sources=event_info.sources,
+                filename=self.filename,
+                lineno=self.offset_to_lineno[instr.offset],
+            )
         elif event_info.type is EventType.Deletion:
             event = Deletion(
                 target=target,
@@ -159,10 +158,16 @@ class Frame:
         relevant_events = self.raw_events[name]
         assert type(relevant_events[0]) in {InitialValue, Binding}
 
+        if isinstance(relevant_events[-1], Binding):
+            return relevant_events[-1].value
+
         value = relevant_events[0].value  # initial value
-        for mutation in relevant_events[1:]:
-            assert type(mutation) is Mutation, repr(mutation)
-            value += mutation.delta
+        for event in relevant_events[1:]:
+            assert type(event) in {Binding, Mutation}, repr(event)
+            if isinstance(event, Binding):
+                value = event.value
+            elif isinstance(event, Mutation):
+                value += event.delta
 
         return value
 

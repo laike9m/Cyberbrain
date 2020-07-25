@@ -49,7 +49,9 @@ class ExceptionInfo:
 def emit_event(f):
     """Decorator used to denote that a handler emits at least one event.
 
-    It is for 1. documenting 2. support checks in emit_event_and_update_stack.
+    It is used for:
+        1. Documentation purposes.
+        2. In case there's a need to determine whether a handler emits any event.
     """
 
     @functools.wraps(f)
@@ -62,11 +64,12 @@ def emit_event(f):
 
 MutationType = EventType.Mutation
 DeletionType = EventType.Deletion
+BindingType = EventType.Binding
 
 
 @dataclasses.dataclass
 class EventInfo:
-    type: Literal[EventType.Mutation, EventType.Deletion]
+    type: Literal[EventType.Binding, EventType.Mutation, EventType.Deletion]
     target: str
     sources: set[str] = dataclasses.field(default_factory=set)
 
@@ -264,7 +267,7 @@ class GeneralValueStack:
     @emit_event
     def _STORE_NAME_handler(self, instr):
         mutation = EventInfo(
-            type=MutationType, target=instr.argval, sources=set(self.tos)
+            type=BindingType, target=instr.argval, sources=set(self.tos)
         )
         self._pop()
         return mutation
