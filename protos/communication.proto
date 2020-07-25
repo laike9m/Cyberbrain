@@ -75,7 +75,7 @@ message InitialValue {
   optional string value = 5;
 }
 
-message Creation {
+message Binding {
   optional string uid = 1;
   optional string filename = 2;
   optional int32 lineno = 3;
@@ -106,7 +106,7 @@ message Deletion {
 message Event {
   oneof value {
     InitialValue initial_value = 1;
-    Creation creation = 2;
+    Binding binding = 2;
     Mutation mutation = 3;
     Deletion deletion = 4;
   }

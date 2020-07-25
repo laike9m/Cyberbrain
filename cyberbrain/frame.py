@@ -7,7 +7,7 @@ from typing import Any
 from deepdiff import DeepDiff, Delta
 
 from . import value_stack, utils
-from .basis import Event, InitialValue, Creation, Mutation, Deletion, EventType
+from .basis import Event, InitialValue, Binding, Mutation, Deletion, EventType
 
 _INITIAL_STATE = -1
 
@@ -112,7 +112,7 @@ class Frame:
                     sources=event_info.sources,
                 )
             else:
-                event = Creation(
+                event = Binding(
                     target=target,
                     value=utils.deepcopy_value_from_frame(target, frame),
                     sources=event_info.sources,
@@ -157,7 +157,7 @@ class Frame:
             raise AttributeError(f"'{name}' does not exist in frame.")
 
         relevant_events = self.raw_events[name]
-        assert type(relevant_events[0]) in {InitialValue, Creation}
+        assert type(relevant_events[0]) in {InitialValue, Binding}
 
         value = relevant_events[0].value  # initial value
         for mutation in relevant_events[1:]:
@@ -177,10 +177,10 @@ class Frame:
         e.g.
 
         raw events:
-            {'a': [Creation(value=[]), Mutation(delta="append 1")]
+            {'a': [Binding(value=[]), Mutation(delta="append 1")]
 
         Returned accumulated events:
-            {'a': [Creation(value=[]), Mutation(delta="append 1", value=[1])]
+            {'a': [Binding(value=[]), Mutation(delta="append 1", value=[1])]
         """
         result: dict[str, list[Event]] = defaultdict(list)
         for name, raw_events in self.raw_events.items():
@@ -206,11 +206,11 @@ class Frame:
         which has events:
             {
                 "x": [
-                    Creation(target="x", value="foo", uid='1'),
+                    Binding(target="x", value="foo", uid='1'),
                     Mutation(target="x", value="bar", sources={"y"}, uid='2'),
                 ],
                 "y": [
-                    Creation(target="y", value="bar", uid='3'),
+                    Binding(target="y", value="bar", uid='3'),
                     Mutation(target="y", value="foo", sources={"x"}, uid='4'),
                 ]
             }
@@ -251,7 +251,7 @@ class Frame:
         从 event 信息反查，即
         tracing_result = {
           get_uid(Mutation(target='x', lineno=2)): [
-            get_uid(Creation(target='y', lineno=1)
+            get_uid(Binding(target='y', lineno=1)
           ]
         }
         这其实也不难做到
