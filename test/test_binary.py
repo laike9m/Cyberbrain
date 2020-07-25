@@ -1,4 +1,4 @@
-from cyberbrain import Mutation, Creation, InitialValue
+from cyberbrain import Mutation, Binding, InitialValue
 
 
 def test_binary_operation(tracer):
@@ -28,7 +28,7 @@ def test_binary_operation(tracer):
         "b": [InitialValue(target="b", value=1, lineno=10)],
         "lst": [InitialValue(target="lst", value=[0, 1], lineno=17)],
         "c": [
-            Creation(target="c", value=1, sources={"a", "b"}, lineno=10),
+            Binding(target="c", value=1, sources={"a", "b"}, lineno=10),
             Mutation(target="c", value=1, sources={"a", "b"}, lineno=11),
             Mutation(target="c", value=1, sources={"a", "b"}, lineno=12),
             Mutation(target="c", value=1, sources={"a", "b"}, lineno=13),

@@ -1,4 +1,4 @@
-from cyberbrain import Mutation, Creation, InitialValue
+from cyberbrain import Mutation, Binding, InitialValue
 
 
 def test_container(tracer):
@@ -26,7 +26,7 @@ def test_container(tracer):
         "c": [InitialValue(target="c", value=2, lineno=16)],
         "e": [InitialValue(target="e", value=0, lineno=18)],
         "d": [
-            Creation(target="d", value=[1, 1], sources={"a", "b"}, lineno=11),
+            Binding(target="d", value=[1, 1], sources={"a", "b"}, lineno=11),
             Mutation(target="d", value=(1, 1), sources={"a", "b"}, lineno=12),
             Mutation(target="d", value={1}, sources={"a", "b"}, lineno=13),
             Mutation(target="d", value={1: 1}, sources={"a", "b"}, lineno=14),

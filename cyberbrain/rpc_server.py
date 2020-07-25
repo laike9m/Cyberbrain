@@ -13,7 +13,7 @@ import grpc
 import jsonpickle
 
 from . import utils
-from .basis import Event, InitialValue, Creation, Mutation, Deletion
+from .basis import Event, InitialValue, Binding, Mutation, Deletion
 from .frame import Frame
 from .frame_tree import FrameTree
 from .generated import communication_pb2
@@ -32,9 +32,9 @@ def transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 value=utils.to_json(event.value),
             )
         )
-    elif isinstance(event, Creation):
-        event_proto.creation.CopyFrom(
-            communication_pb2.Creation(
+    elif isinstance(event, Binding):
+        event_proto.binding.CopyFrom(
+            communication_pb2.Binding(
                 uid=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
@@ -73,7 +73,7 @@ def get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
     if isinstance(event, InitialValue) or isinstance(event, Deletion):
         return
 
-    assert isinstance(event, Creation) or isinstance(event, Mutation)
+    assert isinstance(event, Binding) or isinstance(event, Mutation)
 
     if not event.sources:
         return
