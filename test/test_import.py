@@ -1,6 +1,6 @@
 from hamcrest import *
 
-from cyberbrain import Creation
+from cyberbrain import Binding
 
 
 def test_import(tracer):
@@ -20,7 +20,7 @@ def test_import(tracer):
             {
                 "os": contains_exactly(
                     all_of(
-                        instance_of(Creation),
+                        instance_of(Binding),
                         has_properties(
                             {
                                 "target": "os",
@@ -33,7 +33,7 @@ def test_import(tracer):
                 ),
                 "path": contains_exactly(
                     all_of(
-                        instance_of(Creation),
+                        instance_of(Binding),
                         has_properties(
                             {
                                 "target": "path",
@@ -48,7 +48,7 @@ def test_import(tracer):
                 ),
                 "settrace": contains_exactly(
                     all_of(
-                        instance_of(Creation),
+                        instance_of(Binding),
                         has_properties(
                             {
                                 "target": "settrace",

@@ -1,4 +1,4 @@
-from cyberbrain import Mutation, Creation, InitialValue
+from cyberbrain import Mutation, Binding, InitialValue
 
 
 def test_jump(tracer):
@@ -28,7 +28,7 @@ def test_jump(tracer):
         "b": [InitialValue(target="b", value="b", lineno=19)],
         "c": [InitialValue(target="c", value="c", lineno=19)],
         "x": [
-            Creation(target="x", value=1, lineno=14),
+            Binding(target="x", value=1, lineno=14),
             Mutation(target="x", value=2, lineno=17),
             # This is a known defect. We have no way to know `x` comes from `a`, because
             # the result of `a != b` only determines whether to jump to execute `b != c`

@@ -6,7 +6,7 @@ events {
   key: "x"
   value {
     events {
-      creation {
+      binding {
         uid: "test_hello:0"
         filename: "test_hello.py"
         lineno: 6
@@ -31,7 +31,7 @@ events {
   key: "y"
   value {
     events {
-      creation {
+      binding {
         uid: "test_hello:1"
         filename: "test_hello.py"
         lineno: 7

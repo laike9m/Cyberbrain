@@ -43,7 +43,7 @@ class UUIDGenerator:
 
 class EventType(enum.Enum):
     InitialValue = 1
-    Creation = 2
+    Binding = 2
     Mutation = 3
     Deletion = 4
 
@@ -73,7 +73,7 @@ class InitialValue(Event):
     a = 2  --> emit two events: first InitialValue, then Mutation.
     cyberbrain.init()
 
-    Compared to this one, which only emits a Creation event.
+    Compared to this one, which only emits a Binding event.
 
     cyberbrain.init()
     a = 2  # 'a' doesn't exist before.
@@ -86,10 +86,17 @@ class InitialValue(Event):
     # TODO: Add sources if it's a function parameter.
 
 
-# TODO: change to Binding, which includes creation and assignment
 @attr.s(auto_attribs=True)
-class Creation(Event):
-    """An identifiers is created in the current frame."""
+class Binding(Event):
+    """An identifier is bound to an value.
+
+    A brief explanation of Python's data model.
+    http://foobarnbaz.com/2012/07/08/understanding-python-variables/
+
+    Roughly speaking, Binding happens when:
+        - A new identifier is used for the first time
+        - An identifier is re-assigned
+    """
 
     value: Any = attr.ib(kw_only=True)
     sources: set[str] = set()  # Source can be empty, like a = 1
@@ -98,7 +105,15 @@ class Creation(Event):
 # For now, we don't want to compare delta, so disable auto-generated __eq__.
 @attr.s(auto_attribs=True, eq=False)
 class Mutation(Event):
-    """An identifier is mutated."""
+    """An identifier is mutated.
+
+    Note the difference between Mutation and Binding.
+
+        a = 0       # Binding
+        a = 1       # Binding, not Mutation!!
+        b = []      # Binding
+        b.append(1) # Mutation
+    """
 
     # Represents the diffs from before and after the mutation.
     delta: Delta = Delta({})
