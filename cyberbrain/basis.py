@@ -5,13 +5,16 @@ from __future__ import annotations
 import enum
 import os
 from collections import defaultdict
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 import attr
 import shortuuid
 from deepdiff import Delta
 
 from . import utils
+
+if TYPE_CHECKING:
+    from .frame import Snapshot
 
 _dummy = object()
 
@@ -35,7 +38,6 @@ class UUIDGenerator:
             cls.counter[test_name] += 1
             return f"{test_name}:{count}"
         else:
-            assert False, "This branch shouldn't be called."
             return shortuuid.uuid()[:8]
 
 
@@ -53,6 +55,9 @@ class Event:
     # filename is always set, but we don't want to set it in tests.
     filename: str = attr.ib(eq=False, default="")
     uid: string = attr.ib(factory=UUIDGenerator.generate_uuid, eq=False, repr=False)
+
+    # The frame snapshot right after this event happened.
+    snapshot: Snapshot = attr.ib(eq=False, default=None)
 
 
 @attr.s(auto_attribs=True)
@@ -81,6 +86,7 @@ class InitialValue(Event):
     # TODO: Add sources if it's a function parameter.
 
 
+# TODO: change to Binding, which includes creation and assignment
 @attr.s(auto_attribs=True)
 class Creation(Event):
     """An identifiers is created in the current frame."""

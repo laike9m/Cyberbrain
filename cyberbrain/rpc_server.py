@@ -1,15 +1,20 @@
 """
 Server that serves requests from UI (VSC as of now).
 """
+
+from __future__ import annotations
+
 import queue
 from concurrent import futures
 from threading import Timer
+from typing import Optional
 
 import grpc
 import jsonpickle
 
 from . import utils
 from .basis import Event, InitialValue, Creation, Mutation, Deletion
+from .frame import Frame
 from .frame_tree import FrameTree
 from .generated import communication_pb2
 from .generated import communication_pb2_grpc
@@ -63,6 +68,26 @@ def transform_event_to_proto(event: Event) -> communication_pb2.Event:
     return event_proto
 
 
+def get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
+    print(event)
+    if isinstance(event, InitialValue) or isinstance(event, Deletion):
+        return
+
+    assert isinstance(event, Creation) or isinstance(event, Mutation)
+
+    if not event.sources:
+        return
+
+    sources_uids = []
+    for source in event.sources:
+        assert source in event.snapshot.events_pointer
+        source_event_index = event.snapshot.events_pointer[source]
+        source_event = frame.raw_events[source][source_event_index]
+        sources_uids.append(source_event.uid)
+
+    return sources_uids
+
+
 class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServicer):
     # Queue that stores state to be published to VSC extension.
     state_queue = queue.Queue()
@@ -94,11 +119,17 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
         frame = FrameTree.get_frame(request.frame_name)
         frame_proto = communication_pb2.Frame(filename=frame.filename)
         for identifier, events in frame.accumulated_events.items():
-            event_list = communication_pb2.EventList()
-            event_list.events.extend(
-                [transform_event_to_proto(event) for event in events]
+            frame_proto.events[identifier].CopyFrom(
+                communication_pb2.EventList(
+                    events=[transform_event_to_proto(event) for event in events]
+                )
             )
-            frame_proto.events[identifier].CopyFrom(event_list)
+            # for event in events:
+            #     event_uids = get_event_sources_uids(event, frame)
+            #     if event_uids:
+            #         frame_proto.tracing_result[event.uid].CopyFrom(
+            #             communication_pb2.EventUidList(event_uids=event_uids)
+            #         )
         return frame_proto
 
 
