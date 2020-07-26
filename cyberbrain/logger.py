@@ -131,11 +131,17 @@ class FrameLogger:
             instr = self.instructions[self.instr_pointer]
             jumped, jump_location = self.jump_detector.detects_jump(instr, last_i)
             self.instr_pointer = jump_location if jumped else self.instr_pointer + 2
-            self._debug_log(
-                f"{cyan('Executed instruction')} at line {frame.f_lineno}:", instr
+            _debug_log(
+                self.debug_mode,
+                f"{cyan('Executed instruction')} at line {frame.f_lineno}:",
+                instr,
             )
             self.frame.log_events(frame, instr, jumped)
-            self._debug_log(f"{yellow('Current stack:')}", self.frame.value_stack.stack)
+            _debug_log(
+                self.debug_mode,
+                f"{yellow('Current stack:')}",
+                self.frame.value_stack.stack,
+            )
             if self.instr_pointer >= last_i:
                 break
 
@@ -143,10 +149,6 @@ class FrameLogger:
         # executed, this way we record the value before it's (potentially) modified.
         self.frame.log_initial_value_events(frame, self.instructions[last_i])
         del frame
-
-    def _debug_log(self, *msg, condition=True):
-        if self.debug_mode and condition:
-            pprint(*msg)
 
 
 class JumpDetector:
@@ -197,12 +199,14 @@ class JumpDetector:
                 computed_last_i += 2
 
         if computed_last_i == last_i:
-            self._debug_log(f"Jumped to instruction at offset: {jump_location}")
+            _debug_log(
+                self.debug_mode, f"Jumped to instruction at offset: {jump_location}"
+            )
             return True, jump_location
 
         return False, jump_location
 
-    # TODO: Remove duplication.
-    def _debug_log(self, *msg, condition=True):
-        if self.debug_mode and condition:
-            pprint(*msg)
+
+def _debug_log(debug_mode, *msg, condition=True):
+    if debug_mode and condition:
+        pprint(*msg)

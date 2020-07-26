@@ -8,7 +8,6 @@ service Communication {
 
   rpc FindFrames(CursorPosition) returns (FrameLocaterList) {}
 
-  // TODO: implement this.
   rpc GetFrame(FrameLocater) returns (Frame) {}
 }
 
