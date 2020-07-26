@@ -1,0 +1,339 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_unpack.py"
+events {
+  key: "a"
+  value {
+    events {
+      binding {
+        uid: "test_unpack:0"
+        filename: "test_unpack.py"
+        lineno: 12
+        target: "a"
+        value: "\"h\""
+      }
+    }
+    events {
+      binding {
+        uid: "test_unpack:3"
+        filename: "test_unpack.py"
+        lineno: 13
+        target: "a"
+        value: "1"
+        sources: "l1"
+      }
+    }
+    events {
+      binding {
+        uid: "test_unpack:13"
+        filename: "test_unpack.py"
+        lineno: 17
+        target: "a"
+        value: "[1, 2, 1, 2, 3, 4]"
+        sources: "l1"
+        sources: "numbers"
+      }
+    }
+    events {
+      binding {
+        uid: "test_unpack:14"
+        filename: "test_unpack.py"
+        lineno: 18
+        target: "a"
+        value: "[1, 2, 1, 2, 3, 4]"
+        sources: "l1"
+        sources: "numbers"
+      }
+    }
+    events {
+      binding {
+        uid: "test_unpack:15"
+        filename: "test_unpack.py"
+        lineno: 19
+        target: "a"
+        value: "[1, 2, 3, 4]"
+        sources: "l1"
+        sources: "numbers"
+      }
+    }
+    events {
+      binding {
+        uid: "test_unpack:18"
+        filename: "test_unpack.py"
+        lineno: 20
+        target: "a"
+        value: "{\"1\": 2}"
+        sources: "m1"
+        sources: "m2"
+      }
+    }
+  }
+}
+events {
+  key: "b"
+  value {
+    events {
+      binding {
+        uid: "test_unpack:1"
+        filename: "test_unpack.py"
+        lineno: 12
+        target: "b"
+        value: "\"i\""
+      }
+    }
+    events {
+      binding {
+        uid: "test_unpack:4"
+        filename: "test_unpack.py"
+        lineno: 13
+        target: "b"
+        value: "2"
+        sources: "l1"
+      }
+    }
+  }
+}
+events {
+  key: "beginning"
+  value {
+    events {
+      binding {
+        uid: "test_unpack:8"
+        filename: "test_unpack.py"
+        lineno: 15
+        target: "beginning"
+        value: "[1, 2, 3]"
+        sources: "numbers"
+      }
+    }
+  }
+}
+events {
+  key: "first"
+  value {
+    events {
+      binding {
+        uid: "test_unpack:6"
+        filename: "test_unpack.py"
+        lineno: 14
+        target: "first"
+        value: "1"
+        sources: "numbers"
+      }
+    }
+  }
+}
+events {
+  key: "head"
+  value {
+    events {
+      binding {
+        uid: "test_unpack:10"
+        filename: "test_unpack.py"
+        lineno: 16
+        target: "head"
+        value: "1"
+        sources: "numbers"
+      }
+    }
+  }
+}
+events {
+  key: "l1"
+  value {
+    events {
+      initial_value {
+        uid: "test_unpack:2"
+        filename: "test_unpack.py"
+        lineno: 13
+        target: "l1"
+        value: "[1, 2]"
+      }
+    }
+  }
+}
+events {
+  key: "last"
+  value {
+    events {
+      binding {
+        uid: "test_unpack:9"
+        filename: "test_unpack.py"
+        lineno: 15
+        target: "last"
+        value: "4"
+        sources: "numbers"
+      }
+    }
+  }
+}
+events {
+  key: "m1"
+  value {
+    events {
+      initial_value {
+        uid: "test_unpack:16"
+        filename: "test_unpack.py"
+        lineno: 20
+        target: "m1"
+        value: "{\"1\": 2}"
+      }
+    }
+  }
+}
+events {
+  key: "m2"
+  value {
+    events {
+      initial_value {
+        uid: "test_unpack:17"
+        filename: "test_unpack.py"
+        lineno: 20
+        target: "m2"
+        value: "{\"1\": 2}"
+      }
+    }
+  }
+}
+events {
+  key: "middle"
+  value {
+    events {
+      binding {
+        uid: "test_unpack:11"
+        filename: "test_unpack.py"
+        lineno: 16
+        target: "middle"
+        value: "[2, 3]"
+        sources: "numbers"
+      }
+    }
+  }
+}
+events {
+  key: "numbers"
+  value {
+    events {
+      initial_value {
+        uid: "test_unpack:5"
+        filename: "test_unpack.py"
+        lineno: 14
+        target: "numbers"
+        value: "[1, 2, 3, 4]"
+      }
+    }
+  }
+}
+events {
+  key: "rest"
+  value {
+    events {
+      binding {
+        uid: "test_unpack:7"
+        filename: "test_unpack.py"
+        lineno: 14
+        target: "rest"
+        value: "[2, 3, 4]"
+        sources: "numbers"
+      }
+    }
+  }
+}
+events {
+  key: "tail"
+  value {
+    events {
+      binding {
+        uid: "test_unpack:12"
+        filename: "test_unpack.py"
+        lineno: 16
+        target: "tail"
+        value: "4"
+        sources: "numbers"
+      }
+    }
+  }
+}
+tracing_result {
+  key: "test_unpack:10"
+  value {
+    event_uids: "test_unpack:5"
+  }
+}
+tracing_result {
+  key: "test_unpack:11"
+  value {
+    event_uids: "test_unpack:5"
+  }
+}
+tracing_result {
+  key: "test_unpack:12"
+  value {
+    event_uids: "test_unpack:5"
+  }
+}
+tracing_result {
+  key: "test_unpack:13"
+  value {
+    event_uids: "test_unpack:2"
+    event_uids: "test_unpack:5"
+  }
+}
+tracing_result {
+  key: "test_unpack:14"
+  value {
+    event_uids: "test_unpack:2"
+    event_uids: "test_unpack:5"
+  }
+}
+tracing_result {
+  key: "test_unpack:15"
+  value {
+    event_uids: "test_unpack:2"
+    event_uids: "test_unpack:5"
+  }
+}
+tracing_result {
+  key: "test_unpack:18"
+  value {
+    event_uids: "test_unpack:16"
+    event_uids: "test_unpack:17"
+  }
+}
+tracing_result {
+  key: "test_unpack:3"
+  value {
+    event_uids: "test_unpack:2"
+  }
+}
+tracing_result {
+  key: "test_unpack:4"
+  value {
+    event_uids: "test_unpack:2"
+  }
+}
+tracing_result {
+  key: "test_unpack:6"
+  value {
+    event_uids: "test_unpack:5"
+  }
+}
+tracing_result {
+  key: "test_unpack:7"
+  value {
+    event_uids: "test_unpack:5"
+  }
+}
+tracing_result {
+  key: "test_unpack:8"
+  value {
+    event_uids: "test_unpack:5"
+  }
+}
+tracing_result {
+  key: "test_unpack:9"
+  value {
+    event_uids: "test_unpack:5"
+  }
+}

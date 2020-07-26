@@ -1,0 +1,103 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_jump.py"
+events {
+  key: "a"
+  value {
+    events {
+      initial_value {
+        uid: "test_jump:0"
+        filename: "test_jump.py"
+        lineno: 12
+        target: "a"
+        value: "[]"
+      }
+    }
+  }
+}
+events {
+  key: "b"
+  value {
+    events {
+      initial_value {
+        uid: "test_jump:3"
+        filename: "test_jump.py"
+        lineno: 20
+        target: "b"
+        value: "\"b\""
+      }
+    }
+  }
+}
+events {
+  key: "c"
+  value {
+    events {
+      initial_value {
+        uid: "test_jump:4"
+        filename: "test_jump.py"
+        lineno: 20
+        target: "c"
+        value: "\"c\""
+      }
+    }
+  }
+}
+events {
+  key: "x"
+  value {
+    events {
+      binding {
+        uid: "test_jump:1"
+        filename: "test_jump.py"
+        lineno: 15
+        target: "x"
+        value: "1"
+      }
+    }
+    events {
+      binding {
+        uid: "test_jump:2"
+        filename: "test_jump.py"
+        lineno: 18
+        target: "x"
+        value: "2"
+      }
+    }
+    events {
+      binding {
+        uid: "test_jump:5"
+        filename: "test_jump.py"
+        lineno: 20
+        target: "x"
+        value: "true"
+        sources: "b"
+        sources: "c"
+      }
+    }
+    events {
+      binding {
+        uid: "test_jump:6"
+        filename: "test_jump.py"
+        lineno: 21
+        target: "x"
+        value: "\"c\""
+        sources: "c"
+      }
+    }
+  }
+}
+tracing_result {
+  key: "test_jump:5"
+  value {
+    event_uids: "test_jump:3"
+    event_uids: "test_jump:4"
+  }
+}
+tracing_result {
+  key: "test_jump:6"
+  value {
+    event_uids: "test_jump:4"
+  }
+}

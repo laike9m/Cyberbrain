@@ -62,3 +62,7 @@ def test_import(tracer):
             }
         ),
     )
+
+    # We don't test GetFrame here, because event contains file path like
+    # "\"<module \'os\' from \'/Users/laike9m/3.8.0/lib/python3.8/os.py\'>\""
+    # Which doesn't work across different Python versions & test machines.

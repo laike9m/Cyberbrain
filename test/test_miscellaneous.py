@@ -1,9 +1,10 @@
 from cyberbrain import InitialValue, Binding, Mutation, Deletion, Symbol
+from utils import assert_GetFrame
 
 g = 0
 
 
-def test_miscellaneous(tracer):
+def test_miscellaneous(tracer, rpc_stub):
     a = "a"
     b = "b"
     c = "c"
@@ -24,36 +25,38 @@ def test_miscellaneous(tracer):
     tracer.register()
 
     assert tracer.events == {
-        "a": [InitialValue(target=Symbol("a"), value="a", lineno=15)],
-        "b": [InitialValue(target=Symbol("b"), value="b", lineno=15)],
-        "c": [InitialValue(target=Symbol("c"), value="c", lineno=15)],
-        "d": [InitialValue(target=Symbol("d"), value="d", lineno=15)],
+        "a": [InitialValue(target=Symbol("a"), value="a", lineno=16)],
+        "b": [InitialValue(target=Symbol("b"), value="b", lineno=16)],
+        "c": [InitialValue(target=Symbol("c"), value="c", lineno=16)],
+        "d": [InitialValue(target=Symbol("d"), value="d", lineno=16)],
         "x": [
             Binding(
                 target=Symbol("x"),
                 value="a b    'c' 'd' ",
                 sources={Symbol("a"), Symbol("b"), Symbol("d"), Symbol("c")},
-                lineno=15,
+                lineno=16,
             ),
             Mutation(
                 target=Symbol("x"),
                 value=False,
                 sources={Symbol("a"), Symbol("b")},
-                lineno=16,
+                lineno=17,
             ),
-            Mutation(target=Symbol("x"), value=0, sources={Symbol("g")}, lineno=20),
+            Mutation(target=Symbol("x"), value=0, sources={Symbol("g")}, lineno=21),
         ],
         "e": [
-            InitialValue(target=Symbol("e"), value=[1, 2, 3], lineno=17),
-            Mutation(target=Symbol("e"), value=[1, 2], lineno=17),
+            InitialValue(target=Symbol("e"), value=[1, 2, 3], lineno=18),
+            Mutation(target=Symbol("e"), value=[1, 2], lineno=18),
             Mutation(
-                target=Symbol("e"), value=[4, 2], sources={Symbol("e")}, lineno=17
+                target=Symbol("e"), value=[4, 2], sources={Symbol("e")}, lineno=18
             ),
-            Deletion(target=Symbol("e"), lineno=18),
+            Deletion(target=Symbol("e"), lineno=19),
         ],
         "g": [
-            InitialValue(target=Symbol("g"), value=0, lineno=20),
-            Mutation(target=Symbol("g"), value=1, lineno=21),
-            Deletion(target=Symbol("g"), lineno=22),
+            InitialValue(target=Symbol("g"), value=0, lineno=21),
+            Mutation(target=Symbol("g"), value=1, lineno=22),
+            Deletion(target=Symbol("g"), lineno=23),
         ],
     }
+
+    assert_GetFrame(rpc_stub, "test_miscellaneous")
