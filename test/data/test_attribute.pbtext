@@ -61,4 +61,9 @@ events {
     }
   }
 }
-
+tracing_result {
+  key: "test_attribute:2"
+  value {
+    event_uids: "test_attribute:0"
+  }
+}
