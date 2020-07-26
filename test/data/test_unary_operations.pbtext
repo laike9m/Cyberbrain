@@ -1,0 +1,87 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_unary.py"
+events {
+  key: "a"
+  value {
+    events {
+      initial_value {
+        uid: "test_unary_operations:0"
+        filename: "test_unary.py"
+        lineno: 10
+        target: "a"
+        value: "1"
+      }
+    }
+  }
+}
+events {
+  key: "b"
+  value {
+    events {
+      binding {
+        uid: "test_unary_operations:1"
+        filename: "test_unary.py"
+        lineno: 10
+        target: "b"
+        value: "1"
+        sources: "a"
+      }
+    }
+    events {
+      binding {
+        uid: "test_unary_operations:2"
+        filename: "test_unary.py"
+        lineno: 11
+        target: "b"
+        value: "-1"
+        sources: "a"
+      }
+    }
+    events {
+      binding {
+        uid: "test_unary_operations:3"
+        filename: "test_unary.py"
+        lineno: 12
+        target: "b"
+        value: "false"
+        sources: "a"
+      }
+    }
+    events {
+      binding {
+        uid: "test_unary_operations:4"
+        filename: "test_unary.py"
+        lineno: 13
+        target: "b"
+        value: "-2"
+        sources: "a"
+      }
+    }
+  }
+}
+tracing_result {
+  key: "test_unary_operations:1"
+  value {
+    event_uids: "test_unary_operations:0"
+  }
+}
+tracing_result {
+  key: "test_unary_operations:2"
+  value {
+    event_uids: "test_unary_operations:0"
+  }
+}
+tracing_result {
+  key: "test_unary_operations:3"
+  value {
+    event_uids: "test_unary_operations:0"
+  }
+}
+tracing_result {
+  key: "test_unary_operations:4"
+  value {
+    event_uids: "test_unary_operations:0"
+  }
+}
