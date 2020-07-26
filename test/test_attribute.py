@@ -1,6 +1,6 @@
 from hamcrest import *
 
-from cyberbrain import InitialValue, Mutation
+from cyberbrain import InitialValue, Mutation, Symbol
 
 
 def test_attribute(tracer, rpc_stub):
@@ -28,7 +28,7 @@ def test_attribute(tracer, rpc_stub):
                         instance_of(InitialValue),
                         has_properties(
                             {
-                                "target": "a1",
+                                "target": Symbol("a1"),
                                 "value": all_of(
                                     instance_of(A), not_(has_property("x"))
                                 ),
@@ -40,9 +40,9 @@ def test_attribute(tracer, rpc_stub):
                         instance_of(Mutation),
                         has_properties(
                             {
-                                "target": "a1",
+                                "target": Symbol("a1"),
                                 "value": has_property("x", has_property("y", 1)),
-                                "sources": {"a2"},
+                                "sources": {Symbol("a2")},
                                 "lineno": 16,
                             }
                         ),
@@ -51,7 +51,7 @@ def test_attribute(tracer, rpc_stub):
                         instance_of(Mutation),
                         has_properties(
                             {
-                                "target": "a1",
+                                "target": Symbol("a1"),
                                 "value": has_property("x", has_property("y", 2)),
                                 "sources": set(),
                                 "lineno": 17,
@@ -62,7 +62,7 @@ def test_attribute(tracer, rpc_stub):
                         instance_of(Mutation),
                         has_properties(
                             {
-                                "target": "a1",
+                                "target": Symbol("a1"),
                                 "value": not_(has_property("x")),
                                 "sources": set(),
                                 "lineno": 18,

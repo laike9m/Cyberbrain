@@ -1,4 +1,4 @@
-from cyberbrain import InitialValue, Binding, Mutation, Deletion
+from cyberbrain import InitialValue, Binding, Mutation, Deletion, Symbol
 
 g = 0
 
@@ -24,29 +24,36 @@ def test_miscellaneous(tracer):
     tracer.register()
 
     assert tracer.events == {
-        "a": [InitialValue(target="a", value="a", lineno=15)],
-        "b": [InitialValue(target="b", value="b", lineno=15)],
-        "c": [InitialValue(target="c", value="c", lineno=15)],
-        "d": [InitialValue(target="d", value="d", lineno=15)],
+        "a": [InitialValue(target=Symbol("a"), value="a", lineno=15)],
+        "b": [InitialValue(target=Symbol("b"), value="b", lineno=15)],
+        "c": [InitialValue(target=Symbol("c"), value="c", lineno=15)],
+        "d": [InitialValue(target=Symbol("d"), value="d", lineno=15)],
         "x": [
             Binding(
-                target="x",
+                target=Symbol("x"),
                 value="a b    'c' 'd' ",
-                sources={"a", "b", "d", "c"},
+                sources={Symbol("a"), Symbol("b"), Symbol("d"), Symbol("c")},
                 lineno=15,
             ),
-            Mutation(target="x", value=False, sources={"a", "b"}, lineno=16),
-            Mutation(target="x", value=0, sources={"g"}, lineno=20),
+            Mutation(
+                target=Symbol("x"),
+                value=False,
+                sources={Symbol("a"), Symbol("b")},
+                lineno=16,
+            ),
+            Mutation(target=Symbol("x"), value=0, sources={Symbol("g")}, lineno=20),
         ],
         "e": [
-            InitialValue(target="e", value=[1, 2, 3], lineno=17),
-            Mutation(target="e", value=[1, 2], lineno=17),
-            Mutation(target="e", value=[4, 2], sources={"e"}, lineno=17),
-            Deletion(target="e", lineno=18),
+            InitialValue(target=Symbol("e"), value=[1, 2, 3], lineno=17),
+            Mutation(target=Symbol("e"), value=[1, 2], lineno=17),
+            Mutation(
+                target=Symbol("e"), value=[4, 2], sources={Symbol("e")}, lineno=17
+            ),
+            Deletion(target=Symbol("e"), lineno=18),
         ],
         "g": [
-            InitialValue(target="g", value=0, lineno=20),
-            Mutation(target="g", value=1, lineno=21),
-            Deletion(target="g", lineno=22),
+            InitialValue(target=Symbol("g"), value=0, lineno=20),
+            Mutation(target=Symbol("g"), value=1, lineno=21),
+            Deletion(target=Symbol("g"), lineno=22),
         ],
     }

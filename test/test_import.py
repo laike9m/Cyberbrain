@@ -1,6 +1,6 @@
 from hamcrest import *
 
-from cyberbrain import Binding
+from cyberbrain import Binding, Symbol
 
 
 def test_import(tracer):
@@ -23,7 +23,7 @@ def test_import(tracer):
                         instance_of(Binding),
                         has_properties(
                             {
-                                "target": "os",
+                                "target": Symbol("os"),
                                 "value": starts_with("<module 'os'"),
                                 "sources": set(),
                                 "lineno": 9,
@@ -36,7 +36,7 @@ def test_import(tracer):
                         instance_of(Binding),
                         has_properties(
                             {
-                                "target": "path",
+                                "target": Symbol("path"),
                                 "value": all_of(
                                     starts_with("<module"), contains_string("path")
                                 ),
@@ -51,7 +51,7 @@ def test_import(tracer):
                         instance_of(Binding),
                         has_properties(
                             {
-                                "target": "settrace",
+                                "target": Symbol("settrace"),
                                 "value": settrace,
                                 "sources": set(),
                                 "lineno": 11,
