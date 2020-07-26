@@ -8,8 +8,7 @@ from cyberbrain.generated import communication_pb2, communication_pb2_grpc
 def assert_GetFrame(
     rpc_stub: communication_pb2_grpc.CommunicationStub, frame_name: str
 ):
-    print(rpc_stub.GetFrame(communication_pb2.FrameLocater(frame_name=frame_name)))
-
+    # print(rpc_stub.GetFrame(communication_pb2.FrameLocater(frame_name=frame_name)))
     golden_filepath = f"test/data/{frame_name}.pbtext"
 
     # Generates golden data.

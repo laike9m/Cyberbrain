@@ -1,6 +1,7 @@
 """Certain instructions can only be tested outside of a function."""
 
 from cyberbrain import Tracer, InitialValue, Deletion, Mutation, Symbol
+from utils import assert_GetFrame
 
 tracer = Tracer()
 
@@ -12,19 +13,21 @@ y: int
 tracer.register()
 
 
-def test_delete_name():
+def test_module(rpc_stub):
     assert tracer.events == {
         "x": [
-            InitialValue(target=Symbol("x"), value=1, lineno=10),
-            Deletion(target=Symbol("x"), lineno=10),
+            InitialValue(target=Symbol("x"), value=1, lineno=11),
+            Deletion(target=Symbol("x"), lineno=11),
         ],
         "__annotations__": [
-            InitialValue(target=Symbol("__annotations__"), value={}, lineno=11),
+            InitialValue(target=Symbol("__annotations__"), value={}, lineno=12),
             Mutation(
                 target=Symbol("__annotations__"),
                 value={"y": int},
-                sources={Symbol("int")},
-                lineno=11,
+                sources=set(),  # `int` is a built-in so is excluded from sources.
+                lineno=12,
             ),
         ],
     }
+
+    assert_GetFrame(rpc_stub, "<module>")
