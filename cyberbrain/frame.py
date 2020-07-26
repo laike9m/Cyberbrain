@@ -86,7 +86,7 @@ class Frame:
     def log_events(self, frame: FrameType, instr: Instruction, jumped: bool = False):
         """Logs changed values by the given instruction, if any."""
         event_info = self.value_stack.emit_event_and_update_stack(
-            instr=instr, frame=frame, jumped=jumped
+            instr=instr, frame=frame, jumped=jumped, snapshot=self.latest_snapshot
         )
         if not event_info:
             del frame
@@ -94,7 +94,7 @@ class Frame:
 
         event = None
         target: Symbol = event_info.target
-        assert type(target) is Symbol, target
+        assert type(target) is Symbol
 
         if event_info.type is EventType.Mutation:
             diff = DeepDiff(
@@ -144,6 +144,10 @@ class Frame:
         new_snapshot = Snapshot(events_pointer=new_events_pointer)
         self._latest_snapshot = new_snapshot
         self.snapshots.append(new_snapshot)
+
+        # If event is a mutation, updates relevant snapshots in value stack.
+        if isinstance(event, Mutation):
+            self.value_stack.update_snapshot(event.target.name, self.latest_snapshot)
 
     def _knows(self, name: str) -> bool:
         return name in self.raw_events
@@ -201,69 +205,6 @@ class Frame:
 
         return result
 
-    def get_tracing_result(self) -> dict[str, list[str]]:
-        """Do tracing.
-
-        Given code like:
-
-        x = "foo"
-        y = "bar"
-        x, y = y, x
-
-        which has events:
-            {
-                "x": [
-                    Binding(target="x", value="foo", uid='1'),
-                    Mutation(target="x", value="bar", sources={"y"}, uid='2'),
-                ],
-                "y": [
-                    Binding(target="y", value="bar", uid='3'),
-                    Mutation(target="y", value="foo", sources={"x"}, uid='4'),
-                ]
-            }
-
-        Tracing result would be:
-
-            {
-                '2': ['3'],
-                '4': ['1']
-            }
-
-        However if we use the most naive method, which look at all identifiers in
-        sources and find its previous event, we would end up with:
-
-            {
-                '2': ['3'],
-                '4': ['2']
-            }
-
-        Prerequisite: 需要区分 mutation 和 binding. Binding 的话就不更新 value stack，
-        mutation 的话需要更新
-
-        TODO: 可以这样解决。value stack 中不仅记录 identifier，还记录 snapshot
-            就这个例子而言，在
-            Mutation(target="x", value="bar", sources={"y"}, uid='2')
-            发生之后，应该更新 value stack 中所有的 'x'
-            原来是 'x', 现在变成 ('x', snapshot=get_latest_snapshot())
-            然后再记录 mutation 并添加 snapshot。
-            这样的好处是，之后从 value stack 弹出的时候，就可以知道具体是哪个 snapshot 里的 x
-            比如
-            Mutation(target="y", value="foo", sources={("x", snapshot=...)}, uid='4')
-            我们就知道，y 的变化来源于发生变动之前的 x，而不是变动之后的 x
-            这样才能生成正确的 tracing result.
-
-        frame_tree 查询逻辑可以先不实现，直接返回唯一一个 frame
-
-        现有的 test 可以沿用，在 assert tracing_result 的时候，因为 event.uid 没办法获知，需要实现
-        从 event 信息反查，即
-        tracing_result = {
-          get_uid(Mutation(target='x', lineno=2)): [
-            get_uid(Binding(target='y', lineno=1)
-          ]
-        }
-        这其实也不难做到
-        """
-
 
 class Snapshot:
     """Represents a frame's state at a certain moment.
@@ -281,3 +222,6 @@ class Snapshot:
     def __init__(self, events_pointer, location=None):
         self.location = location
         self.events_pointer: dict[str, int] = events_pointer
+
+    def __repr__(self):
+        return repr(self.events_pointer)
