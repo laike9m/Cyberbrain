@@ -30,4 +30,4 @@ def test_module(rpc_stub):
         ],
     }
 
-    assert_GetFrame(rpc_stub, "<module>")
+    assert_GetFrame(rpc_stub, "test_outside_func")

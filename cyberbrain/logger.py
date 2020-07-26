@@ -24,7 +24,13 @@ class FrameLogger:
             shorten_path(frame.f_code.co_filename, 1 if utils.run_in_test() else 3),
             self._map_bytecode_offset_to_lineno(frame),
         )
-        FrameTree.add_frame(frame.f_code.co_name, self.frame)
+        frame_name = (
+            # Use filename as frame name if code is run at module level.
+            self.frame.filename.rstrip(".py")
+            if frame.f_code.co_name == "<module>"
+            else frame.f_code.co_name
+        )
+        FrameTree.add_frame(frame_name, self.frame)
         self.instructions = {
             instr.offset: instr for instr in dis.get_instructions(frame.f_code)
         }
