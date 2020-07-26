@@ -1,4 +1,4 @@
-from cyberbrain import Binding, Mutation, InitialValue
+from cyberbrain import Binding, Mutation, InitialValue, Symbol
 
 
 def test_unary_operations(tracer):
@@ -14,11 +14,11 @@ def test_unary_operations(tracer):
     tracer.register()
 
     assert tracer.events == {
-        "a": [InitialValue(target="a", value=1, lineno=9)],
+        "a": [InitialValue(target=Symbol("a"), value=1, lineno=9)],
         "b": [
-            Binding(target="b", value=1, sources={"a"}, lineno=9),
-            Mutation(target="b", value=-1, sources={"a"}, lineno=10),
-            Mutation(target="b", value=False, sources={"a"}, lineno=11),
-            Mutation(target="b", value=-2, sources={"a"}, lineno=12),
+            Binding(target=Symbol("b"), value=1, sources={Symbol("a")}, lineno=9),
+            Mutation(target=Symbol("b"), value=-1, sources={Symbol("a")}, lineno=10),
+            Mutation(target=Symbol("b"), value=False, sources={Symbol("a")}, lineno=11),
+            Mutation(target=Symbol("b"), value=-2, sources={Symbol("a")}, lineno=12),
         ],
     }

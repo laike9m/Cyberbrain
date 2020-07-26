@@ -17,7 +17,7 @@ except ImportError:
     from typing_extensions import Literal
 
 from . import utils
-from .basis import EventType
+from .basis import EventType, Symbol
 from .block_stack import BlockStack, BlockType, Block
 
 
@@ -70,8 +70,8 @@ BindingType = EventType.Binding
 @dataclasses.dataclass
 class EventInfo:
     type: Literal[EventType.Binding, EventType.Mutation, EventType.Deletion]
-    target: str
-    sources: set[str] = dataclasses.field(default_factory=set)
+    target: Symbol
+    sources: set[Symbol] = dataclasses.field(default_factory=set)
 
 
 class GeneralValueStack:
@@ -153,12 +153,18 @@ class GeneralValueStack:
 
         This method will automatically convert single value to a list. _placeholder will
         be converted to an empty list, so that it never exists on the value stack.
+
+        Str is converted to Symbol.
         """
         for value in values:
             if value is _placeholder:
                 value = []
             elif isinstance(value, str):  # For representing identifiers.
-                value = [value]
+                value = [Symbol(name=value)]
+            elif isinstance(value, list):
+                for index, item in enumerate(value):
+                    if isinstance(item, str):
+                        value[index] = Symbol(item)
             # For NULL or int used by block related handlers, keep the original value.
             self.stack.append(value)
 
@@ -267,14 +273,14 @@ class GeneralValueStack:
     @emit_event
     def _STORE_NAME_handler(self, instr):
         mutation = EventInfo(
-            type=BindingType, target=instr.argval, sources=set(self.tos)
+            type=BindingType, target=Symbol(instr.argval), sources=set(self.tos)
         )
         self._pop()
         return mutation
 
     @emit_event
     def _DELETE_NAME_handler(self, instr):
-        return EventInfo(type=DeletionType, target=instr.argrepr)
+        return EventInfo(type=DeletionType, target=Symbol(instr.argrepr))
 
     def _UNPACK_SEQUENCE_handler(self, instr):
         self._pop_one_push_n(instr.arg)
@@ -304,7 +310,7 @@ class GeneralValueStack:
 
     @emit_event
     def _DELETE_GLOBAL_handler(self, instr):
-        return EventInfo(type=DeletionType, target=instr.argrepr)
+        return EventInfo(type=DeletionType, target=Symbol(instr.argrepr))
 
     def _LOAD_CONST_handler(self):
         # For instructions like LOAD_CONST, we just need a placeholder on the stack.
@@ -389,7 +395,7 @@ class GeneralValueStack:
 
     def _LOAD_GLOBAL_handler(self, instr, frame):
         # TODO: this method (and other LOAD_XXX methods) seriously need rewriting.
-        # Because in the end we need to handle values based on their type.
+        #  Because in the end we need to handle values based on their type.
         val = _placeholder
 
         # Exclude builtin types like "range" so they don't become a source of mutations.
@@ -413,7 +419,7 @@ class GeneralValueStack:
 
     @emit_event
     def _DELETE_FAST_handler(self, instr):
-        return EventInfo(type=DeletionType, target=instr.argrepr)
+        return EventInfo(type=DeletionType, target=Symbol(instr.argrepr))
 
     def _LOAD_METHOD_handler(self):
         # TODO: Implement full behaviors.
@@ -443,7 +449,7 @@ class GeneralValueStack:
         method_or_null = self._pop()  # method or NULL
         self._push(utils.flatten(inst_or_callable, method_or_null))
 
-        if inst_or_callable[0] == "tracer":  # exclude tracer calls.
+        if inst_or_callable[0] == Symbol("tracer"):  # exclude tracer calls.
             return
         return EventInfo(
             type=MutationType, target=inst_or_callable[0], sources=set(args)

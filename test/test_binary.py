@@ -1,4 +1,4 @@
-from cyberbrain import Mutation, Binding, InitialValue
+from cyberbrain import Mutation, Binding, InitialValue, Symbol
 
 
 def test_binary_operation(tracer):
@@ -24,22 +24,87 @@ def test_binary_operation(tracer):
     tracer.register()
 
     assert tracer.events == {
-        "a": [InitialValue(target="a", value=1, lineno=10)],
-        "b": [InitialValue(target="b", value=1, lineno=10)],
-        "lst": [InitialValue(target="lst", value=[0, 1], lineno=17)],
+        "a": [InitialValue(target=Symbol("a"), value=1, lineno=10)],
+        "b": [InitialValue(target=Symbol("b"), value=1, lineno=10)],
+        "lst": [InitialValue(target=Symbol("lst"), value=[0, 1], lineno=17)],
         "c": [
-            Binding(target="c", value=1, sources={"a", "b"}, lineno=10),
-            Mutation(target="c", value=1, sources={"a", "b"}, lineno=11),
-            Mutation(target="c", value=1, sources={"a", "b"}, lineno=12),
-            Mutation(target="c", value=1, sources={"a", "b"}, lineno=13),
-            Mutation(target="c", value=0, sources={"a", "b"}, lineno=14),
-            Mutation(target="c", value=2, sources={"a", "b"}, lineno=15),
-            Mutation(target="c", value=0, sources={"a", "b"}, lineno=16),
-            Mutation(target="c", value=1, sources={"a", "lst"}, lineno=17),
-            Mutation(target="c", value=2, sources={"a", "b"}, lineno=18),
-            Mutation(target="c", value=0, sources={"a", "b"}, lineno=19),
-            Mutation(target="c", value=1, sources={"a", "b"}, lineno=20),
-            Mutation(target="c", value=0, sources={"a", "b"}, lineno=21),
-            Mutation(target="c", value=1, sources={"a", "b"}, lineno=22),
+            Binding(
+                target=Symbol("c"),
+                value=1,
+                sources={Symbol("a"), Symbol("b")},
+                lineno=10,
+            ),
+            Mutation(
+                target=Symbol("c"),
+                value=1,
+                sources={Symbol("a"), Symbol("b")},
+                lineno=11,
+            ),
+            Mutation(
+                target=Symbol("c"),
+                value=1,
+                sources={Symbol("a"), Symbol("b")},
+                lineno=12,
+            ),
+            Mutation(
+                target=Symbol("c"),
+                value=1,
+                sources={Symbol("a"), Symbol("b")},
+                lineno=13,
+            ),
+            Mutation(
+                target=Symbol("c"),
+                value=0,
+                sources={Symbol("a"), Symbol("b")},
+                lineno=14,
+            ),
+            Mutation(
+                target=Symbol("c"),
+                value=2,
+                sources={Symbol("a"), Symbol("b")},
+                lineno=15,
+            ),
+            Mutation(
+                target=Symbol("c"),
+                value=0,
+                sources={Symbol("a"), Symbol("b")},
+                lineno=16,
+            ),
+            Mutation(
+                target=Symbol("c"),
+                value=1,
+                sources={Symbol("a"), Symbol("lst")},
+                lineno=17,
+            ),
+            Mutation(
+                target=Symbol("c"),
+                value=2,
+                sources={Symbol("a"), Symbol("b")},
+                lineno=18,
+            ),
+            Mutation(
+                target=Symbol("c"),
+                value=0,
+                sources={Symbol("a"), Symbol("b")},
+                lineno=19,
+            ),
+            Mutation(
+                target=Symbol("c"),
+                value=1,
+                sources={Symbol("a"), Symbol("b")},
+                lineno=20,
+            ),
+            Mutation(
+                target=Symbol("c"),
+                value=0,
+                sources={Symbol("a"), Symbol("b")},
+                lineno=21,
+            ),
+            Mutation(
+                target=Symbol("c"),
+                value=1,
+                sources={Symbol("a"), Symbol("b")},
+                lineno=22,
+            ),
         ],
     }

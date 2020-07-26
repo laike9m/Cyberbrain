@@ -6,7 +6,7 @@ import sys
 from get_port import get_port
 
 from . import logger, utils, rpc_server
-from .basis import _dummy
+from .basis import _dummy, Symbol
 
 _debug_mode = False
 
@@ -51,11 +51,14 @@ class Tracer:
         sys.settrace(self.global_tracer)
 
     def register(self, target=_dummy):
-        # Checks the value stack is in correct state: no extra elements left on stack.
-        assert self.frame_logger.frame.value_stack.stack == [["tracer"], ["tracer"]]
         sys.settrace(None)
         self.global_frame.f_trace = None
         del self.global_frame
+        # Checks the value stack is in correct state: no extra elements left on stack.
+        assert self.frame_logger.frame.value_stack.stack == [
+            [Symbol("tracer")],
+            [Symbol("tracer")],
+        ]
         if not utils.run_in_test():
             # If run in production, let the server wait for termination.
             self.server.wait_for_termination()
