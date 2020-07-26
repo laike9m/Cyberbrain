@@ -334,14 +334,6 @@ class GeneralValueStack:
     def _DELETE_GLOBAL_handler(self, instr):
         return EventInfo(type=DeletionType, target=Symbol(instr.argrepr))
 
-    def _LOAD_CONST_handler(self):
-        # For instructions like LOAD_CONST, we just need a placeholder on the stack.
-        self._push(_placeholder)
-
-    def _LOAD_NAME_handler(self, instr):
-        # Note that we never store the actual rvalue, just name.
-        self._push(instr.argrepr)
-
     def _BUILD_TUPLE_handler(self, instr):
         self._pop_n_push_one(instr.arg)
 
@@ -415,25 +407,41 @@ class GeneralValueStack:
     def _IMPORT_FROM_handler(self):
         self._push(_placeholder)
 
+    ############################ LOAD instructions ############################
+
+    def _LOAD_CONST_handler(self):
+        self._push(_placeholder)
+
+    def _LOAD_NAME_handler(self, instr, frame):
+        self._push(self._fetch_value_for_load(instr.argrepr, frame))
+        del frame
+
     def _LOAD_GLOBAL_handler(self, instr, frame):
-        # TODO: this method (and other LOAD_XXX methods) seriously need rewriting.
-        #  Because in the end we need to handle values based on their type.
-        val = _placeholder
-
-        # Exclude builtin types like "range" so they don't become a source of mutations.
-        if instr.argval in frame.f_builtins:
-            val = frame.f_builtins[instr.argval]
-            if not utils.is_exception(val):
-                # Keeps exceptions so that they can be identified.
-                val = []
-        else:
-            val = instr.argrepr
-
-        self._push(val)
+        self._push(self._fetch_value_for_load(instr.argrepr, frame))
         del frame
 
     def _LOAD_FAST_handler(self, instr):
         self._push(instr.argrepr)
+
+    def _fetch_value_for_load(self, name, frame):
+        """Transforms the value to be loaded onto value stack based on their types.
+
+        The rules are:
+        1. If the value is an exception class or instance, use the real value
+        2. If the value is a built-in object, like `range`, `int`, ignore it and stores
+           a placeholder instead.
+        3. Others, most likely a variable from user's code, stores the identifier.
+        """
+        if name not in frame.f_builtins:
+            return name
+
+        val = frame.f_builtins[name]
+        if not utils.is_exception(val):
+            # Keeps exceptions so that they can be identified.
+            val = []
+
+        del frame
+        return val
 
     @emit_event
     def _STORE_FAST_handler(self, instr):
