@@ -7,14 +7,12 @@ from __future__ import annotations
 import queue
 from concurrent import futures
 from threading import Timer
-from typing import Optional
 
 import grpc
 import jsonpickle
 
 from . import utils
 from .basis import Event, InitialValue, Binding, Mutation, Deletion
-from .frame import Frame
 from .frame_tree import FrameTree
 from .generated import communication_pb2
 from .generated import communication_pb2_grpc
@@ -28,7 +26,7 @@ def transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 uid=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
-                target=event.target,
+                target=event.target.name,
                 value=utils.to_json(event.value),
             )
         )
@@ -38,9 +36,10 @@ def transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 uid=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
-                target=event.target,
+                target=event.target.name,
                 value=utils.to_json(event.value),
-                sources=sorted(event.sources),  # Sorted to make result deterministic.
+                # Sorted to make result deterministic.
+                sources=sorted(source.name for source in event.sources),
             )
         )
     elif isinstance(event, Mutation):
@@ -49,10 +48,10 @@ def transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 uid=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
-                target=event.target,
+                target=event.target.name,
                 value=utils.to_json(event.value),
                 delta=jsonpickle.encode(event.delta.to_dict(), unpicklable=False),
-                sources=sorted(event.sources),
+                sources=sorted(source.name for source in event.sources),
             )
         )
     elif isinstance(event, Deletion):
@@ -61,31 +60,11 @@ def transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 uid=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
-                target=event.target,
+                target=event.target.name,
             )
         )
 
     return event_proto
-
-
-def get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
-    print(event)
-    if isinstance(event, InitialValue) or isinstance(event, Deletion):
-        return
-
-    assert isinstance(event, Binding) or isinstance(event, Mutation)
-
-    if not event.sources:
-        return
-
-    sources_uids = []
-    for source in event.sources:
-        assert source in event.snapshot.events_pointer
-        source_event_index = event.snapshot.events_pointer[source]
-        source_event = frame.raw_events[source][source_event_index]
-        sources_uids.append(source_event.uid)
-
-    return sources_uids
 
 
 class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServicer):
@@ -124,12 +103,6 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
                     events=[transform_event_to_proto(event) for event in events]
                 )
             )
-            # for event in events:
-            #     event_uids = get_event_sources_uids(event, frame)
-            #     if event_uids:
-            #         frame_proto.tracing_result[event.uid].CopyFrom(
-            #             communication_pb2.EventUidList(event_uids=event_uids)
-            #         )
         return frame_proto
 
 
