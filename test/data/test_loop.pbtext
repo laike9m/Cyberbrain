@@ -1,0 +1,85 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_block.py"
+events {
+  key: "i"
+  value {
+    events {
+      binding {
+        uid: "test_loop:4"
+        filename: "test_block.py"
+        lineno: 21
+        target: "i"
+        value: "0"
+      }
+    }
+    events {
+      binding {
+        uid: "test_loop:5"
+        filename: "test_block.py"
+        lineno: 23
+        target: "i"
+        value: "1"
+        sources: "i"
+      }
+    }
+  }
+}
+events {
+  key: "x"
+  value {
+    events {
+      binding {
+        uid: "test_loop:0"
+        filename: "test_block.py"
+        lineno: 10
+        target: "x"
+        value: "0"
+      }
+    }
+    events {
+      binding {
+        uid: "test_loop:1"
+        filename: "test_block.py"
+        lineno: 10
+        target: "x"
+        value: "1"
+      }
+    }
+  }
+}
+events {
+  key: "y"
+  value {
+    events {
+      binding {
+        uid: "test_loop:2"
+        filename: "test_block.py"
+        lineno: 13
+        target: "y"
+        value: "0"
+      }
+    }
+  }
+}
+events {
+  key: "z"
+  value {
+    events {
+      binding {
+        uid: "test_loop:3"
+        filename: "test_block.py"
+        lineno: 17
+        target: "z"
+        value: "0"
+      }
+    }
+  }
+}
+tracing_result {
+  key: "test_loop:5"
+  value {
+    event_uids: "test_loop:4"
+  }
+}

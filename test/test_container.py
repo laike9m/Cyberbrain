@@ -1,7 +1,8 @@
 from cyberbrain import Mutation, Binding, InitialValue, Symbol
+from utils import assert_GetFrame
 
 
-def test_container(tracer):
+def test_container(tracer, rpc_stub):
     a = b = 1
     c = 2
     e = 0
@@ -21,55 +22,49 @@ def test_container(tracer):
     tracer.register()
 
     assert tracer.events == {
-        "a": [InitialValue(target=Symbol("a"), value=1, lineno=11)],
-        "b": [InitialValue(target=Symbol("b"), value=1, lineno=11)],
-        "c": [InitialValue(target=Symbol("c"), value=2, lineno=16)],
-        "e": [InitialValue(target=Symbol("e"), value=0, lineno=18)],
+        "a": [InitialValue(target=Symbol("a"), value=1, lineno=12)],
+        "b": [InitialValue(target=Symbol("b"), value=1, lineno=12)],
+        "c": [InitialValue(target=Symbol("c"), value=2, lineno=17)],
+        "e": [InitialValue(target=Symbol("e"), value=0, lineno=19)],
         "d": [
             Binding(
                 target=Symbol("d"),
                 value=[1, 1],
                 sources={Symbol("a"), Symbol("b")},
-                lineno=11,
+                lineno=12,
             ),
             Mutation(
                 target=Symbol("d"),
                 value=(1, 1),
                 sources={Symbol("a"), Symbol("b")},
-                lineno=12,
+                lineno=13,
             ),
             Mutation(
                 target=Symbol("d"),
                 value={1},
                 sources={Symbol("a"), Symbol("b")},
-                lineno=13,
+                lineno=14,
             ),
             Mutation(
                 target=Symbol("d"),
                 value={1: 1},
                 sources={Symbol("a"), Symbol("b")},
-                lineno=14,
+                lineno=15,
             ),
             Mutation(
                 target=Symbol("d"),
                 value={1: 1, 2: 1},
                 sources={Symbol("a"), Symbol("b")},
-                lineno=15,
+                lineno=16,
             ),
             Mutation(
                 target=Symbol("d"),
                 value={1: 2, 2: 1},
                 sources={Symbol("a"), Symbol("c")},
-                lineno=16,
+                lineno=17,
             ),
             Mutation(
-                target=Symbol("d"), value={2: 1}, sources={Symbol("a")}, lineno=17
-            ),
-            Mutation(
-                target=Symbol("d"),
-                value=[1, 1],
-                sources={Symbol("a"), Symbol("b"), Symbol("c"), Symbol("e")},
-                lineno=18,
+                target=Symbol("d"), value={2: 1}, sources={Symbol("a")}, lineno=18
             ),
             Mutation(
                 target=Symbol("d"),
@@ -77,5 +72,13 @@ def test_container(tracer):
                 sources={Symbol("a"), Symbol("b"), Symbol("c"), Symbol("e")},
                 lineno=19,
             ),
+            Mutation(
+                target=Symbol("d"),
+                value=[1, 1],
+                sources={Symbol("a"), Symbol("b"), Symbol("c"), Symbol("e")},
+                lineno=20,
+            ),
         ],
     }
+
+    assert_GetFrame(rpc_stub, "test_container")

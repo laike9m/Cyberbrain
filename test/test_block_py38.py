@@ -9,13 +9,14 @@ import sys
 import pytest
 
 from cyberbrain import Binding, Mutation, Symbol
+from utils import assert_GetFrame
 
 
 @pytest.mark.skipif(
     sys.version_info < (3, 8),
     reason="Python version 3.7 does not support 'continue' inside 'finally' clause .",
 )
-def test_continue_in_finally(tracer):
+def test_continue_in_finally(tracer, rpc_stub):
     tracer.init()
 
     for x in range(2):
@@ -28,17 +29,19 @@ def test_continue_in_finally(tracer):
 
     assert tracer.events == {
         "x": [
-            Binding(target=Symbol("x"), value=0, lineno=21),
-            Mutation(target=Symbol("x"), value=1, lineno=21),
+            Binding(target=Symbol("x"), value=0, lineno=22),
+            Mutation(target=Symbol("x"), value=1, lineno=22),
         ]
     }
+
+    assert_GetFrame(rpc_stub, "test_continue_in_finally")
 
 
 @pytest.mark.skipif(
     sys.version_info < (3, 8),
     reason="Python version 3.7 does not support 'continue' inside 'finally' clause .",
 )
-def test_continue_in_finally_with_exception(tracer):
+def test_continue_in_finally_with_exception(tracer, rpc_stub):
     """Tests POP_FINALLY when tos is an exception."""
 
     tracer.init()
@@ -55,7 +58,9 @@ def test_continue_in_finally_with_exception(tracer):
 
     assert tracer.events == {
         "x": [
-            Binding(target=Symbol("x"), value=0, lineno=48),
-            Mutation(target=Symbol("x"), value=1, lineno=48),
+            Binding(target=Symbol("x"), value=0, lineno=51),
+            Mutation(target=Symbol("x"), value=1, lineno=51),
         ]
     }
+
+    assert_GetFrame(rpc_stub, "test_continue_in_finally_with_exception")

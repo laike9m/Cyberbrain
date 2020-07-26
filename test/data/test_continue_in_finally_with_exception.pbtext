@@ -1,0 +1,27 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_block_py38.py"
+events {
+  key: "x"
+  value {
+    events {
+      binding {
+        uid: "test_continue_in_finally_with_exception:0"
+        filename: "test_block_py38.py"
+        lineno: 51
+        target: "x"
+        value: "0"
+      }
+    }
+    events {
+      binding {
+        uid: "test_continue_in_finally_with_exception:1"
+        filename: "test_block_py38.py"
+        lineno: 51
+        target: "x"
+        value: "1"
+      }
+    }
+  }
+}

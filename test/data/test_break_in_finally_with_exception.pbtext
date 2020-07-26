@@ -1,0 +1,18 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_block.py"
+events {
+  key: "x"
+  value {
+    events {
+      binding {
+        uid: "test_break_in_finally_with_exception:0"
+        filename: "test_block.py"
+        lineno: 116
+        target: "x"
+        value: "0"
+      }
+    }
+  }
+}

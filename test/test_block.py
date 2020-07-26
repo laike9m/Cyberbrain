@@ -1,9 +1,10 @@
 """Test instructions that create blocks."""
 
 from cyberbrain import Binding, Mutation, Symbol
+from utils import assert_GetFrame
 
 
-def test_loop(tracer):
+def test_loop(tracer, rpc_stub):
     tracer.init()
 
     for x in range(2):  # SETUP_LOOP (3.7), GET_ITER, FOR_ITER
@@ -25,19 +26,21 @@ def test_loop(tracer):
 
     assert tracer.events == {
         "x": [
-            Binding(target=Symbol("x"), value=0, lineno=9),
-            Mutation(target=Symbol("x"), value=1, lineno=9),
+            Binding(target=Symbol("x"), value=0, lineno=10),
+            Mutation(target=Symbol("x"), value=1, lineno=10),
         ],
-        "y": [Binding(target=Symbol("y"), value=0, lineno=12)],
-        "z": [Binding(target=Symbol("z"), value=0, lineno=16)],
+        "y": [Binding(target=Symbol("y"), value=0, lineno=13)],
+        "z": [Binding(target=Symbol("z"), value=0, lineno=17)],
         "i": [
-            Binding(target=Symbol("i"), value=0, lineno=20),
-            Mutation(target=Symbol("i"), value=1, sources={Symbol("i")}, lineno=22),
+            Binding(target=Symbol("i"), value=0, lineno=21),
+            Mutation(target=Symbol("i"), value=1, sources={Symbol("i")}, lineno=23),
         ],
     }
 
+    assert_GetFrame(rpc_stub, "test_loop")
 
-def test_basic_try_except(tracer):
+
+def test_basic_try_except(tracer, rpc_stub):
     tracer.init()
 
     try:  # SETUP_EXCEPT (3.7), SETUP_FINALLY (3.8)
@@ -50,8 +53,10 @@ def test_basic_try_except(tracer):
 
     assert tracer.events == {}
 
+    assert_GetFrame(rpc_stub, "test_basic_try_except")
 
-def test_nested_try_except(tracer):
+
+def test_nested_try_except(tracer, rpc_stub):
     tracer.init()
 
     try:
@@ -63,10 +68,12 @@ def test_nested_try_except(tracer):
         pass
 
     tracer.register()
-    assert tracer.events == {"a": [Binding(target=Symbol("a"), value=1, lineno=61)]}
+    assert tracer.events == {"a": [Binding(target=Symbol("a"), value=1, lineno=66)]}
+
+    assert_GetFrame(rpc_stub, "test_nested_try_except")
 
 
-def test_try_except_finally(tracer):
+def test_try_except_finally(tracer, rpc_stub):
     tracer.init()
 
     try:  # SETUP_EXCEPT + SETUP_FINALLY (3.7), SETUP_FINALLY (3.8)
@@ -78,10 +85,12 @@ def test_try_except_finally(tracer):
 
     tracer.register()
 
-    assert tracer.events == {"b": [Binding(target=Symbol("b"), value=1, lineno=77)]}
+    assert tracer.events == {"b": [Binding(target=Symbol("b"), value=1, lineno=84)]}
+
+    assert_GetFrame(rpc_stub, "test_try_except_finally")
 
 
-def test_break_in_finally(tracer):
+def test_break_in_finally(tracer, rpc_stub):
     tracer.init()
 
     for x in range(2):
@@ -92,10 +101,12 @@ def test_break_in_finally(tracer):
 
     tracer.register()
 
-    assert tracer.events == {"x": [Binding(target=Symbol("x"), value=0, lineno=87)]}
+    assert tracer.events == {"x": [Binding(target=Symbol("x"), value=0, lineno=96)]}
+
+    assert_GetFrame(rpc_stub, "test_break_in_finally")
 
 
-def test_break_in_finally_with_exception(tracer):
+def test_break_in_finally_with_exception(tracer, rpc_stub):
     """Tests POP_FINALLY when tos is an exception."""
 
     tracer.init()
@@ -110,4 +121,6 @@ def test_break_in_finally_with_exception(tracer):
 
     tracer.register()
 
-    assert tracer.events == {"x": [Binding(target=Symbol("x"), value=0, lineno=105)]}
+    assert tracer.events == {"x": [Binding(target=Symbol("x"), value=0, lineno=116)]}
+
+    assert_GetFrame(rpc_stub, "test_break_in_finally_with_exception")
