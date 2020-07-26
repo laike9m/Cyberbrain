@@ -18,7 +18,7 @@ from .generated import communication_pb2
 from .generated import communication_pb2_grpc
 
 
-def transform_event_to_proto(event: Event) -> communication_pb2.Event:
+def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
     event_proto = communication_pb2.Event()
     if isinstance(event, InitialValue):
         event_proto.initial_value.CopyFrom(
@@ -67,6 +67,71 @@ def transform_event_to_proto(event: Event) -> communication_pb2.Event:
     return event_proto
 
 
+def _get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
+    """Do tracing.
+
+    Given code like:
+
+    x = "foo"
+    y = "bar"
+    x, y = y, x
+
+    which has events:
+        {
+            "x": [
+                Binding(target="x", value="foo", uid='1'),
+                Mutation(target="x", value="bar", sources={"y"}, uid='2'),
+            ],
+            "y": [
+                Binding(target="y", value="bar", uid='3'),
+                Mutation(target="y", value="foo", sources={"x"}, uid='4'),
+            ]
+        }
+
+    Tracing result would be:
+
+        {
+            '2': ['3'],
+            '4': ['1']
+        }
+
+    However if we use the most naive method, which look at all identifiers in
+    sources and find its predecessor event, we would end up with:
+
+        {
+            '2': ['3'],
+            '4': ['2']  # Wrong!
+        }
+
+    Here, the value assigned to `y` is "foo", but because on the bytecode level,
+    `x = y` happens before `y = x`, so the program thinks y's source is
+     Mutation(target="x", value="bar", sources={"y"}, uid='2').
+
+    To solve this issue, we store snapshot in source's symbol. So by looking at the
+    snapshot, we know it points to the Binding(target="x", value="foo", uid='1') event,
+    not the mutation event. For mutation events, we update the snapshot in symbols that
+    are still on value stack, because it needs to point to the mutation event since the
+    object on value stack (if any) has changed. For binding events, because the object
+    on value stack is not changed, therefore no need to update snapshots.
+    """
+
+    if isinstance(event, InitialValue) or isinstance(event, Deletion):
+        return
+
+    assert isinstance(event, Binding) or isinstance(event, Mutation)
+
+    if not event.sources:
+        return
+
+    sources_uids = []
+    for source in event.sources:
+        source_event_index = source.snapshot.events_pointer[source.name]
+        source_event = frame.raw_events[source.name][source_event_index]
+        sources_uids.append(source_event.uid)
+
+    return sources_uids
+
+
 class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServicer):
     # Queue that stores state to be published to VSC extension.
     state_queue = queue.Queue()
@@ -93,16 +158,21 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
     def GetFrame(
         self, request: communication_pb2.FrameLocater, context
     ) -> communication_pb2.Frame:
-        # TODO: return tracing result.
         print(f"Received request GetFrame: {type(request)} {request}")
         frame = FrameTree.get_frame(request.frame_name)
         frame_proto = communication_pb2.Frame(filename=frame.filename)
         for identifier, events in frame.accumulated_events.items():
             frame_proto.events[identifier].CopyFrom(
                 communication_pb2.EventList(
-                    events=[transform_event_to_proto(event) for event in events]
+                    events=[_transform_event_to_proto(event) for event in events]
                 )
             )
+            for event in events:
+                event_uids = _get_event_sources_uids(event, frame)
+                if event_uids:
+                    frame_proto.tracing_result[event.uid].CopyFrom(
+                        communication_pb2.EventUidList(event_uids=event_uids)
+                    )
         return frame_proto
 
 

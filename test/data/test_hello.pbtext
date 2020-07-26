@@ -51,4 +51,21 @@ events {
     }
   }
 }
-
+tracing_result {
+  key: "test_hello:1"
+  value {
+    event_uids: "test_hello:0"
+  }
+}
+tracing_result {
+  key: "test_hello:2"
+  value {
+    event_uids: "test_hello:1"
+  }
+}
+tracing_result {
+  key: "test_hello:3"
+  value {
+    event_uids: "test_hello:0"
+  }
+}
