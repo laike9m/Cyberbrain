@@ -92,24 +92,22 @@ class Frame:
             del frame
             return
 
+        event = None
         target = event_info.target
 
         if event_info.type is EventType.Mutation:
-            # TODO: If event is a mutation, compare new value with old value
-            #  , discard event if target's value hasn't change.
-            # noinspection PyArgumentList
-            event = Mutation(
-                target=target,
-                filename=self.filename,
-                lineno=self.offset_to_lineno[instr.offset],
-                delta=Delta(
-                    diff=DeepDiff(
-                        self._latest_value_of(target),
-                        utils.get_value_from_frame(target, frame),
-                    )
-                ),
-                sources=event_info.sources,
+            diff = DeepDiff(
+                self._latest_value_of(target), utils.get_value_from_frame(target, frame)
             )
+            if diff != {}:
+                # noinspection PyArgumentList
+                event = Mutation(
+                    target=target,
+                    filename=self.filename,
+                    lineno=self.offset_to_lineno[instr.offset],
+                    delta=Delta(diff=diff),
+                    sources=event_info.sources,
+                )
         elif event_info.type is EventType.Binding:
             event = Binding(
                 target=target,
@@ -125,8 +123,9 @@ class Frame:
                 lineno=self.offset_to_lineno[instr.offset],
             )
 
-        # print(cyan(str(change)))
-        self._add_new_event(event)
+        if event is not None:
+            # print(cyan(str(event)))
+            self._add_new_event(event)
 
         del frame
 
