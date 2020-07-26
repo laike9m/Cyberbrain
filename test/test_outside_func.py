@@ -1,6 +1,6 @@
 """Certain instructions can only be tested outside of a function."""
 
-from cyberbrain import Tracer, InitialValue, Deletion, Mutation
+from cyberbrain import Tracer, InitialValue, Deletion, Mutation, Symbol
 
 tracer = Tracer()
 
@@ -15,13 +15,16 @@ tracer.register()
 def test_delete_name():
     assert tracer.events == {
         "x": [
-            InitialValue(target="x", value=1, lineno=10),
-            Deletion(target="x", lineno=10),
+            InitialValue(target=Symbol("x"), value=1, lineno=10),
+            Deletion(target=Symbol("x"), lineno=10),
         ],
         "__annotations__": [
-            InitialValue(target="__annotations__", value={}, lineno=11),
+            InitialValue(target=Symbol("__annotations__"), value={}, lineno=11),
             Mutation(
-                target="__annotations__", value={"y": int}, sources={"int"}, lineno=11
+                target=Symbol("__annotations__"),
+                value={"y": int},
+                sources={Symbol("int")},
+                lineno=11,
             ),
         ],
     }

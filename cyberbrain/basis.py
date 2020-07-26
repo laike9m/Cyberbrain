@@ -14,7 +14,7 @@ from deepdiff import Delta
 from . import utils
 
 if TYPE_CHECKING:
-    from .frame import Snapshot
+    pass
 
 _dummy = object()
 
@@ -50,14 +50,11 @@ class EventType(enum.Enum):
 
 @attr.s(auto_attribs=True)
 class Event:
-    target: str
+    target: Symbol
     lineno: int
     # filename is always set, but we don't want to set it in tests.
     filename: str = attr.ib(eq=False, default="")
     uid: string = attr.ib(factory=UUIDGenerator.generate_uuid, eq=False, repr=False)
-
-    # The frame snapshot right after this event happened.
-    snapshot: Snapshot = attr.ib(eq=False, default=None)
 
 
 @attr.s(auto_attribs=True)
@@ -118,7 +115,7 @@ class Mutation(Event):
     # Represents the diffs from before and after the mutation.
     delta: Delta = Delta({})
 
-    sources: set[str] = set()  # Source can be empty, like a = 1
+    sources: set[Symbol] = set()  # Source can be empty, like a = 1
 
     # Value is optional. It is set on demand during testing. Other code MUSTN'T rely
     # on it.
@@ -138,7 +135,6 @@ class Deletion(Event):
     """An identifiers is deleted."""
 
     def __eq__(self, other: Deletion):
-        print(self, other)
         return (self.target, self.lineno) == (other.target, other.lineno)
 
 
@@ -159,13 +155,21 @@ L: 引用别的 symbol 虽然或许可以让 backtracking 更简单，如果是�
 class Symbol:
     """An identifier at a certain point of program execution.
 
-    Symbols are specific to a frame.
+    Symbols are specific to a frame. For symbols stored in value stack or representing a
+    source, snapshot must be provided. For symbols only used for representing a target,
+    snapshot can be omitted.
     """
 
-    # TODO: make snapshot mandatory.
     def __init__(self, name: str, snapshot=None):
         self.name = name
         self.snapshot = snapshot
 
+    def __hash__(self):
+        return hash(self.name)
+
     def __eq__(self, other):
+        """Test only"""
         return self.name == other.name
+
+    def __repr__(self):
+        return f"Symbol({self.name})"

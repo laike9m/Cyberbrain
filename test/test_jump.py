@@ -1,4 +1,4 @@
-from cyberbrain import Mutation, Binding, InitialValue
+from cyberbrain import Mutation, Binding, InitialValue, Symbol
 
 
 def test_jump(tracer):
@@ -24,17 +24,22 @@ def test_jump(tracer):
     tracer.register()
 
     assert tracer.events == {
-        "a": [InitialValue(target="a", value=[], lineno=11)],
-        "b": [InitialValue(target="b", value="b", lineno=19)],
-        "c": [InitialValue(target="c", value="c", lineno=19)],
+        "a": [InitialValue(target=Symbol("a"), value=[], lineno=11)],
+        "b": [InitialValue(target=Symbol("b"), value="b", lineno=19)],
+        "c": [InitialValue(target=Symbol("c"), value="c", lineno=19)],
         "x": [
-            Binding(target="x", value=1, lineno=14),
-            Mutation(target="x", value=2, lineno=17),
+            Binding(target=Symbol("x"), value=1, lineno=14),
+            Mutation(target=Symbol("x"), value=2, lineno=17),
             # This is a known defect. We have no way to know `x` comes from `a`, because
             # the result of `a != b` only determines whether to jump to execute `b != c`
             # I think it's fine though.
-            Mutation(target="x", value=True, sources={"b", "c"}, lineno=19),
+            Mutation(
+                target=Symbol("x"),
+                value=True,
+                sources={Symbol("b"), Symbol("c")},
+                lineno=19,
+            ),
             # Same defect here.
-            Mutation(target="x", value="c", sources={"c"}, lineno=20),
+            Mutation(target=Symbol("x"), value="c", sources={Symbol("c")}, lineno=20),
         ],
     }

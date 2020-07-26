@@ -1,6 +1,6 @@
 """Test instructions that create blocks."""
 
-from cyberbrain import Binding, Mutation
+from cyberbrain import Binding, Mutation, Symbol
 
 
 def test_loop(tracer):
@@ -25,14 +25,14 @@ def test_loop(tracer):
 
     assert tracer.events == {
         "x": [
-            Binding(target="x", value=0, lineno=9),
-            Mutation(target="x", value=1, lineno=9),
+            Binding(target=Symbol("x"), value=0, lineno=9),
+            Mutation(target=Symbol("x"), value=1, lineno=9),
         ],
-        "y": [Binding(target="y", value=0, lineno=12)],
-        "z": [Binding(target="z", value=0, lineno=16)],
+        "y": [Binding(target=Symbol("y"), value=0, lineno=12)],
+        "z": [Binding(target=Symbol("z"), value=0, lineno=16)],
         "i": [
-            Binding(target="i", value=0, lineno=20),
-            Mutation(target="i", value=1, sources={"i"}, lineno=22),
+            Binding(target=Symbol("i"), value=0, lineno=20),
+            Mutation(target=Symbol("i"), value=1, sources={Symbol("i")}, lineno=22),
         ],
     }
 
@@ -63,7 +63,7 @@ def test_nested_try_except(tracer):
         pass
 
     tracer.register()
-    assert tracer.events == {"a": [Binding(target="a", value=1, lineno=61)]}
+    assert tracer.events == {"a": [Binding(target=Symbol("a"), value=1, lineno=61)]}
 
 
 def test_try_except_finally(tracer):
@@ -78,7 +78,7 @@ def test_try_except_finally(tracer):
 
     tracer.register()
 
-    assert tracer.events == {"b": [Binding(target="b", value=1, lineno=77)]}
+    assert tracer.events == {"b": [Binding(target=Symbol("b"), value=1, lineno=77)]}
 
 
 def test_break_in_finally(tracer):
@@ -92,7 +92,7 @@ def test_break_in_finally(tracer):
 
     tracer.register()
 
-    assert tracer.events == {"x": [Binding(target="x", value=0, lineno=87)]}
+    assert tracer.events == {"x": [Binding(target=Symbol("x"), value=0, lineno=87)]}
 
 
 def test_break_in_finally_with_exception(tracer):
@@ -110,4 +110,4 @@ def test_break_in_finally_with_exception(tracer):
 
     tracer.register()
 
-    assert tracer.events == {"x": [Binding(target="x", value=0, lineno=105)]}
+    assert tracer.events == {"x": [Binding(target=Symbol("x"), value=0, lineno=105)]}
