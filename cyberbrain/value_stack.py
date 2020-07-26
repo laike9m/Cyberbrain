@@ -12,13 +12,16 @@ from types import FrameType
 from typing import Optional
 
 try:
-    from typing import Literal
+    from typing import TYPE_CHECKING, Literal
 except ImportError:
     from typing_extensions import Literal
 
 from . import utils
 from .basis import EventType, Symbol
 from .block_stack import BlockStack, BlockType, Block
+
+if TYPE_CHECKING:
+    from .frame import Snapshot
 
 
 class ValueStackException(Exception):
@@ -85,9 +88,26 @@ class GeneralValueStack:
         self.block_stack = BlockStack()
         self.last_exception: Optional[ExceptionInfo] = None
         self.return_value = _placeholder
+        self.snapshot = None
+
+    def update_snapshot(self, mutated_identifier: str, new_snapshot: Snapshot):
+        """Updates snapshot after an identifier has been mutated.
+
+        e.g. `a`'s value is pushed to value stack, then `a` is mutated. We need to
+            update the snapshot bound to `a`'s symbol so that later doing tracing,
+            we can get the correct predecessor event of `a`, which is the mutation
+            event.
+
+        Note that Binding event does not change the object on value stack, so no need
+        to update.
+        """
+        for item in self.stack:
+            for symbol in item:
+                if symbol.name == mutated_identifier:
+                    symbol.snapshot = new_snapshot
 
     def emit_event_and_update_stack(
-        self, instr: Instruction, frame: FrameType, jumped: bool
+        self, instr: Instruction, frame: FrameType, jumped: bool, snapshot: Snapshot
     ) -> Optional[EventInfo]:
         """Given a instruction, emits EventInfo if any, and updates the stack.
 
@@ -95,7 +115,9 @@ class GeneralValueStack:
             instr: current instruction.
             jumped: whether jump just happened.
             frame: current frame.
+            snapshot: frame state snapshot.
         """
+        self.snapshot = snapshot
 
         if instr.opname.startswith("BINARY") or instr.opname.startswith("INPLACE"):
             # Binary operations are all the same.
@@ -160,11 +182,11 @@ class GeneralValueStack:
             if value is _placeholder:
                 value = []
             elif isinstance(value, str):  # For representing identifiers.
-                value = [Symbol(name=value)]
+                value = [Symbol(name=value, snapshot=self.snapshot)]
             elif isinstance(value, list):
                 for index, item in enumerate(value):
                     if isinstance(item, str):
-                        value[index] = Symbol(item)
+                        value[index] = Symbol(item, snapshot=self.snapshot)
             # For NULL or int used by block related handlers, keep the original value.
             self.stack.append(value)
 
