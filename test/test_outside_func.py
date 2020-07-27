@@ -7,10 +7,10 @@ tracer = Tracer()
 
 x = 1
 
-tracer.init()
+tracer.start_tracing()
 del x  # DELETE_NAME
 y: int
-tracer.register()
+tracer.stop_tracing()
 
 
 def test_module(rpc_stub):

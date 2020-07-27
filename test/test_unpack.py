@@ -7,7 +7,7 @@ def test_unpack(tracer, rpc_stub):
     numbers = [1, 2, 3, 4]
     m1 = m2 = {1: 2}
 
-    tracer.init()
+    tracer.start_tracing()
 
     a, b = "hi"  # UNPACK_SEQUENCE
     a, b = l1  # UNPACK_SEQUENCE
@@ -21,7 +21,7 @@ def test_unpack(tracer, rpc_stub):
 
     # TODO: Test dictionary items() unpack once iter_xx, call_xx, block_xx are done.
 
-    tracer.register()
+    tracer.stop_tracing()
 
     assert tracer.events == {
         "l1": [InitialValue(target=Symbol("l1"), value=[1, 2], lineno=13)],

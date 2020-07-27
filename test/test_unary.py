@@ -5,14 +5,14 @@ from utils import assert_GetFrame
 def test_unary_operations(tracer, rpc_stub):
     a = 1
 
-    tracer.init()
+    tracer.start_tracing()
 
     b = +a  # UNARY_POSITIVE
     b = -a  # UNARY_NEGATIVE
     b = not a  # UNARY_NOT
     b = ~a  # UNARY_INVERT
 
-    tracer.register()
+    tracer.stop_tracing()
 
     assert tracer.events == {
         "a": [InitialValue(target=Symbol("a"), value=1, lineno=10)],

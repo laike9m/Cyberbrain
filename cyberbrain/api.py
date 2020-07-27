@@ -6,7 +6,7 @@ import sys
 from get_port import get_port
 
 from . import logger, utils, rpc_server
-from .basis import _dummy, Symbol
+from .basis import Symbol
 
 _debug_mode = False
 
@@ -40,7 +40,7 @@ class Tracer:
         else:
             self.server.serve()
 
-    def init(self):
+    def start_tracing(self):
         """Initializes tracing."""
         self.global_frame = sys._getframe(1)
         self.frame_logger = logger.FrameLogger(
@@ -50,7 +50,7 @@ class Tracer:
         self.global_frame.f_trace = self.local_tracer
         sys.settrace(self.global_tracer)
 
-    def register(self, target=_dummy):
+    def stop_tracing(self):
         sys.settrace(None)
         self.global_frame.f_trace = None
         del self.global_frame

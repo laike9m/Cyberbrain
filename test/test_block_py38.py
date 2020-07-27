@@ -17,7 +17,7 @@ from utils import assert_GetFrame
     reason="Python version 3.7 does not support 'continue' inside 'finally' clause .",
 )
 def test_continue_in_finally(tracer, rpc_stub):
-    tracer.init()
+    tracer.start_tracing()
 
     for x in range(2):
         try:
@@ -25,7 +25,7 @@ def test_continue_in_finally(tracer, rpc_stub):
         finally:
             continue  # BREAK_LOOP (3.7) POP_FINALLY (3.8)
 
-    tracer.register()
+    tracer.stop_tracing()
 
     assert tracer.events == {
         "x": [
@@ -44,7 +44,7 @@ def test_continue_in_finally(tracer, rpc_stub):
 def test_continue_in_finally_with_exception(tracer, rpc_stub):
     """Tests POP_FINALLY when tos is an exception."""
 
-    tracer.init()
+    tracer.start_tracing()
 
     # If the finally clause executes a return, break or continue statement, the saved
     # exception is discarded.
@@ -54,7 +54,7 @@ def test_continue_in_finally_with_exception(tracer, rpc_stub):
         finally:
             continue  # BREAK_LOOP (3.7) POP_FINALLY (3.8)
 
-    tracer.register()
+    tracer.stop_tracing()
 
     assert tracer.events == {
         "x": [

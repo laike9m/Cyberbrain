@@ -152,6 +152,7 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
             yield self.state_queue.get()  # block forever.
 
     def FindFrames(self, request, context):
+        print(f"Received request FindFrames: {type(request)} {request}")
         frames = FrameTree.find_frames(request)
         raise NotImplementedError
 
