@@ -420,22 +420,33 @@ class GeneralValueStack:
         self._push(self._fetch_value_for_load(instr.argrepr, frame))
         del frame
 
-    def _LOAD_FAST_handler(self, instr):
-        self._push(instr.argrepr)
+    def _LOAD_FAST_handler(self, instr, frame):
+        self._push(self._fetch_value_for_load(instr.argrepr, frame))
+        del frame
 
     def _fetch_value_for_load(self, name, frame):
         """Transforms the value to be loaded onto value stack based on their types.
 
         The rules are:
         1. If the value is an exception class or instance, use the real value
-        2. If the value is a built-in object, like `range`, `int`, ignore it and stores
+        2. If the value is a built-in object, or tracer, or module, ignore it and stores
            a placeholder instead.
         3. Others, most likely a variable from user's code, stores the identifier.
         """
+        val = utils.get_value_from_frame(name, frame)
+
+        from .api import Tracer
+
+        if isinstance(val, Tracer):
+            return []
+
+        # We don't want to put modules as sources, nor track their changes.
+        if inspect.ismodule(val):
+            return []
+
         if name not in frame.f_builtins:
             return name
 
-        val = frame.f_builtins[name]
         if not utils.is_exception(val):
             # Keeps exceptions so that they can be identified.
             val = []
@@ -479,7 +490,9 @@ class GeneralValueStack:
         method_or_null = self._pop()  # method or NULL
         self._push(utils.flatten(inst_or_callable, method_or_null))
 
-        if inst_or_callable[0] == Symbol("tracer"):  # exclude tracer calls.
+        # The real callable can be omitted for various reasons.
+        # See the _fetch_value_for_load method.
+        if not inst_or_callable:
             return
         return EventInfo(
             type=MutationType, target=inst_or_callable[0], sources=set(args)
