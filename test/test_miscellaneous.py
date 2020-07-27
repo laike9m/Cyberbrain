@@ -11,7 +11,7 @@ def test_miscellaneous(tracer, rpc_stub):
     d = "d"
     e = [1, 2, 3]
 
-    tracer.init()
+    tracer.start_tracing()
 
     x = f"{a} {b:4} {c!r} {d!r:4}"  # FORMAT_VALUE, BUILD_STRING
     x = a == b == c  # ROT_THREE, _COMPARE_OP
@@ -22,7 +22,7 @@ def test_miscellaneous(tracer, rpc_stub):
     g = 1  # STORE_GLOBAL
     del g  # DELETE_GLOBAL
 
-    tracer.register()
+    tracer.stop_tracing()
 
     assert tracer.events == {
         "a": [InitialValue(target=Symbol("a"), value="a", lineno=16)],

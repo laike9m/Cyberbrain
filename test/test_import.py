@@ -4,13 +4,13 @@ from cyberbrain import Binding, Symbol
 
 
 def test_import(tracer):
-    tracer.init()
+    tracer.start_tracing()
 
     import os  # IMPORT_NAME
     from os import path  # IMPORT_FROM, loads module
     from sys import settrace  # IMPORT_FROM, loads function
 
-    tracer.register()
+    tracer.stop_tracing()
 
     print(os, path)  # Prevent PyCharm from removing unused imports.
 

@@ -11,13 +11,13 @@ def test_attribute(tracer, rpc_stub):
     a2 = A()
     a2.y = 1
 
-    tracer.init()
+    tracer.start_tracing()
 
     a1.x = a2  # STORE_ATTR
     a1.x.y = 2  # LOAD_ATTR, STORE_ATTR
     del a1.x  # DELETE_ATTR
 
-    tracer.register()
+    tracer.stop_tracing()
 
     assert_that(
         tracer.events,

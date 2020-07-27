@@ -2,11 +2,11 @@ from cyberbrain import Binding, Symbol
 
 
 def test_hello(tracer, rpc_stub):
-    tracer.init()
+    tracer.start_tracing()
     x = "hello world"  # LOAD_CONST, STORE_FAST
     y = x  # LOAD_FAST, STORE_FAST
     x, y = y, x  # ROT_TWO, STORE_FAST
-    tracer.register()
+    tracer.stop_tracing()
 
     assert tracer.events == {
         "x": [

@@ -7,7 +7,7 @@ def test_container(tracer, rpc_stub):
     c = 2
     e = 0
 
-    tracer.init()
+    tracer.start_tracing()
 
     d = [a, b]  # BUILD_LIST
     d = (a, b)  # BUILD_TUPLE
@@ -19,7 +19,7 @@ def test_container(tracer, rpc_stub):
     d = [a, b, c][e:c]  # BUILD_SLICE, [1, 1, 2][0:2]
     d = [b, b, c][e:c:a]  # BUILD_SLICE, [1, 1, 2][0:2:1]
 
-    tracer.register()
+    tracer.stop_tracing()
 
     assert tracer.events == {
         "a": [InitialValue(target=Symbol("a"), value=1, lineno=12)],
