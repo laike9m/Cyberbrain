@@ -4,9 +4,9 @@ from utils import assert_GetFrame
 
 def test_existing_variable_emit_initial_value(tracer, rpc_stub):
     x = "foo"
-    tracer.init()
+    tracer.start_tracing()
     y = x
-    tracer.register()
+    tracer.stop_tracing()
 
     assert tracer.events == {
         "x": [InitialValue(target=Symbol("x"), value="foo", lineno=8)],

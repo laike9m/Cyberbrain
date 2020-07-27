@@ -6,7 +6,7 @@ def test_inplace_operations(tracer, rpc_stub):
     a1 = a2 = a3 = a4 = a5 = a6 = a7 = a8 = a9 = a10 = a11 = a12 = 2
     b = 2
 
-    tracer.init()
+    tracer.start_tracing()
 
     a1 **= b  # INPLACE_POWER
     a2 *= b  # INPLACE_MULTIPLY
@@ -21,7 +21,7 @@ def test_inplace_operations(tracer, rpc_stub):
     a11 ^= b  # INPLACE_XOR
     a12 |= b  # INPLACE_OR
 
-    tracer.register()
+    tracer.stop_tracing()
 
     assert tracer.events == {
         "b": [InitialValue(target=Symbol("b"), value=2, lineno=11)],
