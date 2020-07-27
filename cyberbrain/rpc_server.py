@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import queue
 from concurrent import futures
-from threading import Timer
 
 import grpc
 import jsonpickle
@@ -133,23 +132,17 @@ def _get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
 
 
 class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServicer):
-    # Queue that stores state to be published to VSC extension.
-    state_queue = queue.Queue()
+    def __init__(self, state_queue: queue.Queue):
+        # Queue that stores state to be published to VSC extension.
+        self.state_queue = state_queue
 
     def SyncState(self, request, context):
         print(f"Received request SyncState: {type(request)} {request}")
         yield communication_pb2.State(status=communication_pb2.State.SERVER_READY)
-        Timer(
-            5,  # seconds
-            lambda: CyberbrainCommunicationServicer.state_queue.put(
-                # Simulates when program hits cyberbrain.register().
-                communication_pb2.State(
-                    status=communication_pb2.State.EXECUTION_COMPLETE
-                )
-            ),
-        ).start()
         while True:
-            yield self.state_queue.get()  # block forever.
+            state = self.state_queue.get()  # block forever.
+            print(f"Return state: {state}")
+            yield state
 
     def FindFrames(self, request, context):
         print(f"Received request FindFrames: {type(request)} {request}")
@@ -180,8 +173,9 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
 class Server:
     def __init__(self):
         self._server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
+        self._state_queue = queue.Queue()
         communication_pb2_grpc.add_CommunicationServicer_to_server(
-            CyberbrainCommunicationServicer(), self._server
+            CyberbrainCommunicationServicer(state_queue=self._state_queue), self._server
         )
         self._port = None
 
@@ -192,6 +186,10 @@ class Server:
         self._server.start()
 
     def wait_for_termination(self):
+        self._state_queue.put(
+            communication_pb2.State(status=communication_pb2.State.EXECUTION_COMPLETE)
+        )
+        print("Waiting for termination...")
         self._server.wait_for_termination()
 
     def stop(self):
