@@ -27,7 +27,7 @@ export function activateWebView(context: vscode.ExtensionContext) {
 }
 
 export function postMessageToBacktracePanel(statusText: string) {
-    currentPanel!.webview.postMessage({server: 'ready'});
+    currentPanel!.webview.postMessage({ server: 'ready' });
     currentPanel!.webview.html = getInitialContent(null, statusText);
 }
 
