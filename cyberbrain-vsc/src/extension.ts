@@ -1,19 +1,12 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import {State} from './generated/communication_pb';
-import {RpcClient} from './rpc_client';
-import {activateWebView, postMessageToBacktracePanel} from "./webview";
-import * as grpc from "@grpc/grpc-js";
-
+import {activateWebView} from "./webview";
+import {MessageCenter} from "./messaging";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "cyberbrain" is now active!');
 
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with registerCommand
@@ -22,42 +15,16 @@ export function activate(context: vscode.ExtensionContext) {
         // The code you place here will be executed every time your command is executed
         // Display a message box to the user
         vscode.window.showInformationMessage('Hello World from cyberbrain!');
-
-        let rpcClient = RpcClient.getClient();
-        await rpcClient.waitForReady();
-
-        let state = new State();
-        state.setStatus(State.Status.CLIENT_READY);
-        handleServerState(rpcClient.syncState(state));
+        let messageCenter = new MessageCenter();
+        await messageCenter.start();
     });
 
     context.subscriptions.push(disposable);
     activateWebView(context);
-}
 
-function handleServerState(call: grpc.ClientReadableStream<State>) {
-    call.on('data', function (serverState: State) {
-        switch (serverState?.getStatus()) {
-            case State.Status.SERVER_READY:
-                postMessageToBacktracePanel("Server is ready");
-                break;
-            case State.Status.EXECUTION_COMPLETE:
-                postMessageToBacktracePanel("Program execution completes");
-                break;
-            case State.Status.BACKTRACING_COMPLETE:
-                postMessageToBacktracePanel("Backtracing completes");
-                break;
-        }
-    });
-    call.on('end', function () {
-        console.log("syncState call ends");
-    });
-    call.on('error', function (err: any) {
-        console.log(`syncState error: ${err}`);
-    });
-    call.on('status', function (status: any) {
-        console.log(`Received server RPC status: ${status}`);
-    });
+    // TODO: do nothing if devtools is already opened. Move to webview.ts
+    vscode.commands.executeCommand('workbench.action.toggleDevTools');
+    console.log([1, 2, 3, 4]);
 }
 
 // this method is called when your extension is deactivated
