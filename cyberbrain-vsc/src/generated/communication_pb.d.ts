@@ -41,15 +41,15 @@ export namespace State {
 }
 
 export class CursorPosition extends jspb.Message {
-  hasFileName(): boolean;
-  clearFileName(): void;
-  getFileName(): string | undefined;
-  setFileName(value: string): void;
+  hasFilename(): boolean;
+  clearFilename(): void;
+  getFilename(): string | undefined;
+  setFilename(value: string): void;
 
-  hasLine(): boolean;
-  clearLine(): void;
-  getLine(): number | undefined;
-  setLine(value: number): void;
+  hasLineno(): boolean;
+  clearLineno(): void;
+  getLineno(): number | undefined;
+  setLineno(value: number): void;
 
   hasCharacter(): boolean;
   clearCharacter(): void;
@@ -68,8 +68,8 @@ export class CursorPosition extends jspb.Message {
 
 export namespace CursorPosition {
   export type AsObject = {
-    fileName?: string,
-    line?: number,
+    filename?: string,
+    lineno?: number,
     character?: number,
   }
 }
@@ -77,8 +77,13 @@ export namespace CursorPosition {
 export class FrameLocater extends jspb.Message {
   hasFrameId(): boolean;
   clearFrameId(): void;
-  getFrameId(): number | undefined;
-  setFrameId(value: number): void;
+  getFrameId(): string | undefined;
+  setFrameId(value: string): void;
+
+  hasFrameName(): boolean;
+  clearFrameName(): void;
+  getFrameName(): string | undefined;
+  setFrameName(value: string): void;
 
   hasFilename(): boolean;
   clearFilename(): void;
@@ -122,7 +127,8 @@ export class FrameLocater extends jspb.Message {
 
 export namespace FrameLocater {
   export type AsObject = {
-    frameId?: number,
+    frameId?: string,
+    frameName?: string,
     filename?: string,
     startLineno?: number,
     endLineno?: number,
@@ -154,12 +160,305 @@ export namespace FrameLocaterList {
   }
 }
 
-export class Frame extends jspb.Message {
-  hasBackTrace(): boolean;
-  clearBackTrace(): void;
-  getBackTrace(): string | undefined;
-  setBackTrace(value: string): void;
+export class InitialValue extends jspb.Message {
+  hasUid(): boolean;
+  clearUid(): void;
+  getUid(): string | undefined;
+  setUid(value: string): void;
 
+  hasFilename(): boolean;
+  clearFilename(): void;
+  getFilename(): string | undefined;
+  setFilename(value: string): void;
+
+  hasLineno(): boolean;
+  clearLineno(): void;
+  getLineno(): number | undefined;
+  setLineno(value: number): void;
+
+  hasTarget(): boolean;
+  clearTarget(): void;
+  getTarget(): string | undefined;
+  setTarget(value: string): void;
+
+  hasValue(): boolean;
+  clearValue(): void;
+  getValue(): string | undefined;
+  setValue(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InitialValue.AsObject;
+  static toObject(includeInstance: boolean, msg: InitialValue): InitialValue.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: InitialValue, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InitialValue;
+  static deserializeBinaryFromReader(message: InitialValue, reader: jspb.BinaryReader): InitialValue;
+}
+
+export namespace InitialValue {
+  export type AsObject = {
+    uid?: string,
+    filename?: string,
+    lineno?: number,
+    target?: string,
+    value?: string,
+  }
+}
+
+export class Binding extends jspb.Message {
+  hasUid(): boolean;
+  clearUid(): void;
+  getUid(): string | undefined;
+  setUid(value: string): void;
+
+  hasFilename(): boolean;
+  clearFilename(): void;
+  getFilename(): string | undefined;
+  setFilename(value: string): void;
+
+  hasLineno(): boolean;
+  clearLineno(): void;
+  getLineno(): number | undefined;
+  setLineno(value: number): void;
+
+  hasTarget(): boolean;
+  clearTarget(): void;
+  getTarget(): string | undefined;
+  setTarget(value: string): void;
+
+  hasValue(): boolean;
+  clearValue(): void;
+  getValue(): string | undefined;
+  setValue(value: string): void;
+
+  clearSourcesList(): void;
+  getSourcesList(): Array<string>;
+  setSourcesList(value: Array<string>): void;
+  addSources(value: string, index?: number): string;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Binding.AsObject;
+  static toObject(includeInstance: boolean, msg: Binding): Binding.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: Binding, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Binding;
+  static deserializeBinaryFromReader(message: Binding, reader: jspb.BinaryReader): Binding;
+}
+
+export namespace Binding {
+  export type AsObject = {
+    uid?: string,
+    filename?: string,
+    lineno?: number,
+    target?: string,
+    value?: string,
+    sourcesList: Array<string>,
+  }
+}
+
+export class Mutation extends jspb.Message {
+  hasUid(): boolean;
+  clearUid(): void;
+  getUid(): string | undefined;
+  setUid(value: string): void;
+
+  hasFilename(): boolean;
+  clearFilename(): void;
+  getFilename(): string | undefined;
+  setFilename(value: string): void;
+
+  hasLineno(): boolean;
+  clearLineno(): void;
+  getLineno(): number | undefined;
+  setLineno(value: number): void;
+
+  hasTarget(): boolean;
+  clearTarget(): void;
+  getTarget(): string | undefined;
+  setTarget(value: string): void;
+
+  hasValue(): boolean;
+  clearValue(): void;
+  getValue(): string | undefined;
+  setValue(value: string): void;
+
+  hasDelta(): boolean;
+  clearDelta(): void;
+  getDelta(): string | undefined;
+  setDelta(value: string): void;
+
+  clearSourcesList(): void;
+  getSourcesList(): Array<string>;
+  setSourcesList(value: Array<string>): void;
+  addSources(value: string, index?: number): string;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Mutation.AsObject;
+  static toObject(includeInstance: boolean, msg: Mutation): Mutation.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: Mutation, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Mutation;
+  static deserializeBinaryFromReader(message: Mutation, reader: jspb.BinaryReader): Mutation;
+}
+
+export namespace Mutation {
+  export type AsObject = {
+    uid?: string,
+    filename?: string,
+    lineno?: number,
+    target?: string,
+    value?: string,
+    delta?: string,
+    sourcesList: Array<string>,
+  }
+}
+
+export class Deletion extends jspb.Message {
+  hasUid(): boolean;
+  clearUid(): void;
+  getUid(): string | undefined;
+  setUid(value: string): void;
+
+  hasFilename(): boolean;
+  clearFilename(): void;
+  getFilename(): string | undefined;
+  setFilename(value: string): void;
+
+  hasLineno(): boolean;
+  clearLineno(): void;
+  getLineno(): number | undefined;
+  setLineno(value: number): void;
+
+  hasTarget(): boolean;
+  clearTarget(): void;
+  getTarget(): string | undefined;
+  setTarget(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Deletion.AsObject;
+  static toObject(includeInstance: boolean, msg: Deletion): Deletion.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: Deletion, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Deletion;
+  static deserializeBinaryFromReader(message: Deletion, reader: jspb.BinaryReader): Deletion;
+}
+
+export namespace Deletion {
+  export type AsObject = {
+    uid?: string,
+    filename?: string,
+    lineno?: number,
+    target?: string,
+  }
+}
+
+export class Event extends jspb.Message {
+  hasInitialValue(): boolean;
+  clearInitialValue(): void;
+  getInitialValue(): InitialValue | undefined;
+  setInitialValue(value?: InitialValue): void;
+
+  hasBinding(): boolean;
+  clearBinding(): void;
+  getBinding(): Binding | undefined;
+  setBinding(value?: Binding): void;
+
+  hasMutation(): boolean;
+  clearMutation(): void;
+  getMutation(): Mutation | undefined;
+  setMutation(value?: Mutation): void;
+
+  hasDeletion(): boolean;
+  clearDeletion(): void;
+  getDeletion(): Deletion | undefined;
+  setDeletion(value?: Deletion): void;
+
+  getValueCase(): Event.ValueCase;
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Event.AsObject;
+  static toObject(includeInstance: boolean, msg: Event): Event.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: Event, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Event;
+  static deserializeBinaryFromReader(message: Event, reader: jspb.BinaryReader): Event;
+}
+
+export namespace Event {
+  export type AsObject = {
+    initialValue?: InitialValue.AsObject,
+    binding?: Binding.AsObject,
+    mutation?: Mutation.AsObject,
+    deletion?: Deletion.AsObject,
+  }
+
+  export enum ValueCase {
+    VALUE_NOT_SET = 0,
+    INITIAL_VALUE = 1,
+    BINDING = 2,
+    MUTATION = 3,
+    DELETION = 4,
+  }
+}
+
+export class EventList extends jspb.Message {
+  clearEventsList(): void;
+  getEventsList(): Array<Event>;
+  setEventsList(value: Array<Event>): void;
+  addEvents(value?: Event, index?: number): Event;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): EventList.AsObject;
+  static toObject(includeInstance: boolean, msg: EventList): EventList.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: EventList, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): EventList;
+  static deserializeBinaryFromReader(message: EventList, reader: jspb.BinaryReader): EventList;
+}
+
+export namespace EventList {
+  export type AsObject = {
+    eventsList: Array<Event.AsObject>,
+  }
+}
+
+export class EventUidList extends jspb.Message {
+  clearEventUidsList(): void;
+  getEventUidsList(): Array<string>;
+  setEventUidsList(value: Array<string>): void;
+  addEventUids(value: string, index?: number): string;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): EventUidList.AsObject;
+  static toObject(includeInstance: boolean, msg: EventUidList): EventUidList.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: EventUidList, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): EventUidList;
+  static deserializeBinaryFromReader(message: EventUidList, reader: jspb.BinaryReader): EventUidList;
+}
+
+export namespace EventUidList {
+  export type AsObject = {
+    eventUidsList: Array<string>,
+  }
+}
+
+export class Frame extends jspb.Message {
+  hasFilename(): boolean;
+  clearFilename(): void;
+  getFilename(): string | undefined;
+  setFilename(value: string): void;
+
+  getEventsMap(): jspb.Map<string, EventList>;
+  clearEventsMap(): void;
+  getTracingResultMap(): jspb.Map<string, EventUidList>;
+  clearTracingResultMap(): void;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Frame.AsObject;
   static toObject(includeInstance: boolean, msg: Frame): Frame.AsObject;
@@ -172,7 +471,9 @@ export class Frame extends jspb.Message {
 
 export namespace Frame {
   export type AsObject = {
-    backTrace?: string,
+    filename?: string,
+    eventsMap: Array<[string, EventList.AsObject]>,
+    tracingResultMap: Array<[string, EventUidList.AsObject]>,
   }
 }
 
