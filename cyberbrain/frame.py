@@ -36,9 +36,12 @@ class Frame:
         - delete, then create again
     """
 
-    def __init__(self, filename, offset_to_lineno):
+    def __init__(self, filename, frame_name, offset_to_lineno):
         # ################### Frame attribute ####################
         self.filename = filename
+        self.frame_name = frame_name
+        # For now, use frame name as frame id. Eventually this should be a unique uuid.
+        self.frame_id = frame_name
         self.offset_to_lineno = offset_to_lineno
 
         self.value_stack = value_stack.create_value_stack()

@@ -18,18 +18,22 @@ class FrameTree:
         - Implement frame search.
     """
 
-    # For now, assuming frames are keyed by function/callable name.
+    # Keyed by frame ID.
     frames: dict[str, Frame] = dict()
 
     @classmethod
-    def add_frame(cls, frame_name, frame: Frame):
-        cls.frames[frame_name] = frame
+    def add_frame(cls, frame_id, frame: Frame):
+        cls.frames[frame_id] = frame
 
     @classmethod
     def find_frames(cls, position: CursorPosition) -> list[Frame]:
-        pass
+        """
+        Right now it's a fake implementation, where we return the only existing frame.
+        """
+        assert cls.frames
+        return [next(iter(cls.frames.values()))]
 
     @classmethod
-    def get_frame(cls, frame_name) -> Frame:
+    def get_frame(cls, frame_id) -> Frame:
         assert cls.frames
-        return cls.frames[frame_name]
+        return cls.frames[frame_id]

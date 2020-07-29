@@ -144,15 +144,25 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
             print(f"Return state: {state}")
             yield state
 
-    def FindFrames(self, request, context):
+    def FindFrames(self, request: communication_pb2.CursorPosition, context):
         print(f"Received request FindFrames: {type(request)} {request}")
-        frames = FrameTree.find_frames(request)
-        raise NotImplementedError
+
+        return communication_pb2.FrameLocaterList(
+            frame_locaters=[
+                communication_pb2.FrameLocater(
+                    frame_id=frame.frame_id,
+                    frame_name=frame.frame_name,
+                    filename=frame.filename,
+                )
+                for frame in FrameTree.find_frames(request)
+            ]
+        )
 
     def GetFrame(
         self, request: communication_pb2.FrameLocater, context
     ) -> communication_pb2.Frame:
         print(f"Received request GetFrame: {type(request)} {request}")
+        # TODO: Use frame ID for non-test.
         frame = FrameTree.get_frame(request.frame_name)
         frame_proto = communication_pb2.Frame(filename=frame.filename)
         for identifier, events in frame.accumulated_events.items():
@@ -172,7 +182,7 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
 
 class Server:
     def __init__(self):
-        self._server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
+        self._server = grpc.server(futures.ThreadPoolExecutor(max_workers=5))
         self._state_queue = queue.Queue()
         communication_pb2_grpc.add_CommunicationServicer_to_server(
             CyberbrainCommunicationServicer(state_queue=self._state_queue), self._server
