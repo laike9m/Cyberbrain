@@ -1,14 +1,14 @@
 import * as grpc from "@grpc/grpc-js";
 import {CommunicationClient} from "./generated/communication_grpc_pb";
-import {State} from "./generated/communication_pb";
+import {CursorPosition, State} from "./generated/communication_pb";
 
 // Singleton RPC client.
-class RpcClient {
+export class RpcClient {
     private static _instance: RpcClient;
-    readonly _innerClient: CommunicationClient;
+    readonly innerClient: CommunicationClient;
 
     private constructor() {
-        this._innerClient = new CommunicationClient('localhost:50051', grpc.credentials.createInsecure());
+        this.innerClient = new CommunicationClient('localhost:50051', grpc.credentials.createInsecure());
     }
 
     static getClient() {
@@ -23,7 +23,7 @@ class RpcClient {
         const deadline = new Date();
         deadline.setSeconds(deadline.getSeconds() + 20);
         return new Promise((resolve, reject) => {
-            grpc.waitForClientReady(this._innerClient, deadline, function (error) {
+            grpc.waitForClientReady(this.innerClient, deadline, function (error) {
                 if (error === undefined) {
                     console.log("Connected to server 🎉");
                     resolve();
@@ -35,8 +35,19 @@ class RpcClient {
     }
 
     syncState(state: State): grpc.ClientReadableStream<State> {
-        return this._innerClient.syncState(state);
+        return this.innerClient.syncState(state);
+    }
+
+    async findFrames(position: CursorPosition) {
+        return new Promise((resolve, reject) => {
+            this.innerClient.findFrames(position, function (error, frameLocaterList) {
+                console.log(error, frameLocaterList);
+                if (error === null) {
+                    resolve(frameLocaterList);
+                } else {
+                    reject(error);
+                }
+            });
+        });
     }
 }
-
-export {RpcClient};

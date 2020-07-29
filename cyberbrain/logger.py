@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dis
+import os
 from dis import Instruction
 from types import FrameType
 from typing import Optional
@@ -19,18 +20,22 @@ class FrameLogger:
     """Logger for a frame."""
 
     def __init__(self, frame: FrameType, debug_mode=False):
-        self.frame = Frame(
-            # For testing, only stores the basename so it's separator agnostic.
-            shorten_path(frame.f_code.co_filename, 1 if utils.run_in_test() else 3),
-            self._map_bytecode_offset_to_lineno(frame),
-        )
         frame_name = (
             # Use filename as frame name if code is run at module level.
-            self.frame.filename.rstrip(".py")
+            os.path.basename(frame.f_code.co_filename).rstrip(".py")
             if frame.f_code.co_name == "<module>"
             else frame.f_code.co_name
         )
-        FrameTree.add_frame(frame_name, self.frame)
+        self.frame = Frame(
+            # For testing, only stores the basename so it's separator agnostic.
+            filename=shorten_path(
+                frame.f_code.co_filename, 1 if utils.run_in_test() else 3
+            ),
+            frame_name=frame_name,
+            offset_to_lineno=self._map_bytecode_offset_to_lineno(frame),
+        )
+
+        FrameTree.add_frame(self.frame.frame_id, self.frame)
         self.instructions = {
             instr.offset: instr for instr in dis.get_instructions(frame.f_code)
         }
