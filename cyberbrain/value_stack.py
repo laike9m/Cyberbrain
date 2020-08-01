@@ -126,7 +126,6 @@ class GeneralValueStack:
             try:
                 handler = getattr(self, f"_{instr.opname}_handler")
             except AttributeError:
-                del frame
                 raise AttributeError(
                     f"Please add\ndef _{instr.opname}_handler(self, instr):"
                 )
@@ -140,7 +139,6 @@ class GeneralValueStack:
             args.append(jumped)
         if "frame" in parameters:
             args.append(frame)
-        del frame
         return handler(*args)
 
     @property
@@ -413,18 +411,15 @@ class GeneralValueStack:
         self._push(_placeholder)
 
     def _LOAD_NAME_handler(self, instr, frame):
-        self._push(self._fetch_value_for_load(instr.argrepr, frame))
-        del frame
+        self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
 
     def _LOAD_GLOBAL_handler(self, instr, frame):
-        self._push(self._fetch_value_for_load(instr.argrepr, frame))
-        del frame
+        self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
 
     def _LOAD_FAST_handler(self, instr, frame):
-        self._push(self._fetch_value_for_load(instr.argrepr, frame))
-        del frame
+        self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
 
-    def _fetch_value_for_load(self, name, frame):
+    def _fetch_value_for_load_instruction(self, name, frame):
         """Transforms the value to be loaded onto value stack based on their types.
 
         The rules are:
@@ -451,7 +446,6 @@ class GeneralValueStack:
             # Keeps exceptions so that they can be identified.
             val = []
 
-        del frame
         return val
 
     @emit_event
