@@ -54,7 +54,6 @@ class FrameLogger:
             instructions=self.instructions, debug_mode=debug_mode
         )
         self.debug_mode = debug_mode
-        del frame
 
     def _map_bytecode_offset_to_lineno(self, frame) -> dict[int, int]:
         """Maps bytecode offset to lineno in file.
@@ -71,7 +70,6 @@ class FrameLogger:
                     break
                 mapping[offset] = lineno
 
-        del frame
         return mapping
 
     def update(self, frame: FrameType):
@@ -159,7 +157,6 @@ class FrameLogger:
         # Log InitialValue events that's relevant to the line that's about to be
         # executed, this way we record the value before it's (potentially) modified.
         self.frame.log_initial_value_events(frame, self.instructions[last_i])
-        del frame
 
 
 class JumpDetector:
