@@ -131,7 +131,6 @@ def deepcopy_value_from_frame(name: str, frame: FrameType):
     Once we have a frame class, we might move this method there.
     """
     value = get_value_from_frame(name, frame)
-    del frame
 
     # There are certain things you can't copy, like module.
     try:
@@ -148,16 +147,13 @@ def get_value_from_frame(name: str, frame: FrameType):
         value = frame.f_globals[name]
     else:
         value = frame.f_builtins[name]
-    del frame
     return value
 
 
 def name_exist_in_frame(name: str, frame: FrameType) -> bool:
-    result = any(
+    return any(
         [name in frame.f_locals, name in frame.f_globals, name in frame.f_builtins]
     )
-    del frame
-    return result
 
 
 def shorten_path(file_path, length):

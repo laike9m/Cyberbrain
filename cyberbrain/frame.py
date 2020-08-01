@@ -92,10 +92,8 @@ class Frame:
             instr=instr, frame=frame, jumped=jumped, snapshot=self.latest_snapshot
         )
         if not event_info:
-            del frame
             return
 
-        event = None
         target: Symbol = event_info.target
         assert type(target) is Symbol
 
@@ -106,33 +104,33 @@ class Frame:
             )
             if diff != {}:
                 # noinspection PyArgumentList
-                event = Mutation(
+                self._add_new_event(
+                    Mutation(
+                        target=target,
+                        filename=self.filename,
+                        lineno=self.offset_to_lineno[instr.offset],
+                        delta=Delta(diff=diff),
+                        sources=event_info.sources,
+                    )
+                )
+        elif event_info.type is EventType.Binding:
+            self._add_new_event(
+                Binding(
+                    target=target,
+                    value=utils.deepcopy_value_from_frame(target.name, frame),
+                    sources=event_info.sources,
+                    filename=self.filename,
+                    lineno=self.offset_to_lineno[instr.offset],
+                )
+            )
+        elif event_info.type is EventType.Deletion:
+            self._add_new_event(
+                Deletion(
                     target=target,
                     filename=self.filename,
                     lineno=self.offset_to_lineno[instr.offset],
-                    delta=Delta(diff=diff),
-                    sources=event_info.sources,
                 )
-        elif event_info.type is EventType.Binding:
-            event = Binding(
-                target=target,
-                value=utils.deepcopy_value_from_frame(target.name, frame),
-                sources=event_info.sources,
-                filename=self.filename,
-                lineno=self.offset_to_lineno[instr.offset],
             )
-        elif event_info.type is EventType.Deletion:
-            event = Deletion(
-                target=target,
-                filename=self.filename,
-                lineno=self.offset_to_lineno[instr.offset],
-            )
-
-        if event is not None:
-            # print(cyan(str(event)))
-            self._add_new_event(event)
-
-        del frame
 
     def _add_new_event(self, event: Event):
         target = event.target.name
