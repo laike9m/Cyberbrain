@@ -21,7 +21,7 @@ typing-extensions = "^3.7.4"
 tox = "^3.14"
 tox-pyenv = "^1.1"
 pytest-xdist = "^1.31"
-pytest = { git = "https://github.com/pytest-dev/pytest.git", branch = "master" }
+pytest = "^6.0.1"
 pyhamcrest = "^2.0.2"
 dephell = "^0.8.3"
 bytecode = "^0.11.0"
