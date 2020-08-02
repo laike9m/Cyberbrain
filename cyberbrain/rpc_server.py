@@ -8,7 +8,6 @@ import queue
 from concurrent import futures
 
 import grpc
-import jsonpickle
 
 from . import utils
 from .basis import Event, InitialValue, Binding, Mutation, Deletion
@@ -49,7 +48,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 lineno=event.lineno,
                 target=event.target.name,
                 value=utils.to_json(event.value),
-                delta=jsonpickle.encode(event.delta.to_dict(), unpicklable=False),
+                delta=utils.to_json(event.delta.to_dict()),
                 sources=sorted(source.name for source in event.sources),
             )
         )

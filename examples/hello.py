@@ -1,13 +1,12 @@
-import time
-
 from cyberbrain import Tracer
 
 
 def hello():
     tracer = Tracer()
     tracer.start_tracing()
-    time.sleep(5)
-    print("hello world")
+    x = "hello world"
+    y = x
+    x, y = y, x
     tracer.stop_tracing()
 
 

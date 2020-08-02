@@ -23,6 +23,7 @@ _PYTHON_EXECUTABLE_PATH = sys.executable
 
 
 def to_json(python_object: Any):
+    # TODO: Once we implemented better deserialization in Js, use unpicklable=True.
     return jsonpickle.encode(python_object, unpicklable=False)
 
 

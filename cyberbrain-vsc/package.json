@@ -21,10 +21,6 @@
 			{
 				"command": "cyberbrain.init",
 				"title": "Initialize Cyberbrain"
-			},
-			{
-				"command": "catCoding.start",
-				"title": "cat coding"
 			}
 		]
 	},
