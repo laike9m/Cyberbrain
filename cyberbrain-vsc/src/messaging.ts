@@ -3,12 +3,12 @@ Handles incoming messages from Python and forwards them to webview.
 */
 
 import * as grpc from "@grpc/grpc-js";
-import {CursorPosition, State} from "./generated/communication_pb";
-import {postMessageToBacktracePanel} from "./webview";
-import {RpcClient} from "./rpc_client";
-import {Position, TextDocument} from "vscode";
+import { CursorPosition, State } from "./generated/communication_pb";
+import { postMessageToBacktracePanel } from "./webview";
+import { RpcClient } from "./rpc_client";
+import { Position, TextDocument } from "vscode";
 import * as assert from "assert";
-import {Frame} from "./frame";
+import { Frame } from "./frame";
 
 export class MessageCenter {
   private rpcClient: RpcClient;
@@ -31,7 +31,7 @@ export class MessageCenter {
   async findFrames(document?: TextDocument, position?: Position) {
     console.log(`Calling findFrames with ${document}, ${position}`);
     let frameLocaterList = await this.rpcClient.findFrames(
-        new CursorPosition()
+      new CursorPosition()
     );
 
     // For now assuming there's only one frame locater.
@@ -40,7 +40,7 @@ export class MessageCenter {
     assert(frameLocaterList.getFrameLocatersList().length === 1);
 
     let frameProto = await this.rpcClient.getFrame(
-        frameLocaterList.getFrameLocatersList()[0]
+      frameLocaterList.getFrameLocatersList()[0]
     );
     let frame = new Frame(frameProto);
   }

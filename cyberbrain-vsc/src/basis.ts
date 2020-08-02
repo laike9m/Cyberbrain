@@ -37,7 +37,7 @@ export class InitialValue extends Event {
       initialValue.getFilename()!,
       initialValue.getUid()!
     );
-    this.value = decodeJson (initialValue.getValue()!);
+    this.value = decodeJson(initialValue.getValue()!);
   }
 }
 
