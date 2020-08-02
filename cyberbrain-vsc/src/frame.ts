@@ -1,38 +1,50 @@
 /* Holding a frame passed from backend and handles console logging. */
 
-import {Event as EventProto, Frame as FrameProto,} from "./generated/communication_pb";
+import {
+  Event as EventProto,
+  Frame as FrameProto,
+} from "./generated/communication_pb";
 
-import {Binding, Deletion, Event, InitialValue, Mutation} from "./basis";
+import { Binding, Deletion, Event, InitialValue, Mutation } from "./basis";
 
 export class Frame {
   filename?: string;
-  events!: Record</* identifier */ string, Event[]>;
+  events: Record</* identifier */ string, Event[]> = {};
 
   // Maps events to relevant predecessor events.
-  tracing_result?: Record<
+  tracing_result: Record<
     /* event uid */ string,
     /* predecessor event uids */ string[]
-  >;
+  > = {};
 
   constructor(frame: FrameProto) {
     this.filename = frame.getFilename();
-    frame.getEventsMap().forEach(function (eventList, identifier) {
-      console.log(identifier);
+    frame.getEventsMap().forEach((eventList, identifier) => {
       let event: EventProto;
+      if (!this.events.hasOwnProperty(identifier)) {
+        this.events[identifier] = [];
+      }
       for (event of eventList.getEventsList()) {
         if (event.hasInitialValue()) {
-          console.log(new InitialValue(event.getInitialValue()!));
+          this.events[identifier].push(
+            new InitialValue(event.getInitialValue()!)
+          );
         }
         if (event.hasBinding()) {
-          console.log(new Binding(event.getBinding()!));
+          this.events[identifier].push(new Binding(event.getBinding()!));
         }
         if (event.hasMutation()) {
-          console.log(new Mutation(event.getMutation()!));
+          this.events[identifier].push(new Mutation(event.getMutation()!));
         }
         if (event.hasDeletion()) {
-          console.log(new Deletion(event.getDeletion()!));
+          this.events[identifier].push(new Deletion(event.getDeletion()!));
         }
       }
+    });
+    frame.getTracingResultMap().forEach((predecessorEventUidList, eventUid) => {
+      this.tracing_result[
+        eventUid
+      ] = predecessorEventUidList.getEventUidsList();
     });
   }
 }
