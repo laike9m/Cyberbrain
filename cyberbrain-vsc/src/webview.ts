@@ -22,13 +22,17 @@ export function activateWebView(context: vscode.ExtensionContext) {
             path.join(context.extensionPath, 'static', 'images', 'loading.gif')
         ));
 
-        currentPanel.webview.html = getInitialContent(loadingGifSrc, "Loading...");
+        const loadingDevtoolsDetectSrc = currentPanel.webview.asWebviewUri(vscode.Uri.file(
+            path.join(context.extensionPath, 'node_modules', 'devtools-detect', 'index.js')
+        ));
+
+        currentPanel.webview.html = getInitialContent(loadingGifSrc, loadingDevtoolsDetectSrc, "Loading...");
     }
 }
 
 export function postMessageToBacktracePanel(statusText: string) {
     currentPanel!.webview.postMessage({ server: 'ready' });
-    currentPanel!.webview.html = getInitialContent(null, statusText);
+    currentPanel!.webview.html = getInitialContent(null, null, statusText);
 }
 
 /*
@@ -58,13 +62,14 @@ tracing is present and code location didn't go out of the frame's scope.
 from the current frame. We will let users configure this on extension UI.
  */
 
-function getInitialContent(gifSrc: vscode.Uri | null, statusText: string) {
+function getInitialContent(gifSrc: vscode.Uri | null, loadingDevtoolsDetectSrc: vscode.Uri | null, statusText: string) {
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cat Coding</title>
+    <script src="${loadingDevtoolsDetectSrc}"></script>
 </head>
 <body>
     <h1>${statusText}</h1>

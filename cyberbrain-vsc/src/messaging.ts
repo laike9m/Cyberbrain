@@ -3,10 +3,11 @@ Handles incoming messages from Python and forwards them to webview.
 */
 
 import * as grpc from "@grpc/grpc-js";
-import {CursorPosition, State} from "./generated/communication_pb";
-import {postMessageToBacktracePanel} from "./webview";
-import {RpcClient} from "./rpc_client";
-import {Position, TextDocument} from "vscode";
+import { CursorPosition, State } from "./generated/communication_pb";
+import { postMessageToBacktracePanel } from "./webview";
+import { RpcClient } from "./rpc_client";
+import { Position, TextDocument } from "vscode";
+import * as assert from "assert";
 
 
 export class MessageCenter {
@@ -25,13 +26,20 @@ export class MessageCenter {
         this.handleServerState(this.rpcClient.syncState(state));
 
         // TODO: Pass real cursor position.
-        await this.findFrames(undefined,undefined);
+        await this.findFrames(undefined, undefined);
     }
 
     async findFrames(document?: TextDocument, position?: Position) {
         console.log(`Calling findFrames with ${document}, ${position}`);
-        let locaters = await this.rpcClient.findFrames(new CursorPosition());
-        console.log(`frame locaters are: ${locaters}`);
+        let frameLocaterList = await this.rpcClient.findFrames(new CursorPosition());
+
+        // For now assuming there's only one frame locater.
+        assert(frameLocaterList.getFrameLocatersList().length === 1);
+
+        let frame = await this.rpcClient.getFrame(frameLocaterList.getFrameLocatersList()[0]);
+        // TODO: convert mutation/binding.value to Js object.
+        console.log(frame.getEventsMap());
+        console.log(frame.getTracingResultMap());
     }
 
     private handleServerState(call: grpc.ClientReadableStream<State>) {
