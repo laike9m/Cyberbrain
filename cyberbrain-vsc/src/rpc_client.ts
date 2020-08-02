@@ -1,6 +1,12 @@
 import * as grpc from "@grpc/grpc-js";
-import {CommunicationClient} from "./generated/communication_grpc_pb";
-import {CursorPosition, State} from "./generated/communication_pb";
+import { CommunicationClient } from "./generated/communication_grpc_pb";
+import {
+    CursorPosition,
+    Frame,
+    FrameLocater,
+    FrameLocaterList,
+    State
+} from "./generated/communication_pb";
 
 // Singleton RPC client.
 export class RpcClient {
@@ -38,12 +44,23 @@ export class RpcClient {
         return this.innerClient.syncState(state);
     }
 
-    async findFrames(position: CursorPosition) {
+    async findFrames(position: CursorPosition): Promise<FrameLocaterList> {
         return new Promise((resolve, reject) => {
             this.innerClient.findFrames(position, function (error, frameLocaterList) {
-                console.log(error, frameLocaterList);
                 if (error === null) {
                     resolve(frameLocaterList);
+                } else {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    async getFrame(frameLocater: FrameLocater): Promise<Frame> {
+        return new Promise((resolve, reject) => {
+            this.innerClient.getFrame(frameLocater, function (error, frame) {
+                if (error === null) {
+                    resolve(frame);
                 } else {
                     reject(error);
                 }
