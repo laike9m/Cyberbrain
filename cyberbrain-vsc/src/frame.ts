@@ -12,7 +12,7 @@ export class Frame {
   events: Record</* identifier */ string, Event[]> = {};
 
   // Maps events to relevant predecessor events.
-  tracing_result: Record<
+  tracingResult: Record<
     /* event uid */ string,
     /* predecessor event uids */ string[]
   > = {};
@@ -42,9 +42,12 @@ export class Frame {
       }
     });
     frame.getTracingResultMap().forEach((predecessorEventUidList, eventUid) => {
-      this.tracing_result[
-        eventUid
-      ] = predecessorEventUidList.getEventUidsList();
+      this.tracingResult[eventUid] = predecessorEventUidList.getEventUidsList();
     });
+  }
+
+  // Takes a event uid and logs its value to console.
+  logValue(eventUid: string) {
+    // TODO: implement
   }
 }

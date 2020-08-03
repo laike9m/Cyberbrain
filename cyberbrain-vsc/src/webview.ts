@@ -1,38 +1,28 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 import * as path from "path";
 
-let currentPanel: vscode.WebviewPanel | undefined = undefined;
+// let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
 export function activateWebView(context: vscode.ExtensionContext) {
-    if (currentPanel) {
-        currentPanel.reveal(vscode.ViewColumn.Two);
-    } else {
-        currentPanel = vscode.window.createWebviewPanel(
-            'Cyberbrain',
-            'Cyberbrain Backtrace',
-            vscode.ViewColumn.Two,
-            {
-                enableScripts: true, // 启用JS，默认禁用
-                retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
-            }
-        );
-
-        // Get the special URI to use with the webview
-        const loadingGifSrc = currentPanel.webview.asWebviewUri(vscode.Uri.file(
-            path.join(context.extensionPath, 'static', 'images', 'loading.gif')
-        ));
-
-        const loadingDevtoolsDetectSrc = currentPanel.webview.asWebviewUri(vscode.Uri.file(
-            path.join(context.extensionPath, 'node_modules', 'devtools-detect', 'index.js')
-        ));
-
-        currentPanel.webview.html = getInitialContent(loadingGifSrc, loadingDevtoolsDetectSrc, "Loading...");
+  let currentPanel = vscode.window.createWebviewPanel(
+    "Cyberbrain",
+    "Cyberbrain Backtrace",
+    vscode.ViewColumn.Two,
+    {
+      enableScripts: true, // 启用JS，默认禁用
+      retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
     }
-}
+  );
 
-export function postMessageToBacktracePanel(statusText: string) {
-    currentPanel!.webview.postMessage({ server: 'ready' });
-    currentPanel!.webview.html = getInitialContent(null, null, statusText);
+  // Get the special URI to use with the webview
+  const loadingGifSrc = currentPanel.webview.asWebviewUri(
+    vscode.Uri.file(
+      path.join(context.extensionPath, "static", "images", "loading.gif")
+    )
+  );
+
+  setWebViewContent(currentPanel, loadingGifSrc);
+  return currentPanel;
 }
 
 /*
@@ -62,21 +52,24 @@ tracing is present and code location didn't go out of the frame's scope.
 from the current frame. We will let users configure this on extension UI.
  */
 
-function getInitialContent(gifSrc: vscode.Uri | null, loadingDevtoolsDetectSrc: vscode.Uri | null, statusText: string) {
-    return `<!DOCTYPE html>
+export function setWebViewContent(
+  webView: vscode.WebviewPanel,
+  gifSrc: vscode.Uri | null
+) {
+  webView.webview.html = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cat Coding</title>
-    <script src="${loadingDevtoolsDetectSrc}"></script>
+    <title>Code Tracing Result</title>
 </head>
 <body>
-    <h1>${statusText}</h1>
-    <img src="${gifSrc}" alt="loading" />
+    <p id="data">
+        <img src="${gifSrc}" alt="loading" />
+    </p>
     <script>
         window.addEventListener('message', event => {
-            console.log("Webview got message: " + JSON.stringify(event.data));
+          document.getElementById("data").innerText = JSON.stringify(event.data);
         });
     </script>
 </body>

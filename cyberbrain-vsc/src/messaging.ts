@@ -4,17 +4,20 @@ Handles incoming messages from Python and forwards them to webview.
 
 import * as grpc from "@grpc/grpc-js";
 import { CursorPosition, State } from "./generated/communication_pb";
-import { postMessageToBacktracePanel } from "./webview";
 import { RpcClient } from "./rpc_client";
+import * as vscode from "vscode";
 import { Position, TextDocument } from "vscode";
 import * as assert from "assert";
 import { Frame } from "./frame";
 
 export class MessageCenter {
   private rpcClient: RpcClient;
+  private readonly webView: vscode.WebviewPanel;
+  private frame?: Frame;
 
-  constructor() {
+  constructor(webView: vscode.WebviewPanel) {
     this.rpcClient = RpcClient.getClient();
+    this.webView = webView;
   }
 
   async start() {
@@ -42,20 +45,25 @@ export class MessageCenter {
     let frameProto = await this.rpcClient.getFrame(
       frameLocaterList.getFrameLocatersList()[0]
     );
-    let frame = new Frame(frameProto);
+    this.frame = new Frame(frameProto);
+    this.sendMessageToBacktracePanel(this.frame);
   }
 
   private handleServerState(call: grpc.ClientReadableStream<State>) {
-    call.on("data", function (serverState: State) {
+    call.on("data", (serverState: State) => {
       switch (serverState?.getStatus()) {
         case State.Status.SERVER_READY:
-          postMessageToBacktracePanel("Server is ready");
+          this.sendMessageToBacktracePanel({ "server status": "Ready" });
           break;
         case State.Status.EXECUTION_COMPLETE:
-          postMessageToBacktracePanel("Program execution completes");
+          this.sendMessageToBacktracePanel({
+            "server status": "Program execution completes",
+          });
           break;
         case State.Status.BACKTRACING_COMPLETE:
-          postMessageToBacktracePanel("Backtracing completes");
+          this.sendMessageToBacktracePanel({
+            "server status": "Backtracing completes",
+          });
           break;
       }
     });
@@ -68,5 +76,9 @@ export class MessageCenter {
     call.on("status", function (status: any) {
       console.log(`Received server RPC status: ${status}`);
     });
+  }
+
+  sendMessageToBacktracePanel(data: object) {
+    this.webView.webview.postMessage(data);
   }
 }
