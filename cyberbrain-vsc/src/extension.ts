@@ -10,7 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
     async () => {
       let webviewPanel = activateWebView(context);
       let messageCenter = new MessageCenter(context, webviewPanel);
-      await messageCenter.start();
+      await messageCenter.wait();
     }
   );
 

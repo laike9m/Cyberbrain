@@ -51,6 +51,7 @@
 		"@grpc/grpc-js": "^1.1.2",
 		"google-auth-library": "^6.0.5",
 		"google-protobuf": "^3.12.2",
-		"grpc-tools": "^1.9.0"
+		"grpc-tools": "^1.9.0",
+		"vis-network": "^8.0.0"
 	}
 }
