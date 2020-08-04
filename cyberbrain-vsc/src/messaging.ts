@@ -23,18 +23,39 @@ export class MessageCenter {
     this.rpcClient = RpcClient.getClient();
     this.context = context;
     this.webviewPanel = webviewPanel;
-    this.listenToWebviewMessage();
   }
 
-  async start() {
-    await this.rpcClient.waitForReady();
+  async wait() {
+    return new Promise((resolve, reject) => {
+      this.webviewPanel.webview.onDidReceiveMessage(
+        async (message) => {
+          console.log(message.data);
+          switch (message) {
+            case "Exit": {
+              resolve(); // Extension exits until this is called.
+              break;
+            }
+            case "Webview ready": {
+              console.log(message); // webview ready.
+              await this.rpcClient.waitForReady();
 
-    let state = new State();
-    state.setStatus(State.Status.CLIENT_READY);
-    this.handleServerState(this.rpcClient.syncState(state));
+              let state = new State();
+              state.setStatus(State.Status.CLIENT_READY);
+              this.handleServerState(this.rpcClient.syncState(state));
 
-    // TODO: Pass real cursor position.
-    await this.findFrames(undefined, undefined);
+              // TODO: Pass real cursor position.
+              await this.findFrames(undefined, undefined);
+              vscode.commands.executeCommand(
+                "workbench.action.webview.openDeveloperTools"
+              );
+              break;
+            }
+          }
+        },
+        undefined,
+        this.context.subscriptions
+      );
+    });
   }
 
   async findFrames(document?: TextDocument, position?: Position) {
@@ -52,6 +73,7 @@ export class MessageCenter {
       frameLocaterList.getFrameLocatersList()[0]
     );
     this.frame = new Frame(frameProto);
+    console.log(this.frame);
     this.sendMessageToBacktracePanel(this.frame);
   }
 
@@ -86,18 +108,5 @@ export class MessageCenter {
 
   sendMessageToBacktracePanel(data: object) {
     this.webviewPanel.webview.postMessage(data);
-  }
-
-  listenToWebviewMessage() {
-    this.webviewPanel.webview.onDidReceiveMessage(
-      (message) => {
-        console.log(message);
-        vscode.commands.executeCommand(
-          "workbench.action.webview.openDeveloperTools"
-        );
-      },
-      undefined,
-      this.context.subscriptions
-    );
   }
 }

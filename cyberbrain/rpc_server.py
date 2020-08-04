@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import queue
 from concurrent import futures
+from datetime import datetime
 
 import grpc
 
@@ -136,7 +137,7 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
         self.state_queue = state_queue
 
     def SyncState(self, request, context):
-        print(f"Received request SyncState: {type(request)} {request}")
+        print(f"{datetime.now().time()} Received SyncState: {type(request)} {request}")
         yield communication_pb2.State(status=communication_pb2.State.SERVER_READY)
         while True:
             state = self.state_queue.get()  # block forever.
@@ -144,7 +145,7 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
             yield state
 
     def FindFrames(self, request: communication_pb2.CursorPosition, context):
-        print(f"Received request FindFrames: {type(request)} {request}")
+        print(f"{datetime.now().time()} Received FindFrames: {type(request)} {request}")
 
         return communication_pb2.FrameLocaterList(
             frame_locaters=[
@@ -181,7 +182,7 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
 
 class Server:
     def __init__(self):
-        self._server = grpc.server(futures.ThreadPoolExecutor(max_workers=5))
+        self._server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         self._state_queue = queue.Queue()
         communication_pb2_grpc.add_CommunicationServicer_to_server(
             CyberbrainCommunicationServicer(state_queue=self._state_queue), self._server
