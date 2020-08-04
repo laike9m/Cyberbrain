@@ -12,12 +12,18 @@ import { Frame } from "./frame";
 
 export class MessageCenter {
   private rpcClient: RpcClient;
-  private readonly webView: vscode.WebviewPanel;
+  private readonly webviewPanel: vscode.WebviewPanel;
   private frame?: Frame;
+  private context: vscode.ExtensionContext;
 
-  constructor(webView: vscode.WebviewPanel) {
+  constructor(
+    context: vscode.ExtensionContext,
+    webviewPanel: vscode.WebviewPanel
+  ) {
     this.rpcClient = RpcClient.getClient();
-    this.webView = webView;
+    this.context = context;
+    this.webviewPanel = webviewPanel;
+    this.listenToWebviewMessage();
   }
 
   async start() {
@@ -79,6 +85,19 @@ export class MessageCenter {
   }
 
   sendMessageToBacktracePanel(data: object) {
-    this.webView.webview.postMessage(data);
+    this.webviewPanel.webview.postMessage(data);
+  }
+
+  listenToWebviewMessage() {
+    this.webviewPanel.webview.onDidReceiveMessage(
+      (message) => {
+        console.log(message);
+        vscode.commands.executeCommand(
+          "workbench.action.webview.openDeveloperTools"
+        );
+      },
+      undefined,
+      this.context.subscriptions
+    );
   }
 }

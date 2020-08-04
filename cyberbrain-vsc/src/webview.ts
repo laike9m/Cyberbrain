@@ -68,6 +68,12 @@ export function setWebViewContent(
         <img src="${gifSrc}" alt="loading" />
     </p>
     <script>
+        const vscode = acquireVsCodeApi();
+        setTimeout(() => {
+          // Wait a while so listener can start.
+          vscode.postMessage("Webview ready");
+        }, 500);
+    
         window.addEventListener('message', event => {
           document.getElementById("data").innerText = JSON.stringify(event.data);
         });
