@@ -15,13 +15,19 @@ export function activateWebView(context: vscode.ExtensionContext) {
   );
 
   // Get the special URI to use with the webview
-  const loadingGifSrc = currentPanel.webview.asWebviewUri(
+  const visJsURL = currentPanel.webview.asWebviewUri(
     vscode.Uri.file(
-      path.join(context.extensionPath, "static", "images", "loading.gif")
+      path.join(
+        context.extensionPath,
+        "node_modules",
+        "vis-network",
+        "dist",
+        "vis-network.min.js"
+      )
     )
   );
 
-  setWebViewContent(currentPanel, loadingGifSrc);
+  setWebViewContent(currentPanel, visJsURL);
   return currentPanel;
 }
 
@@ -54,7 +60,7 @@ from the current frame. We will let users configure this on extension UI.
 
 export function setWebViewContent(
   webView: vscode.WebviewPanel,
-  gifSrc: vscode.Uri | null
+  visJsURL: vscode.Uri | null
 ) {
   webView.webview.html = `<!DOCTYPE html>
 <html lang="en">
@@ -62,11 +68,10 @@ export function setWebViewContent(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Tracing Result</title>
+    <script type="text/javascript" src="${visJsURL}"></script>
 </head>
 <body>
-    <p id="data">
-        <img src="${gifSrc}" alt="loading" />
-    </p>
+    <div id='vis' >
     <script>
         const vscode = acquireVsCodeApi();
         setTimeout(() => {
@@ -75,7 +80,31 @@ export function setWebViewContent(
         }, 500);
     
         window.addEventListener('message', event => {
-          document.getElementById("data").innerText = JSON.stringify(event.data);
+          console.log(event.data);
+      
+          let nodes = new vis.DataSet([
+            {id: 1, label: 'Node 1'},
+            {id: 2, label: 'Node 2'},
+            {id: 3, label: 'Node 3'},
+            {id: 4, label: 'Node 4'},
+            {id: 5, label: 'Node 5'}
+          ]);
+          
+          var edges = new vis.DataSet([
+            {from: 1, to: 3},
+            {from: 1, to: 2},
+            {from: 2, to: 4},
+            {from: 2, to: 5},
+            {from: 3, to: 3}
+          ]);
+            
+          var container = document.getElementById('vis');
+          var data = {
+            nodes: nodes,
+            edges: edges
+          };
+          var options = {};
+          var network = new vis.Network(container, data, options);
         });
     </script>
 </body>
