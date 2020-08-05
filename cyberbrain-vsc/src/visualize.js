@@ -14,24 +14,36 @@ https://i.loli.net/2020/08/05/FBqXQpjk4YVLGRa.png
 For other IDEs/editors, I believe it's possible to achieve a similar effect.
 */
 
+// TODO: see if I can make this a ts file.
+
 window.addEventListener("message", (event) => {
   console.log(event.data);
 
-  let nodes = new vis.DataSet([
-    { id: 1, label: "Node 1" },
-    { id: 2, label: "Node 2" },
-    { id: 3, label: "Node 3" },
-    { id: 4, label: "Node 4" },
-    { id: 5, label: "Node 5" },
-  ]);
+  let events = event.data.events;
+  let nodes = new vis.DataSet([]);
+  for (let identifier in events) {
+    if (Object.prototype.hasOwnProperty.call(events, identifier)) {
+      for (let event of events[identifier]) {
+        console.log({
+          id: event.uid,
+          level: event.lineno,
+          label: event.target,
+        });
+        nodes.add({ id: event.uid, level: event.lineno, label: event.target });
+      }
+    }
+  }
 
-  const edges = new vis.DataSet([
-    { from: 1, to: 3 },
-    { from: 1, to: 2 },
-    { from: 2, to: 4 },
-    { from: 2, to: 5 },
-    { from: 3, to: 3 },
-  ]);
+  let tracingResult = event.data.tracingResult;
+  const edges = new vis.DataSet([]);
+  for (let event_uid in tracingResult) {
+    if (Object.prototype.hasOwnProperty.call(tracingResult, event_uid)) {
+      for (let source_event_uid of tracingResult[event_uid]) {
+        console.log({ from: source_event_uid, to: event_uid });
+        edges.add({ from: source_event_uid, to: event_uid });
+      }
+    }
+  }
 
   const container = document.getElementById("vis");
   const data = {

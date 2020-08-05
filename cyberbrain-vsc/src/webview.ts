@@ -71,9 +71,16 @@ export function setWebViewContent(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Tracing Result</title>
     <script type="text/javascript" src="${visJsURL}"></script>
+    <style type="text/css">
+      #vis{
+        width: 300px;
+        height: 600px;
+        border: 1px solid lightgray;
+      }
+    </style>
 </head>
 <body>
-    <div id='vis' >
+    <div id='vis'>
     <script>
         const vscode = acquireVsCodeApi();
         vscode.postMessage("Webview ready");
