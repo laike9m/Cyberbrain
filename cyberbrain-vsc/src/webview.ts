@@ -3,8 +3,8 @@ import * as path from "path";
 
 // let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
-export function activateWebView(context: vscode.ExtensionContext) {
-  let currentPanel = vscode.window.createWebviewPanel(
+export function createWebView() {
+  return vscode.window.createWebviewPanel(
     "Cyberbrain",
     "Cyberbrain Backtrace",
     vscode.ViewColumn.Two,
@@ -13,22 +13,6 @@ export function activateWebView(context: vscode.ExtensionContext) {
       retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
     }
   );
-
-  // Get the special URI to use with the webview
-  const visJsURL = currentPanel.webview.asWebviewUri(
-    vscode.Uri.file(
-      path.join(
-        context.extensionPath,
-        "node_modules",
-        "vis-network",
-        "dist",
-        "vis-network.min.js"
-      )
-    )
-  );
-
-  setWebViewContent(currentPanel, visJsURL);
-  return currentPanel;
 }
 
 /*
@@ -59,10 +43,23 @@ from the current frame. We will let users configure this on extension UI.
  */
 
 export function setWebViewContent(
-  webView: vscode.WebviewPanel,
-  visJsURL: vscode.Uri | null
+  context: vscode.ExtensionContext,
+  webviewPanel: vscode.WebviewPanel
 ) {
-  webView.webview.html = `<!DOCTYPE html>
+  // Get the special URI to use with the webview
+  const visJsURL = webviewPanel.webview.asWebviewUri(
+    vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "node_modules",
+        "vis-network",
+        "dist",
+        "vis-network.min.js"
+      )
+    )
+  );
+
+  webviewPanel.webview.html = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -74,10 +71,7 @@ export function setWebViewContent(
     <div id='vis' >
     <script>
         const vscode = acquireVsCodeApi();
-        setTimeout(() => {
-          // Wait a while so listener can start.
-          vscode.postMessage("Webview ready");
-        }, 500);
+        vscode.postMessage("Webview ready");
     
         window.addEventListener('message', event => {
           console.log(event.data);
