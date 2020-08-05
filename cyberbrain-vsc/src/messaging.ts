@@ -9,20 +9,18 @@ import * as vscode from "vscode";
 import { Position, TextDocument } from "vscode";
 import * as assert from "assert";
 import { Frame } from "./frame";
+import { createWebView, setWebViewContent } from "./webview";
 
 export class MessageCenter {
   private rpcClient: RpcClient;
   private readonly webviewPanel: vscode.WebviewPanel;
   private frame?: Frame;
-  private context: vscode.ExtensionContext;
+  private readonly context: vscode.ExtensionContext;
 
-  constructor(
-    context: vscode.ExtensionContext,
-    webviewPanel: vscode.WebviewPanel
-  ) {
+  constructor(context: vscode.ExtensionContext) {
     this.rpcClient = RpcClient.getClient();
     this.context = context;
-    this.webviewPanel = webviewPanel;
+    this.webviewPanel = createWebView();
   }
 
   async wait() {
@@ -55,6 +53,7 @@ export class MessageCenter {
         undefined,
         this.context.subscriptions
       );
+      setWebViewContent(this.context, this.webviewPanel);
     });
   }
 
