@@ -59,6 +59,11 @@ export function setWebViewContent(
     )
   );
 
+  // Get the special URI to use with the webview
+  const myJsURL = webviewPanel.webview.asWebviewUri(
+    vscode.Uri.file(path.join(context.extensionPath, "src", "visualize.js"))
+  );
+
   webviewPanel.webview.html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,35 +77,8 @@ export function setWebViewContent(
     <script>
         const vscode = acquireVsCodeApi();
         vscode.postMessage("Webview ready");
-    
-        window.addEventListener('message', event => {
-          console.log(event.data);
-      
-          let nodes = new vis.DataSet([
-            {id: 1, label: 'Node 1'},
-            {id: 2, label: 'Node 2'},
-            {id: 3, label: 'Node 3'},
-            {id: 4, label: 'Node 4'},
-            {id: 5, label: 'Node 5'}
-          ]);
-          
-          var edges = new vis.DataSet([
-            {from: 1, to: 3},
-            {from: 1, to: 2},
-            {from: 2, to: 4},
-            {from: 2, to: 5},
-            {from: 3, to: 3}
-          ]);
-            
-          var container = document.getElementById('vis');
-          var data = {
-            nodes: nodes,
-            edges: edges
-          };
-          var options = {};
-          var network = new vis.Network(container, data, options);
-        });
     </script>
+    <script type="module" src="${myJsURL}"></script>
 </body>
 </html>`;
 }
