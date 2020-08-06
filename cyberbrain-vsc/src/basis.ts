@@ -6,24 +6,35 @@ import {
   InitialValue as InitialValueProto,
   Mutation as MutationProto,
 } from "./generated/communication_pb";
-import {decodeJson} from "./utils";
+import { decodeJson } from "./utils";
+
+enum EventType {
+  InitialValue = "InitialValue",
+  Binding = "Binding",
+  Mutation = "Mutation",
+  Deletion = "Deletion",
+}
 
 export abstract class Event {
   target: string;
   lineno: number;
   filename: string;
   uid: string;
+  // When passing an object to webview, its type is erased. Thus we need to explicitly store it here.
+  type: EventType;
 
   protected constructor(
     target: string,
     lineno: number,
     filename: string,
-    uid: string
+    uid: string,
+    type: EventType
   ) {
     this.target = target;
     this.lineno = lineno;
     this.filename = filename;
     this.uid = uid;
+    this.type = type;
   }
 }
 
@@ -35,7 +46,8 @@ export class InitialValue extends Event {
       initialValue.getTarget()!,
       initialValue.getLineno()!,
       initialValue.getFilename()!,
-      initialValue.getUid()!
+      initialValue.getUid()!,
+      EventType.InitialValue
     );
     this.value = decodeJson(initialValue.getValue()!);
   }
@@ -50,7 +62,8 @@ export class Binding extends Event {
       binding.getTarget()!,
       binding.getLineno()!,
       binding.getFilename()!,
-      binding.getUid()!
+      binding.getUid()!,
+      EventType.Binding
     );
     this.value = decodeJson(binding.getValue()!);
     this.sources = binding.getSourcesList();
@@ -67,7 +80,8 @@ export class Mutation extends Event {
       mutation.getTarget()!,
       mutation.getLineno()!,
       mutation.getFilename()!,
-      mutation.getUid()!
+      mutation.getUid()!,
+      EventType.Mutation
     );
     this.value = decodeJson(mutation.getValue()!);
     this.delta = mutation.getDelta()!;
@@ -81,7 +95,8 @@ export class Deletion extends Event {
       deletion.getTarget()!,
       deletion.getLineno()!,
       deletion.getFilename()!,
-      deletion.getUid()!
+      deletion.getUid()!,
+      EventType.Deletion
     );
   }
 }
