@@ -12,9 +12,12 @@ the vis object, and can provide auto-complete. See
 https://i.loli.net/2020/08/05/FBqXQpjk4YVLGRa.png
 
 For other IDEs/editors, I believe it's possible to achieve a similar effect.
-*/
 
-// TODO: see if I can make this a ts file.
+I also tried using making this file a ts file but met a few difficulties:
+1. The documentation for using TS with vis-network is poor
+2. It seems not so easy to use TS without a framework like React/Angular, which
+   I'd like to avoid at least for now.
+*/
 
 window.addEventListener("message", (event) => {
   console.log(event.data);
@@ -24,12 +27,11 @@ window.addEventListener("message", (event) => {
   for (let identifier in events) {
     if (Object.prototype.hasOwnProperty.call(events, identifier)) {
       for (let event of events[identifier]) {
-        console.log({
+        nodes.add({
           id: event.uid,
           level: event.lineno,
-          label: event.target,
+          label: buildLabelText(event),
         });
-        nodes.add({ id: event.uid, level: event.lineno, label: event.target });
       }
     }
   }
@@ -39,7 +41,6 @@ window.addEventListener("message", (event) => {
   for (let event_uid in tracingResult) {
     if (Object.prototype.hasOwnProperty.call(tracingResult, event_uid)) {
       for (let source_event_uid of tracingResult[event_uid]) {
-        console.log({ from: source_event_uid, to: event_uid });
         edges.add({ from: source_event_uid, to: event_uid });
       }
     }
@@ -53,3 +54,7 @@ window.addEventListener("message", (event) => {
   const options = {};
   const network = new vis.Network(container, data, options);
 });
+
+function buildLabelText(event) {
+  return `${event.target}: ${event.type}`;
+}
