@@ -136,11 +136,18 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
         # Queue that stores state to be published to VSC extension.
         self.state_queue = state_queue
 
-    def SyncState(self, request, context):
+    def SyncState(self, request: communication_pb2.State, context: grpc.RpcContext):
         print(f"{datetime.now().time()} Received SyncState: {type(request)} {request}")
+
+        # Detects RPC termination, sets a sentinel and allows SyncState to return.
+        context.add_callback(lambda: self.state_queue.put(-1))
+
         yield communication_pb2.State(status=communication_pb2.State.SERVER_READY)
         while True:
             state = self.state_queue.get()  # block forever.
+            if state == -1:
+                print("Client disconnected")
+                return
             print(f"Return state: {state}")
             yield state
 
@@ -182,7 +189,7 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
 
 class Server:
     def __init__(self):
-        self._server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+        self._server = grpc.server(futures.ThreadPoolExecutor(max_workers=5))
         self._state_queue = queue.Queue()
         communication_pb2_grpc.add_CommunicationServicer_to_server(
             CyberbrainCommunicationServicer(state_queue=self._state_queue), self._server
