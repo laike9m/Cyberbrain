@@ -19,6 +19,21 @@ I also tried using making this file a ts file but met a few difficulties:
    I'd like to avoid at least for now.
 */
 
+const options = {
+  edges: {
+    smooth: {
+      type: "cubicBezier",
+      forceDirection: "vertical",
+    },
+  },
+  layout: {
+    hierarchical: {
+      direction: "UD", // From up to bottom.
+    },
+  },
+  physics: false,
+};
+
 window.addEventListener("message", (event) => {
   console.log(event.data);
 
@@ -51,10 +66,9 @@ window.addEventListener("message", (event) => {
     nodes: nodes,
     edges: edges,
   };
-  const options = {};
   const network = new vis.Network(container, data, options);
 });
 
 function buildLabelText(event) {
-  return `${event.target}: ${event.type}`;
+  return `${event.target}: ${event.type} : ${event.uid}`;
 }
