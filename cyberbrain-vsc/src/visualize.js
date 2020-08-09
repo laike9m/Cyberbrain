@@ -50,11 +50,15 @@ const options = {
 };
 
 window.addEventListener("message", (event) => {
+  if (!event.data.hasOwnProperty("events")) {
+    return; // Server ready message.
+  }
+
   console.log(event.data);
 
   let lines = new Set();
-
   let events = event.data.events;
+  let colorGenerator = new ColorGenerator(Object.keys(events));
   let nodes = new vis.DataSet([]);
   for (let identifier in events) {
     if (Object.prototype.hasOwnProperty.call(events, identifier)) {
@@ -88,6 +92,9 @@ window.addEventListener("message", (event) => {
           target: event.target,
           // "value" is reserved, use "runtimeValue" instead.
           runtimeValue: event.value,
+          color: {
+            background: colorGenerator.getColor(event.target),
+          },
         });
       }
     }
@@ -128,14 +135,37 @@ window.addEventListener("message", (event) => {
   const network = new vis.Network(container, data, options);
   network.on("hoverNode", function (event) {
     let node = nodes.get(event.node);
-    if (!node.hasOwnProperty("target")) {return;}
+    if (!node.hasOwnProperty("target")) {
+      return;
+    }
     console.log(
       `${node.target}'s value at line ${node.level}: \n ${node.runtimeValue}`
     );
   });
 });
 
-///////////////////////// Helper functions /////////////////////////
+///////////////////////// Helper functions/classes /////////////////////////
+
+class ColorGenerator {
+  constructor(identifiers) {
+    let count = identifiers.length;
+    let colors = randomColor({
+      // Seed = 1000 generates acceptable colors.
+      // See https://github.com/davidmerfield/randomColor/issues/136
+      seed: 1000,
+      count: count,
+      luminosity: "bright",
+    });
+    this.colorMap = new Map();
+    for (let i = 0; i < count; i++) {
+      this.colorMap.set(identifiers[i], colors[i]);
+    }
+  }
+
+  getColor(identifier) {
+    return this.colorMap.get(identifier);
+  }
+}
 
 function buildLabelText(event) {
   return `${event.target}: ${event.type}`;
