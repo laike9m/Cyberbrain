@@ -46,35 +46,25 @@ export function setWebViewContent(
   context: vscode.ExtensionContext,
   webviewPanel: vscode.WebviewPanel
 ) {
-  // Get the special URI to use with the webview
-  const visJsURL = webviewPanel.webview.asWebviewUri(
-    vscode.Uri.file(
-      path.join(
-        context.extensionPath,
-        "node_modules",
-        "vis-network",
-        "dist",
-        "vis-network.min.js"
+  function createWebviewUri(relativePath: string) {
+    return webviewPanel.webview.asWebviewUri(
+      vscode.Uri.file(
+        path.join(context.extensionPath, path.normalize(relativePath))
       )
-    )
-  );
-
-  const visCssURL = webviewPanel.webview.asWebviewUri(
-    vscode.Uri.file(
-      path.join(
-        context.extensionPath,
-        "node_modules",
-        "vis-network",
-        "styles",
-        "vis-network.min.css"
-      )
-    )
-  );
+    );
+  }
 
   // Get the special URI to use with the webview
-  const myJsURL = webviewPanel.webview.asWebviewUri(
-    vscode.Uri.file(path.join(context.extensionPath, "src", "visualize.js"))
+  const visJsURL = createWebviewUri(
+    "node_modules/vis-network/dist/vis-network.min.js"
   );
+  const visCssURL = createWebviewUri(
+    "node_modules/vis-network/styles/vis-network.min.css"
+  );
+  const randomColorJsURL = createWebviewUri(
+    "node_modules/randomcolor/randomColor.js"
+  );
+  const myJsURL = createWebviewUri("src/visualize.js");
 
   webviewPanel.webview.html = `<!DOCTYPE html>
 <html lang="en">
@@ -82,6 +72,7 @@ export function setWebViewContent(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Tracing Result</title>
+    <script type="text/javascript" src="${randomColorJsURL}"></script>
     <script type="text/javascript" src="${visJsURL}"></script>
     <link rel="stylesheet" type="text/css" href="${visCssURL}" />
     <style type="text/css">
