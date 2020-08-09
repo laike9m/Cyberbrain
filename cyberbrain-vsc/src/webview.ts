@@ -59,6 +59,18 @@ export function setWebViewContent(
     )
   );
 
+  const visCssURL = webviewPanel.webview.asWebviewUri(
+    vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "node_modules",
+        "vis-network",
+        "styles",
+        "vis-network.min.css"
+      )
+    )
+  );
+
   // Get the special URI to use with the webview
   const myJsURL = webviewPanel.webview.asWebviewUri(
     vscode.Uri.file(path.join(context.extensionPath, "src", "visualize.js"))
@@ -71,6 +83,7 @@ export function setWebViewContent(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Tracing Result</title>
     <script type="text/javascript" src="${visJsURL}"></script>
+    <link rel="stylesheet" type="text/css" href="${visCssURL}" />
     <style type="text/css">
       #vis{
         width: 100%;
