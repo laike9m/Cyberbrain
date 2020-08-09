@@ -94,6 +94,11 @@ window.addEventListener("message", (event) => {
           runtimeValue: event.value,
           color: {
             background: colorGenerator.getColor(event.target),
+            hover: {
+              // Right now we let color keeps unchanged when hovering. We may slightly
+              // change the color to make the node obvious.
+              background: colorGenerator.getColor(event.target),
+            },
           },
         });
       }
@@ -154,7 +159,7 @@ class ColorGenerator {
       // See https://github.com/davidmerfield/randomColor/issues/136
       seed: 1000,
       count: count,
-      luminosity: "bright",
+      luminosity: "light",
     });
     this.colorMap = new Map();
     for (let i = 0; i < count; i++) {
