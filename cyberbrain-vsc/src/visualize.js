@@ -32,6 +32,7 @@ const options = {
   },
   interaction: {
     dragNodes: false,
+    hover: true,
   },
   layout: {
     hierarchical: {
@@ -63,6 +64,7 @@ window.addEventListener("message", (event) => {
           // order.
           lines.add(linenoString);
           nodes.add({
+            title: `Line ${event.lineno}`,
             id: linenoString,
             level: event.lineno,
             label: linenoString,
@@ -76,9 +78,13 @@ window.addEventListener("message", (event) => {
           });
         }
         nodes.add({
+          title: getTooltipTextForEventNode(event),
           id: event.uid,
           level: event.lineno,
           label: buildLabelText(event),
+          target: event.target,
+          // "value" is reserved, use "runtimeValue" instead.
+          runtimeValue: event.value,
         });
       }
     }
@@ -117,10 +123,22 @@ window.addEventListener("message", (event) => {
     edges: edges,
   };
   const network = new vis.Network(container, data, options);
+  network.on("hoverNode", function (event) {
+    let node = nodes.get(event.node);
+    if (!node.hasOwnProperty("target")) return;
+    console.log(
+      `${node.target}'s value at line ${node.level}: \n ${node.runtimeValue}`
+    );
+  });
 });
 
 ///////////////////////// Helper functions /////////////////////////
 
 function buildLabelText(event) {
-  return `${event.target}: ${event.type} : ${event.uid}`;
+  return `${event.target}: ${event.type}`;
+}
+
+function getTooltipTextForEventNode(event) {
+  // TODO: Truncate value.
+  return event.value;
 }
