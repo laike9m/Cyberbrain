@@ -73,9 +73,14 @@ export function setWebViewContent(
     <script type="text/javascript" src="${visJsURL}"></script>
     <style type="text/css">
       #vis{
-        width: 500px;
-        height: 600px;
+        width: 100%;
+        height: 600px;  /* If use 100%, height would be very small */
         border: 1px solid lightgray;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
       }
     </style>
 </head>
