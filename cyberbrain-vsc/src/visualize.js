@@ -24,6 +24,9 @@ let backGroundColor = window
   .getPropertyValue("background-color");
 
 const options = {
+  nodes: {
+    shape: "box",
+  },
   edges: {
     smooth: {
       type: "cubicBezier",
@@ -125,7 +128,7 @@ window.addEventListener("message", (event) => {
   const network = new vis.Network(container, data, options);
   network.on("hoverNode", function (event) {
     let node = nodes.get(event.node);
-    if (!node.hasOwnProperty("target")) return;
+    if (!node.hasOwnProperty("target")) {return;}
     console.log(
       `${node.target}'s value at line ${node.level}: \n ${node.runtimeValue}`
     );
