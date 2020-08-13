@@ -96,7 +96,7 @@ class Binding(Event):
     """
 
     value: Any = attr.ib(kw_only=True)
-    sources: set[str] = set()  # Source can be empty, like a = 1
+    sources: set[Symbol] = set()  # Source can be empty, like a = 1
 
 
 # For now, we don't want to compare delta, so disable auto-generated __eq__.

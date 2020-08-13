@@ -68,7 +68,8 @@ class Tracer:
     @property
     def global_tracer(self):
         def _global_tracer(frame, event, arg):
-            if utils.should_exclude(frame):
+            # For now, we don't want to trace called functions.
+            if utils.should_exclude(frame) or event == "call":
                 return
             frame.f_trace_opcodes = True
             # print(frame, event, arg)
