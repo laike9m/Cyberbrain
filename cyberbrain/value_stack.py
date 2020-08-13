@@ -264,9 +264,6 @@ class GeneralValueStack:
     def _UNARY_INVERT_handler(self, instr):
         pass
 
-    def _GET_ITER_handler(self, instr):
-        pass
-
     def _BINARY_operation_handler(self):
         self._pop_n_push_one(2)
 
@@ -473,7 +470,9 @@ class GeneralValueStack:
             elements = []
             for arg in args:
                 if isinstance(arg, list):
-                    elements.extend(tos)
+                    elements.extend(arg)
+                else:
+                    elements.append(arg)
             self._push(elements)
 
     @emit_event
@@ -491,6 +490,21 @@ class GeneralValueStack:
         return EventInfo(
             type=MutationType, target=inst_or_callable[0], sources=set(args)
         )
+
+    def _MAKE_FUNCTION_handler(self, instr):
+        function_obj = []
+        function_obj.extend(self._pop(2))  # qualified_name, code_obj
+
+        if instr.argval & 0x08:
+            function_obj.append(self._pop())  # closure
+        if instr.argval & 0x04:
+            function_obj.append(self._pop())  # annotations
+        if instr.argval & 0x02:
+            function_obj.append(self._pop())  # kwargs defaults
+        if instr.argval & 0x01:
+            function_obj.append(self._pop())  # args defaults
+
+        self._push(function_obj)
 
     def _BUILD_SLICE_handler(self, instr):
         if instr.arg == 2:
@@ -528,6 +542,9 @@ class GeneralValueStack:
             self._pop()
 
     def _JUMP_ABSOLUTE_handler(self, instr, jumped):
+        pass
+
+    def _GET_ITER_handler(self, instr):
         pass
 
     def _FOR_ITER_handler(self, jumped):
