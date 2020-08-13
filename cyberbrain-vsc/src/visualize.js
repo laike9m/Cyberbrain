@@ -19,10 +19,6 @@ I also tried using making this file a ts file but met a few difficulties:
    I'd like to avoid at least for now.
 */
 
-let backGroundColor = window
-  .getComputedStyle(document.body, null)
-  .getPropertyValue("background-color");
-
 const options = {
   nodes: {
     shape: "box",
@@ -79,8 +75,11 @@ window.addEventListener("message", (event) => {
             // Disable physics so the lineno nodes are not pushed away to the left.
             physics: false,
             color: {
-              border: backGroundColor,
-              background: backGroundColor,
+              border: "rgba(0, 0, 0, 0)",
+              background: "rgba(0, 0, 0, 0)",
+              hover: {
+                background: "rgba(0, 0, 0, 0)",
+              },
             },
           });
         }
@@ -115,7 +114,8 @@ window.addEventListener("message", (event) => {
       from: lines[i],
       to: lines[i + 1],
       color: {
-        color: backGroundColor,
+        color: "rgba(0, 0, 0, 0)",
+        hover: "rgba(0, 0, 0, 0)",
       },
     });
   }
