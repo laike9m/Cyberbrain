@@ -28,7 +28,7 @@ export namespace State {
   export type AsObject = {
     status?: State.StatusMap[keyof State.StatusMap],
     message?: string,
-  }
+  };
 
   export interface StatusMap {
     CLIENT_READY: 1;
@@ -71,7 +71,7 @@ export namespace CursorPosition {
     filename?: string,
     lineno?: number,
     character?: number,
-  }
+  };
 }
 
 export class FrameLocater extends jspb.Message {
@@ -135,7 +135,7 @@ export namespace FrameLocater {
     callsiteFilename?: string,
     callsiteLineno?: number,
     arguments?: string,
-  }
+  };
 }
 
 export class FrameLocaterList extends jspb.Message {
@@ -157,7 +157,7 @@ export class FrameLocaterList extends jspb.Message {
 export namespace FrameLocaterList {
   export type AsObject = {
     frameLocatersList: Array<FrameLocater.AsObject>,
-  }
+  };
 }
 
 export class InitialValue extends jspb.Message {
@@ -203,7 +203,7 @@ export namespace InitialValue {
     lineno?: number,
     target?: string,
     value?: string,
-  }
+  };
 }
 
 export class Binding extends jspb.Message {
@@ -255,7 +255,7 @@ export namespace Binding {
     target?: string,
     value?: string,
     sourcesList: Array<string>,
-  }
+  };
 }
 
 export class Mutation extends jspb.Message {
@@ -313,7 +313,7 @@ export namespace Mutation {
     value?: string,
     delta?: string,
     sourcesList: Array<string>,
-  }
+  };
 }
 
 export class Deletion extends jspb.Message {
@@ -353,7 +353,7 @@ export namespace Deletion {
     filename?: string,
     lineno?: number,
     target?: string,
-  }
+  };
 }
 
 export class Event extends jspb.Message {
@@ -394,7 +394,7 @@ export namespace Event {
     binding?: Binding.AsObject,
     mutation?: Mutation.AsObject,
     deletion?: Deletion.AsObject,
-  }
+  };
 
   export enum ValueCase {
     VALUE_NOT_SET = 0,
@@ -424,7 +424,7 @@ export class EventList extends jspb.Message {
 export namespace EventList {
   export type AsObject = {
     eventsList: Array<Event.AsObject>,
-  }
+  };
 }
 
 export class EventUidList extends jspb.Message {
@@ -446,7 +446,7 @@ export class EventUidList extends jspb.Message {
 export namespace EventUidList {
   export type AsObject = {
     eventUidsList: Array<string>,
-  }
+  };
 }
 
 export class Frame extends jspb.Message {
@@ -474,6 +474,6 @@ export namespace Frame {
     filename?: string,
     eventsMap: Array<[string, EventList.AsObject]>,
     tracingResultMap: Array<[string, EventUidList.AsObject]>,
-  }
+  };
 }
 
