@@ -115,6 +115,7 @@ legacy/
 
 .idea/
 .vscode/
+.vscode-test/
 
 # Files for development
 cyberbrain/generated/client.py
