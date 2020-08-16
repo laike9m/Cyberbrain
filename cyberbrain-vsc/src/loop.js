@@ -1,5 +1,5 @@
 export function foo() {
-  console.log("Successfully imported the loop module. ☀️");
+  console.log("Successfully imported the loop module. 😀😀😀");
 }
 
 export function generateInitialNodesAndKnots(events) {
