@@ -19,6 +19,11 @@ I also tried using making this file a ts file but met a few difficulties:
    I'd like to avoid at least for now.
 */
 
+// The .js suffix is needed to make import work in vsc webview.
+import { foo } from "./loop.js";
+
+foo(); // Ensure import succeeds.
+
 const options = {
   nodes: {
     shape: "box",
