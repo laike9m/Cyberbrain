@@ -64,7 +64,8 @@ export function setWebViewContent(
   const randomColorJsURL = createWebviewUri(
     "node_modules/randomcolor/randomColor.js"
   );
-  const myJsURL = createWebviewUri("src/visualize.js");
+  const myJsURL = createWebviewUri("out/visualize.js");
+  const loopJsURL = createWebviewUri("out/loop.js");
 
   webviewPanel.webview.html = `<!DOCTYPE html>
 <html lang="en">
@@ -73,7 +74,8 @@ export function setWebViewContent(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Tracing Result</title>
     <script type="text/javascript" src="${randomColorJsURL}"></script>
-    <script type="text/javascript" src="${visJsURL}"></script>
+    <script type="module" src="${loopJsURL}"></script>
+    <script type="module" src="${visJsURL}"></script>
     <link rel="stylesheet" type="text/css" href="${visCssURL}" />
     <style type="text/css">
       #vis{
