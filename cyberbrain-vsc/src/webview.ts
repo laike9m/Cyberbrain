@@ -54,6 +54,13 @@ export function setWebViewContent(
     );
   }
 
+  // ExtensionMode: Production = 1, Development = 2, Test = 3.
+  // See https://git.io/JJFvy. Use files in the src folder for development.
+  let jsDir = "out";
+  if (context.extensionMode === 2) {
+    jsDir = "src";
+  }
+
   // Get the special URI to use with the webview
   const visNetworkJsURL = createWebviewUri(
     "node_modules/vis-network/dist/vis-network.min.js"
@@ -64,8 +71,9 @@ export function setWebViewContent(
   const randomColorJsURL = createWebviewUri(
     "node_modules/randomcolor/randomColor.js"
   );
-  const visualizationJsURL = createWebviewUri("out/visualize.js");
-  const loopJsURL = createWebviewUri("out/loop.js");
+  const visualizationJsURL = createWebviewUri(`${jsDir}/visualize.js`);
+  const loopJsURL = createWebviewUri(`${jsDir}/loop.js`);
+  console.log(loopJsURL);
 
   webviewPanel.webview.html = `<!DOCTYPE html>
 <html lang="en">
