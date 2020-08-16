@@ -55,16 +55,16 @@ export function setWebViewContent(
   }
 
   // Get the special URI to use with the webview
-  const visJsURL = createWebviewUri(
+  const visNetworkJsURL = createWebviewUri(
     "node_modules/vis-network/dist/vis-network.min.js"
   );
-  const visCssURL = createWebviewUri(
+  const visNetworkCssURL = createWebviewUri(
     "node_modules/vis-network/styles/vis-network.min.css"
   );
   const randomColorJsURL = createWebviewUri(
     "node_modules/randomcolor/randomColor.js"
   );
-  const myJsURL = createWebviewUri("out/visualize.js");
+  const visualizationJsURL = createWebviewUri("out/visualize.js");
   const loopJsURL = createWebviewUri("out/loop.js");
 
   webviewPanel.webview.html = `<!DOCTYPE html>
@@ -75,8 +75,9 @@ export function setWebViewContent(
     <title>Code Tracing Result</title>
     <script type="text/javascript" src="${randomColorJsURL}"></script>
     <script type="module" src="${loopJsURL}"></script>
-    <script type="module" src="${visJsURL}"></script>
-    <link rel="stylesheet" type="text/css" href="${visCssURL}" />
+    <script type="module" src="${visNetworkJsURL}"></script>
+    <script type="module" src="${visualizationJsURL}"></script>
+    <link rel="stylesheet" type="text/css" href="${visNetworkCssURL}" />
     <style type="text/css">
       #vis{
         width: 100%;
@@ -96,7 +97,6 @@ export function setWebViewContent(
         const vscode = acquireVsCodeApi();
         vscode.postMessage("Webview ready");
     </script>
-    <script type="module" src="${myJsURL}"></script>
 </body>
 </html>`;
 }
