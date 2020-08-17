@@ -1,11 +1,3 @@
-/*
-I would love to write webview code in TS as well, but the support for vis-network
-is not so good, see: https://github.com/visjs/vis-network/issues/930
-
-Refs:
-https://dev.to/daniel_werner/testing-typescript-with-mocha-and-chai-5cl8
- */
-
 export function foo() {
   console.log("Successfully imported the loop module. 😀😀😀");
 }
