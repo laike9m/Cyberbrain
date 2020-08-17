@@ -1,3 +1,8 @@
+/*
+If we need to migrate tests to TS, see:
+https://dev.to/daniel_werner/testing-typescript-with-mocha-and-chai-5cl8
+ */
+
 import pkg from "chai";
 
 import {
