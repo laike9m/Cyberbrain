@@ -13,10 +13,9 @@ https://i.loli.net/2020/08/05/FBqXQpjk4YVLGRa.png
 
 For other IDEs/editors, I believe it's possible to achieve a similar effect.
 
-I also tried using making this file a ts file but met a few difficulties:
-1. The documentation for using TS with vis-network is poor
-2. It seems not so easy to use TS without a framework like React/Angular, which
-   I'd like to avoid at least for now.
+I would love to write webview code in TS as well, but so far TS support in vis-network
+is poor, see: https://github.com/visjs/vis-network/issues/930
+
 */
 
 // The .js suffix is needed to make import work in vsc webview.
