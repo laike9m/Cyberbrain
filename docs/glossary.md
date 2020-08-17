@@ -21,3 +21,7 @@ The output of tracing which at least contains the change history of variables of
 - Events
 
 TODO
+
+- Trace Graph
+
+A Visualized graph to show tracing result integrated in editors/GUIs.
