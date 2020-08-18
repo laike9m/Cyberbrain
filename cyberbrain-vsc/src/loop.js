@@ -5,34 +5,19 @@ export function foo() {
 // TODO:
 //  - Events should have some extra attributes:
 //    * An index to represent the order they occurred. Index is frame specific.
-//    * The offset in frame, so that we can detect knots by comparing jump destination
+//    * The offset in frame, so that we can detect loopStarts by comparing jump destination
 //      and event offset.
-//  - Add a new type of event: JumpBackToKnot, which can originate from:
+//  - Add a new type of event: JumpBackToLoopStart, which can originate from:
 //    * JUMP_ABSOLUTE (normal iteration ends)
 //    * POP_JUMP_IF_FALSE (break/continue), and other conditional jump instructions.
-//    Each JumpBackToKnot represents an *actual jump back that happened*.
-//  - JumpBackToKnot events should have attributes:
+//    Each JumpBackToLoopStart represents an *actual jump back that happened*.
+//  - JumpBackToLoopStart events should have attributes:
 //    * Jump target offset
 
-/*
-What is a knot?
-A knot represents a loop. To be more specific, it is the place where a loop starts.
-When one iteration ends, the program will jump back to the code location that a knot
-represents.
-
-We use knots to record loop starts, but we don't record where a loop ends. Reasons are:
-1. It's unnecessary, we know an iteration ends if the program jumps back to a knot.
-2. Different iterations of the same loop can exit at different positions (e.g. continue)
-
-Usually, knots have the same offset with FOR_ITER instructions, but since FOR_ITER does
-not lead to any events, knots is "placed" right before the first event in the loop, and we
-store the index of the first loop event in each iterations. Later when updating nodes,
-we can just traverse from the firstLoopEventIndex corresponding to the current loop counter.
- */
-export class Knot {
+export class Loop {
   constructor(offset) {
-    this.offset = offset;
-    this.loopCounter = 0;
+    this.startOffset = offset;
+    this.counter = 0;
 
     // The index of the first event in each iteration of this loop.
     this.iterationStarts = [];
@@ -42,7 +27,11 @@ export class Knot {
     this.iterationStarts.push(eventIndex);
   }
 
-  setCounter(value) {
+  getCurrentIterationStart() {
+    return this.iterationStarts[this.counter];
+  }
+
+  setLoopCounter(value) {
     self.loopCounter = value;
   }
 }
@@ -50,20 +39,20 @@ export class Knot {
 /*
 
 Parameters:
-  events: a sequence of events, sorted by the order they occurred.
-  knots: a map of knots, keyed by offset.
+  events: a sequence of events in one frame, sorted by the order they occurred.
+  loops: a map of loops, keyed by offset.
 
 Returns:
   a list of events that will be shown in the trace graph
 
-Meanwhile, knots are filled with insertion starts.
+Meanwhile, loops are filled with iteration starts.
 
-TODO: Decide whether to show JumpBackToKnot node in trace graph.
+TODO: Decide whether to show JumpBackToLoopStart node in trace graph.
  */
-export function getVisibleEventsAndUpdateKnots(events, knots) {
-  let knotOffsets = Array.from(knots.keys());
-  knotOffsets.sort();
-  let currentKnotOffset = knotOffsets[0];
+export function getVisibleEventsAndUpdateLoops(events, loops) {
+  let loopStartOffsets = Array.from(loops.keys());
+  loopStartOffsets.sort();
+  let currentLoopStartOffset = loopStartOffsets[0];
 
   let maxReachedOffset = 0;
   let visibleEvents = [];
@@ -76,25 +65,25 @@ export function getVisibleEventsAndUpdateKnots(events, knots) {
       maxReachedOffset = offset;
       visibleEvents.push(event);
     }
-    // Find all iteration starts, which are events that come after a knot.
-    // currentKnotOffset is set to the knot that's coming next, or null if it's already
-    // the last knot.
-    if (currentKnotOffset !== null && offset >= currentKnotOffset) {
-      knots.get(currentKnotOffset).addIterationStart(event.index);
-      let knotIndex = knotOffsets.indexOf(currentKnotOffset);
-      currentKnotOffset =
-        knotIndex === knotOffsets.length - 1
+    // Find all iteration starts, which are events that come after a loopStart.
+    // currentLoopStartOffset is set to the loopStart that's coming next, or null if it's already
+    // the last loopStart.
+    if (currentLoopStartOffset !== null && offset >= currentLoopStartOffset) {
+      loops.get(currentLoopStartOffset).addIterationStart(event.index);
+      let loopStartIndex = loopStartOffsets.indexOf(currentLoopStartOffset);
+      currentLoopStartOffset =
+        loopStartIndex === loopStartOffsets.length - 1
           ? null
-          : knotOffsets[knotIndex + 1];
+          : loopStartOffsets[loopStartIndex + 1];
     }
     // Check whether there actually is another iteration by inspecting whether the offset of
     // next event is smaller than the current one.
     if (
-      event.type === "JumpBackToKnot" &&
+      event.type === "JumpBackToLoopStart" &&
       event.index < events.length - 1 &&
       events[event.index + 1].offset < offset
     ) {
-      currentKnotOffset = event.jump_target;
+      currentLoopStartOffset = event.jump_target;
     }
   }
   return visibleEvents;
@@ -103,7 +92,23 @@ export function getVisibleEventsAndUpdateKnots(events, knots) {
 /*
 When updating, the original events sequence passed from backend will act as the index
 for locating events efficiently.
+
+Parameters:
+  events: a sequence of events in one frame, sorted by the order they occurred.
+  loop: a loop whose loop counter is to be modified.
+  new_loop_counter: the new value for the loop counter, set by users.
+
+Returns:
+  item 1: nodes removed
+  item 2: nodes added
  */
-export function generateNodeUpdate() {
+export function generateNodeUpdate(events, loop, new_loop_counter) {
+  let currentIterationStart = loop.getCurrentIterationStart();
+  for (let i = currentIterationStart; i < events.length; i++) {
+    let event = events[i];
+  }
+
+  // WIP
+
   return [/* nodes added */ [], /* nodes removed */ []];
 }
