@@ -14,21 +14,36 @@ export function foo() {
 //  - JumpBackToLoopStart events should have attributes:
 //    * Jump target offset
 
+function assertEqual(item1, item2, msg) {
+  if (msg === undefined) {
+    msg = `${item1} ${item2}`;
+  }
+  console.assert(item1 === item2, msg);
+}
+
 export class Loop {
-  constructor(offset) {
-    this.startOffset = offset;
+  constructor(startOffset, endOffset) {
+    this.startOffset = startOffset;
+    this.endOffset = endOffset;
     this.counter = 0;
+    this.parent = undefined;
+    this.children = new Set();
 
     // The index of the first event in each iteration of this loop.
-    this.iterationStarts = [];
+    // Maps counter to index. Note that the counter includes parent's counter, like [0,0,1]
+    this.iterationStarts = new Map();
   }
 
-  addIterationStart(eventIndex) {
-    this.iterationStarts.push(eventIndex);
+  addIterationStart(counters, eventIndex) {
+    this.iterationStarts.set(counters, eventIndex);
   }
 
   getCurrentIterationStart() {
     return this.iterationStarts[this.counter];
+  }
+
+  setEndOffset(eventOffset) {
+    this.endOffset = Math.max(this.endOffset, eventOffset);
   }
 
   setLoopCounter(value) {
@@ -40,7 +55,7 @@ export class Loop {
 
 Parameters:
   events: a sequence of events in one frame, sorted by the order they occurred.
-  loops: a map of loops, keyed by offset.
+  loops: a array of loops, sorted by loop start offset.
 
 Returns:
   a list of events that will be shown in the trace graph
@@ -50,12 +65,10 @@ Meanwhile, loops are filled with iteration starts.
 TODO: Decide whether to show JumpBackToLoopStart node in trace graph.
  */
 export function getVisibleEventsAndUpdateLoops(events, loops) {
-  let loopStartOffsets = Array.from(loops.keys());
-  loopStartOffsets.sort();
-  let currentLoopStartOffset = loopStartOffsets[0];
-
+  let loopStack = [];
   let maxReachedOffset = 0;
   let visibleEvents = [];
+  let previousEventOffset = -2;
 
   for (let event of events) {
     let offset = event.offset;
@@ -65,27 +78,54 @@ export function getVisibleEventsAndUpdateLoops(events, loops) {
       maxReachedOffset = offset;
       visibleEvents.push(event);
     }
-    // Find all iteration starts, which are events that come after a loopStart.
-    // currentLoopStartOffset is set to the loopStart that's coming next, or null if it's already
-    // the last loopStart.
-    if (currentLoopStartOffset !== null && offset >= currentLoopStartOffset) {
-      loops.get(currentLoopStartOffset).addIterationStart(event.index);
-      let loopStartIndex = loopStartOffsets.indexOf(currentLoopStartOffset);
-      currentLoopStartOffset =
-        loopStartIndex === loopStartOffsets.length - 1
-          ? null
-          : loopStartOffsets[loopStartIndex + 1];
-    }
-    // Check whether there actually is another iteration by inspecting whether the offset of
+
+    // Checks whether there actually is another iteration by inspecting whether the offset of
     // next event is smaller than the current one.
     if (
       event.type === "JumpBackToLoopStart" &&
       event.index < events.length - 1 &&
       events[event.index + 1].offset < offset
     ) {
-      currentLoopStartOffset = event.jump_target;
+      loopStack[loopStack.length - 1].counter++;
+      loopStack[loopStack.length - 1].addIterationStart(
+        loopStack.map((loop) => loop.counter),
+        event.index + 1 // The event following JumpBackToLoopStart is next iteration's start.
+      );
+    }
+
+    // Pushes loop onto the stack.
+    for (let loop of loops) {
+      if (
+        previousEventOffset < loop.startOffset &&
+        loop.startOffset <= offset
+      ) {
+        if (loopStack.length > 0 && loop.parent === undefined) {
+          loopStack[loopStack.length - 1].children.add(loop);
+          loop.parent = loopStack[loopStack.length - 1];
+        }
+        loopStack.push(loop);
+        loop.addIterationStart(
+          loopStack.map((loop) => loop.counter),
+          event.index
+        );
+      }
+    }
+    previousEventOffset = offset;
+
+    // Pops loop out of the stack.
+    if (
+      loopStack.length > 0 &&
+      loopStack[loopStack.length - 1].endOffset < offset
+    ) {
+      loopStack.pop().counter = 0;
     }
   }
+
+  // Restores to the initial state.
+  for (let loop of loops) {
+    loop.counter = 0;
+  }
+
   return visibleEvents;
 }
 
