@@ -31,23 +31,29 @@ export class Loop {
 
     // The index of the first event in each iteration of this loop.
     // Maps counter to index. Note that the counter includes parent's counter, like [0,0,1]
-    this.iterationStarts = new Map();
+    this._iterationStarts = new Map();
   }
 
   addIterationStart(counters, eventIndex) {
-    this.iterationStarts.set(counters, eventIndex);
+    // We can't use array as keys directly, since we don't keep the array objects.
+    this._iterationStarts.set(counters.toString(), eventIndex);
   }
 
   getCurrentIterationStart() {
-    return this.iterationStarts[this.counter];
+    return this._iterationStarts.get(this.getCounters().toString());
   }
 
-  setEndOffset(eventOffset) {
-    this.endOffset = Math.max(this.endOffset, eventOffset);
-  }
-
-  setLoopCounter(value) {
-    self.loopCounter = value;
+  /* Calculates the counters array from top-level loop to the modified loop.
+   *  Outer loop's counter will precedes inner loops'.
+   */
+  getCounters() {
+    let counters = [this.counter];
+    let parentLoop = this.parent;
+    while (parentLoop !== undefined) {
+      counters.unshift(parentLoop.counter);
+      parentLoop = parentLoop.parent;
+    }
+    return counters;
   }
 }
 
@@ -66,7 +72,7 @@ TODO: Decide whether to show JumpBackToLoopStart node in trace graph.
  */
 export function getVisibleEventsAndUpdateLoops(events, loops) {
   let loopStack = [];
-  let maxReachedOffset = 0;
+  let maxReachedOffset = -1;
   let visibleEvents = [];
   let previousEventOffset = -2;
 
@@ -130,25 +136,53 @@ export function getVisibleEventsAndUpdateLoops(events, loops) {
 }
 
 /*
-When updating, the original events sequence passed from backend will act as the index
-for locating events efficiently.
 
 Parameters:
   events: a sequence of events in one frame, sorted by the order they occurred.
-  loop: a loop whose loop counter is to be modified.
-  new_loop_counter: the new value for the loop counter, set by users.
+  visibleEvents: currently visible events.
+  loop: a loop whose counter is modified.
 
 Returns:
-  item 1: nodes removed
-  item 2: nodes added
+  item 1: nodes to hide
+  item 2: nodes to show
  */
-export function generateNodeUpdate(events, loop, new_loop_counter) {
-  let currentIterationStart = loop.getCurrentIterationStart();
-  for (let i = currentIterationStart; i < events.length; i++) {
-    let event = events[i];
+export function generateNodeUpdate(events, visibleEvents, loop) {
+  // Maps offset to events.
+  let eventsToHide = new Map();
+  let eventsToShow = new Map();
+
+  // Calculates events that should be hidden.
+  for (let visibleEvent of visibleEvents) {
+    if (visibleEvent.offset < loop.startOffset) continue;
+    if (visibleEvent.offset > loop.endOffset) break;
+    eventsToHide.set(visibleEvent.offset, visibleEvent);
   }
 
-  // WIP
+  // Calculates events that should be made visible, in this loop.
+  let maxReachedOffset = -1;
+  for (let i = loop.getCurrentIterationStart(); i < events.length; i++) {
+    let event = events[i];
+    let offset = event.offset;
+    if (offset > loop.endOffset) break;
+    if (offset > maxReachedOffset) {
+      maxReachedOffset = offset;
+      if (!eventsToShow.has(event.offset)) {
+        // Only set once (target iteration), don't let later iterations override the result.
+        eventsToShow.set(event.offset, event);
+      }
+    }
+  }
 
-  return [/* nodes added */ [], /* nodes removed */ []];
+  // Calculates events that should be made visible in inner loops if any.
+  for (let innerLoop of loop.children) {
+    const [_, eventsToShowFromInner] = generateNodeUpdate(
+      events,
+      visibleEvents,
+      innerLoop
+    );
+    // Merge and let results from inner loops override outer loops
+    eventsToShow = new Map([...eventsToShow, ...eventsToShowFromInner]);
+  }
+
+  return [eventsToHide, eventsToShow];
 }
