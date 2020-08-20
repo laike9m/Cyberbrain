@@ -4,10 +4,11 @@ https://dev.to/daniel_werner/testing-typescript-with-mocha-and-chai-5cl8
  */
 
 import pkg from "chai";
-
 import { getVisibleEventsAndUpdateLoops, Loop } from "../src/loop.js";
+import chaiSubset from "chai-subset";
 
-const { assert } = pkg;
+const { assert, use } = pkg;
+use(chaiSubset);
 
 describe("getVisibleEventsAndUpdateLoops tests", function () {
   it("Nested loop works", function () {
@@ -114,10 +115,7 @@ describe("getVisibleEventsAndUpdateLoops tests", function () {
         offset: 12,
       },
     ];
-    let loops = new Map([
-      [0, new Loop(0)],
-      [2, new Loop(2)],
-    ]);
+    let loops = [new Loop(0, 10), new Loop(2, 6)];
     assert.deepEqual(getVisibleEventsAndUpdateLoops(events, loops), [
       { type: "Binding", index: 1, offset: 2 },
       { type: "Binding", index: 2, offset: 4 },
@@ -126,13 +124,32 @@ describe("getVisibleEventsAndUpdateLoops tests", function () {
       { type: "JumpBackToLoopStart", index: 8, offset: 10, jump_target: 0 },
       { type: "Binding", index: 18, offset: 12 },
     ]);
-    assert.deepEqual(
-      loops,
-      new Map([
-        [0, { startOffset: 0, counter: 0, iterationStarts: [0, 9] }],
-        [2, { startOffset: 2, counter: 0, iterationStarts: [1, 4, 10, 13] }],
-      ])
-    );
+    assert.containSubset(loops, [
+      {
+        startOffset: 0,
+        endOffset: 10,
+        counter: 0,
+        parent: undefined,
+        iterationStarts: new Map([
+          [[0], 0],
+          [[1], 9],
+        ]),
+      },
+      {
+        startOffset: 2,
+        endOffset: 6,
+        counter: 0,
+        parent: {
+          endOffset: 10,
+        },
+        iterationStarts: new Map([
+          [[0, 0], 1],
+          [[0, 1], 4],
+          [[1, 0], 10],
+          [[1, 1], 13],
+        ]),
+      },
+    ]);
   });
 });
 
