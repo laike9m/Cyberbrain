@@ -70,7 +70,7 @@ Meanwhile, loops are filled with iteration starts.
 
 TODO: Decide whether to show JumpBackToLoopStart node in trace graph.
  */
-export function getVisibleEventsAndUpdateLoops(events, loops) {
+export function getInitialState(events, loops) {
   let loopStack = [];
   let maxReachedOffset = -1;
   let visibleEvents = [];
@@ -132,7 +132,7 @@ export function getVisibleEventsAndUpdateLoops(events, loops) {
     loop.counter = 0;
   }
 
-  return visibleEvents;
+  return [visibleEvents, loops];
 }
 
 /*
@@ -184,5 +184,6 @@ export function generateNodeUpdate(events, visibleEvents, loop) {
     eventsToShow = new Map([...eventsToShow, ...eventsToShowFromInner]);
   }
 
+  console.assert(eventsToShow.size === eventsToHide.size);
   return [eventsToHide, eventsToShow];
 }
