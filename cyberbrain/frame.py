@@ -113,6 +113,7 @@ class Frame:
 
         target: Symbol = event_info.target
 
+        # TODO: For mutation, add the mutated object as a source.
         if event_info.type is EventType.Mutation:
             diff = DeepDiff(
                 self._latest_value_of(target),
