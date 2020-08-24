@@ -9,7 +9,7 @@ events {
       binding {
         uid: "test_try_except_finally:0"
         filename: "test_block.py"
-        lineno: 84
+        lineno: 50
         target: "b"
         value: "1"
       }

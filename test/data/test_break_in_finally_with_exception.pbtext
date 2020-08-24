@@ -9,7 +9,7 @@ events {
       binding {
         uid: "test_break_in_finally_with_exception:0"
         filename: "test_block.py"
-        lineno: 116
+        lineno: 82
         target: "x"
         value: "0"
       }

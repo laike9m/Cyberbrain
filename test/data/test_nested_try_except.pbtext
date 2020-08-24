@@ -9,7 +9,7 @@ events {
       binding {
         uid: "test_nested_try_except:0"
         filename: "test_block.py"
-        lineno: 66
+        lineno: 32
         target: "a"
         value: "1"
       }
