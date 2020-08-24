@@ -1,43 +1,9 @@
 """Test instructions that create blocks."""
 
-from cyberbrain import Binding, Mutation, Symbol
+from cyberbrain import Binding, Symbol
 from utils import assert_GetFrame
 
-
-def test_loop(tracer, rpc_stub):
-    tracer.start_tracing()
-
-    for x in range(2):  # SETUP_LOOP (3.7), GET_ITER, FOR_ITER
-        pass  # POP_BLOCK (3.7)
-
-    for y in range(2):
-        break  # BREAK_LOOP (3.7), JUMP_ABSOLUTE (>=3.8)
-        a = 1
-
-    for z in range(1):
-        continue  # CONTINUE_LOOP (3.7), JUMP_ABSOLUTE (>=3.8)
-        a = 1
-
-    i = 0
-    while i < 1:  # SETUP_LOOP (3.7), POP_JUMP_IF_FALSE
-        i += 1
-
-    tracer.stop_tracing()
-
-    assert tracer.events == {
-        "x": [
-            Binding(target=Symbol("x"), value=0, lineno=10),
-            Mutation(target=Symbol("x"), value=1, lineno=10),
-        ],
-        "y": [Binding(target=Symbol("y"), value=0, lineno=13)],
-        "z": [Binding(target=Symbol("z"), value=0, lineno=17)],
-        "i": [
-            Binding(target=Symbol("i"), value=0, lineno=21),
-            Mutation(target=Symbol("i"), value=1, sources={Symbol("i")}, lineno=23),
-        ],
-    }
-
-    assert_GetFrame(rpc_stub, "test_loop")
+# Loops can generate blocks too, they are tested in test_loop.py
 
 
 def test_basic_try_except(tracer, rpc_stub):
@@ -68,7 +34,7 @@ def test_nested_try_except(tracer, rpc_stub):
         pass
 
     tracer.stop_tracing()
-    assert tracer.events == {"a": [Binding(target=Symbol("a"), value=1, lineno=66)]}
+    assert tracer.events == {"a": [Binding(target=Symbol("a"), value=1, lineno=32)]}
 
     assert_GetFrame(rpc_stub, "test_nested_try_except")
 
@@ -85,7 +51,7 @@ def test_try_except_finally(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.events == {"b": [Binding(target=Symbol("b"), value=1, lineno=84)]}
+    assert tracer.events == {"b": [Binding(target=Symbol("b"), value=1, lineno=50)]}
 
     assert_GetFrame(rpc_stub, "test_try_except_finally")
 
@@ -101,7 +67,7 @@ def test_break_in_finally(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.events == {"x": [Binding(target=Symbol("x"), value=0, lineno=96)]}
+    assert tracer.events == {"x": [Binding(target=Symbol("x"), value=0, lineno=62)]}
 
     assert_GetFrame(rpc_stub, "test_break_in_finally")
 
@@ -121,6 +87,6 @@ def test_break_in_finally_with_exception(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.events == {"x": [Binding(target=Symbol("x"), value=0, lineno=116)]}
+    assert tracer.events == {"x": [Binding(target=Symbol("x"), value=0, lineno=82)]}
 
     assert_GetFrame(rpc_stub, "test_break_in_finally_with_exception")
