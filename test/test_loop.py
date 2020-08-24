@@ -25,7 +25,7 @@ def test_list_comprehension(tracer, rpc_stub):
     tracer.start_tracing()
 
     n = 2
-    x = [i for i in range(n)]
+    x = [i for i in range(n)]  # MAKE_FUNCTION, GET_ITER, CALL_FUNCTION
     lst = ["foo", "bar"]
     x = [e for e in lst]
 

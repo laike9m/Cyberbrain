@@ -2,18 +2,6 @@ export function foo() {
   console.log("Successfully imported the loop module. 😀😀😀");
 }
 
-// TODO:
-//  - Events should have some extra attributes:
-//    * An index to represent the order they occurred. Index is frame specific.
-//    * The offset in frame, so that we can detect loopStarts by comparing jump destination
-//      and event offset.
-//  - Add a new type of event: JumpBackToLoopStart, which can originate from:
-//    * JUMP_ABSOLUTE (normal iteration ends)
-//    * POP_JUMP_IF_FALSE (break/continue), and other conditional jump instructions.
-//    Each JumpBackToLoopStart represents an *actual jump back that happened*.
-//  - JumpBackToLoopStart events should have attributes:
-//    * Jump target offset
-
 function assertEqual(item1, item2, msg) {
   if (msg === undefined) {
     msg = `${item1} ${item2}`;
