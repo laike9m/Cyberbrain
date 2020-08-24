@@ -1,6 +1,7 @@
 """Utility functions."""
 
 import collections
+import dis
 import inspect
 import os
 import subprocess
@@ -11,7 +12,7 @@ from functools import lru_cache
 from pathlib import Path
 from pprint import pformat
 from types import FrameType
-from typing import Any
+from typing import Any, Optional
 
 import jsonpickle
 from pygments import highlight
@@ -20,6 +21,13 @@ from pygments.lexers import PythonLexer
 
 _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
 _PYTHON_EXECUTABLE_PATH = sys.executable
+
+
+def get_jump_target(instr: dis.Instruction) -> Optional[int]:
+    if instr.opcode in dis.hasjrel:
+        return instr.offset + 2 + instr.arg
+    elif instr.opcode in dis.hasjabs:
+        return instr.arg
 
 
 def to_json(python_object: Any):

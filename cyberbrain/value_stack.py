@@ -68,13 +68,15 @@ def emit_event(f):
 MutationType = EventType.Mutation
 DeletionType = EventType.Deletion
 BindingType = EventType.Binding
+JumpBackToLoopStartType = EventType.JumpBackToLoopStart
 
 
 @dataclasses.dataclass
 class EventInfo:
     type: Literal[EventType.Binding, EventType.Mutation, EventType.Deletion]
-    target: Symbol
+    target: Symbol = None
     sources: set[Symbol] = dataclasses.field(default_factory=set)
+    jump_target: int = None
 
 
 class GeneralValueStack:
@@ -527,31 +529,50 @@ class GeneralValueStack:
     def _JUMP_FORWARD_handler(self, instr, jumped):
         pass
 
-    def _POP_JUMP_IF_TRUE_handler(self):
+    @emit_event
+    def _POP_JUMP_IF_TRUE_handler(self, instr: Instruction):
         self._pop()
+        return self._return_jump_back_event_if_exists(instr)
 
-    def _POP_JUMP_IF_FALSE_handler(self):
+    @emit_event
+    def _POP_JUMP_IF_FALSE_handler(self, instr):
         self._pop()
+        return self._return_jump_back_event_if_exists(instr)
 
-    def _JUMP_IF_TRUE_OR_POP_handler(self, jumped):
+    @emit_event
+    def _JUMP_IF_TRUE_OR_POP_handler(self, instr, jumped):
         if not jumped:
             self._pop()
+        else:
+            return self._return_jump_back_event_if_exists(instr)
 
-    def _JUMP_IF_FALSE_OR_POP_handler(self, jumped):
+    @emit_event
+    def _JUMP_IF_FALSE_OR_POP_handler(self, instr, jumped):
         if not jumped:
             self._pop()
+        else:
+            return self._return_jump_back_event_if_exists(instr)
 
-    def _JUMP_ABSOLUTE_handler(self, instr, jumped):
-        pass
+    @emit_event
+    def _JUMP_ABSOLUTE_handler(self, instr):
+        return self._return_jump_back_event_if_exists(instr)
 
+    @emit_event
     def _GET_ITER_handler(self, instr):
-        pass
+        return self._return_jump_back_event_if_exists(instr)
 
-    def _FOR_ITER_handler(self, jumped):
+    @emit_event
+    def _FOR_ITER_handler(self, instr, jumped):
         if jumped:
             self._pop()
         else:
             self._push(self.tos)
+            return self._return_jump_back_event_if_exists(instr)
+
+    def _return_jump_back_event_if_exists(self, instr):
+        jump_target = utils.get_jump_target(instr)
+        if jump_target is not None and jump_target < instr.offset:
+            return EventInfo(type=JumpBackToLoopStartType, jump_target=jump_target)
 
     def _unwind_except_handler(self, b: Block):
         assert self.stack_level >= b.b_level + 3
