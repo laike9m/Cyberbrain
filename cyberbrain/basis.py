@@ -42,6 +42,7 @@ class UUIDGenerator:
 
 
 class EventType(enum.Enum):
+    JumpBackToLoopStart = 0
     InitialValue = 1
     Binding = 2
     Mutation = 3
@@ -50,11 +51,15 @@ class EventType(enum.Enum):
 
 @attr.s(auto_attribs=True)
 class Event:
-    target: Symbol
     lineno: int
     # filename is always set, but we don't want to set it in tests.
     filename: str = attr.ib(eq=False, default="")
     uid: string = attr.ib(factory=UUIDGenerator.generate_uuid, eq=False, repr=False)
+
+
+@attr.s
+class JumpBackToLoopStart(Event):
+    jump_target: int = attr.ib(kw_only=True)
 
 
 @attr.s(auto_attribs=True)
@@ -77,6 +82,8 @@ class InitialValue(Event):
     cyberbrain.init()
     '"""
 
+    target: Symbol = attr.ib(kw_only=True)
+
     # kw_only is required to make inheritance work
     # see https://github.com/python-attrs/attrs/issues/38
     value: Any = attr.ib(kw_only=True)
@@ -95,6 +102,7 @@ class Binding(Event):
         - An identifier is re-assigned
     """
 
+    target: Symbol = attr.ib(kw_only=True)
     value: Any = attr.ib(kw_only=True)
     sources: set[Symbol] = set()  # Source can be empty, like a = 1
 
@@ -111,6 +119,8 @@ class Mutation(Event):
         b = []      # Binding
         b.append(1) # Mutation
     """
+
+    target: Symbol = attr.ib(kw_only=True)
 
     # Represents the diffs from before and after the mutation.
     delta: Delta = Delta({})
@@ -133,6 +143,8 @@ class Mutation(Event):
 @attr.s(auto_attribs=True, eq=False)
 class Deletion(Event):
     """An identifiers is deleted."""
+
+    target: Symbol = attr.ib(kw_only=True)
 
     def __eq__(self, other: Deletion):
         return (self.target, self.lineno) == (other.target, other.lineno)
