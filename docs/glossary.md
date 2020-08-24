@@ -25,3 +25,7 @@ TODO
 - Trace Graph
 
 A Visualized graph to show tracing result integrated in editors/GUIs.
+
+- Trace Path
+
+A subgraph of the trace graph to show changes of a specific identifier.

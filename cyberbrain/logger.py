@@ -174,18 +174,15 @@ class JumpDetector:
         """
         Returns: (whether jump occurred, jumped-to location)
         """
-        jump_location = None
-
         if instr.opname in _implicit_jump_ops:
-            jump_location = last_i  # For implicit_jump_ops, assume it's last_i.
-        elif instr.opcode in dis.hasjrel:
-            jump_location = instr.offset + 2 + instr.arg
-        elif instr.opcode in dis.hasjabs:
-            jump_location = instr.arg
+            jump_target = last_i  # For implicit_jump_ops, assume it's last_i.
         else:
-            return False, jump_location
+            jump_target = utils.get_jump_target(instr)
 
-        computed_last_i = jump_location
+        if jump_target is None:
+            return False, jump_target
+
+        computed_last_i = jump_target
         if not self.COMPUTED_GOTOS_ENABLED:
             # Here we assume that PREDICT happens at most once. I'm not sure if this
             # is always true. If it's not, we can modify the code.
@@ -201,18 +198,18 @@ class JumpDetector:
             # With COMPUTED_GOTOS, PREDICT is a noop, last_i is 24.
             # Without COMPUTED_GOTOS, PREDICT causes last_i to not update for POP_BLOCK,
             # so last_i is 26.
-            opname_next = self.instructions[jump_location].opname
+            opname_next = self.instructions[jump_target].opname
             if opname_next == self.PREDICT_MAP.get(instr.opname):
                 print("Found PREDICT!!")
                 computed_last_i += 2
 
         if computed_last_i == last_i:
             _debug_log(
-                self.debug_mode, f"Jumped to instruction at offset: {jump_location}"
+                self.debug_mode, f"Jumped to instruction at offset: {jump_target}"
             )
-            return True, jump_location
+            return True, jump_target
 
-        return False, jump_location
+        return False, jump_target
 
 
 def _debug_log(debug_mode, *msg, condition=True):

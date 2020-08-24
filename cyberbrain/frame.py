@@ -4,6 +4,7 @@ from collections import defaultdict
 from copy import copy
 from typing import Any
 
+from crayons import cyan
 from deepdiff import DeepDiff, Delta
 
 from . import value_stack, utils
@@ -34,6 +35,17 @@ class Frame:
 
     TODO: corner cases to be handled:
         - delete, then create again
+
+    TODO (Loops related):
+     - Events should have some extra attributes:
+       * An index to represent the order they occurred. Index is frame specific.
+       * The offset in frame, so that we can detect loop starts by comparing jump
+         target and event offset.
+     - Add a new type of event: JumpBackToLoopStart, which can originate from:
+       * JUMP_ABSOLUTE (normal iteration ends)
+       * POP_JUMP_IF_FALSE (break/continue), and other conditional jump instructions.
+       Each JumpBackToLoopStart represents an *actual jump back that happened*.
+     - Identify loops (start/end offset) based on JumpBackToLoopStart.
     """
 
     def __init__(self, filename, frame_name, offset_to_lineno):
@@ -47,6 +59,7 @@ class Frame:
         self.value_stack = value_stack.create_value_stack()
 
         # ################### Frame state ####################
+        # TODO: Store events sequentially
         self.raw_events: dict[str, list[Event]] = _EventsDict(list)
         self.snapshots: list[Snapshot] = [
             # The initial state, where pointer points to zero for every identifier.
@@ -99,7 +112,6 @@ class Frame:
             return
 
         target: Symbol = event_info.target
-        assert type(target) is Symbol
 
         if event_info.type is EventType.Mutation:
             diff = DeepDiff(
@@ -135,6 +147,8 @@ class Frame:
                     lineno=self.offset_to_lineno[instr.offset],
                 )
             )
+        elif event_info.type is EventType.JumpBackToLoopStart:
+            print(cyan(event_info))
 
     def _add_new_event(self, event: Event):
         target = event.target.name
@@ -182,6 +196,8 @@ class Frame:
 
         return value
 
+    # TODO: Deprecate this method, generate accumulated events from event sequence.
+    #    Remember the latest event for each identifier, calculate values based on delta.
     @property
     def accumulated_events(self) -> dict[str, list[Event]]:
         """Returns events with accumulated value.
