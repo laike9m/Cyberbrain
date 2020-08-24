@@ -366,6 +366,18 @@ python-versions = "*"
 version = "3.0.12"
 
 [[package]]
+category = "dev"
+description = "A library for automatically generating command line interfaces."
+name = "fire"
+optional = false
+python-versions = "*"
+version = "0.3.1"
+
+[package.dependencies]
+six = "*"
+termcolor = "*"
+
+[[package]]
 category = "main"
 description = "Get an available port. Checks first for preferred port in case its available, if not returns random."
 name = "get-port"
@@ -726,6 +738,14 @@ version = "1.15.0"
 
 [[package]]
 category = "dev"
+description = "ANSII Color formatting for output in terminal."
+name = "termcolor"
+optional = false
+python-versions = "*"
+version = "1.1.0"
+
+[[package]]
+category = "dev"
 description = "Python Library for Tom's Obvious, Minimal Language"
 name = "toml"
 optional = false
@@ -857,7 +877,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "e49ed62f0e0c3662efc67700dc26485287420d02ef2a1a0eb83e5de1aa7d1d65"
+content-hash = "59a16b3a4746d42ce1e6d9cbfca291e91cbebea36bf0cedfc1a3991478cfa65a"
 python-versions = "^3.7.0"
 
 [metadata.files]
@@ -993,6 +1013,9 @@ execnet = [
 filelock = [
     {file = "filelock-3.0.12-py3-none-any.whl", hash = "sha256:929b7d63ec5b7d6b71b0fa5ac14e030b3f70b75747cef1b10da9b879fef15836"},
     {file = "filelock-3.0.12.tar.gz", hash = "sha256:18d82244ee114f543149c66a6e0c14e9c4f8a1044b5cdaadd0f82159d6a6ff59"},
+]
+fire = [
+    {file = "fire-0.3.1.tar.gz", hash = "sha256:9736a16227c3d469e5d2d296bce5b4d8fa8d7851e953bda327a455fc2994307f"},
 ]
 get-port = [
     {file = "get-port-0.0.5.tar.gz", hash = "sha256:194daa34c41b54b72b5f630ce660e12f4a22116f7e76dfd4f7da0e42c820c198"},
@@ -1255,6 +1278,9 @@ shortuuid = [
 six = [
     {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
     {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
+]
+termcolor = [
+    {file = "termcolor-1.1.0.tar.gz", hash = "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"},
 ]
 toml = [
     {file = "toml-0.10.1-py2.py3-none-any.whl", hash = "sha256:bda89d5935c2eac546d648028b9901107a595863cb36bae0c73ac804a9b4ce88"},
