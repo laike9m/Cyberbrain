@@ -27,12 +27,10 @@ def test_continue_in_finally(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.events == {
-        "x": [
-            Binding(target=Symbol("x"), value=0, lineno=22),
-            Mutation(target=Symbol("x"), value=1, lineno=22),
-        ]
-    }
+    assert tracer.event_sequence == [
+        Binding(target=Symbol("x"), value=0, lineno=22),
+        Mutation(target=Symbol("x"), value=1, lineno=22),
+    ]
 
     assert_GetFrame(rpc_stub, "test_continue_in_finally")
 
@@ -56,11 +54,9 @@ def test_continue_in_finally_with_exception(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.events == {
-        "x": [
-            Binding(target=Symbol("x"), value=0, lineno=51),
-            Mutation(target=Symbol("x"), value=1, lineno=51),
-        ]
-    }
+    assert tracer.event_sequence == [
+        Binding(target=Symbol("x"), value=0, lineno=49),
+        Mutation(target=Symbol("x"), value=1, lineno=49),
+    ]
 
     assert_GetFrame(rpc_stub, "test_continue_in_finally_with_exception")

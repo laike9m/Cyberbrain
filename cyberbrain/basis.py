@@ -54,6 +54,7 @@ class Event:
     lineno: int
     # offset and filename are always set, but we don't want to set them in tests, thus
     # giving them a default value.
+    index: int = attr.ib(eq=False, default=0)
     offset: int = attr.ib(eq=False, default=0)
     filename: str = attr.ib(eq=False, default="")
     uid: string = attr.ib(factory=UUIDGenerator.generate_uuid, eq=False, repr=False)
@@ -134,6 +135,7 @@ class Mutation(Event):
     value: Any = _dummy
 
     def __eq__(self, other: Mutation):
+        # TODO: add isinstance(other, Mutation)
         return (self.target, self.value, self.sources, self.lineno) == (
             other.target,
             other.value,
@@ -149,7 +151,10 @@ class Deletion(Event):
     target: Symbol = attr.ib(kw_only=True)
 
     def __eq__(self, other: Deletion):
-        return (self.target, self.lineno) == (other.target, other.lineno)
+        return isinstance(other, Deletion) and (self.target, self.lineno) == (
+            other.target,
+            other.lineno,
+        )
 
 
 """

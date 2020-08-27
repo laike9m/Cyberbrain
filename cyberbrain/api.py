@@ -66,6 +66,11 @@ class Tracer:
         return self.frame_logger.frame.accumulated_events
 
     @property
+    def event_sequence(self):
+        """Test only. Provides access to logged events."""
+        return self.frame_logger.frame.accumulated_event_sequence
+
+    @property
     def global_tracer(self):
         def _global_tracer(frame, event, arg):
             # For now, we don't want to trace called functions.
