@@ -17,7 +17,7 @@ def test_basic_try_except(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.events == {}
+    assert tracer.event_sequence == []
 
     assert_GetFrame(rpc_stub, "test_basic_try_except")
 
@@ -34,7 +34,7 @@ def test_nested_try_except(tracer, rpc_stub):
         pass
 
     tracer.stop_tracing()
-    assert tracer.events == {"a": [Binding(target=Symbol("a"), value=1, lineno=32)]}
+    assert tracer.event_sequence == [Binding(target=Symbol("a"), value=1, lineno=32)]
 
     assert_GetFrame(rpc_stub, "test_nested_try_except")
 
@@ -51,7 +51,7 @@ def test_try_except_finally(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.events == {"b": [Binding(target=Symbol("b"), value=1, lineno=50)]}
+    assert tracer.event_sequence == [Binding(target=Symbol("b"), value=1, lineno=50)]
 
     assert_GetFrame(rpc_stub, "test_try_except_finally")
 
@@ -67,7 +67,7 @@ def test_break_in_finally(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.events == {"x": [Binding(target=Symbol("x"), value=0, lineno=62)]}
+    assert tracer.event_sequence == [Binding(target=Symbol("x"), value=0, lineno=62)]
 
     assert_GetFrame(rpc_stub, "test_break_in_finally")
 
@@ -87,6 +87,6 @@ def test_break_in_finally_with_exception(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.events == {"x": [Binding(target=Symbol("x"), value=0, lineno=82)]}
+    assert tracer.event_sequence == [Binding(target=Symbol("x"), value=0, lineno=82)]
 
     assert_GetFrame(rpc_stub, "test_break_in_finally_with_exception")

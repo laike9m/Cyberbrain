@@ -21,22 +21,16 @@ def test_loop(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.events == {
-        "x": [
-            Binding(target=Symbol("x"), value=0, lineno=7),
-            Binding(target=Symbol("x"), value=1, lineno=7),
-        ],
-        "y": [
-            Binding(target=Symbol("y"), value=0, lineno=8, sources={Symbol("x")}),
-            Binding(target=Symbol("y"), value=1, lineno=8, sources={Symbol("x")}),
-            Binding(target=Symbol("y"), value=0, lineno=10),
-        ],
-        "z": [Binding(target=Symbol("z"), value=0, lineno=14)],
-        "i": [
-            Binding(target=Symbol("i"), value=0, lineno=18),
-            Mutation(target=Symbol("i"), value=1, sources={Symbol("i")}, lineno=20),
-        ],
-    }
+    assert tracer.event_sequence == [
+        Binding(target=Symbol("x"), value=0, lineno=7),
+        Binding(target=Symbol("y"), value=0, lineno=8, sources={Symbol("x")}),
+        Binding(target=Symbol("x"), value=1, lineno=7),
+        Binding(target=Symbol("y"), value=1, lineno=8, sources={Symbol("x")}),
+        Binding(target=Symbol("y"), value=0, lineno=10),
+        Binding(target=Symbol("z"), value=0, lineno=14),
+        Binding(target=Symbol("i"), value=0, lineno=18),
+        Mutation(target=Symbol("i"), value=1, sources={Symbol("i")}, lineno=20),
+    ]
 
 
 def test_list_comprehension(tracer, rpc_stub):
@@ -49,16 +43,11 @@ def test_list_comprehension(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.events == {
-        "n": [Binding(target=Symbol("n"), value=2, lineno=45)],
-        "lst": [Binding(target=Symbol("lst"), value=["foo", "bar"], lineno=47)],
-        "x": [
-            Binding(target=Symbol("x"), value=[0, 1], lineno=46, sources={Symbol("n")}),
-            Binding(
-                target=Symbol("x"),
-                value=["foo", "bar"],
-                lineno=48,
-                sources={Symbol("lst")},
-            ),
-        ],
-    }
+    assert tracer.event_sequence == [
+        Binding(target=Symbol("n"), value=2, lineno=39),
+        Binding(target=Symbol("x"), value=[0, 1], lineno=40, sources={Symbol("n")}),
+        Binding(target=Symbol("lst"), value=["foo", "bar"], lineno=41),
+        Binding(
+            target=Symbol("x"), value=["foo", "bar"], lineno=42, sources={Symbol("lst")}
+        ),
+    ]

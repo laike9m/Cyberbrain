@@ -15,51 +15,43 @@ def test_import(tracer):
     print(os, path)  # Prevent PyCharm from removing unused imports.
 
     assert_that(
-        tracer.events,
-        has_entries(
-            {
-                "os": contains_exactly(
-                    all_of(
-                        instance_of(Binding),
-                        has_properties(
-                            {
-                                "target": Symbol("os"),
-                                "value": starts_with("<module 'os'"),
-                                "sources": set(),
-                                "lineno": 9,
-                            }
-                        ),
-                    )
+        tracer.event_sequence,
+        contains_exactly(
+            all_of(
+                instance_of(Binding),
+                has_properties(
+                    {
+                        "target": Symbol("os"),
+                        "value": starts_with("<module 'os'"),
+                        "sources": set(),
+                        "lineno": 9,
+                    }
                 ),
-                "path": contains_exactly(
-                    all_of(
-                        instance_of(Binding),
-                        has_properties(
-                            {
-                                "target": Symbol("path"),
-                                "value": all_of(
-                                    starts_with("<module"), contains_string("path")
-                                ),
-                                "sources": set(),
-                                "lineno": 10,
-                            }
+            ),
+            all_of(
+                instance_of(Binding),
+                has_properties(
+                    {
+                        "target": Symbol("path"),
+                        "value": all_of(
+                            starts_with("<module"), contains_string("path")
                         ),
-                    )
+                        "sources": set(),
+                        "lineno": 10,
+                    }
                 ),
-                "settrace": contains_exactly(
-                    all_of(
-                        instance_of(Binding),
-                        has_properties(
-                            {
-                                "target": Symbol("settrace"),
-                                "value": settrace,
-                                "sources": set(),
-                                "lineno": 11,
-                            }
-                        ),
-                    )
+            ),
+            all_of(
+                instance_of(Binding),
+                has_properties(
+                    {
+                        "target": Symbol("settrace"),
+                        "value": settrace,
+                        "sources": set(),
+                        "lineno": 11,
+                    }
                 ),
-            }
+            ),
         ),
     )
 
