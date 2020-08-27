@@ -14,6 +14,8 @@ from .basis import Event, InitialValue, Binding, Mutation, Deletion, EventType, 
 
 _INITIAL_STATE = -1
 
+Identifier = str  # Just a type alias to make annotations more expressive.
+
 
 class _EventsDict(defaultdict):
     def __contains__(self, name):
@@ -41,13 +43,22 @@ class Frame:
     TODO (Loops related):
      - Events should have some extra attributes:
        * An index to represent the order they occurred. Index is frame specific.
-       * The offset in frame, so that we can detect loop starts by comparing jump
-         target and event offset.
      - Add a new type of event: JumpBackToLoopStart, which can originate from:
        * JUMP_ABSOLUTE (normal iteration ends)
        * POP_JUMP_IF_FALSE (break/continue), and other conditional jump instructions.
        Each JumpBackToLoopStart represents an *actual jump back that happened*.
      - Identify loops (start/end offset) based on JumpBackToLoopStart.
+
+     TODO (Return a sequence of events)
+        - Store events in sequence when adding.
+        - Add a accumulated_event_sequence method. Remember the latest event for each
+          identifier, calculate values based on delta.
+        - Replace test data to match accumulated_event_sequence
+        - Modify the Frame.events field in proto and modify GetFrame to call
+          accumulated_event_sequence
+        - Remove the original accumulated_events method.
+
+    Whether we still need identifier_to_events is yet to be decided.
     """
 
     def __init__(self, filename, frame_name, offset_to_lineno):
@@ -61,8 +72,8 @@ class Frame:
         self.value_stack = value_stack.create_value_stack()
 
         # ################### Frame state ####################
-        # TODO: Store events sequentially
-        self.raw_events: dict[str, list[Event]] = _EventsDict(list)
+        self.events: list[Event] = []
+        self.identifier_to_events: dict[Identifier, list[Event]] = _EventsDict(list)
         self.snapshots: list[Snapshot] = [
             # The initial state, where pointer points to zero for every identifier.
             Snapshot(events_pointer=defaultdict(lambda: _INITIAL_STATE))
@@ -160,9 +171,11 @@ class Frame:
     def _add_new_event(self, event: Event):
         target = event.target.name
         assert not (
-            self.raw_events[target] and isinstance(event, InitialValue)
+            self.identifier_to_events[target] and isinstance(event, InitialValue)
         ), "InitialValue shouldn't be added twice"
-        self.raw_events[target].append(event)
+        self.identifier_to_events[target].append(event)
+        event.index = len(self.events)
+        self.events.append(event)
 
         # Creates a new snapshot by incrementing the target index.
         new_events_pointer = self.snapshots[-1].events_pointer.copy()
@@ -176,7 +189,7 @@ class Frame:
             self.value_stack.update_snapshot(event.target.name, self.latest_snapshot)
 
     def _knows(self, name: str) -> bool:
-        return name in self.raw_events
+        return name in self.identifier_to_events
 
     def _latest_value_of(self, symbol: Symbol) -> Any:
         """Returns the latest value of an identifier.
@@ -184,10 +197,10 @@ class Frame:
         This method is *only* used during the logging process.
         """
         name = symbol.name
-        if name not in self.raw_events:
+        if name not in self.identifier_to_events:
             raise AttributeError(f"'{name}' does not exist in frame.")
 
-        relevant_events = self.raw_events[name]
+        relevant_events = self.identifier_to_events[name]
         assert type(relevant_events[0]) in {InitialValue, Binding}
 
         if isinstance(relevant_events[-1], Binding):
@@ -203,8 +216,25 @@ class Frame:
 
         return value
 
-    # TODO: Deprecate this method, generate accumulated events from event sequence.
-    #    Remember the latest event for each identifier, calculate values based on delta.
+    @property
+    def accumulated_event_sequence(self) -> list[Event]:
+        """
+        The same as accumulated_events, but returns a list.
+
+        It will modify the original events, but should be fine.
+
+        TODO: If this method was called before, return self.events directly.
+        """
+        latest_events: dict[Identifier, Event] = {}
+        for event in self.events:
+            if not hasattr(event, "target"):
+                continue
+            if isinstance(event, Mutation):
+                event.value = latest_events[event.target.name].value + event.delta
+            latest_events[event.target.name] = event
+
+        return self.events
+
     @property
     def accumulated_events(self) -> dict[str, list[Event]]:
         """Returns events with accumulated value.
@@ -222,7 +252,7 @@ class Frame:
             {'a': [Binding(value=[]), Mutation(delta="append 1", value=[1])]
         """
         result: dict[str, list[Event]] = defaultdict(list)
-        for name, raw_events in self.raw_events.items():
+        for name, raw_events in self.identifier_to_events.items():
             for raw_event in raw_events:
                 if not isinstance(raw_event, Mutation):
                     result[name].append(raw_event)

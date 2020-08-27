@@ -291,11 +291,11 @@ class GeneralValueStack:
 
     @emit_event
     def _STORE_NAME_handler(self, instr):
-        mutation = EventInfo(
+        binding = EventInfo(
             type=BindingType, target=Symbol(instr.argval), sources=set(self.tos)
         )
         self._pop()
-        return mutation
+        return binding
 
     @emit_event
     def _DELETE_NAME_handler(self, instr):

@@ -21,64 +21,57 @@ def test_container(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.events == {
-        "a": [InitialValue(target=Symbol("a"), value=1, lineno=12)],
-        "b": [InitialValue(target=Symbol("b"), value=1, lineno=12)],
-        "c": [InitialValue(target=Symbol("c"), value=2, lineno=17)],
-        "e": [InitialValue(target=Symbol("e"), value=0, lineno=19)],
-        "d": [
-            Binding(
-                target=Symbol("d"),
-                value=[1, 1],
-                sources={Symbol("a"), Symbol("b")},
-                lineno=12,
-            ),
-            Mutation(
-                target=Symbol("d"),
-                value=(1, 1),
-                sources={Symbol("a"), Symbol("b")},
-                lineno=13,
-            ),
-            Mutation(
-                target=Symbol("d"),
-                value={1},
-                sources={Symbol("a"), Symbol("b")},
-                lineno=14,
-            ),
-            Mutation(
-                target=Symbol("d"),
-                value={1: 1},
-                sources={Symbol("a"), Symbol("b")},
-                lineno=15,
-            ),
-            Mutation(
-                target=Symbol("d"),
-                value={1: 1, 2: 1},
-                sources={Symbol("a"), Symbol("b")},
-                lineno=16,
-            ),
-            Mutation(
-                target=Symbol("d"),
-                value={1: 2, 2: 1},
-                sources={Symbol("a"), Symbol("c")},
-                lineno=17,
-            ),
-            Mutation(
-                target=Symbol("d"), value={2: 1}, sources={Symbol("a")}, lineno=18
-            ),
-            Mutation(
-                target=Symbol("d"),
-                value=[1, 1],
-                sources={Symbol("a"), Symbol("b"), Symbol("c"), Symbol("e")},
-                lineno=19,
-            ),
-            Mutation(
-                target=Symbol("d"),
-                value=[1, 1],
-                sources={Symbol("a"), Symbol("b"), Symbol("c"), Symbol("e")},
-                lineno=20,
-            ),
-        ],
-    }
+    assert tracer.event_sequence == [
+        InitialValue(target=Symbol("a"), value=1, lineno=12),
+        InitialValue(target=Symbol("b"), value=1, lineno=12),
+        Binding(
+            target=Symbol("d"),
+            value=[1, 1],
+            sources={Symbol("a"), Symbol("b")},
+            lineno=12,
+        ),
+        Mutation(
+            target=Symbol("d"),
+            value=(1, 1),
+            sources={Symbol("a"), Symbol("b")},
+            lineno=13,
+        ),
+        Mutation(
+            target=Symbol("d"), value={1}, sources={Symbol("a"), Symbol("b")}, lineno=14
+        ),
+        Mutation(
+            target=Symbol("d"),
+            value={1: 1},
+            sources={Symbol("a"), Symbol("b")},
+            lineno=15,
+        ),
+        Mutation(
+            target=Symbol("d"),
+            value={1: 1, 2: 1},
+            sources={Symbol("a"), Symbol("b")},
+            lineno=16,
+        ),
+        InitialValue(target=Symbol("c"), value=2, lineno=17),
+        Mutation(
+            target=Symbol("d"),
+            value={1: 2, 2: 1},
+            sources={Symbol("a"), Symbol("c")},
+            lineno=17,
+        ),
+        Mutation(target=Symbol("d"), value={2: 1}, sources={Symbol("a")}, lineno=18),
+        InitialValue(target=Symbol("e"), value=0, lineno=19),
+        Mutation(
+            target=Symbol("d"),
+            value=[1, 1],
+            sources={Symbol("a"), Symbol("b"), Symbol("c"), Symbol("e")},
+            lineno=19,
+        ),
+        Mutation(
+            target=Symbol("d"),
+            value=[1, 1],
+            sources={Symbol("a"), Symbol("b"), Symbol("c"), Symbol("e")},
+            lineno=20,
+        ),
+    ]
 
     assert_GetFrame(rpc_stub, "test_container")
