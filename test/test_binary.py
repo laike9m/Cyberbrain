@@ -23,91 +23,50 @@ def test_binary_operation(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.events == {
-        "a": [InitialValue(target=Symbol("a"), value=1, lineno=10)],
-        "b": [InitialValue(target=Symbol("b"), value=1, lineno=10)],
-        "lst": [InitialValue(target=Symbol("lst"), value=[0, 1], lineno=17)],
-        "c": [
-            Binding(
-                target=Symbol("c"),
-                value=1,
-                sources={Symbol("a"), Symbol("b")},
-                lineno=10,
-            ),
-            Mutation(
-                target=Symbol("c"),
-                value=1,
-                sources={Symbol("a"), Symbol("b")},
-                lineno=11,
-            ),
-            Mutation(
-                target=Symbol("c"),
-                value=1,
-                sources={Symbol("a"), Symbol("b")},
-                lineno=12,
-            ),
-            Mutation(
-                target=Symbol("c"),
-                value=1,
-                sources={Symbol("a"), Symbol("b")},
-                lineno=13,
-            ),
-            Mutation(
-                target=Symbol("c"),
-                value=0,
-                sources={Symbol("a"), Symbol("b")},
-                lineno=14,
-            ),
-            Mutation(
-                target=Symbol("c"),
-                value=2,
-                sources={Symbol("a"), Symbol("b")},
-                lineno=15,
-            ),
-            Mutation(
-                target=Symbol("c"),
-                value=0,
-                sources={Symbol("a"), Symbol("b")},
-                lineno=16,
-            ),
-            Mutation(
-                target=Symbol("c"),
-                value=1,
-                sources={Symbol("a"), Symbol("lst")},
-                lineno=17,
-            ),
-            Mutation(
-                target=Symbol("c"),
-                value=2,
-                sources={Symbol("a"), Symbol("b")},
-                lineno=18,
-            ),
-            Mutation(
-                target=Symbol("c"),
-                value=0,
-                sources={Symbol("a"), Symbol("b")},
-                lineno=19,
-            ),
-            Mutation(
-                target=Symbol("c"),
-                value=1,
-                sources={Symbol("a"), Symbol("b")},
-                lineno=20,
-            ),
-            Mutation(
-                target=Symbol("c"),
-                value=0,
-                sources={Symbol("a"), Symbol("b")},
-                lineno=21,
-            ),
-            Mutation(
-                target=Symbol("c"),
-                value=1,
-                sources={Symbol("a"), Symbol("b")},
-                lineno=22,
-            ),
-        ],
-    }
+    assert tracer.event_sequence == [
+        InitialValue(target=Symbol("a"), value=1, lineno=10),
+        InitialValue(target=Symbol("b"), value=1, lineno=10),
+        Binding(
+            target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=10
+        ),
+        Mutation(
+            target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=11
+        ),
+        Mutation(
+            target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=12
+        ),
+        Mutation(
+            target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=13
+        ),
+        Mutation(
+            target=Symbol("c"), value=0, sources={Symbol("a"), Symbol("b")}, lineno=14
+        ),
+        Mutation(
+            target=Symbol("c"), value=2, sources={Symbol("a"), Symbol("b")}, lineno=15
+        ),
+        Mutation(
+            target=Symbol("c"), value=0, sources={Symbol("a"), Symbol("b")}, lineno=16
+        ),
+        InitialValue(target=Symbol("lst"), value=[0, 1], lineno=17),
+        Mutation(
+            target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("lst")}, lineno=17
+        ),
+        Mutation(
+            target=Symbol("c"), value=2, sources={Symbol("a"), Symbol("b")}, lineno=18
+        ),
+        Mutation(
+            target=Symbol("c"), value=0, sources={Symbol("a"), Symbol("b")}, lineno=19
+        ),
+        Mutation(
+            target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=20
+        ),
+        Mutation(
+            target=Symbol("c"), value=0, sources={Symbol("a"), Symbol("b")}, lineno=21
+        ),
+        Mutation(
+            target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=22
+        ),
+    ]
 
     from utils import assert_GetFrame
 

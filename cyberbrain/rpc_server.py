@@ -125,7 +125,7 @@ def _get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
     sources_uids = []
     for source in sorted(event.sources, key=lambda x: x.name):
         source_event_index = source.snapshot.events_pointer[source.name]
-        source_event = frame.raw_events[source.name][source_event_index]
+        source_event = frame.identifier_to_events[source.name][source_event_index]
         sources_uids.append(source_event.uid)
 
     return sources_uids

@@ -20,59 +20,63 @@ def test_attribute(tracer, rpc_stub):
     tracer.stop_tracing()
 
     assert_that(
-        tracer.events,
-        has_entries(
-            {
-                "a1": contains_exactly(
-                    all_of(
-                        instance_of(InitialValue),
-                        has_properties(
-                            {
-                                "target": Symbol("a1"),
-                                "value": all_of(
-                                    instance_of(A), not_(has_property("x"))
-                                ),
-                                "lineno": 16,
-                            }
-                        ),
-                    ),
-                    all_of(
-                        instance_of(Mutation),
-                        has_properties(
-                            {
-                                "target": Symbol("a1"),
-                                "value": has_property("x", has_property("y", 1)),
-                                "sources": {Symbol("a2")},
-                                "lineno": 16,
-                            }
-                        ),
-                    ),
-                    all_of(
-                        instance_of(Mutation),
-                        has_properties(
-                            {
-                                "target": Symbol("a1"),
-                                "value": has_property("x", has_property("y", 2)),
-                                "sources": set(),
-                                "lineno": 17,
-                            }
-                        ),
-                    ),
-                    all_of(
-                        instance_of(Mutation),
-                        has_properties(
-                            {
-                                "target": Symbol("a1"),
-                                "value": not_(has_property("x")),
-                                "sources": set(),
-                                "lineno": 18,
-                            }
-                        ),
-                    ),
-                )
-            }
+        tracer.event_sequence,
+        contains_exactly(
+            all_of(
+                instance_of(InitialValue),
+                has_properties(
+                    {
+                        "target": Symbol("a2"),
+                        "value": all_of(instance_of(A), has_property("y")),
+                        "lineno": 16,
+                    }
+                ),
+            ),
+            all_of(
+                instance_of(InitialValue),
+                has_properties(
+                    {
+                        "target": Symbol("a1"),
+                        "value": all_of(instance_of(A), not_(has_property("x"))),
+                        "lineno": 16,
+                    }
+                ),
+            ),
+            all_of(
+                instance_of(Mutation),
+                has_properties(
+                    {
+                        "target": Symbol("a1"),
+                        "value": has_property("x", has_property("y", 1)),
+                        "sources": {Symbol("a2")},
+                        "lineno": 16,
+                    }
+                ),
+            ),
+            all_of(
+                instance_of(Mutation),
+                has_properties(
+                    {
+                        "target": Symbol("a1"),
+                        "value": has_property("x", has_property("y", 2)),
+                        "sources": set(),
+                        "lineno": 17,
+                    }
+                ),
+            ),
+            all_of(
+                instance_of(Mutation),
+                has_properties(
+                    {
+                        "target": Symbol("a1"),
+                        "value": not_(has_property("x")),
+                        "sources": set(),
+                        "lineno": 18,
+                    }
+                ),
+            ),
         ),
-    )
+    ),
 
     from utils import assert_GetFrame
 
