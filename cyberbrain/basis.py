@@ -52,7 +52,9 @@ class EventType(enum.Enum):
 @attr.s(auto_attribs=True)
 class Event:
     lineno: int
-    # filename is always set, but we don't want to set it in tests.
+    # offset and filename are always set, but we don't want to set them in tests, thus
+    # giving them a default value.
+    offset: int = attr.ib(eq=False, default=0)
     filename: str = attr.ib(eq=False, default="")
     uid: string = attr.ib(factory=UUIDGenerator.generate_uuid, eq=False, repr=False)
 

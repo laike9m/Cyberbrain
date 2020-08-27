@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from collections import defaultdict
 from copy import copy
+from dis import Instruction
+from types import FrameType
 from typing import Any
 
 from crayons import cyan
@@ -100,6 +102,7 @@ class Frame:
                     value=utils.deepcopy_value_from_frame(target, frame),
                     lineno=self.offset_to_lineno[instr.offset],
                     filename=self.filename,
+                    offset=instr.offset,
                 )
             )
 
@@ -128,6 +131,7 @@ class Frame:
                         lineno=self.offset_to_lineno[instr.offset],
                         delta=Delta(diff=diff),
                         sources=event_info.sources,
+                        offset=instr.offset,
                     )
                 )
         elif event_info.type is EventType.Binding:
@@ -138,6 +142,7 @@ class Frame:
                     sources=event_info.sources,
                     filename=self.filename,
                     lineno=self.offset_to_lineno[instr.offset],
+                    offset=instr.offset,
                 )
             )
         elif event_info.type is EventType.Deletion:
@@ -146,6 +151,7 @@ class Frame:
                     target=target,
                     filename=self.filename,
                     lineno=self.offset_to_lineno[instr.offset],
+                    offset=instr.offset,
                 )
             )
         elif event_info.type is EventType.JumpBackToLoopStart:
