@@ -1,4 +1,4 @@
-from cyberbrain import Mutation, Binding, InitialValue, Symbol
+from cyberbrain import Binding, InitialValue, Symbol
 
 
 def test_binary_operation(tracer, rpc_stub):
@@ -29,41 +29,41 @@ def test_binary_operation(tracer, rpc_stub):
         Binding(
             target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=10
         ),
-        Mutation(
+        Binding(
             target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=11
         ),
-        Mutation(
+        Binding(
             target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=12
         ),
-        Mutation(
+        Binding(
             target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=13
         ),
-        Mutation(
+        Binding(
             target=Symbol("c"), value=0, sources={Symbol("a"), Symbol("b")}, lineno=14
         ),
-        Mutation(
+        Binding(
             target=Symbol("c"), value=2, sources={Symbol("a"), Symbol("b")}, lineno=15
         ),
-        Mutation(
+        Binding(
             target=Symbol("c"), value=0, sources={Symbol("a"), Symbol("b")}, lineno=16
         ),
         InitialValue(target=Symbol("lst"), value=[0, 1], lineno=17),
-        Mutation(
+        Binding(
             target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("lst")}, lineno=17
         ),
-        Mutation(
+        Binding(
             target=Symbol("c"), value=2, sources={Symbol("a"), Symbol("b")}, lineno=18
         ),
-        Mutation(
+        Binding(
             target=Symbol("c"), value=0, sources={Symbol("a"), Symbol("b")}, lineno=19
         ),
-        Mutation(
+        Binding(
             target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=20
         ),
-        Mutation(
+        Binding(
             target=Symbol("c"), value=0, sources={Symbol("a"), Symbol("b")}, lineno=21
         ),
-        Mutation(
+        Binding(
             target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=22
         ),
     ]
