@@ -1,4 +1,4 @@
-from cyberbrain import Mutation, Binding, InitialValue, Symbol
+from cyberbrain import Binding, InitialValue, Symbol
 from utils import assert_GetFrame
 
 
@@ -27,20 +27,20 @@ def test_jump(tracer, rpc_stub):
     assert tracer.event_sequence == [
         InitialValue(target=Symbol("a"), value=[], lineno=12),
         Binding(target=Symbol("x"), value=1, lineno=15),
-        Mutation(target=Symbol("x"), value=2, lineno=18),
+        Binding(target=Symbol("x"), value=2, lineno=18),
         InitialValue(target=Symbol("b"), value="b", lineno=20),
         InitialValue(target=Symbol("c"), value="c", lineno=20),
         # This is a known defect. We have no way to know `x` comes from `a`, because
         # the result of `a != b` only determines whether to jump to execute `b != c`
         # I think it's fine though.
-        Mutation(
+        Binding(
             target=Symbol("x"),
             value=True,
             sources={Symbol("b"), Symbol("c")},
             lineno=20,
         ),
         # Same defect here.
-        Mutation(target=Symbol("x"), value="c", sources={Symbol("c")}, lineno=21),
+        Binding(target=Symbol("x"), value="c", sources={Symbol("c")}, lineno=21),
     ]
 
     assert_GetFrame(rpc_stub, "test_jump")
