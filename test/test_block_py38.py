@@ -8,7 +8,7 @@ import sys
 
 import pytest
 
-from cyberbrain import Binding, Mutation, Symbol
+from cyberbrain import Binding, Symbol
 from utils import assert_GetFrame
 
 
@@ -29,7 +29,7 @@ def test_continue_in_finally(tracer, rpc_stub):
 
     assert tracer.event_sequence == [
         Binding(target=Symbol("x"), value=0, lineno=22),
-        Mutation(target=Symbol("x"), value=1, lineno=22),
+        Binding(target=Symbol("x"), value=1, lineno=22),
     ]
 
     assert_GetFrame(rpc_stub, "test_continue_in_finally")
@@ -56,7 +56,7 @@ def test_continue_in_finally_with_exception(tracer, rpc_stub):
 
     assert tracer.event_sequence == [
         Binding(target=Symbol("x"), value=0, lineno=49),
-        Mutation(target=Symbol("x"), value=1, lineno=49),
+        Binding(target=Symbol("x"), value=1, lineno=49),
     ]
 
     assert_GetFrame(rpc_stub, "test_continue_in_finally_with_exception")

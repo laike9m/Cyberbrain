@@ -1,4 +1,4 @@
-from cyberbrain import Mutation, Binding, InitialValue, Symbol
+from cyberbrain import Binding, InitialValue, Symbol, Mutation
 from utils import assert_GetFrame
 
 
@@ -21,6 +21,10 @@ def test_container(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
+    import pprint
+
+    pprint.pprint(tracer.event_sequence)
+
     assert tracer.event_sequence == [
         InitialValue(target=Symbol("a"), value=1, lineno=12),
         InitialValue(target=Symbol("b"), value=1, lineno=12),
@@ -30,22 +34,22 @@ def test_container(tracer, rpc_stub):
             sources={Symbol("a"), Symbol("b")},
             lineno=12,
         ),
-        Mutation(
+        Binding(
             target=Symbol("d"),
             value=(1, 1),
             sources={Symbol("a"), Symbol("b")},
             lineno=13,
         ),
-        Mutation(
+        Binding(
             target=Symbol("d"), value={1}, sources={Symbol("a"), Symbol("b")}, lineno=14
         ),
-        Mutation(
+        Binding(
             target=Symbol("d"),
             value={1: 1},
             sources={Symbol("a"), Symbol("b")},
             lineno=15,
         ),
-        Mutation(
+        Binding(
             target=Symbol("d"),
             value={1: 1, 2: 1},
             sources={Symbol("a"), Symbol("b")},
@@ -60,13 +64,13 @@ def test_container(tracer, rpc_stub):
         ),
         Mutation(target=Symbol("d"), value={2: 1}, sources={Symbol("a")}, lineno=18),
         InitialValue(target=Symbol("e"), value=0, lineno=19),
-        Mutation(
+        Binding(
             target=Symbol("d"),
             value=[1, 1],
             sources={Symbol("a"), Symbol("b"), Symbol("c"), Symbol("e")},
             lineno=19,
         ),
-        Mutation(
+        Binding(
             target=Symbol("d"),
             value=[1, 1],
             sources={Symbol("a"), Symbol("b"), Symbol("c"), Symbol("e")},
