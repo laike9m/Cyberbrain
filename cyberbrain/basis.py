@@ -135,13 +135,12 @@ class Mutation(Event):
     value: Any = _dummy
 
     def __eq__(self, other: Mutation):
-        # TODO: add isinstance(other, Mutation)
-        return (self.target, self.value, self.sources, self.lineno) == (
-            other.target,
-            other.value,
-            other.sources,
-            other.lineno,
-        )
+        return isinstance(other, Mutation) and (
+            self.target,
+            self.value,
+            self.sources,
+            self.lineno,
+        ) == (other.target, other.value, other.sources, other.lineno)
 
 
 @attr.s(auto_attribs=True, eq=False)

@@ -1,4 +1,4 @@
-from cyberbrain import Binding, Mutation, Symbol
+from cyberbrain import Binding, Symbol
 
 
 def test_loop(tracer, rpc_stub):
@@ -29,7 +29,7 @@ def test_loop(tracer, rpc_stub):
         Binding(target=Symbol("y"), value=0, lineno=10),
         Binding(target=Symbol("z"), value=0, lineno=14),
         Binding(target=Symbol("i"), value=0, lineno=18),
-        Mutation(target=Symbol("i"), value=1, sources={Symbol("i")}, lineno=20),
+        Binding(target=Symbol("i"), value=1, sources={Symbol("i")}, lineno=20),
     ]
 
 
