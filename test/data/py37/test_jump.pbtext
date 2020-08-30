@@ -9,6 +9,8 @@ events {
     lineno: 12
     target: "a"
     value: "[]"
+    index: 0
+    offset: 20
   }
 }
 events {
@@ -18,6 +20,8 @@ events {
     lineno: 15
     target: "x"
     value: "1"
+    index: 1
+    offset: 28
   }
 }
 events {
@@ -27,6 +31,8 @@ events {
     lineno: 18
     target: "x"
     value: "2"
+    index: 2
+    offset: 36
   }
 }
 events {
@@ -36,6 +42,8 @@ events {
     lineno: 20
     target: "b"
     value: "\"b\""
+    index: 3
+    offset: 40
   }
 }
 events {
@@ -45,6 +53,8 @@ events {
     lineno: 20
     target: "c"
     value: "\"c\""
+    index: 4
+    offset: 50
   }
 }
 events {
@@ -56,6 +66,8 @@ events {
     value: "true"
     sources: "b"
     sources: "c"
+    index: 5
+    offset: 60
   }
 }
 events {
@@ -66,6 +78,8 @@ events {
     target: "x"
     value: "\"c\""
     sources: "c"
+    index: 6
+    offset: 72
   }
 }
 tracing_result {

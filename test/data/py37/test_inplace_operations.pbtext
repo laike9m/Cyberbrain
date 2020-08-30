@@ -9,6 +9,8 @@ events {
     lineno: 11
     target: "a1"
     value: "2"
+    index: 0
+    offset: 60
   }
 }
 events {
@@ -18,6 +20,8 @@ events {
     lineno: 11
     target: "b"
     value: "2"
+    index: 1
+    offset: 62
   }
 }
 events {
@@ -29,6 +33,8 @@ events {
     value: "4"
     sources: "a1"
     sources: "b"
+    index: 2
+    offset: 66
   }
 }
 events {
@@ -38,6 +44,8 @@ events {
     lineno: 12
     target: "a2"
     value: "2"
+    index: 3
+    offset: 68
   }
 }
 events {
@@ -49,6 +57,8 @@ events {
     value: "4"
     sources: "a2"
     sources: "b"
+    index: 4
+    offset: 74
   }
 }
 events {
@@ -58,6 +68,8 @@ events {
     lineno: 13
     target: "a3"
     value: "2"
+    index: 5
+    offset: 76
   }
 }
 events {
@@ -69,6 +81,8 @@ events {
     value: "1"
     sources: "a3"
     sources: "b"
+    index: 6
+    offset: 82
   }
 }
 events {
@@ -78,6 +92,8 @@ events {
     lineno: 14
     target: "a4"
     value: "2"
+    index: 7
+    offset: 84
   }
 }
 events {
@@ -89,6 +105,8 @@ events {
     value: "1.0"
     sources: "a4"
     sources: "b"
+    index: 8
+    offset: 90
   }
 }
 events {
@@ -98,6 +116,8 @@ events {
     lineno: 15
     target: "a5"
     value: "2"
+    index: 9
+    offset: 92
   }
 }
 events {
@@ -109,6 +129,8 @@ events {
     value: "0"
     sources: "a5"
     sources: "b"
+    index: 10
+    offset: 98
   }
 }
 events {
@@ -118,6 +140,8 @@ events {
     lineno: 16
     target: "a6"
     value: "2"
+    index: 11
+    offset: 100
   }
 }
 events {
@@ -129,6 +153,8 @@ events {
     value: "4"
     sources: "a6"
     sources: "b"
+    index: 12
+    offset: 106
   }
 }
 events {
@@ -138,6 +164,8 @@ events {
     lineno: 17
     target: "a7"
     value: "2"
+    index: 13
+    offset: 108
   }
 }
 events {
@@ -149,6 +177,8 @@ events {
     value: "0"
     sources: "a7"
     sources: "b"
+    index: 14
+    offset: 114
   }
 }
 events {
@@ -158,6 +188,8 @@ events {
     lineno: 18
     target: "a8"
     value: "2"
+    index: 15
+    offset: 116
   }
 }
 events {
@@ -169,6 +201,8 @@ events {
     value: "8"
     sources: "a8"
     sources: "b"
+    index: 16
+    offset: 122
   }
 }
 events {
@@ -178,6 +212,8 @@ events {
     lineno: 19
     target: "a9"
     value: "2"
+    index: 17
+    offset: 124
   }
 }
 events {
@@ -189,6 +225,8 @@ events {
     value: "0"
     sources: "a9"
     sources: "b"
+    index: 18
+    offset: 130
   }
 }
 events {
@@ -198,6 +236,8 @@ events {
     lineno: 20
     target: "a10"
     value: "2"
+    index: 19
+    offset: 132
   }
 }
 events {
@@ -209,6 +249,8 @@ events {
     value: "2"
     sources: "a10"
     sources: "b"
+    index: 20
+    offset: 138
   }
 }
 events {
@@ -218,6 +260,8 @@ events {
     lineno: 21
     target: "a11"
     value: "2"
+    index: 21
+    offset: 140
   }
 }
 events {
@@ -229,6 +273,8 @@ events {
     value: "0"
     sources: "a11"
     sources: "b"
+    index: 22
+    offset: 146
   }
 }
 events {
@@ -238,6 +284,8 @@ events {
     lineno: 22
     target: "a12"
     value: "2"
+    index: 23
+    offset: 148
   }
 }
 events {
@@ -249,6 +297,8 @@ events {
     value: "2"
     sources: "a12"
     sources: "b"
+    index: 24
+    offset: 154
   }
 }
 tracing_result {

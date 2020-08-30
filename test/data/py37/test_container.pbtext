@@ -9,6 +9,8 @@ events {
     lineno: 12
     target: "a"
     value: "1"
+    index: 0
+    offset: 24
   }
 }
 events {
@@ -18,6 +20,8 @@ events {
     lineno: 12
     target: "b"
     value: "1"
+    index: 1
+    offset: 26
   }
 }
 events {
@@ -29,6 +33,8 @@ events {
     value: "[1, 1]"
     sources: "a"
     sources: "b"
+    index: 2
+    offset: 30
   }
 }
 events {
@@ -40,6 +46,8 @@ events {
     value: "[1, 1]"
     sources: "a"
     sources: "b"
+    index: 3
+    offset: 38
   }
 }
 events {
@@ -51,6 +59,8 @@ events {
     value: "[1]"
     sources: "a"
     sources: "b"
+    index: 4
+    offset: 46
   }
 }
 events {
@@ -62,6 +72,8 @@ events {
     value: "{\"1\": 1}"
     sources: "a"
     sources: "b"
+    index: 5
+    offset: 54
   }
 }
 events {
@@ -73,6 +85,8 @@ events {
     value: "{\"1\": 1, \"2\": 1}"
     sources: "a"
     sources: "b"
+    index: 6
+    offset: 64
   }
 }
 events {
@@ -82,6 +96,8 @@ events {
     lineno: 17
     target: "c"
     value: "2"
+    index: 7
+    offset: 66
   }
 }
 events {
@@ -94,6 +110,8 @@ events {
     delta: "{\"values_changed\": {\"root[1]\": {\"new_value\": 2}}}"
     sources: "a"
     sources: "c"
+    index: 8
+    offset: 72
   }
 }
 events {
@@ -105,6 +123,8 @@ events {
     value: "{\"2\": 1}"
     delta: "{\"dictionary_item_removed\": {\"root[1]\": 2}}"
     sources: "a"
+    index: 9
+    offset: 78
   }
 }
 events {
@@ -114,6 +134,8 @@ events {
     lineno: 19
     target: "e"
     value: "0"
+    index: 10
+    offset: 88
   }
 }
 events {
@@ -127,6 +149,8 @@ events {
     sources: "b"
     sources: "c"
     sources: "e"
+    index: 11
+    offset: 96
   }
 }
 events {
@@ -140,6 +164,8 @@ events {
     sources: "b"
     sources: "c"
     sources: "e"
+    index: 12
+    offset: 116
   }
 }
 tracing_result {

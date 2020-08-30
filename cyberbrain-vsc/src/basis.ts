@@ -23,15 +23,21 @@ export abstract class Event {
   uid: string;
   // When passing an object to webview, its type is erased. Thus we need to explicitly store it here.
   type: EventType;
+  index: number;
+  offset: number;
 
   protected constructor(
     lineno: number,
     filename: string,
+    index: number,
+    offset: number,
     uid: string,
     type: EventType
   ) {
     this.lineno = lineno;
     this.filename = filename;
+    this.index = index;
+    this.offset = offset;
     this.uid = uid;
     this.type = type;
   }
@@ -45,6 +51,8 @@ export class InitialValue extends Event {
     super(
       initialValue.getLineno()!,
       initialValue.getFilename()!,
+      initialValue.getIndex()!,
+      initialValue.getOffset()!,
       initialValue.getUid()!,
       EventType.InitialValue
     );
@@ -62,6 +70,8 @@ export class Binding extends Event {
     super(
       binding.getLineno()!,
       binding.getFilename()!,
+      binding.getIndex()!,
+      binding.getOffset()!,
       binding.getUid()!,
       EventType.Binding
     );
@@ -81,6 +91,8 @@ export class Mutation extends Event {
     super(
       mutation.getLineno()!,
       mutation.getFilename()!,
+      mutation.getIndex()!,
+      mutation.getOffset()!,
       mutation.getUid()!,
       EventType.Mutation
     );
@@ -98,6 +110,8 @@ export class Deletion extends Event {
     super(
       deletion.getLineno()!,
       deletion.getFilename()!,
+      deletion.getIndex()!,
+      deletion.getOffset()!,
       deletion.getUid()!,
       EventType.Deletion
     );
@@ -112,6 +126,8 @@ export class JumpBackToLoopStart extends Event {
     super(
       jumpBack.getLineno()!,
       jumpBack.getFilename()!,
+      jumpBack.getIndex()!,
+      jumpBack.getOffset()!,
       jumpBack.getUid()!,
       EventType.JumpBackToLoopStart
     );

@@ -1,0 +1,16 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_block.py"
+events {
+  binding {
+    uid: "test_nested_try_except:0"
+    filename: "test_block.py"
+    lineno: 32
+    target: "a"
+    value: "1"
+    index: 0
+    offset: 22
+  }
+}
+identifiers: "a"

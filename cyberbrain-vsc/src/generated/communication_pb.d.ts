@@ -176,6 +176,16 @@ export class InitialValue extends jspb.Message {
   getLineno(): number | undefined;
   setLineno(value: number): void;
 
+  hasIndex(): boolean;
+  clearIndex(): void;
+  getIndex(): number | undefined;
+  setIndex(value: number): void;
+
+  hasOffset(): boolean;
+  clearOffset(): void;
+  getOffset(): number | undefined;
+  setOffset(value: number): void;
+
   hasTarget(): boolean;
   clearTarget(): void;
   getTarget(): string | undefined;
@@ -201,6 +211,8 @@ export namespace InitialValue {
     uid?: string,
     filename?: string,
     lineno?: number,
+    index?: number,
+    offset?: number,
     target?: string,
     value?: string,
   }
@@ -226,6 +238,16 @@ export class Binding extends jspb.Message {
   clearTarget(): void;
   getTarget(): string | undefined;
   setTarget(value: string): void;
+
+  hasIndex(): boolean;
+  clearIndex(): void;
+  getIndex(): number | undefined;
+  setIndex(value: number): void;
+
+  hasOffset(): boolean;
+  clearOffset(): void;
+  getOffset(): number | undefined;
+  setOffset(value: number): void;
 
   hasValue(): boolean;
   clearValue(): void;
@@ -253,6 +275,8 @@ export namespace Binding {
     filename?: string,
     lineno?: number,
     target?: string,
+    index?: number,
+    offset?: number,
     value?: string,
     sourcesList: Array<string>,
   }
@@ -273,6 +297,16 @@ export class Mutation extends jspb.Message {
   clearLineno(): void;
   getLineno(): number | undefined;
   setLineno(value: number): void;
+
+  hasIndex(): boolean;
+  clearIndex(): void;
+  getIndex(): number | undefined;
+  setIndex(value: number): void;
+
+  hasOffset(): boolean;
+  clearOffset(): void;
+  getOffset(): number | undefined;
+  setOffset(value: number): void;
 
   hasTarget(): boolean;
   clearTarget(): void;
@@ -309,6 +343,8 @@ export namespace Mutation {
     uid?: string,
     filename?: string,
     lineno?: number,
+    index?: number,
+    offset?: number,
     target?: string,
     value?: string,
     delta?: string,
@@ -332,6 +368,16 @@ export class Deletion extends jspb.Message {
   getLineno(): number | undefined;
   setLineno(value: number): void;
 
+  hasIndex(): boolean;
+  clearIndex(): void;
+  getIndex(): number | undefined;
+  setIndex(value: number): void;
+
+  hasOffset(): boolean;
+  clearOffset(): void;
+  getOffset(): number | undefined;
+  setOffset(value: number): void;
+
   hasTarget(): boolean;
   clearTarget(): void;
   getTarget(): string | undefined;
@@ -352,6 +398,8 @@ export namespace Deletion {
     uid?: string,
     filename?: string,
     lineno?: number,
+    index?: number,
+    offset?: number,
     target?: string,
   }
 }
@@ -371,6 +419,16 @@ export class JumpBackToLoopStart extends jspb.Message {
   clearLineno(): void;
   getLineno(): number | undefined;
   setLineno(value: number): void;
+
+  hasIndex(): boolean;
+  clearIndex(): void;
+  getIndex(): number | undefined;
+  setIndex(value: number): void;
+
+  hasOffset(): boolean;
+  clearOffset(): void;
+  getOffset(): number | undefined;
+  setOffset(value: number): void;
 
   hasJumpTarget(): boolean;
   clearJumpTarget(): void;
@@ -392,6 +450,8 @@ export namespace JumpBackToLoopStart {
     uid?: string,
     filename?: string,
     lineno?: number,
+    index?: number,
+    offset?: number,
     jumpTarget?: number,
   }
 }

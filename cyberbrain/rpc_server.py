@@ -25,6 +25,8 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 uid=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
+                index=event.index,
+                offset=event.offset,
                 target=event.target.name,
                 value=utils.to_json(event.value),
             )
@@ -35,6 +37,8 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 uid=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
+                index=event.index,
+                offset=event.offset,
                 target=event.target.name,
                 value=utils.to_json(event.value),
                 # Sorted to make result deterministic.
@@ -47,6 +51,8 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 uid=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
+                index=event.index,
+                offset=event.offset,
                 target=event.target.name,
                 value=utils.to_json(event.value),
                 delta=utils.to_json(event.delta.to_dict()),
@@ -59,6 +65,8 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 uid=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
+                index=event.index,
+                offset=event.offset,
                 target=event.target.name,
             )
         )
@@ -68,6 +76,8 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 uid=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
+                index=event.index,
+                offset=event.offset,
                 jump_target=event.jump_target,
             )
         )
