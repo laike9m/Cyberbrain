@@ -7,7 +7,7 @@ from utils import assert_GetFrame
 
 
 def test_basic_try_except(tracer, rpc_stub):
-    tracer.start_tracing()
+    tracer.start()
 
     try:  # SETUP_EXCEPT (3.7), SETUP_FINALLY (3.8)
         raise IndexError("error")  # RAISE_VARARGS
@@ -15,7 +15,7 @@ def test_basic_try_except(tracer, rpc_stub):
     except IndexError:
         pass  # POP_EXCEPT, END_FINALLY
 
-    tracer.stop_tracing()
+    tracer.stop()
 
     assert tracer.events == []
 
@@ -23,7 +23,7 @@ def test_basic_try_except(tracer, rpc_stub):
 
 
 def test_nested_try_except(tracer, rpc_stub):
-    tracer.start_tracing()
+    tracer.start()
 
     try:
         try:
@@ -33,14 +33,14 @@ def test_nested_try_except(tracer, rpc_stub):
     except IndexError:
         pass
 
-    tracer.stop_tracing()
+    tracer.stop()
     assert tracer.events == [Binding(target=Symbol("a"), value=1, lineno=32)]
 
     assert_GetFrame(rpc_stub, "test_nested_try_except")
 
 
 def test_try_except_finally(tracer, rpc_stub):
-    tracer.start_tracing()
+    tracer.start()
 
     try:  # SETUP_EXCEPT + SETUP_FINALLY (3.7), SETUP_FINALLY (3.8)
         raise IndexError("error")  # RAISE_VARARGS
@@ -49,7 +49,7 @@ def test_try_except_finally(tracer, rpc_stub):
     finally:  # BEGIN_FINALLY (3.8)
         b = 1  # END_FINALLY
 
-    tracer.stop_tracing()
+    tracer.stop()
 
     assert tracer.events == [Binding(target=Symbol("b"), value=1, lineno=50)]
 
@@ -57,7 +57,7 @@ def test_try_except_finally(tracer, rpc_stub):
 
 
 def test_break_in_finally(tracer, rpc_stub):
-    tracer.start_tracing()
+    tracer.start()
 
     for x in range(2):
         try:
@@ -65,7 +65,7 @@ def test_break_in_finally(tracer, rpc_stub):
         finally:
             break  # BREAK_LOOP (3.7) POP_FINALLY (3.8)
 
-    tracer.stop_tracing()
+    tracer.stop()
 
     assert tracer.events == [Binding(target=Symbol("x"), value=0, lineno=62)]
 
@@ -75,7 +75,7 @@ def test_break_in_finally(tracer, rpc_stub):
 def test_break_in_finally_with_exception(tracer, rpc_stub):
     """Tests POP_FINALLY when tos is an exception."""
 
-    tracer.start_tracing()
+    tracer.start()
 
     # If the finally clause executes a return, break or continue statement, the saved
     # exception is discarded.
@@ -85,7 +85,7 @@ def test_break_in_finally_with_exception(tracer, rpc_stub):
         finally:
             break  # BREAK_LOOP (3.7) POP_FINALLY (3.8)
 
-    tracer.stop_tracing()
+    tracer.stop()
 
     assert tracer.events == [Binding(target=Symbol("x"), value=0, lineno=82)]
 

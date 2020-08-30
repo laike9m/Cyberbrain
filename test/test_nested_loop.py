@@ -3,13 +3,13 @@ from utils import get_value
 
 
 def test_nested_loop(tracer, rpc_stub):
-    tracer.start_tracing()
+    tracer.start()
 
     for i in range(2):
         for j in range(2):
             a = i + j
 
-    tracer.stop_tracing()
+    tracer.stop()
 
     assert tracer.events == [
         Binding(lineno=8, target=Symbol("i"), value=0),

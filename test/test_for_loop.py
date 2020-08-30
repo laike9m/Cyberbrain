@@ -3,7 +3,7 @@ from utils import get_value
 
 
 def test_for_loop(tracer, rpc_stub):
-    tracer.start_tracing()
+    tracer.start()
 
     for i in range(2):  # SETUP_LOOP (3.7), GET_ITER, FOR_ITER
         a = i  # POP_BLOCK (3.7)
@@ -34,7 +34,7 @@ def test_for_loop(tracer, rpc_stub):
     else:
         a = 1
 
-    tracer.stop_tracing()
+    tracer.stop()
 
     from cyberbrain import pprint
 

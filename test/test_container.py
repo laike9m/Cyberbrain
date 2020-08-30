@@ -7,7 +7,7 @@ def test_container(tracer, rpc_stub):
     c = 2
     e = 0
 
-    tracer.start_tracing()
+    tracer.start()
 
     d = [a, b]  # BUILD_LIST
     d = (a, b)  # BUILD_TUPLE
@@ -19,7 +19,7 @@ def test_container(tracer, rpc_stub):
     d = [a, b, c][e:c]  # BUILD_SLICE, [1, 1, 2][0:2]
     d = [b, b, c][e:c:a]  # BUILD_SLICE, [1, 1, 2][0:2:1]
 
-    tracer.stop_tracing()
+    tracer.stop()
 
     import pprint
 
