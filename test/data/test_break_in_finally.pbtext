@@ -3,16 +3,11 @@
 
 filename: "test_block.py"
 events {
-  key: "x"
-  value {
-    events {
-      binding {
-        uid: "test_break_in_finally:0"
-        filename: "test_block.py"
-        lineno: 62
-        target: "x"
-        value: "0"
-      }
-    }
+  binding {
+    uid: "test_break_in_finally:0"
+    filename: "test_block.py"
+    lineno: 62
+    target: "x"
+    value: "0"
   }
 }

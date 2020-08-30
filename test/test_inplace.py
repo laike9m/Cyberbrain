@@ -23,7 +23,7 @@ def test_inplace_operations(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.event_sequence == [
+    assert tracer.events == [
         InitialValue(target=Symbol("a1"), value=2, lineno=11),
         InitialValue(target=Symbol("b"), value=2, lineno=11),
         Binding(

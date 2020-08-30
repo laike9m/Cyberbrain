@@ -3,48 +3,38 @@
 
 filename: "test_outside_func.py"
 events {
-  key: "__annotations__"
-  value {
-    events {
-      initial_value {
-        uid: "global:2"
-        filename: "test_outside_func.py"
-        lineno: 12
-        target: "__annotations__"
-        value: "{}"
-      }
-    }
-    events {
-      mutation {
-        uid: "global:3"
-        filename: "test_outside_func.py"
-        lineno: 12
-        target: "__annotations__"
-        value: "{\"y\": {\"py/type\": \"builtins.int\"}}"
-        delta: "{\"dictionary_item_added\": {\"root[\'y\']\": {\"py/type\": \"builtins.int\"}}}"
-      }
-    }
+  initial_value {
+    uid: "global:0"
+    filename: "test_outside_func.py"
+    lineno: 11
+    target: "x"
+    value: "1"
   }
 }
 events {
-  key: "x"
-  value {
-    events {
-      initial_value {
-        uid: "global:0"
-        filename: "test_outside_func.py"
-        lineno: 11
-        target: "x"
-        value: "1"
-      }
-    }
-    events {
-      deletion {
-        uid: "global:1"
-        filename: "test_outside_func.py"
-        lineno: 11
-        target: "x"
-      }
-    }
+  deletion {
+    uid: "global:1"
+    filename: "test_outside_func.py"
+    lineno: 11
+    target: "x"
+  }
+}
+events {
+  initial_value {
+    uid: "global:2"
+    filename: "test_outside_func.py"
+    lineno: 12
+    target: "__annotations__"
+    value: "{}"
+  }
+}
+events {
+  mutation {
+    uid: "global:3"
+    filename: "test_outside_func.py"
+    lineno: 12
+    target: "__annotations__"
+    value: "{\"y\": {\"py/type\": \"builtins.int\"}}"
+    delta: "{\"dictionary_item_added\": {\"root[\'y\']\": {\"py/type\": \"builtins.int\"}}}"
   }
 }

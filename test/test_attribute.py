@@ -20,7 +20,7 @@ def test_attribute(tracer, rpc_stub):
     tracer.stop_tracing()
 
     assert_that(
-        tracer.event_sequence,
+        tracer.events,
         contains_exactly(
             all_of(
                 instance_of(InitialValue),

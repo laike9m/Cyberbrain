@@ -3,25 +3,36 @@
 
 filename: "test_block_py38.py"
 events {
-  key: "x"
-  value {
-    events {
-      binding {
-        uid: "test_continue_in_finally:0"
-        filename: "test_block_py38.py"
-        lineno: 22
-        target: "x"
-        value: "0"
-      }
-    }
-    events {
-      binding {
-        uid: "test_continue_in_finally:2"
-        filename: "test_block_py38.py"
-        lineno: 22
-        target: "x"
-        value: "1"
-      }
-    }
+  binding {
+    uid: "test_continue_in_finally:0"
+    filename: "test_block_py38.py"
+    lineno: 22
+    target: "x"
+    value: "0"
+  }
+}
+events {
+  jump_back_to_loop_start {
+    uid: "test_continue_in_finally:1"
+    filename: "test_block_py38.py"
+    lineno: 26
+    jump_target: 16
+  }
+}
+events {
+  binding {
+    uid: "test_continue_in_finally:2"
+    filename: "test_block_py38.py"
+    lineno: 22
+    target: "x"
+    value: "1"
+  }
+}
+events {
+  jump_back_to_loop_start {
+    uid: "test_continue_in_finally:3"
+    filename: "test_block_py38.py"
+    lineno: 26
+    jump_target: 16
   }
 }

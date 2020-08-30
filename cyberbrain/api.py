@@ -62,13 +62,7 @@ class Tracer:
 
     @property
     def events(self):
-        """Test only. Provides access to logged events."""
         return self.frame_logger.frame.accumulated_events
-
-    @property
-    def event_sequence(self):
-        """Test only. Provides access to logged events."""
-        return self.frame_logger.frame.accumulated_event_sequence
 
     @property
     def loops(self):
