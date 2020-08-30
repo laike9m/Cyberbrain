@@ -6,11 +6,20 @@ from dis import Instruction
 from types import FrameType
 from typing import Any
 
-from crayons import cyan
 from deepdiff import DeepDiff, Delta
 
 from . import value_stack, utils
-from .basis import Event, InitialValue, Binding, Mutation, Deletion, EventType, Symbol
+from .basis import (
+    Event,
+    InitialValue,
+    Binding,
+    Mutation,
+    Deletion,
+    EventType,
+    Symbol,
+    Loop,
+    JumpBackToLoopStart,
+)
 
 _INITIAL_STATE = -1
 
@@ -40,16 +49,7 @@ class Frame:
     TODO: corner cases to be handled:
         - delete, then create again
 
-    TODO (Loops related):
-     - Events should have some extra attributes:
-       * An index to represent the order they occurred. Index is frame specific.
-     - Add a new type of event: JumpBackToLoopStart, which can originate from:
-       * JUMP_ABSOLUTE (normal iteration ends)
-       * POP_JUMP_IF_FALSE (break/continue), and other conditional jump instructions.
-       Each JumpBackToLoopStart represents an *actual jump back that happened*.
-     - Identify loops (start/end offset) based on JumpBackToLoopStart.
-
-     TODO (Return a sequence of events)
+    TODO (Return a sequence of events)
         - Store events in sequence when adding.
         - Add a accumulated_event_sequence method. Remember the latest event for each
           identifier, calculate values based on delta.
@@ -79,6 +79,7 @@ class Frame:
             Snapshot(events_pointer=defaultdict(lambda: _INITIAL_STATE))
         ]
         self._latest_snapshot = self.snapshots[0]
+        self.loops: dict[int, Loop] = {}  # Maps loop start to loop.
 
         # ################### Relevant frames ####################
         # Frame that generated this frame. Could be empty if this frame is the outermost
@@ -166,7 +167,24 @@ class Frame:
                 )
             )
         elif event_info.type is EventType.JumpBackToLoopStart:
-            print(cyan(event_info))
+            loop_start = event_info.jump_target
+            self.events.append(
+                JumpBackToLoopStart(
+                    filename=self.filename,
+                    lineno=self.offset_to_lineno[instr.offset],
+                    offset=instr.offset,
+                    index=len(self.events),
+                    jump_target=loop_start,
+                )
+            )
+            if loop_start in self.loops:
+                self.loops[loop_start].end_offset = max(
+                    self.loops[loop_start].end_offset, instr.offset
+                )
+            else:
+                self.loops[loop_start] = Loop(
+                    start_offset=loop_start, end_offset=instr.offset
+                )
 
     def _add_new_event(self, event: Event):
         target = event.target.name
