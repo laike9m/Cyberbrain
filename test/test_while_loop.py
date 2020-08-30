@@ -3,7 +3,7 @@ from utils import get_value
 
 
 def test_while_loop(tracer, rpc_stub):
-    tracer.start_tracing()
+    tracer.start()
 
     i = 0
     while i < 2:
@@ -41,7 +41,7 @@ def test_while_loop(tracer, rpc_stub):
     else:
         a = 1
 
-    tracer.stop_tracing()
+    tracer.stop()
 
     assert tracer.events == [
         Binding(lineno=8, target=Symbol("i"), value=0),

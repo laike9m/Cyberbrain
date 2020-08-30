@@ -7,7 +7,7 @@ def test_jump(tracer, rpc_stub):
     b = "b"
     c = "c"
 
-    tracer.start_tracing()
+    tracer.start()
 
     if a:  # POP_JUMP_IF_FALSE
         pass  # JUMP_FORWARD
@@ -22,7 +22,7 @@ def test_jump(tracer, rpc_stub):
 
     # TODO: Test JUMP_ABSOLUTE. This requires loop instructions to be Implemented.
 
-    tracer.stop_tracing()
+    tracer.stop()
 
     assert tracer.events == [
         InitialValue(target=Symbol("a"), value=[], lineno=12),

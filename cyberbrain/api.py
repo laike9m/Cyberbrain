@@ -39,7 +39,7 @@ class Tracer:
         else:
             self.server.serve()
 
-    def start_tracing(self):
+    def start(self):
         """Initializes tracing."""
         self.global_frame = sys._getframe(1)
         self.frame_logger = logger.FrameLogger(
@@ -49,7 +49,7 @@ class Tracer:
         self.global_frame.f_trace = self.local_tracer
         sys.settrace(self.global_tracer)
 
-    def stop_tracing(self):
+    def stop(self):
         sys.settrace(None)
         self.global_frame.f_trace = None
         del self.global_frame
