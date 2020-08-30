@@ -24,7 +24,7 @@ def test_miscellaneous(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.event_sequence == [
+    assert tracer.events == [
         InitialValue(target=Symbol("a"), value="a", lineno=16),
         InitialValue(target=Symbol("b"), value="b", lineno=16),
         InitialValue(target=Symbol("c"), value="c", lineno=16),

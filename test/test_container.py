@@ -23,9 +23,9 @@ def test_container(tracer, rpc_stub):
 
     import pprint
 
-    pprint.pprint(tracer.event_sequence)
+    pprint.pprint(tracer.events)
 
-    assert tracer.event_sequence == [
+    assert tracer.events == [
         InitialValue(target=Symbol("a"), value=1, lineno=12),
         InitialValue(target=Symbol("b"), value=1, lineno=12),
         Binding(

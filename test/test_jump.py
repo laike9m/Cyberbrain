@@ -24,7 +24,7 @@ def test_jump(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.event_sequence == [
+    assert tracer.events == [
         InitialValue(target=Symbol("a"), value=[], lineno=12),
         Binding(target=Symbol("x"), value=1, lineno=15),
         Binding(target=Symbol("x"), value=2, lineno=18),

@@ -15,7 +15,7 @@ def test_import(tracer):
     print(os, path)  # Prevent PyCharm from removing unused imports.
 
     assert_that(
-        tracer.event_sequence,
+        tracer.events,
         contains_exactly(
             all_of(
                 instance_of(Binding),

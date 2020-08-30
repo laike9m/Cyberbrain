@@ -8,7 +8,7 @@ def test_hello(tracer, rpc_stub):
     x, y = y, x  # ROT_TWO, STORE_FAST
     tracer.stop_tracing()
 
-    assert tracer.event_sequence == [
+    assert tracer.events == [
         Binding(target=Symbol("x"), value="hello world", lineno=6),
         Binding(
             target=Symbol("y"), value="hello world", sources={Symbol("x")}, lineno=7

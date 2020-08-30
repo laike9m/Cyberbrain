@@ -28,7 +28,7 @@ export namespace State {
   export type AsObject = {
     status?: State.StatusMap[keyof State.StatusMap],
     message?: string,
-  };
+  }
 
   export interface StatusMap {
     CLIENT_READY: 1;
@@ -71,7 +71,7 @@ export namespace CursorPosition {
     filename?: string,
     lineno?: number,
     character?: number,
-  };
+  }
 }
 
 export class FrameLocater extends jspb.Message {
@@ -135,7 +135,7 @@ export namespace FrameLocater {
     callsiteFilename?: string,
     callsiteLineno?: number,
     arguments?: string,
-  };
+  }
 }
 
 export class FrameLocaterList extends jspb.Message {
@@ -157,7 +157,7 @@ export class FrameLocaterList extends jspb.Message {
 export namespace FrameLocaterList {
   export type AsObject = {
     frameLocatersList: Array<FrameLocater.AsObject>,
-  };
+  }
 }
 
 export class InitialValue extends jspb.Message {
@@ -203,7 +203,7 @@ export namespace InitialValue {
     lineno?: number,
     target?: string,
     value?: string,
-  };
+  }
 }
 
 export class Binding extends jspb.Message {
@@ -255,7 +255,7 @@ export namespace Binding {
     target?: string,
     value?: string,
     sourcesList: Array<string>,
-  };
+  }
 }
 
 export class Mutation extends jspb.Message {
@@ -313,7 +313,7 @@ export namespace Mutation {
     value?: string,
     delta?: string,
     sourcesList: Array<string>,
-  };
+  }
 }
 
 export class Deletion extends jspb.Message {
@@ -353,7 +353,47 @@ export namespace Deletion {
     filename?: string,
     lineno?: number,
     target?: string,
-  };
+  }
+}
+
+export class JumpBackToLoopStart extends jspb.Message {
+  hasUid(): boolean;
+  clearUid(): void;
+  getUid(): string | undefined;
+  setUid(value: string): void;
+
+  hasFilename(): boolean;
+  clearFilename(): void;
+  getFilename(): string | undefined;
+  setFilename(value: string): void;
+
+  hasLineno(): boolean;
+  clearLineno(): void;
+  getLineno(): number | undefined;
+  setLineno(value: number): void;
+
+  hasJumpTarget(): boolean;
+  clearJumpTarget(): void;
+  getJumpTarget(): number | undefined;
+  setJumpTarget(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): JumpBackToLoopStart.AsObject;
+  static toObject(includeInstance: boolean, msg: JumpBackToLoopStart): JumpBackToLoopStart.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: JumpBackToLoopStart, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): JumpBackToLoopStart;
+  static deserializeBinaryFromReader(message: JumpBackToLoopStart, reader: jspb.BinaryReader): JumpBackToLoopStart;
+}
+
+export namespace JumpBackToLoopStart {
+  export type AsObject = {
+    uid?: string,
+    filename?: string,
+    lineno?: number,
+    jumpTarget?: number,
+  }
 }
 
 export class Event extends jspb.Message {
@@ -377,6 +417,11 @@ export class Event extends jspb.Message {
   getDeletion(): Deletion | undefined;
   setDeletion(value?: Deletion): void;
 
+  hasJumpBackToLoopStart(): boolean;
+  clearJumpBackToLoopStart(): void;
+  getJumpBackToLoopStart(): JumpBackToLoopStart | undefined;
+  setJumpBackToLoopStart(value?: JumpBackToLoopStart): void;
+
   getValueCase(): Event.ValueCase;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Event.AsObject;
@@ -394,7 +439,8 @@ export namespace Event {
     binding?: Binding.AsObject,
     mutation?: Mutation.AsObject,
     deletion?: Deletion.AsObject,
-  };
+    jumpBackToLoopStart?: JumpBackToLoopStart.AsObject,
+  }
 
   export enum ValueCase {
     VALUE_NOT_SET = 0,
@@ -402,29 +448,8 @@ export namespace Event {
     BINDING = 2,
     MUTATION = 3,
     DELETION = 4,
+    JUMP_BACK_TO_LOOP_START = 5,
   }
-}
-
-export class EventList extends jspb.Message {
-  clearEventsList(): void;
-  getEventsList(): Array<Event>;
-  setEventsList(value: Array<Event>): void;
-  addEvents(value?: Event, index?: number): Event;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): EventList.AsObject;
-  static toObject(includeInstance: boolean, msg: EventList): EventList.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: EventList, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): EventList;
-  static deserializeBinaryFromReader(message: EventList, reader: jspb.BinaryReader): EventList;
-}
-
-export namespace EventList {
-  export type AsObject = {
-    eventsList: Array<Event.AsObject>,
-  };
 }
 
 export class EventUidList extends jspb.Message {
@@ -446,7 +471,7 @@ export class EventUidList extends jspb.Message {
 export namespace EventUidList {
   export type AsObject = {
     eventUidsList: Array<string>,
-  };
+  }
 }
 
 export class Frame extends jspb.Message {
@@ -455,8 +480,11 @@ export class Frame extends jspb.Message {
   getFilename(): string | undefined;
   setFilename(value: string): void;
 
-  getEventsMap(): jspb.Map<string, EventList>;
-  clearEventsMap(): void;
+  clearEventsList(): void;
+  getEventsList(): Array<Event>;
+  setEventsList(value: Array<Event>): void;
+  addEvents(value?: Event, index?: number): Event;
+
   getTracingResultMap(): jspb.Map<string, EventUidList>;
   clearTracingResultMap(): void;
   serializeBinary(): Uint8Array;
@@ -472,8 +500,8 @@ export class Frame extends jspb.Message {
 export namespace Frame {
   export type AsObject = {
     filename?: string,
-    eventsMap: Array<[string, EventList.AsObject]>,
+    eventsList: Array<Event.AsObject>,
     tracingResultMap: Array<[string, EventUidList.AsObject]>,
-  };
+  }
 }
 

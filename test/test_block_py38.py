@@ -27,7 +27,7 @@ def test_continue_in_finally(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.event_sequence == [
+    assert tracer.events == [
         Binding(target=Symbol("x"), value=0, lineno=22),
         JumpBackToLoopStart(lineno=26, jump_target=16),
         Binding(target=Symbol("x"), value=1, lineno=22),
@@ -57,7 +57,7 @@ def test_continue_in_finally_with_exception(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.event_sequence == [
+    assert tracer.events == [
         Binding(target=Symbol("x"), value=0, lineno=52),
         JumpBackToLoopStart(lineno=56, jump_target=16),
         Binding(target=Symbol("x"), value=1, lineno=52),

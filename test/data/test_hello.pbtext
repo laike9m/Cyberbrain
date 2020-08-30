@@ -3,52 +3,42 @@
 
 filename: "test_hello.py"
 events {
-  key: "x"
-  value {
-    events {
-      binding {
-        uid: "test_hello:0"
-        filename: "test_hello.py"
-        lineno: 6
-        target: "x"
-        value: "\"hello world\""
-      }
-    }
-    events {
-      binding {
-        uid: "test_hello:2"
-        filename: "test_hello.py"
-        lineno: 8
-        target: "x"
-        value: "\"hello world\""
-        sources: "y"
-      }
-    }
+  binding {
+    uid: "test_hello:0"
+    filename: "test_hello.py"
+    lineno: 6
+    target: "x"
+    value: "\"hello world\""
   }
 }
 events {
-  key: "y"
-  value {
-    events {
-      binding {
-        uid: "test_hello:1"
-        filename: "test_hello.py"
-        lineno: 7
-        target: "y"
-        value: "\"hello world\""
-        sources: "x"
-      }
-    }
-    events {
-      binding {
-        uid: "test_hello:3"
-        filename: "test_hello.py"
-        lineno: 8
-        target: "y"
-        value: "\"hello world\""
-        sources: "x"
-      }
-    }
+  binding {
+    uid: "test_hello:1"
+    filename: "test_hello.py"
+    lineno: 7
+    target: "y"
+    value: "\"hello world\""
+    sources: "x"
+  }
+}
+events {
+  binding {
+    uid: "test_hello:2"
+    filename: "test_hello.py"
+    lineno: 8
+    target: "x"
+    value: "\"hello world\""
+    sources: "y"
+  }
+}
+events {
+  binding {
+    uid: "test_hello:3"
+    filename: "test_hello.py"
+    lineno: 8
+    target: "y"
+    value: "\"hello world\""
+    sources: "x"
   }
 }
 tracing_result {

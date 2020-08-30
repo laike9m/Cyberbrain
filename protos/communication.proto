@@ -102,17 +102,21 @@ message Deletion {
   optional string target = 4;
 }
 
+message JumpBackToLoopStart {
+  optional string uid = 1;
+  optional string filename = 2;
+  optional int32 lineno = 3;
+  optional int32 jump_target = 4;
+}
+
 message Event {
   oneof value {
     InitialValue initial_value = 1;
     Binding binding = 2;
     Mutation mutation = 3;
     Deletion deletion = 4;
+    JumpBackToLoopStart jump_back_to_loop_start = 5;
   }
-}
-
-message EventList {
-  repeated Event events = 1;
 }
 
 message EventUidList {
@@ -122,8 +126,8 @@ message EventUidList {
 message Frame {
   optional string filename = 1;
 
-  // Events that happened in this frame.
-  map</* identifier */ string, EventList> events = 2;
+  // Events that happened in this frame, arranged by the order they occurred.
+  repeated Event events = 2;
 
   // Maps events to relevant predecessor events.
   map</* event uid */ string, EventUidList> tracing_result = 3;

@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto2',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x13\x63ommunication.proto\"\x97\x01\n\x05State\x12\x1d\n\x06status\x18\x01 \x01(\x0e\x32\r.State.Status\x12\x0f\n\x07message\x18\x02 \x01(\t\"^\n\x06Status\x12\x10\n\x0c\x43LIENT_READY\x10\x01\x12\x10\n\x0cSERVER_READY\x10\x02\x12\x16\n\x12\x45XECUTION_COMPLETE\x10\x03\x12\x18\n\x14\x42\x41\x43KTRACING_COMPLETE\x10\x04\"E\n\x0e\x43ursorPosition\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x0e\n\x06lineno\x18\x02 \x01(\x05\x12\x11\n\tcharacter\x18\x03 \x01(\x05\"\xb7\x01\n\x0c\x46rameLocater\x12\x10\n\x08\x66rame_id\x18\x01 \x01(\t\x12\x12\n\nframe_name\x18\x02 \x01(\t\x12\x10\n\x08\x66ilename\x18\x03 \x01(\t\x12\x14\n\x0cstart_lineno\x18\x04 \x01(\x03\x12\x12\n\nend_lineno\x18\x05 \x01(\x03\x12\x19\n\x11\x63\x61llsite_filename\x18\x06 \x01(\t\x12\x17\n\x0f\x63\x61llsite_lineno\x18\x07 \x01(\x03\x12\x11\n\targuments\x18\x08 \x01(\t\"9\n\x10\x46rameLocaterList\x12%\n\x0e\x66rame_locaters\x18\x01 \x03(\x0b\x32\r.FrameLocater\"\\\n\x0cInitialValue\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\"h\n\x07\x42inding\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\x12\x0f\n\x07sources\x18\x06 \x03(\t\"x\n\x08Mutation\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\x12\r\n\x05\x64\x65lta\x18\x06 \x01(\t\x12\x0f\n\x07sources\x18\x07 \x03(\t\"I\n\x08\x44\x65letion\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\"\x93\x01\n\x05\x45vent\x12&\n\rinitial_value\x18\x01 \x01(\x0b\x32\r.InitialValueH\x00\x12\x1b\n\x07\x62inding\x18\x02 \x01(\x0b\x32\x08.BindingH\x00\x12\x1d\n\x08mutation\x18\x03 \x01(\x0b\x32\t.MutationH\x00\x12\x1d\n\x08\x64\x65letion\x18\x04 \x01(\x0b\x32\t.DeletionH\x00\x42\x07\n\x05value\"#\n\tEventList\x12\x16\n\x06\x65vents\x18\x01 \x03(\x0b\x32\x06.Event\"\"\n\x0c\x45ventUidList\x12\x12\n\nevent_uids\x18\x01 \x03(\t\"\xf0\x01\n\x05\x46rame\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\"\n\x06\x65vents\x18\x02 \x03(\x0b\x32\x12.Frame.EventsEntry\x12\x31\n\x0etracing_result\x18\x03 \x03(\x0b\x32\x19.Frame.TracingResultEntry\x1a\x39\n\x0b\x45ventsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x19\n\x05value\x18\x02 \x01(\x0b\x32\n.EventList:\x02\x38\x01\x1a\x43\n\x12TracingResultEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.EventUidList:\x02\x38\x01\x32\x89\x01\n\rCommunication\x12\x1f\n\tSyncState\x12\x06.State\x1a\x06.State\"\x00\x30\x01\x12\x32\n\nFindFrames\x12\x0f.CursorPosition\x1a\x11.FrameLocaterList\"\x00\x12#\n\x08GetFrame\x12\r.FrameLocater\x1a\x06.Frame\"\x00'
+  serialized_pb=b'\n\x13\x63ommunication.proto\"\x97\x01\n\x05State\x12\x1d\n\x06status\x18\x01 \x01(\x0e\x32\r.State.Status\x12\x0f\n\x07message\x18\x02 \x01(\t\"^\n\x06Status\x12\x10\n\x0c\x43LIENT_READY\x10\x01\x12\x10\n\x0cSERVER_READY\x10\x02\x12\x16\n\x12\x45XECUTION_COMPLETE\x10\x03\x12\x18\n\x14\x42\x41\x43KTRACING_COMPLETE\x10\x04\"E\n\x0e\x43ursorPosition\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x0e\n\x06lineno\x18\x02 \x01(\x05\x12\x11\n\tcharacter\x18\x03 \x01(\x05\"\xb7\x01\n\x0c\x46rameLocater\x12\x10\n\x08\x66rame_id\x18\x01 \x01(\t\x12\x12\n\nframe_name\x18\x02 \x01(\t\x12\x10\n\x08\x66ilename\x18\x03 \x01(\t\x12\x14\n\x0cstart_lineno\x18\x04 \x01(\x03\x12\x12\n\nend_lineno\x18\x05 \x01(\x03\x12\x19\n\x11\x63\x61llsite_filename\x18\x06 \x01(\t\x12\x17\n\x0f\x63\x61llsite_lineno\x18\x07 \x01(\x03\x12\x11\n\targuments\x18\x08 \x01(\t\"9\n\x10\x46rameLocaterList\x12%\n\x0e\x66rame_locaters\x18\x01 \x03(\x0b\x32\r.FrameLocater\"\\\n\x0cInitialValue\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\"h\n\x07\x42inding\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\x12\x0f\n\x07sources\x18\x06 \x03(\t\"x\n\x08Mutation\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\x12\r\n\x05\x64\x65lta\x18\x06 \x01(\t\x12\x0f\n\x07sources\x18\x07 \x03(\t\"I\n\x08\x44\x65letion\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\"Y\n\x13JumpBackToLoopStart\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x13\n\x0bjump_target\x18\x04 \x01(\x05\"\xcc\x01\n\x05\x45vent\x12&\n\rinitial_value\x18\x01 \x01(\x0b\x32\r.InitialValueH\x00\x12\x1b\n\x07\x62inding\x18\x02 \x01(\x0b\x32\x08.BindingH\x00\x12\x1d\n\x08mutation\x18\x03 \x01(\x0b\x32\t.MutationH\x00\x12\x1d\n\x08\x64\x65letion\x18\x04 \x01(\x0b\x32\t.DeletionH\x00\x12\x37\n\x17jump_back_to_loop_start\x18\x05 \x01(\x0b\x32\x14.JumpBackToLoopStartH\x00\x42\x07\n\x05value\"\"\n\x0c\x45ventUidList\x12\x12\n\nevent_uids\x18\x01 \x03(\t\"\xa9\x01\n\x05\x46rame\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x16\n\x06\x65vents\x18\x02 \x03(\x0b\x32\x06.Event\x12\x31\n\x0etracing_result\x18\x03 \x03(\x0b\x32\x19.Frame.TracingResultEntry\x1a\x43\n\x12TracingResultEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.EventUidList:\x02\x38\x01\x32\x89\x01\n\rCommunication\x12\x1f\n\tSyncState\x12\x06.State\x1a\x06.State\"\x00\x30\x01\x12\x32\n\nFindFrames\x12\x0f.CursorPosition\x1a\x11.FrameLocaterList\"\x00\x12#\n\x08GetFrame\x12\r.FrameLocater\x1a\x06.Frame\"\x00'
 )
 
 
@@ -513,6 +513,59 @@ _DELETION = _descriptor.Descriptor(
 )
 
 
+_JUMPBACKTOLOOPSTART = _descriptor.Descriptor(
+  name='JumpBackToLoopStart',
+  full_name='JumpBackToLoopStart',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='uid', full_name='JumpBackToLoopStart.uid', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='filename', full_name='JumpBackToLoopStart.filename', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='lineno', full_name='JumpBackToLoopStart.lineno', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='jump_target', full_name='JumpBackToLoopStart.jump_target', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=890,
+  serialized_end=979,
+)
+
+
 _EVENT = _descriptor.Descriptor(
   name='Event',
   full_name='Event',
@@ -549,6 +602,13 @@ _EVENT = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='jump_back_to_loop_start', full_name='Event.jump_back_to_loop_start', index=4,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -566,40 +626,8 @@ _EVENT = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=891,
-  serialized_end=1038,
-)
-
-
-_EVENTLIST = _descriptor.Descriptor(
-  name='EventList',
-  full_name='EventList',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='events', full_name='EventList.events', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1040,
-  serialized_end=1075,
+  serialized_start=982,
+  serialized_end=1186,
 )
 
 
@@ -630,48 +658,10 @@ _EVENTUIDLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1077,
-  serialized_end=1111,
+  serialized_start=1188,
+  serialized_end=1222,
 )
 
-
-_FRAME_EVENTSENTRY = _descriptor.Descriptor(
-  name='EventsEntry',
-  full_name='Frame.EventsEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='Frame.EventsEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='Frame.EventsEntry.value', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=b'8\001',
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1228,
-  serialized_end=1285,
-)
 
 _FRAME_TRACINGRESULTENTRY = _descriptor.Descriptor(
   name='TracingResultEntry',
@@ -707,8 +697,8 @@ _FRAME_TRACINGRESULTENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1287,
-  serialized_end=1354,
+  serialized_start=1327,
+  serialized_end=1394,
 )
 
 _FRAME = _descriptor.Descriptor(
@@ -743,7 +733,7 @@ _FRAME = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_FRAME_EVENTSENTRY, _FRAME_TRACINGRESULTENTRY, ],
+  nested_types=[_FRAME_TRACINGRESULTENTRY, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -752,8 +742,8 @@ _FRAME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1114,
-  serialized_end=1354,
+  serialized_start=1225,
+  serialized_end=1394,
 )
 
 _STATE.fields_by_name['status'].enum_type = _STATE_STATUS
@@ -763,6 +753,7 @@ _EVENT.fields_by_name['initial_value'].message_type = _INITIALVALUE
 _EVENT.fields_by_name['binding'].message_type = _BINDING
 _EVENT.fields_by_name['mutation'].message_type = _MUTATION
 _EVENT.fields_by_name['deletion'].message_type = _DELETION
+_EVENT.fields_by_name['jump_back_to_loop_start'].message_type = _JUMPBACKTOLOOPSTART
 _EVENT.oneofs_by_name['value'].fields.append(
   _EVENT.fields_by_name['initial_value'])
 _EVENT.fields_by_name['initial_value'].containing_oneof = _EVENT.oneofs_by_name['value']
@@ -775,12 +766,12 @@ _EVENT.fields_by_name['mutation'].containing_oneof = _EVENT.oneofs_by_name['valu
 _EVENT.oneofs_by_name['value'].fields.append(
   _EVENT.fields_by_name['deletion'])
 _EVENT.fields_by_name['deletion'].containing_oneof = _EVENT.oneofs_by_name['value']
-_EVENTLIST.fields_by_name['events'].message_type = _EVENT
-_FRAME_EVENTSENTRY.fields_by_name['value'].message_type = _EVENTLIST
-_FRAME_EVENTSENTRY.containing_type = _FRAME
+_EVENT.oneofs_by_name['value'].fields.append(
+  _EVENT.fields_by_name['jump_back_to_loop_start'])
+_EVENT.fields_by_name['jump_back_to_loop_start'].containing_oneof = _EVENT.oneofs_by_name['value']
 _FRAME_TRACINGRESULTENTRY.fields_by_name['value'].message_type = _EVENTUIDLIST
 _FRAME_TRACINGRESULTENTRY.containing_type = _FRAME
-_FRAME.fields_by_name['events'].message_type = _FRAME_EVENTSENTRY
+_FRAME.fields_by_name['events'].message_type = _EVENT
 _FRAME.fields_by_name['tracing_result'].message_type = _FRAME_TRACINGRESULTENTRY
 DESCRIPTOR.message_types_by_name['State'] = _STATE
 DESCRIPTOR.message_types_by_name['CursorPosition'] = _CURSORPOSITION
@@ -790,8 +781,8 @@ DESCRIPTOR.message_types_by_name['InitialValue'] = _INITIALVALUE
 DESCRIPTOR.message_types_by_name['Binding'] = _BINDING
 DESCRIPTOR.message_types_by_name['Mutation'] = _MUTATION
 DESCRIPTOR.message_types_by_name['Deletion'] = _DELETION
+DESCRIPTOR.message_types_by_name['JumpBackToLoopStart'] = _JUMPBACKTOLOOPSTART
 DESCRIPTOR.message_types_by_name['Event'] = _EVENT
-DESCRIPTOR.message_types_by_name['EventList'] = _EVENTLIST
 DESCRIPTOR.message_types_by_name['EventUidList'] = _EVENTUIDLIST
 DESCRIPTOR.message_types_by_name['Frame'] = _FRAME
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -852,19 +843,19 @@ Deletion = _reflection.GeneratedProtocolMessageType('Deletion', (_message.Messag
   })
 _sym_db.RegisterMessage(Deletion)
 
+JumpBackToLoopStart = _reflection.GeneratedProtocolMessageType('JumpBackToLoopStart', (_message.Message,), {
+  'DESCRIPTOR' : _JUMPBACKTOLOOPSTART,
+  '__module__' : 'communication_pb2'
+  # @@protoc_insertion_point(class_scope:JumpBackToLoopStart)
+  })
+_sym_db.RegisterMessage(JumpBackToLoopStart)
+
 Event = _reflection.GeneratedProtocolMessageType('Event', (_message.Message,), {
   'DESCRIPTOR' : _EVENT,
   '__module__' : 'communication_pb2'
   # @@protoc_insertion_point(class_scope:Event)
   })
 _sym_db.RegisterMessage(Event)
-
-EventList = _reflection.GeneratedProtocolMessageType('EventList', (_message.Message,), {
-  'DESCRIPTOR' : _EVENTLIST,
-  '__module__' : 'communication_pb2'
-  # @@protoc_insertion_point(class_scope:EventList)
-  })
-_sym_db.RegisterMessage(EventList)
 
 EventUidList = _reflection.GeneratedProtocolMessageType('EventUidList', (_message.Message,), {
   'DESCRIPTOR' : _EVENTUIDLIST,
@@ -874,13 +865,6 @@ EventUidList = _reflection.GeneratedProtocolMessageType('EventUidList', (_messag
 _sym_db.RegisterMessage(EventUidList)
 
 Frame = _reflection.GeneratedProtocolMessageType('Frame', (_message.Message,), {
-
-  'EventsEntry' : _reflection.GeneratedProtocolMessageType('EventsEntry', (_message.Message,), {
-    'DESCRIPTOR' : _FRAME_EVENTSENTRY,
-    '__module__' : 'communication_pb2'
-    # @@protoc_insertion_point(class_scope:Frame.EventsEntry)
-    })
-  ,
 
   'TracingResultEntry' : _reflection.GeneratedProtocolMessageType('TracingResultEntry', (_message.Message,), {
     'DESCRIPTOR' : _FRAME_TRACINGRESULTENTRY,
@@ -893,11 +877,9 @@ Frame = _reflection.GeneratedProtocolMessageType('Frame', (_message.Message,), {
   # @@protoc_insertion_point(class_scope:Frame)
   })
 _sym_db.RegisterMessage(Frame)
-_sym_db.RegisterMessage(Frame.EventsEntry)
 _sym_db.RegisterMessage(Frame.TracingResultEntry)
 
 
-_FRAME_EVENTSENTRY._options = None
 _FRAME_TRACINGRESULTENTRY._options = None
 
 _COMMUNICATION = _descriptor.ServiceDescriptor(
@@ -907,8 +889,8 @@ _COMMUNICATION = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1357,
-  serialized_end=1494,
+  serialized_start=1397,
+  serialized_end=1534,
   methods=[
   _descriptor.MethodDescriptor(
     name='SyncState',

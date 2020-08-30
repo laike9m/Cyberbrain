@@ -43,7 +43,7 @@ def test_while_loop(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.event_sequence == [
+    assert tracer.events == [
         Binding(lineno=8, target=Symbol("i"), value=0),
         Binding(lineno=10, target=Symbol("a"), value=0, sources={Symbol("i")}),
         Binding(lineno=11, target=Symbol("i"), value=1, sources={Symbol("i")}),
