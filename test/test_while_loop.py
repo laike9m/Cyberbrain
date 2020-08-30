@@ -1,4 +1,5 @@
-from cyberbrain import Binding, Symbol, JumpBackToLoopStart
+from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop
+from utils import get_value
 
 
 def test_while_loop(tracer, rpc_stub):
@@ -43,35 +44,40 @@ def test_while_loop(tracer, rpc_stub):
     tracer.stop_tracing()
 
     assert tracer.event_sequence == [
-        Binding(lineno=7, target=Symbol("i"), value=0),
-        Binding(lineno=9, target=Symbol("a"), value=0, sources={Symbol("i")}),
-        Binding(lineno=10, target=Symbol("i"), value=1, sources={Symbol("i")}),
-        JumpBackToLoopStart(lineno=10, jump_target=12),
-        Binding(lineno=9, target=Symbol("a"), value=1, sources={Symbol("i")}),
-        Binding(lineno=10, target=Symbol("i"), value=2, sources={Symbol("i")}),
-        JumpBackToLoopStart(lineno=10, jump_target=12),
+        Binding(lineno=8, target=Symbol("i"), value=0),
+        Binding(lineno=10, target=Symbol("a"), value=0, sources={Symbol("i")}),
+        Binding(lineno=11, target=Symbol("i"), value=1, sources={Symbol("i")}),
+        JumpBackToLoopStart(lineno=11, jump_target=get_value({"py38": 12, "py37": 14})),
+        Binding(lineno=10, target=Symbol("a"), value=1, sources={Symbol("i")}),
+        Binding(lineno=11, target=Symbol("i"), value=2, sources={Symbol("i")}),
+        JumpBackToLoopStart(lineno=11, jump_target=get_value({"py38": 12, "py37": 14})),
         ##
-        Binding(lineno=12, target=Symbol("i"), value=0),
-        Binding(lineno=16, target=Symbol("i"), value=0),
-        Binding(lineno=18, target=Symbol("i"), value=1, sources={Symbol("i")}),
-        JumpBackToLoopStart(lineno=19, jump_target=54),
+        Binding(lineno=13, target=Symbol("i"), value=0),
+        Binding(lineno=17, target=Symbol("i"), value=0),
+        Binding(lineno=19, target=Symbol("i"), value=1, sources={Symbol("i")}),
+        JumpBackToLoopStart(lineno=20, jump_target=get_value({"py38": 54, "py37": 64})),
         ##
-        Binding(lineno=21, target=Symbol("i"), value=0),
-        Binding(lineno=23, target=Symbol("i"), value=1, sources={Symbol("i")}),
-        JumpBackToLoopStart(lineno=25, jump_target=78),
-        Binding(lineno=23, target=Symbol("i"), value=2, sources={Symbol("i")}),
-        JumpBackToLoopStart(lineno=25, jump_target=78),
+        Binding(lineno=22, target=Symbol("i"), value=0),
+        Binding(lineno=24, target=Symbol("i"), value=1, sources={Symbol("i")}),
+        JumpBackToLoopStart(lineno=26, jump_target=get_value({"py38": 78, "py37": 92})),
+        Binding(lineno=24, target=Symbol("i"), value=2, sources={Symbol("i")}),
+        JumpBackToLoopStart(lineno=25, jump_target=get_value({"py38": 78, "py37": 92})),
         ##
-        Binding(lineno=27, target=Symbol("i"), value=0),
-        Binding(lineno=29, target=Symbol("i"), value=1, sources={Symbol("i")}),
-        Binding(lineno=41, target=Symbol("a"), value=1),
+        Binding(lineno=28, target=Symbol("i"), value=0),
+        Binding(lineno=30, target=Symbol("i"), value=1, sources={Symbol("i")}),
+        Binding(lineno=42, target=Symbol("a"), value=1),
     ]
     assert tracer.loops == [
-        Loop(start_offset=12, end_offset=32),
-        Loop(start_offset=54, end_offset=70),
-        Loop(start_offset=78, end_offset=104),
+        Loop(
+            start_offset=get_value({"py38": 12, "py37": 14}),
+            end_offset=get_value({"py38": 32, "py37": 34}),
+        ),
+        Loop(
+            start_offset=get_value({"py38": 54, "py37": 64}),
+            end_offset=get_value({"py38": 70, "py37": 80}),
+        ),
+        Loop(
+            start_offset=get_value({"py38": 78, "py37": 92}),
+            end_offset=get_value({"py38": 102, "py37": 116}),
+        ),
     ]
-
-    import pprint
-
-    pprint.pprint(tracer.loops)

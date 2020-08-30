@@ -1,4 +1,5 @@
 from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop
+from utils import get_value
 
 
 def test_for_loop(tracer, rpc_stub):
@@ -16,7 +17,7 @@ def test_for_loop(tracer, rpc_stub):
         a = 1
 
     for i in range(2):
-        if i == 0:  # This jumps to the end of the iteration, not out of loop.
+        if i == 0:  # This jumps directly to FOR_ITER
             continue
 
     for i in range(2):
@@ -35,32 +36,58 @@ def test_for_loop(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.event_sequence == [
-        Binding(target=Symbol("i"), value=0, lineno=7),
-        Binding(target=Symbol("a"), value=0, lineno=8, sources={Symbol("i")}),
-        JumpBackToLoopStart(jump_target=16, lineno=8),
-        Binding(target=Symbol("i"), value=1, lineno=7),
-        Binding(target=Symbol("a"), value=1, lineno=8, sources={Symbol("i")}),
-        JumpBackToLoopStart(jump_target=16, lineno=8),
-        Binding(target=Symbol("i"), value=0, lineno=10),
-        Binding(target=Symbol("i"), value=0, lineno=14),
-        JumpBackToLoopStart(jump_target=56, lineno=15),
-        Binding(target=Symbol("i"), value=0, lineno=18),
-        JumpBackToLoopStart(jump_target=76, lineno=20),
-        Binding(target=Symbol("i"), value=1, lineno=18),
-        JumpBackToLoopStart(jump_target=76, lineno=20),
-        Binding(target=Symbol("i"), value=0, lineno=22),
-        JumpBackToLoopStart(jump_target=100, lineno=24),
-        Binding(target=Symbol("i"), value=1, lineno=22),
-        Binding(target=Symbol("i"), value=0, lineno=26),
-        Binding(target=Symbol("i"), value=0, lineno=31),
-        JumpBackToLoopStart(jump_target=148, lineno=32),
-        Binding(target=Symbol("a"), value=1, lineno=34),
+    from cyberbrain import pprint
+
+    pprint(tracer.event_sequence)
+
+    expected_events = [
+        Binding(target=Symbol("i"), value=0, lineno=8),
+        Binding(target=Symbol("a"), value=0, lineno=9, sources={Symbol("i")}),
+        JumpBackToLoopStart(jump_target=get_value({"py38": 16, "py37": 18}), lineno=9),
+        Binding(target=Symbol("i"), value=1, lineno=8),
+        Binding(target=Symbol("a"), value=1, lineno=9, sources={Symbol("i")}),
+        JumpBackToLoopStart(jump_target=get_value({"py38": 16, "py37": 18}), lineno=9),
+        Binding(target=Symbol("i"), value=0, lineno=11),
+        Binding(target=Symbol("i"), value=0, lineno=15),
+        JumpBackToLoopStart(jump_target=get_value({"py38": 56, "py37": 64}), lineno=16),
+        Binding(target=Symbol("i"), value=0, lineno=19),
+        JumpBackToLoopStart(jump_target=get_value({"py38": 76, "py37": 88}), lineno=21),
+        Binding(target=Symbol("i"), value=1, lineno=19),
+        JumpBackToLoopStart(jump_target=get_value({"py38": 76, "py37": 88}), lineno=20),
+        Binding(target=Symbol("i"), value=0, lineno=23),
+        JumpBackToLoopStart(
+            jump_target=get_value({"py38": 100, "py37": 116}), lineno=24
+        ),
+        Binding(target=Symbol("i"), value=1, lineno=23),
+        Binding(target=Symbol("i"), value=0, lineno=27),
+        Binding(target=Symbol("i"), value=0, lineno=32),
+        JumpBackToLoopStart(
+            jump_target=get_value({"py38": 148, "py37": 168}), lineno=33
+        ),
+        Binding(target=Symbol("a"), value=1, lineno=35),
     ]
+    for index, event in enumerate(tracer.event_sequence):
+        assert event == expected_events[index], f"{event} {expected_events[index]}"
+    print(tracer.loops)
     assert tracer.loops == [
-        Loop(start_offset=16, end_offset=24),
-        Loop(start_offset=56, end_offset=60),
-        Loop(start_offset=76, end_offset=90),
-        Loop(start_offset=100, end_offset=116),
-        Loop(start_offset=148, end_offset=152),
+        Loop(
+            start_offset=get_value({"py38": 16, "py37": 18}),
+            end_offset=get_value({"py38": 24, "py37": 26}),
+        ),
+        Loop(
+            start_offset=get_value({"py38": 56, "py37": 64}),
+            end_offset=get_value({"py38": 60, "py37": 68}),
+        ),
+        Loop(
+            start_offset=get_value({"py38": 76, "py37": 88}),
+            end_offset=get_value({"py38": 88, "py37": 100}),
+        ),
+        Loop(
+            start_offset=get_value({"py38": 100, "py37": 116}),
+            end_offset=get_value({"py38": 110, "py37": 126}),
+        ),
+        Loop(
+            start_offset=get_value({"py38": 148, "py37": 168}),
+            end_offset=get_value({"py38": 152, "py37": 172}),
+        ),
     ]
