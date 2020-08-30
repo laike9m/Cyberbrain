@@ -16,7 +16,7 @@ events {
     }
     events {
       binding {
-        uid: "test_continue_in_finally:1"
+        uid: "test_continue_in_finally:2"
         filename: "test_block_py38.py"
         lineno: 22
         target: "x"

@@ -9,16 +9,16 @@ events {
       binding {
         uid: "test_continue_in_finally_with_exception:0"
         filename: "test_block_py38.py"
-        lineno: 49
+        lineno: 52
         target: "x"
         value: "0"
       }
     }
     events {
       binding {
-        uid: "test_continue_in_finally_with_exception:1"
+        uid: "test_continue_in_finally_with_exception:2"
         filename: "test_block_py38.py"
-        lineno: 49
+        lineno: 52
         target: "x"
         value: "1"
       }
