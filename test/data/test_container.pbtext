@@ -208,3 +208,8 @@ tracing_result {
     event_uids: "test_container:0"
   }
 }
+identifiers: "a"
+identifiers: "b"
+identifiers: "d"
+identifiers: "c"
+identifiers: "e"

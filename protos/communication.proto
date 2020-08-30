@@ -131,4 +131,7 @@ message Frame {
 
   // Maps events to relevant predecessor events.
   map</* event uid */ string, EventUidList> tracing_result = 3;
+
+  // Identifiers appeared in this frame. Used to initialize trace graph's color schema.
+  repeated string identifiers = 4;
 }
