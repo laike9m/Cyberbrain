@@ -8,7 +8,7 @@ def test_existing_variable_emit_initial_value(tracer, rpc_stub):
     y = x
     tracer.stop_tracing()
 
-    assert tracer.event_sequence == [
+    assert tracer.events == [
         InitialValue(target=Symbol("x"), value="foo", lineno=8),
         Binding(target=Symbol("y"), value="foo", sources={Symbol("x")}, lineno=8),
     ]

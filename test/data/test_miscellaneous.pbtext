@@ -3,172 +3,137 @@
 
 filename: "test_miscellaneous.py"
 events {
-  key: "a"
-  value {
-    events {
-      initial_value {
-        uid: "test_miscellaneous:0"
-        filename: "test_miscellaneous.py"
-        lineno: 16
-        target: "a"
-        value: "\"a\""
-      }
-    }
+  initial_value {
+    uid: "test_miscellaneous:0"
+    filename: "test_miscellaneous.py"
+    lineno: 16
+    target: "a"
+    value: "\"a\""
   }
 }
 events {
-  key: "b"
-  value {
-    events {
-      initial_value {
-        uid: "test_miscellaneous:1"
-        filename: "test_miscellaneous.py"
-        lineno: 16
-        target: "b"
-        value: "\"b\""
-      }
-    }
+  initial_value {
+    uid: "test_miscellaneous:1"
+    filename: "test_miscellaneous.py"
+    lineno: 16
+    target: "b"
+    value: "\"b\""
   }
 }
 events {
-  key: "c"
-  value {
-    events {
-      initial_value {
-        uid: "test_miscellaneous:2"
-        filename: "test_miscellaneous.py"
-        lineno: 16
-        target: "c"
-        value: "\"c\""
-      }
-    }
+  initial_value {
+    uid: "test_miscellaneous:2"
+    filename: "test_miscellaneous.py"
+    lineno: 16
+    target: "c"
+    value: "\"c\""
   }
 }
 events {
-  key: "d"
-  value {
-    events {
-      initial_value {
-        uid: "test_miscellaneous:3"
-        filename: "test_miscellaneous.py"
-        lineno: 16
-        target: "d"
-        value: "\"d\""
-      }
-    }
+  initial_value {
+    uid: "test_miscellaneous:3"
+    filename: "test_miscellaneous.py"
+    lineno: 16
+    target: "d"
+    value: "\"d\""
   }
 }
 events {
-  key: "e"
-  value {
-    events {
-      initial_value {
-        uid: "test_miscellaneous:6"
-        filename: "test_miscellaneous.py"
-        lineno: 18
-        target: "e"
-        value: "[1, 2, 3]"
-      }
-    }
-    events {
-      mutation {
-        uid: "test_miscellaneous:7"
-        filename: "test_miscellaneous.py"
-        lineno: 18
-        target: "e"
-        value: "[1, 2]"
-        delta: "{\"iterable_item_removed\": {\"root[2]\": 3}}"
-      }
-    }
-    events {
-      mutation {
-        uid: "test_miscellaneous:8"
-        filename: "test_miscellaneous.py"
-        lineno: 18
-        target: "e"
-        value: "[4, 2]"
-        delta: "{\"values_changed\": {\"root[0]\": {\"new_value\": 4}}}"
-        sources: "e"
-      }
-    }
-    events {
-      deletion {
-        uid: "test_miscellaneous:9"
-        filename: "test_miscellaneous.py"
-        lineno: 19
-        target: "e"
-      }
-    }
+  binding {
+    uid: "test_miscellaneous:4"
+    filename: "test_miscellaneous.py"
+    lineno: 16
+    target: "x"
+    value: "\"a b    \'c\' \'d\' \""
+    sources: "a"
+    sources: "b"
+    sources: "c"
+    sources: "d"
   }
 }
 events {
-  key: "g"
-  value {
-    events {
-      initial_value {
-        uid: "test_miscellaneous:10"
-        filename: "test_miscellaneous.py"
-        lineno: 21
-        target: "g"
-        value: "0"
-      }
-    }
-    events {
-      binding {
-        uid: "test_miscellaneous:12"
-        filename: "test_miscellaneous.py"
-        lineno: 22
-        target: "g"
-        value: "1"
-      }
-    }
-    events {
-      deletion {
-        uid: "test_miscellaneous:13"
-        filename: "test_miscellaneous.py"
-        lineno: 23
-        target: "g"
-      }
-    }
+  binding {
+    uid: "test_miscellaneous:5"
+    filename: "test_miscellaneous.py"
+    lineno: 17
+    target: "x"
+    value: "false"
+    sources: "a"
+    sources: "b"
   }
 }
 events {
-  key: "x"
-  value {
-    events {
-      binding {
-        uid: "test_miscellaneous:4"
-        filename: "test_miscellaneous.py"
-        lineno: 16
-        target: "x"
-        value: "\"a b    \'c\' \'d\' \""
-        sources: "a"
-        sources: "b"
-        sources: "c"
-        sources: "d"
-      }
-    }
-    events {
-      binding {
-        uid: "test_miscellaneous:5"
-        filename: "test_miscellaneous.py"
-        lineno: 17
-        target: "x"
-        value: "false"
-        sources: "a"
-        sources: "b"
-      }
-    }
-    events {
-      binding {
-        uid: "test_miscellaneous:11"
-        filename: "test_miscellaneous.py"
-        lineno: 21
-        target: "x"
-        value: "0"
-        sources: "g"
-      }
-    }
+  initial_value {
+    uid: "test_miscellaneous:6"
+    filename: "test_miscellaneous.py"
+    lineno: 18
+    target: "e"
+    value: "[1, 2, 3]"
+  }
+}
+events {
+  mutation {
+    uid: "test_miscellaneous:7"
+    filename: "test_miscellaneous.py"
+    lineno: 18
+    target: "e"
+    value: "[1, 2]"
+    delta: "{\"iterable_item_removed\": {\"root[2]\": 3}}"
+  }
+}
+events {
+  mutation {
+    uid: "test_miscellaneous:8"
+    filename: "test_miscellaneous.py"
+    lineno: 18
+    target: "e"
+    value: "[4, 2]"
+    delta: "{\"values_changed\": {\"root[0]\": {\"new_value\": 4}}}"
+    sources: "e"
+  }
+}
+events {
+  deletion {
+    uid: "test_miscellaneous:9"
+    filename: "test_miscellaneous.py"
+    lineno: 19
+    target: "e"
+  }
+}
+events {
+  initial_value {
+    uid: "test_miscellaneous:10"
+    filename: "test_miscellaneous.py"
+    lineno: 21
+    target: "g"
+    value: "0"
+  }
+}
+events {
+  binding {
+    uid: "test_miscellaneous:11"
+    filename: "test_miscellaneous.py"
+    lineno: 21
+    target: "x"
+    value: "0"
+    sources: "g"
+  }
+}
+events {
+  binding {
+    uid: "test_miscellaneous:12"
+    filename: "test_miscellaneous.py"
+    lineno: 22
+    target: "g"
+    value: "1"
+  }
+}
+events {
+  deletion {
+    uid: "test_miscellaneous:13"
+    filename: "test_miscellaneous.py"
+    lineno: 23
+    target: "g"
   }
 }
 tracing_result {

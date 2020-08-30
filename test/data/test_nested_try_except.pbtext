@@ -3,16 +3,11 @@
 
 filename: "test_block.py"
 events {
-  key: "a"
-  value {
-    events {
-      binding {
-        uid: "test_nested_try_except:0"
-        filename: "test_block.py"
-        lineno: 32
-        target: "a"
-        value: "1"
-      }
-    }
+  binding {
+    uid: "test_nested_try_except:0"
+    filename: "test_block.py"
+    lineno: 32
+    target: "a"
+    value: "1"
   }
 }

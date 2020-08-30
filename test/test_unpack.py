@@ -23,7 +23,7 @@ def test_unpack(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.event_sequence == [
+    assert tracer.events == [
         Binding(target=Symbol("a"), value="h", sources=set(), lineno=12),
         Binding(target=Symbol("b"), value="i", sources=set(), lineno=12),
         InitialValue(target=Symbol("l1"), value=[1, 2], lineno=13),

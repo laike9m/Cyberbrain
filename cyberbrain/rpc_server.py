@@ -11,7 +11,7 @@ from datetime import datetime
 import grpc
 
 from . import utils
-from .basis import Event, InitialValue, Binding, Mutation, Deletion
+from .basis import Event, InitialValue, Binding, Mutation, Deletion, JumpBackToLoopStart
 from .frame_tree import FrameTree
 from .generated import communication_pb2
 from .generated import communication_pb2_grpc
@@ -60,6 +60,15 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 filename=event.filename,
                 lineno=event.lineno,
                 target=event.target.name,
+            )
+        )
+    elif isinstance(event, JumpBackToLoopStart):
+        event_proto.jump_back_to_loop_start.CopyFrom(
+            communication_pb2.JumpBackToLoopStart(
+                uid=event.uid,
+                filename=event.filename,
+                lineno=event.lineno,
+                jump_target=event.jump_target,
             )
         )
 
@@ -114,7 +123,7 @@ def _get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
     on value stack is not changed, therefore no need to update snapshots.
     """
 
-    if isinstance(event, InitialValue) or isinstance(event, Deletion):
+    if type(event) in {InitialValue, Deletion, JumpBackToLoopStart}:
         return
 
     assert isinstance(event, Binding) or isinstance(event, Mutation)
@@ -172,18 +181,13 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
         # TODO: Use frame ID for non-test.
         frame = FrameTree.get_frame(request.frame_name)
         frame_proto = communication_pb2.Frame(filename=frame.filename)
-        for identifier, events in frame.accumulated_events.items():
-            frame_proto.events[identifier].CopyFrom(
-                communication_pb2.EventList(
-                    events=[_transform_event_to_proto(event) for event in events]
+        for event in frame.accumulated_events:
+            frame_proto.events.append(_transform_event_to_proto(event))
+            event_uids = _get_event_sources_uids(event, frame)
+            if event_uids:
+                frame_proto.tracing_result[event.uid].CopyFrom(
+                    communication_pb2.EventUidList(event_uids=event_uids)
                 )
-            )
-            for event in events:
-                event_uids = _get_event_sources_uids(event, frame)
-                if event_uids:
-                    frame_proto.tracing_result[event.uid].CopyFrom(
-                        communication_pb2.EventUidList(event_uids=event_uids)
-                    )
         return frame_proto
 
 

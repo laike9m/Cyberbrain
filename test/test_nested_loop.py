@@ -11,7 +11,7 @@ def test_nested_loop(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.event_sequence == [
+    assert tracer.events == [
         Binding(lineno=8, target=Symbol("i"), value=0),
         Binding(lineno=9, target=Symbol("j"), value=0),
         Binding(
