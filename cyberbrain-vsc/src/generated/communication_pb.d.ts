@@ -534,6 +534,34 @@ export namespace EventUidList {
   }
 }
 
+export class Loop extends jspb.Message {
+  hasStartOffset(): boolean;
+  clearStartOffset(): void;
+  getStartOffset(): number | undefined;
+  setStartOffset(value: number): void;
+
+  hasEndOffset(): boolean;
+  clearEndOffset(): void;
+  getEndOffset(): number | undefined;
+  setEndOffset(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Loop.AsObject;
+  static toObject(includeInstance: boolean, msg: Loop): Loop.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: Loop, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Loop;
+  static deserializeBinaryFromReader(message: Loop, reader: jspb.BinaryReader): Loop;
+}
+
+export namespace Loop {
+  export type AsObject = {
+    startOffset?: number,
+    endOffset?: number,
+  }
+}
+
 export class Frame extends jspb.Message {
   hasFilename(): boolean;
   clearFilename(): void;
@@ -544,6 +572,11 @@ export class Frame extends jspb.Message {
   getEventsList(): Array<Event>;
   setEventsList(value: Array<Event>): void;
   addEvents(value?: Event, index?: number): Event;
+
+  clearLoopsList(): void;
+  getLoopsList(): Array<Loop>;
+  setLoopsList(value: Array<Loop>): void;
+  addLoops(value?: Loop, index?: number): Loop;
 
   getTracingResultMap(): jspb.Map<string, EventUidList>;
   clearTracingResultMap(): void;
@@ -566,6 +599,7 @@ export namespace Frame {
   export type AsObject = {
     filename?: string,
     eventsList: Array<Event.AsObject>,
+    loopsList: Array<Loop.AsObject>,
     tracingResultMap: Array<[string, EventUidList.AsObject]>,
     identifiersList: Array<string>,
   }
