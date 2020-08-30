@@ -15,6 +15,13 @@ from .utils import pprint, computed_gotos_enabled, shorten_path
 
 _implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS", "END_FINALLY"}
 
+PREDICT_MAP = {
+    "FOR_ITER": {"POP_BLOCK"},
+    "COMPARE_OP": {"POP_JUMP_IF_FALSE", "POP_JUMP_IF_TRUE"},
+}  # TODO: Add more.
+
+COMPUTED_GOTOS_ENABLED = computed_gotos_enabled()
+
 
 class FrameLogger:
     """Logger for a frame."""
@@ -81,7 +88,7 @@ class FrameLogger:
         like "STORE_NAME" and "STORE_ATTR", and prints them.
         """
         last_i = frame.f_lasti
-        # print(f"{last_i=}, {frame=}")
+        # print(f"last_i={last_i}, frame={frame}")
 
         # Why do we care about jump?
         #
@@ -142,7 +149,10 @@ class FrameLogger:
             self.instr_pointer = jump_location if jumped else self.instr_pointer + 2
             _debug_log(
                 self.debug_mode,
-                f"{cyan('Executed instruction')} at line {frame.f_lineno}:",
+                (
+                    f"{cyan('Executed instruction')} at line "
+                    f"{self.frame.offset_to_lineno[instr.offset]}"
+                ),
                 instr,
             )
             self.frame.log_events(frame, instr, jumped)
@@ -151,6 +161,44 @@ class FrameLogger:
                 f"{yellow('Current stack:')}",
                 self.frame.value_stack.stack,
             )
+
+            # Taking the following code as an example.
+            #     for i in range(2):
+            #         if i == 1:
+            #             break
+            #
+            #          16 GET_ITER
+            #     >>   18 FOR_ITER                16 (to 34)
+            #          20 STORE_FAST               2 (i)
+            #
+            #          22 LOAD_FAST                2 (i)
+            #          24 LOAD_CONST               2 (1)
+            #          26 COMPARE_OP               2 (==)
+            #          28 POP_JUMP_IF_FALSE       18
+            #
+            # Without COMPUTED_GOTOS, when last_i is 26, it will execute two
+            # instructions COMPARE_OP and POP_JUMP_IF_FALSE without ever updating
+            # last_i to 28, this is because PREDICT(POP_JUMP_IF_FALSE) exists in
+            # COMPARE_OP's handler.
+            #
+            # Assuming i = 0, and POP_JUMP_IF_FALSE jumps to loop start, resulting in
+            # last_i = 18. If we do nothing, since
+            #
+            #   self.instr_pointer (28, after increase) > last_i (18)
+            #
+            # the while loop would break, and POP_JUMP_IF_FALSE will never be traversed.
+            # Therefore we need to identify this and make sure to call "continue", to
+            # be able to process the next jump instruction .
+            if not COMPUTED_GOTOS_ENABLED:
+                try:
+                    # Note that instr_pointer has been increased already.
+                    opname_next = self.instructions[self.instr_pointer].opname
+                    if opname_next in PREDICT_MAP.get(instr.opname, {}):
+                        print(f"Found PREDICT!! {instr.opname} -> {opname_next}")
+                        continue
+                except IndexError:
+                    pass
+
             if self.instr_pointer >= last_i:
                 break
 
@@ -161,10 +209,6 @@ class FrameLogger:
 
 class JumpDetector:
     """Detects jump behavior."""
-
-    COMPUTED_GOTOS_ENABLED = computed_gotos_enabled()
-
-    PREDICT_MAP = {"FOR_ITER": "POP_BLOCK"}  # TODO: Add more.
 
     def __init__(self, instructions: dict[int, Instruction], debug_mode):
         self.instructions = instructions
@@ -183,7 +227,7 @@ class JumpDetector:
             return False, jump_target
 
         computed_last_i = jump_target
-        if not self.COMPUTED_GOTOS_ENABLED:
+        if not COMPUTED_GOTOS_ENABLED:
             # Here we assume that PREDICT happens at most once. I'm not sure if this
             # is always true. If it's not, we can modify the code.
             # Example:
@@ -199,8 +243,8 @@ class JumpDetector:
             # Without COMPUTED_GOTOS, PREDICT causes last_i to not update for POP_BLOCK,
             # so last_i is 26.
             opname_next = self.instructions[jump_target].opname
-            if opname_next == self.PREDICT_MAP.get(instr.opname):
-                print("Found PREDICT!!")
+            if opname_next in PREDICT_MAP.get(instr.opname, {}):
+                print(f"Found PREDICT!! {instr.opname} -> {opname_next}")
                 computed_last_i += 2
 
         if computed_last_i == last_i:
