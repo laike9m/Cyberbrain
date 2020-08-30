@@ -95,16 +95,10 @@ def _get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
     x, y = y, x
 
     which has events:
-        {
-            "x": [
-                Binding(target="x", value="foo", uid='1'),
-                Mutation(target="x", value="bar", sources={"y"}, uid='2'),
-            ],
-            "y": [
-                Binding(target="y", value="bar", uid='3'),
-                Mutation(target="y", value="foo", sources={"x"}, uid='4'),
-            ]
-        }
+        Binding(target="x", value="foo", uid='1'),
+        Binding(target="y", value="bar", uid='3'),
+        Binding(target="x", value="bar", sources={"y"}, uid='2'),
+        Binding(target="y", value="foo", sources={"x"}, uid='4'),
 
     Tracing result would be:
 
@@ -192,6 +186,14 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
         frame = FrameTree.get_frame(request.frame_name)
         frame_proto = communication_pb2.Frame(filename=frame.filename)
         frame_proto.identifiers.extend(list(frame.identifier_to_events.keys()))
+        frame_proto.loops.extend(
+            [
+                communication_pb2.Loop(
+                    start_offset=loop.start_offset, end_offset=loop.end_offset
+                )
+                for loop in frame.loops.values()
+            ]
+        )
         for event in frame.accumulated_events:
             frame_proto.events.append(_transform_event_to_proto(event))
             event_uids = _get_event_sources_uids(event, frame)

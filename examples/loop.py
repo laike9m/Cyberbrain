@@ -1,18 +1,16 @@
-from birdseye import eye
+from cyberbrain import Tracer
 
 
-@eye
-def f():
-    for i in range(10):
-        print(i)
+def run_loop():
+    tracer = Tracer()
+    tracer.start_tracing()
 
-    for i, j in enumerate(range(5)):
-        for k in range(5):
-            print(i, j)
+    for i in range(2):
+        for j in range(2):
+            a = i + j
 
-    x = [i for i in range(10)]
-
-    return 1
+    tracer.stop_tracing()
 
 
-f()
+if __name__ == "__main__":
+    run_loop()

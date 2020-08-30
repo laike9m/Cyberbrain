@@ -2,12 +2,20 @@
 
 import { Frame as FrameProto } from "./generated/communication_pb";
 
-import { Binding, Deletion, Event, InitialValue, Mutation } from "./basis";
+import {
+  Binding,
+  Deletion,
+  Event,
+  InitialValue,
+  Loop,
+  Mutation,
+} from "./basis";
 
 export class Frame {
   filename?: string;
   events: Array<Event> = [];
   identifiers: Array<string> = [];
+  loops: Array<Loop> = [];
 
   // Maps events to relevant predecessor events.
   tracingResult: Record<
@@ -30,6 +38,9 @@ export class Frame {
       if (event.hasDeletion()) {
         this.events.push(new Deletion(event.getDeletion()!));
       }
+    });
+    frame.getLoopsList().forEach((loop) => {
+      this.loops.push(new Loop(loop.getStartOffset()!, loop.getEndOffset()!));
     });
     this.identifiers = frame.getIdentifiersList();
     frame.getTracingResultMap().forEach((predecessorEventUidList, eventUid) => {

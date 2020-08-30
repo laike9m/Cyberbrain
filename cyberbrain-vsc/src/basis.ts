@@ -134,3 +134,13 @@ export class JumpBackToLoopStart extends Event {
     this.jump_target = jumpBack.getJumpTarget()!;
   }
 }
+
+export class Loop {
+  startOffset: number;
+  endOffset: number;
+
+  constructor(startOffset: number, endOffset: number) {
+    this.startOffset = startOffset;
+    this.endOffset = endOffset;
+  }
+}
