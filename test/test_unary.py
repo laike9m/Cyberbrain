@@ -14,7 +14,7 @@ def test_unary_operations(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.event_sequence == [
+    assert tracer.events == [
         InitialValue(target=Symbol("a"), value=1, lineno=10),
         Binding(target=Symbol("b"), value=1, sources={Symbol("a")}, lineno=10),
         Binding(target=Symbol("b"), value=-1, sources={Symbol("a")}, lineno=11),

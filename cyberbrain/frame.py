@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from copy import copy
 from dis import Instruction
 from types import FrameType
 from typing import Any
@@ -48,15 +47,6 @@ class Frame:
 
     TODO: corner cases to be handled:
         - delete, then create again
-
-    TODO (Return a sequence of events)
-        - Store events in sequence when adding.
-        - Add a accumulated_event_sequence method. Remember the latest event for each
-          identifier, calculate values based on delta.
-        - Replace test data to match accumulated_event_sequence
-        - Modify the Frame.events field in proto and modify GetFrame to call
-          accumulated_event_sequence
-        - Remove the original accumulated_events method.
 
     Whether we still need identifier_to_events is yet to be decided.
     """
@@ -235,11 +225,23 @@ class Frame:
         return value
 
     @property
-    def accumulated_event_sequence(self) -> list[Event]:
+    def accumulated_events(self) -> list[Event]:
         """
         The same as accumulated_events, but returns a list.
 
         It will modify the original events, but should be fine.
+
+        Now that FrameState only stores delta for Mutation event, if we need to know
+        the value after a certain Mutation event (like in tests), the value has to be
+        re-calculated. This method serves this purpose. Other events are kept unchanged.
+
+        e.g.
+
+        raw events:
+            Binding(value=[]), Mutation(delta="append 1")
+
+        Returned accumulated events:
+            Binding(value=[]), Mutation(delta="append 1", value=[1])
 
         TODO: If this method was called before, return self.events directly.
         """
@@ -252,34 +254,6 @@ class Frame:
             latest_events[event.target.name] = event
 
         return self.events
-
-    @property
-    def accumulated_events(self) -> dict[str, list[Event]]:
-        """Returns events with accumulated value.
-
-        Now that FrameState only stores delta for Mutation event, if we need to know
-        the value after a certain Mutation event (like in tests), the value has to be
-        re-calculated. This method serves this purpose. Other events are kept unchanged.
-
-        e.g.
-
-        raw events:
-            {'a': [Binding(value=[]), Mutation(delta="append 1")]
-
-        Returned accumulated events:
-            {'a': [Binding(value=[]), Mutation(delta="append 1", value=[1])]
-        """
-        result: dict[str, list[Event]] = defaultdict(list)
-        for name, raw_events in self.identifier_to_events.items():
-            for raw_event in raw_events:
-                if not isinstance(raw_event, Mutation):
-                    result[name].append(raw_event)
-                    continue
-                event = copy(raw_event)
-                event.value = result[name][-1].value + raw_event.delta
-                result[name].append(event)
-
-        return result
 
 
 class Snapshot:

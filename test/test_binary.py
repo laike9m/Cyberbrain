@@ -23,7 +23,7 @@ def test_binary_operation(tracer, rpc_stub):
 
     tracer.stop_tracing()
 
-    assert tracer.event_sequence == [
+    assert tracer.events == [
         InitialValue(target=Symbol("a"), value=1, lineno=10),
         InitialValue(target=Symbol("b"), value=1, lineno=10),
         Binding(

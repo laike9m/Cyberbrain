@@ -14,7 +14,7 @@ tracer.stop_tracing()
 
 
 def test_module(rpc_stub):
-    assert tracer.event_sequence == [
+    assert tracer.events == [
         InitialValue(target=Symbol("x"), value=1, lineno=11),
         Deletion(target=Symbol("x"), lineno=11),
         InitialValue(target=Symbol("__annotations__"), value={}, lineno=12),

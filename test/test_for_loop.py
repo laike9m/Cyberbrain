@@ -38,7 +38,7 @@ def test_for_loop(tracer, rpc_stub):
 
     from cyberbrain import pprint
 
-    pprint(tracer.event_sequence)
+    pprint(tracer.events)
 
     expected_events = [
         Binding(target=Symbol("i"), value=0, lineno=8),
@@ -66,7 +66,7 @@ def test_for_loop(tracer, rpc_stub):
         ),
         Binding(target=Symbol("a"), value=1, lineno=35),
     ]
-    for index, event in enumerate(tracer.event_sequence):
+    for index, event in enumerate(tracer.events):
         assert event == expected_events[index], f"{event} {expected_events[index]}"
     print(tracer.loops)
     assert tracer.loops == [
