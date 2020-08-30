@@ -38,3 +38,5 @@ events {
     delta: "{\"dictionary_item_added\": {\"root[\'y\']\": {\"py/type\": \"builtins.int\"}}}"
   }
 }
+identifiers: "x"
+identifiers: "__annotations__"

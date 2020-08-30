@@ -487,6 +487,11 @@ export class Frame extends jspb.Message {
 
   getTracingResultMap(): jspb.Map<string, EventUidList>;
   clearTracingResultMap(): void;
+  clearIdentifiersList(): void;
+  getIdentifiersList(): Array<string>;
+  setIdentifiersList(value: Array<string>): void;
+  addIdentifiers(value: string, index?: number): string;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Frame.AsObject;
   static toObject(includeInstance: boolean, msg: Frame): Frame.AsObject;
@@ -502,6 +507,7 @@ export namespace Frame {
     filename?: string,
     eventsList: Array<Event.AsObject>,
     tracingResultMap: Array<[string, EventUidList.AsObject]>,
+    identifiersList: Array<string>,
   }
 }
 
