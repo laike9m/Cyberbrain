@@ -272,3 +272,16 @@ tracing_result {
     event_uids: "test_unpack:5"
   }
 }
+identifiers: "a"
+identifiers: "b"
+identifiers: "l1"
+identifiers: "numbers"
+identifiers: "first"
+identifiers: "rest"
+identifiers: "beginning"
+identifiers: "last"
+identifiers: "head"
+identifiers: "middle"
+identifiers: "tail"
+identifiers: "m1"
+identifiers: "m2"

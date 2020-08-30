@@ -335,3 +335,16 @@ tracing_result {
     event_uids: "test_inplace_operations:1"
   }
 }
+identifiers: "a1"
+identifiers: "b"
+identifiers: "a2"
+identifiers: "a3"
+identifiers: "a4"
+identifiers: "a5"
+identifiers: "a6"
+identifiers: "a7"
+identifiers: "a8"
+identifiers: "a9"
+identifiers: "a10"
+identifiers: "a11"
+identifiers: "a12"

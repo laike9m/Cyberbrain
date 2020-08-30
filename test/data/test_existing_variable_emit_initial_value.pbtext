@@ -27,3 +27,5 @@ tracing_result {
     event_uids: "test_existing_variable_emit_initial_value:0"
   }
 }
+identifiers: "x"
+identifiers: "y"

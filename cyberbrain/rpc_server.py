@@ -181,6 +181,7 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
         # TODO: Use frame ID for non-test.
         frame = FrameTree.get_frame(request.frame_name)
         frame_proto = communication_pb2.Frame(filename=frame.filename)
+        frame_proto.identifiers.extend(list(frame.identifier_to_events.keys()))
         for event in frame.accumulated_events:
             frame_proto.events.append(_transform_event_to_proto(event))
             event_uids = _get_event_sources_uids(event, frame)
