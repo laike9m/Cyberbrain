@@ -7,7 +7,7 @@ def test_unpack(tracer, rpc_stub):
     numbers = [1, 2, 3, 4]
     m1 = m2 = {1: 2}
 
-    tracer.start_tracing()
+    tracer.start()
 
     a, b = "hi"  # UNPACK_SEQUENCE
     a, b = l1  # UNPACK_SEQUENCE
@@ -21,7 +21,7 @@ def test_unpack(tracer, rpc_stub):
 
     # TODO: Test dictionary items() unpack once iter_xx, call_xx, block_xx are done.
 
-    tracer.stop_tracing()
+    tracer.stop()
 
     assert tracer.events == [
         Binding(target=Symbol("a"), value="h", sources=set(), lineno=12),

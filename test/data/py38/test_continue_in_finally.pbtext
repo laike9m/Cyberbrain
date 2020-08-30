@@ -44,4 +44,8 @@ events {
     jump_target: 16
   }
 }
+loops {
+  start_offset: 16
+  end_offset: 32
+}
 identifiers: "x"

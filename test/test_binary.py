@@ -5,7 +5,7 @@ def test_binary_operation(tracer, rpc_stub):
     a = b = 1
     lst = [0, 1]
 
-    tracer.start_tracing()
+    tracer.start()
 
     c = a ** b  # BINARY_POWER
     c = a * b  # BINARY_MULTIPLY
@@ -21,7 +21,7 @@ def test_binary_operation(tracer, rpc_stub):
     c = a ^ b  # BINARY_XOR
     c = a | b  # BINARY_OR
 
-    tracer.stop_tracing()
+    tracer.stop()
 
     assert tracer.events == [
         InitialValue(target=Symbol("a"), value=1, lineno=10),
