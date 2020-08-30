@@ -2,14 +2,14 @@ from cyberbrain import Binding, Symbol
 
 
 def test_list_comprehension(tracer, rpc_stub):
-    tracer.start_tracing()
+    tracer.start()
 
     n = 2
     x = [i for i in range(n)]  # MAKE_FUNCTION, GET_ITER, CALL_FUNCTION
     lst = ["foo", "bar"]
     x = [e for e in lst]
 
-    tracer.stop_tracing()
+    tracer.stop()
 
     assert tracer.events == [
         Binding(target=Symbol("n"), value=2, lineno=7),
