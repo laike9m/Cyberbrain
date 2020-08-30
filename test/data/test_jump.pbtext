@@ -81,3 +81,7 @@ tracing_result {
     event_uids: "test_jump:4"
   }
 }
+identifiers: "a"
+identifiers: "x"
+identifiers: "b"
+identifiers: "c"

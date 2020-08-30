@@ -263,3 +263,7 @@ tracing_result {
     event_uids: "test_binary_operation:1"
   }
 }
+identifiers: "a"
+identifiers: "b"
+identifiers: "c"
+identifiers: "lst"

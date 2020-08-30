@@ -57,3 +57,5 @@ tracing_result {
     event_uids: "test_attribute:0"
   }
 }
+identifiers: "a2"
+identifiers: "a1"

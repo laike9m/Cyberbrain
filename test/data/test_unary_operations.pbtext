@@ -75,3 +75,5 @@ tracing_result {
     event_uids: "test_unary_operations:0"
   }
 }
+identifiers: "a"
+identifiers: "b"

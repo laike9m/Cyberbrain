@@ -58,54 +58,50 @@ window.addEventListener("message", (event) => {
 
   let lines = new Set();
   let events = event.data.events;
-  let colorGenerator = new ColorGenerator(Object.keys(events));
+  let colorGenerator = new ColorGenerator(event.data.identifiers);
   let nodes = new vis.DataSet([]);
-  for (let identifier in events) {
-    if (Object.prototype.hasOwnProperty.call(events, identifier)) {
-      for (let event of events[identifier]) {
-        let linenoString = event.lineno.toString();
-        if (!lines.has(linenoString)) {
-          // Adds a "virtual node" to show line number. This node should precede other nodes
-          // on the same level. According to https://github.com/visjs/vis-network/issues/926,
-          // the order is not deterministic, but seems it's roughly the same as the insertion
-          // order.
-          lines.add(linenoString);
-          nodes.add({
-            title: `Line ${event.lineno}`,
-            id: linenoString,
-            level: event.lineno,
-            label: linenoString,
-            borderWidth: 0,
-            // Disable physics so the lineno nodes are not pushed away to the left.
-            physics: false,
-            color: {
-              border: "rgba(0, 0, 0, 0)",
-              background: "rgba(0, 0, 0, 0)",
-              hover: {
-                background: "rgba(0, 0, 0, 0)",
-              },
-            },
-          });
-        }
-        nodes.add({
-          title: getTooltipTextForEventNode(event),
-          id: event.uid,
-          level: event.lineno,
-          label: buildLabelText(event),
-          target: event.target,
-          // "value" is reserved, use "runtimeValue" instead.
-          runtimeValue: event.value,
-          color: {
-            background: colorGenerator.getColor(event.target),
-            hover: {
-              // Right now we let color keeps unchanged when hovering. We may slightly
-              // change the color to make the node obvious.
-              background: colorGenerator.getColor(event.target),
-            },
+  for (let event of events) {
+    let linenoString = event.lineno.toString();
+    if (!lines.has(linenoString)) {
+      // Adds a "virtual node" to show line number. This node should precede other nodes
+      // on the same level. According to https://github.com/visjs/vis-network/issues/926,
+      // the order is not deterministic, but seems it's roughly the same as the insertion
+      // order.
+      lines.add(linenoString);
+      nodes.add({
+        title: `Line ${event.lineno}`,
+        id: linenoString,
+        level: event.lineno,
+        label: linenoString,
+        borderWidth: 0,
+        // Disable physics so the lineno nodes are not pushed away to the left.
+        physics: false,
+        color: {
+          border: "rgba(0, 0, 0, 0)",
+          background: "rgba(0, 0, 0, 0)",
+          hover: {
+            background: "rgba(0, 0, 0, 0)",
           },
-        });
-      }
+        },
+      });
     }
+    nodes.add({
+      title: getTooltipTextForEventNode(event),
+      id: event.uid,
+      level: event.lineno,
+      label: buildLabelText(event),
+      target: event.target,
+      // "value" is reserved, use "runtimeValue" instead.
+      runtimeValue: event.value,
+      color: {
+        background: colorGenerator.getColor(event.target),
+        hover: {
+          // Right now we let color keeps unchanged when hovering. We may slightly
+          // change the color to make the node obvious.
+          background: colorGenerator.getColor(event.target),
+        },
+      },
+    });
   }
 
   const edges = new vis.DataSet([]);
