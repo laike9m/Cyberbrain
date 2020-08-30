@@ -132,15 +132,22 @@ message EventUidList {
   repeated string event_uids = 1;
 }
 
+message Loop {
+  optional int32 start_offset = 1;
+  optional int32 end_offset = 2;
+}
+
 message Frame {
   optional string filename = 1;
 
   // Events that happened in this frame, arranged by the order they occurred.
   repeated Event events = 2;
 
+  repeated Loop loops = 3;
+
   // Maps events to relevant predecessor events.
-  map</* event uid */ string, EventUidList> tracing_result = 3;
+  map</* event uid */ string, EventUidList> tracing_result = 4;
 
   // Identifiers appeared in this frame. Used to initialize trace graph's color schema.
-  repeated string identifiers = 4;
+  repeated string identifiers = 5;
 }
