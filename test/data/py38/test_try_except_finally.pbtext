@@ -9,6 +9,8 @@ events {
     lineno: 50
     target: "b"
     value: "1"
+    index: 0
+    offset: 50
   }
 }
 identifiers: "b"

@@ -1,0 +1,301 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_binary.py"
+events {
+  initial_value {
+    uid: "test_binary_operation:0"
+    filename: "test_binary.py"
+    lineno: 10
+    target: "a"
+    value: "1"
+    index: 0
+    offset: 24
+  }
+}
+events {
+  initial_value {
+    uid: "test_binary_operation:1"
+    filename: "test_binary.py"
+    lineno: 10
+    target: "b"
+    value: "1"
+    index: 1
+    offset: 26
+  }
+}
+events {
+  binding {
+    uid: "test_binary_operation:2"
+    filename: "test_binary.py"
+    lineno: 10
+    target: "c"
+    value: "1"
+    sources: "a"
+    sources: "b"
+    index: 2
+    offset: 30
+  }
+}
+events {
+  binding {
+    uid: "test_binary_operation:3"
+    filename: "test_binary.py"
+    lineno: 11
+    target: "c"
+    value: "1"
+    sources: "a"
+    sources: "b"
+    index: 3
+    offset: 38
+  }
+}
+events {
+  binding {
+    uid: "test_binary_operation:4"
+    filename: "test_binary.py"
+    lineno: 12
+    target: "c"
+    value: "1"
+    sources: "a"
+    sources: "b"
+    index: 4
+    offset: 46
+  }
+}
+events {
+  binding {
+    uid: "test_binary_operation:5"
+    filename: "test_binary.py"
+    lineno: 13
+    target: "c"
+    value: "1.0"
+    sources: "a"
+    sources: "b"
+    index: 5
+    offset: 54
+  }
+}
+events {
+  binding {
+    uid: "test_binary_operation:6"
+    filename: "test_binary.py"
+    lineno: 14
+    target: "c"
+    value: "0"
+    sources: "a"
+    sources: "b"
+    index: 6
+    offset: 62
+  }
+}
+events {
+  binding {
+    uid: "test_binary_operation:7"
+    filename: "test_binary.py"
+    lineno: 15
+    target: "c"
+    value: "2"
+    sources: "a"
+    sources: "b"
+    index: 7
+    offset: 70
+  }
+}
+events {
+  binding {
+    uid: "test_binary_operation:8"
+    filename: "test_binary.py"
+    lineno: 16
+    target: "c"
+    value: "0"
+    sources: "a"
+    sources: "b"
+    index: 8
+    offset: 78
+  }
+}
+events {
+  initial_value {
+    uid: "test_binary_operation:9"
+    filename: "test_binary.py"
+    lineno: 17
+    target: "lst"
+    value: "[0, 1]"
+    index: 9
+    offset: 80
+  }
+}
+events {
+  binding {
+    uid: "test_binary_operation:10"
+    filename: "test_binary.py"
+    lineno: 17
+    target: "c"
+    value: "1"
+    sources: "a"
+    sources: "lst"
+    index: 10
+    offset: 86
+  }
+}
+events {
+  binding {
+    uid: "test_binary_operation:11"
+    filename: "test_binary.py"
+    lineno: 18
+    target: "c"
+    value: "2"
+    sources: "a"
+    sources: "b"
+    index: 11
+    offset: 94
+  }
+}
+events {
+  binding {
+    uid: "test_binary_operation:12"
+    filename: "test_binary.py"
+    lineno: 19
+    target: "c"
+    value: "0"
+    sources: "a"
+    sources: "b"
+    index: 12
+    offset: 102
+  }
+}
+events {
+  binding {
+    uid: "test_binary_operation:13"
+    filename: "test_binary.py"
+    lineno: 20
+    target: "c"
+    value: "1"
+    sources: "a"
+    sources: "b"
+    index: 13
+    offset: 110
+  }
+}
+events {
+  binding {
+    uid: "test_binary_operation:14"
+    filename: "test_binary.py"
+    lineno: 21
+    target: "c"
+    value: "0"
+    sources: "a"
+    sources: "b"
+    index: 14
+    offset: 118
+  }
+}
+events {
+  binding {
+    uid: "test_binary_operation:15"
+    filename: "test_binary.py"
+    lineno: 22
+    target: "c"
+    value: "1"
+    sources: "a"
+    sources: "b"
+    index: 15
+    offset: 126
+  }
+}
+tracing_result {
+  key: "test_binary_operation:10"
+  value {
+    event_uids: "test_binary_operation:0"
+    event_uids: "test_binary_operation:9"
+  }
+}
+tracing_result {
+  key: "test_binary_operation:11"
+  value {
+    event_uids: "test_binary_operation:0"
+    event_uids: "test_binary_operation:1"
+  }
+}
+tracing_result {
+  key: "test_binary_operation:12"
+  value {
+    event_uids: "test_binary_operation:0"
+    event_uids: "test_binary_operation:1"
+  }
+}
+tracing_result {
+  key: "test_binary_operation:13"
+  value {
+    event_uids: "test_binary_operation:0"
+    event_uids: "test_binary_operation:1"
+  }
+}
+tracing_result {
+  key: "test_binary_operation:14"
+  value {
+    event_uids: "test_binary_operation:0"
+    event_uids: "test_binary_operation:1"
+  }
+}
+tracing_result {
+  key: "test_binary_operation:15"
+  value {
+    event_uids: "test_binary_operation:0"
+    event_uids: "test_binary_operation:1"
+  }
+}
+tracing_result {
+  key: "test_binary_operation:2"
+  value {
+    event_uids: "test_binary_operation:0"
+    event_uids: "test_binary_operation:1"
+  }
+}
+tracing_result {
+  key: "test_binary_operation:3"
+  value {
+    event_uids: "test_binary_operation:0"
+    event_uids: "test_binary_operation:1"
+  }
+}
+tracing_result {
+  key: "test_binary_operation:4"
+  value {
+    event_uids: "test_binary_operation:0"
+    event_uids: "test_binary_operation:1"
+  }
+}
+tracing_result {
+  key: "test_binary_operation:5"
+  value {
+    event_uids: "test_binary_operation:0"
+    event_uids: "test_binary_operation:1"
+  }
+}
+tracing_result {
+  key: "test_binary_operation:6"
+  value {
+    event_uids: "test_binary_operation:0"
+    event_uids: "test_binary_operation:1"
+  }
+}
+tracing_result {
+  key: "test_binary_operation:7"
+  value {
+    event_uids: "test_binary_operation:0"
+    event_uids: "test_binary_operation:1"
+  }
+}
+tracing_result {
+  key: "test_binary_operation:8"
+  value {
+    event_uids: "test_binary_operation:0"
+    event_uids: "test_binary_operation:1"
+  }
+}
+identifiers: "a"
+identifiers: "b"
+identifiers: "c"
+identifiers: "lst"

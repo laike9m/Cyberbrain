@@ -9,6 +9,8 @@ events {
     lineno: 8
     target: "x"
     value: "\"foo\""
+    index: 0
+    offset: 12
   }
 }
 events {
@@ -19,6 +21,8 @@ events {
     target: "y"
     value: "\"foo\""
     sources: "x"
+    index: 1
+    offset: 14
   }
 }
 tracing_result {

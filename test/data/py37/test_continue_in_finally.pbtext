@@ -4,35 +4,43 @@
 filename: "test_block_py38.py"
 events {
   binding {
-    uid: "test_continue_in_finally_with_exception:0"
+    uid: "test_continue_in_finally:0"
     filename: "test_block_py38.py"
-    lineno: 52
+    lineno: 22
     target: "x"
     value: "0"
+    index: 0
+    offset: 18
   }
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_continue_in_finally_with_exception:1"
+    uid: "test_continue_in_finally:1"
     filename: "test_block_py38.py"
-    lineno: 56
+    lineno: 26
+    index: 1
+    offset: 32
     jump_target: 16
   }
 }
 events {
   binding {
-    uid: "test_continue_in_finally_with_exception:2"
+    uid: "test_continue_in_finally:2"
     filename: "test_block_py38.py"
-    lineno: 52
+    lineno: 22
     target: "x"
     value: "1"
+    index: 2
+    offset: 18
   }
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_continue_in_finally_with_exception:3"
+    uid: "test_continue_in_finally:3"
     filename: "test_block_py38.py"
-    lineno: 56
+    lineno: 26
+    index: 3
+    offset: 32
     jump_target: 16
   }
 }

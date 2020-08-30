@@ -7,28 +7,22 @@ from google.protobuf import text_format
 
 from cyberbrain.generated import communication_pb2, communication_pb2_grpc
 
+python_version = {(3, 7): "py37", (3, 8): "py38"}[sys.version_info[:2]]
+
 
 def get_value(value_dict: dict[str, any]):
     """Accept an argument like {'py37': 1, 'py38': 2}.
 
     Used for version-dependent tests.
     """
-
-    if sys.version_info[:2] == (3, 7):
-        return value_dict["py37"]
-    if sys.version_info[:2] == (3, 8):
-        return value_dict["py38"]
-    else:
-        raise Exception(
-            f"please modify the get_value function to support version {sys.version}"
-        )
+    return value_dict[python_version]
 
 
 def assert_GetFrame(
     rpc_stub: communication_pb2_grpc.CommunicationStub, frame_name: str
 ):
     # print(rpc_stub.GetFrame(communication_pb2.FrameLocater(frame_name=frame_name)))
-    golden_filepath = f"test/data/{frame_name}.pbtext"
+    golden_filepath = f"test/data/{python_version}/{frame_name}.pbtext"
 
     # Generates golden data.
     if not os.path.exists(golden_filepath):
