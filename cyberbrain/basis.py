@@ -60,11 +60,6 @@ class Event:
     uid: string = attr.ib(factory=UUIDGenerator.generate_uuid, eq=False, repr=False)
 
 
-@attr.s
-class JumpBackToLoopStart(Event):
-    jump_target: int = attr.ib(kw_only=True)
-
-
 @attr.s(auto_attribs=True)
 class InitialValue(Event):
     """Identifiers come from other places, or simply exist before tracking starts.
@@ -156,6 +151,17 @@ class Deletion(Event):
         )
 
 
+@attr.s
+class JumpBackToLoopStart(Event):
+    jump_target: int = attr.ib(kw_only=True)
+
+
+@attr.s
+class Loop:
+    start_offset: int = attr.ib(kw_only=True)
+    end_offset: int = attr.ib(kw_only=True)
+
+
 """
 An edge case that is not handled:
 x = a.b
@@ -190,4 +196,4 @@ class Symbol:
         return self.name == other.name
 
     def __repr__(self):
-        return f"Symbol({self.name})"
+        return f"Symbol('{self.name}')"
