@@ -9,6 +9,8 @@ events {
     lineno: 6
     target: "x"
     value: "\"hello world\""
+    index: 0
+    offset: 10
   }
 }
 events {
@@ -19,6 +21,8 @@ events {
     target: "y"
     value: "\"hello world\""
     sources: "x"
+    index: 1
+    offset: 14
   }
 }
 events {
@@ -29,6 +33,8 @@ events {
     target: "x"
     value: "\"hello world\""
     sources: "y"
+    index: 2
+    offset: 22
   }
 }
 events {
@@ -39,6 +45,8 @@ events {
     target: "y"
     value: "\"hello world\""
     sources: "x"
+    index: 3
+    offset: 24
   }
 }
 tracing_result {

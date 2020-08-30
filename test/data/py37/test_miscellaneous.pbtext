@@ -9,6 +9,8 @@ events {
     lineno: 16
     target: "a"
     value: "\"a\""
+    index: 0
+    offset: 34
   }
 }
 events {
@@ -18,6 +20,8 @@ events {
     lineno: 16
     target: "b"
     value: "\"b\""
+    index: 1
+    offset: 40
   }
 }
 events {
@@ -27,6 +31,8 @@ events {
     lineno: 16
     target: "c"
     value: "\"c\""
+    index: 2
+    offset: 48
   }
 }
 events {
@@ -36,6 +42,8 @@ events {
     lineno: 16
     target: "d"
     value: "\"d\""
+    index: 3
+    offset: 54
   }
 }
 events {
@@ -49,6 +57,8 @@ events {
     sources: "b"
     sources: "c"
     sources: "d"
+    index: 4
+    offset: 62
   }
 }
 events {
@@ -60,6 +70,8 @@ events {
     value: "false"
     sources: "a"
     sources: "b"
+    index: 5
+    offset: 86
   }
 }
 events {
@@ -69,6 +81,8 @@ events {
     lineno: 18
     target: "e"
     value: "[1, 2, 3]"
+    index: 6
+    offset: 88
   }
 }
 events {
@@ -79,6 +93,8 @@ events {
     target: "e"
     value: "[1, 2]"
     delta: "{\"iterable_item_removed\": {\"root[2]\": 3}}"
+    index: 7
+    offset: 100
   }
 }
 events {
@@ -90,6 +106,8 @@ events {
     value: "[4, 2]"
     delta: "{\"values_changed\": {\"root[0]\": {\"new_value\": 4}}}"
     sources: "e"
+    index: 8
+    offset: 106
   }
 }
 events {
@@ -98,6 +116,8 @@ events {
     filename: "test_miscellaneous.py"
     lineno: 19
     target: "e"
+    index: 9
+    offset: 108
   }
 }
 events {
@@ -107,6 +127,8 @@ events {
     lineno: 21
     target: "g"
     value: "0"
+    index: 10
+    offset: 110
   }
 }
 events {
@@ -117,6 +139,8 @@ events {
     target: "x"
     value: "0"
     sources: "g"
+    index: 11
+    offset: 112
   }
 }
 events {
@@ -126,6 +150,8 @@ events {
     lineno: 22
     target: "g"
     value: "1"
+    index: 12
+    offset: 116
   }
 }
 events {
@@ -134,6 +160,8 @@ events {
     filename: "test_miscellaneous.py"
     lineno: 23
     target: "g"
+    index: 13
+    offset: 118
   }
 }
 tracing_result {

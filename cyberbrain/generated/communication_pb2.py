@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto2',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x13\x63ommunication.proto\"\x97\x01\n\x05State\x12\x1d\n\x06status\x18\x01 \x01(\x0e\x32\r.State.Status\x12\x0f\n\x07message\x18\x02 \x01(\t\"^\n\x06Status\x12\x10\n\x0c\x43LIENT_READY\x10\x01\x12\x10\n\x0cSERVER_READY\x10\x02\x12\x16\n\x12\x45XECUTION_COMPLETE\x10\x03\x12\x18\n\x14\x42\x41\x43KTRACING_COMPLETE\x10\x04\"E\n\x0e\x43ursorPosition\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x0e\n\x06lineno\x18\x02 \x01(\x05\x12\x11\n\tcharacter\x18\x03 \x01(\x05\"\xb7\x01\n\x0c\x46rameLocater\x12\x10\n\x08\x66rame_id\x18\x01 \x01(\t\x12\x12\n\nframe_name\x18\x02 \x01(\t\x12\x10\n\x08\x66ilename\x18\x03 \x01(\t\x12\x14\n\x0cstart_lineno\x18\x04 \x01(\x03\x12\x12\n\nend_lineno\x18\x05 \x01(\x03\x12\x19\n\x11\x63\x61llsite_filename\x18\x06 \x01(\t\x12\x17\n\x0f\x63\x61llsite_lineno\x18\x07 \x01(\x03\x12\x11\n\targuments\x18\x08 \x01(\t\"9\n\x10\x46rameLocaterList\x12%\n\x0e\x66rame_locaters\x18\x01 \x03(\x0b\x32\r.FrameLocater\"\\\n\x0cInitialValue\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\"h\n\x07\x42inding\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\x12\x0f\n\x07sources\x18\x06 \x03(\t\"x\n\x08Mutation\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\x12\r\n\x05\x64\x65lta\x18\x06 \x01(\t\x12\x0f\n\x07sources\x18\x07 \x03(\t\"I\n\x08\x44\x65letion\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\"Y\n\x13JumpBackToLoopStart\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x13\n\x0bjump_target\x18\x04 \x01(\x05\"\xcc\x01\n\x05\x45vent\x12&\n\rinitial_value\x18\x01 \x01(\x0b\x32\r.InitialValueH\x00\x12\x1b\n\x07\x62inding\x18\x02 \x01(\x0b\x32\x08.BindingH\x00\x12\x1d\n\x08mutation\x18\x03 \x01(\x0b\x32\t.MutationH\x00\x12\x1d\n\x08\x64\x65letion\x18\x04 \x01(\x0b\x32\t.DeletionH\x00\x12\x37\n\x17jump_back_to_loop_start\x18\x05 \x01(\x0b\x32\x14.JumpBackToLoopStartH\x00\x42\x07\n\x05value\"\"\n\x0c\x45ventUidList\x12\x12\n\nevent_uids\x18\x01 \x03(\t\"\xbe\x01\n\x05\x46rame\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x16\n\x06\x65vents\x18\x02 \x03(\x0b\x32\x06.Event\x12\x31\n\x0etracing_result\x18\x03 \x03(\x0b\x32\x19.Frame.TracingResultEntry\x12\x13\n\x0bidentifiers\x18\x04 \x03(\t\x1a\x43\n\x12TracingResultEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.EventUidList:\x02\x38\x01\x32\x89\x01\n\rCommunication\x12\x1f\n\tSyncState\x12\x06.State\x1a\x06.State\"\x00\x30\x01\x12\x32\n\nFindFrames\x12\x0f.CursorPosition\x1a\x11.FrameLocaterList\"\x00\x12#\n\x08GetFrame\x12\r.FrameLocater\x1a\x06.Frame\"\x00'
+  serialized_pb=b'\n\x13\x63ommunication.proto\"\x97\x01\n\x05State\x12\x1d\n\x06status\x18\x01 \x01(\x0e\x32\r.State.Status\x12\x0f\n\x07message\x18\x02 \x01(\t\"^\n\x06Status\x12\x10\n\x0c\x43LIENT_READY\x10\x01\x12\x10\n\x0cSERVER_READY\x10\x02\x12\x16\n\x12\x45XECUTION_COMPLETE\x10\x03\x12\x18\n\x14\x42\x41\x43KTRACING_COMPLETE\x10\x04\"E\n\x0e\x43ursorPosition\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x0e\n\x06lineno\x18\x02 \x01(\x05\x12\x11\n\tcharacter\x18\x03 \x01(\x05\"\xb7\x01\n\x0c\x46rameLocater\x12\x10\n\x08\x66rame_id\x18\x01 \x01(\t\x12\x12\n\nframe_name\x18\x02 \x01(\t\x12\x10\n\x08\x66ilename\x18\x03 \x01(\t\x12\x14\n\x0cstart_lineno\x18\x04 \x01(\x03\x12\x12\n\nend_lineno\x18\x05 \x01(\x03\x12\x19\n\x11\x63\x61llsite_filename\x18\x06 \x01(\t\x12\x17\n\x0f\x63\x61llsite_lineno\x18\x07 \x01(\x03\x12\x11\n\targuments\x18\x08 \x01(\t\"9\n\x10\x46rameLocaterList\x12%\n\x0e\x66rame_locaters\x18\x01 \x03(\x0b\x32\r.FrameLocater\"{\n\x0cInitialValue\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\r\n\x05index\x18\x06 \x01(\x03\x12\x0e\n\x06offset\x18\x07 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\"\x87\x01\n\x07\x42inding\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05index\x18\x07 \x01(\x03\x12\x0e\n\x06offset\x18\x08 \x01(\x05\x12\r\n\x05value\x18\x05 \x01(\t\x12\x0f\n\x07sources\x18\x06 \x03(\t\"\x97\x01\n\x08Mutation\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\r\n\x05index\x18\x08 \x01(\x03\x12\x0e\n\x06offset\x18\t \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\x12\r\n\x05\x64\x65lta\x18\x06 \x01(\t\x12\x0f\n\x07sources\x18\x07 \x03(\t\"h\n\x08\x44\x65letion\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\r\n\x05index\x18\x05 \x01(\x03\x12\x0e\n\x06offset\x18\x06 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\"x\n\x13JumpBackToLoopStart\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\r\n\x05index\x18\x04 \x01(\x03\x12\x0e\n\x06offset\x18\x05 \x01(\x05\x12\x13\n\x0bjump_target\x18\x06 \x01(\x05\"\xcc\x01\n\x05\x45vent\x12&\n\rinitial_value\x18\x01 \x01(\x0b\x32\r.InitialValueH\x00\x12\x1b\n\x07\x62inding\x18\x02 \x01(\x0b\x32\x08.BindingH\x00\x12\x1d\n\x08mutation\x18\x03 \x01(\x0b\x32\t.MutationH\x00\x12\x1d\n\x08\x64\x65letion\x18\x04 \x01(\x0b\x32\t.DeletionH\x00\x12\x37\n\x17jump_back_to_loop_start\x18\x05 \x01(\x0b\x32\x14.JumpBackToLoopStartH\x00\x42\x07\n\x05value\"\"\n\x0c\x45ventUidList\x12\x12\n\nevent_uids\x18\x01 \x03(\t\"\xbe\x01\n\x05\x46rame\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x16\n\x06\x65vents\x18\x02 \x03(\x0b\x32\x06.Event\x12\x31\n\x0etracing_result\x18\x03 \x03(\x0b\x32\x19.Frame.TracingResultEntry\x12\x13\n\x0bidentifiers\x18\x04 \x03(\t\x1a\x43\n\x12TracingResultEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.EventUidList:\x02\x38\x01\x32\x89\x01\n\rCommunication\x12\x1f\n\tSyncState\x12\x06.State\x1a\x06.State\"\x00\x30\x01\x12\x32\n\nFindFrames\x12\x0f.CursorPosition\x1a\x11.FrameLocaterList\"\x00\x12#\n\x08GetFrame\x12\r.FrameLocater\x1a\x06.Frame\"\x00'
 )
 
 
@@ -289,14 +289,28 @@ _INITIALVALUE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='target', full_name='InitialValue.target', index=3,
+      name='index', full_name='InitialValue.index', index=3,
+      number=6, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='offset', full_name='InitialValue.offset', index=4,
+      number=7, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='target', full_name='InitialValue.target', index=5,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='InitialValue.value', index=4,
+      name='value', full_name='InitialValue.value', index=6,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -315,7 +329,7 @@ _INITIALVALUE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=493,
-  serialized_end=585,
+  serialized_end=616,
 )
 
 
@@ -356,14 +370,28 @@ _BINDING = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='Binding.value', index=4,
+      name='index', full_name='Binding.index', index=4,
+      number=7, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='offset', full_name='Binding.offset', index=5,
+      number=8, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='Binding.value', index=6,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='sources', full_name='Binding.sources', index=5,
+      name='sources', full_name='Binding.sources', index=7,
       number=6, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -381,8 +409,8 @@ _BINDING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=587,
-  serialized_end=691,
+  serialized_start=619,
+  serialized_end=754,
 )
 
 
@@ -416,28 +444,42 @@ _MUTATION = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='target', full_name='Mutation.target', index=3,
+      name='index', full_name='Mutation.index', index=3,
+      number=8, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='offset', full_name='Mutation.offset', index=4,
+      number=9, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='target', full_name='Mutation.target', index=5,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='Mutation.value', index=4,
+      name='value', full_name='Mutation.value', index=6,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='delta', full_name='Mutation.delta', index=5,
+      name='delta', full_name='Mutation.delta', index=7,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='sources', full_name='Mutation.sources', index=6,
+      name='sources', full_name='Mutation.sources', index=8,
       number=7, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -455,8 +497,8 @@ _MUTATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=693,
-  serialized_end=813,
+  serialized_start=757,
+  serialized_end=908,
 )
 
 
@@ -490,7 +532,21 @@ _DELETION = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='target', full_name='Deletion.target', index=3,
+      name='index', full_name='Deletion.index', index=3,
+      number=5, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='offset', full_name='Deletion.offset', index=4,
+      number=6, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='target', full_name='Deletion.target', index=5,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -508,8 +564,8 @@ _DELETION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=815,
-  serialized_end=888,
+  serialized_start=910,
+  serialized_end=1014,
 )
 
 
@@ -543,8 +599,22 @@ _JUMPBACKTOLOOPSTART = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='jump_target', full_name='JumpBackToLoopStart.jump_target', index=3,
-      number=4, type=5, cpp_type=1, label=1,
+      name='index', full_name='JumpBackToLoopStart.index', index=3,
+      number=4, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='offset', full_name='JumpBackToLoopStart.offset', index=4,
+      number=5, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='jump_target', full_name='JumpBackToLoopStart.jump_target', index=5,
+      number=6, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -561,8 +631,8 @@ _JUMPBACKTOLOOPSTART = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=890,
-  serialized_end=979,
+  serialized_start=1016,
+  serialized_end=1136,
 )
 
 
@@ -626,8 +696,8 @@ _EVENT = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=982,
-  serialized_end=1186,
+  serialized_start=1139,
+  serialized_end=1343,
 )
 
 
@@ -658,8 +728,8 @@ _EVENTUIDLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1188,
-  serialized_end=1222,
+  serialized_start=1345,
+  serialized_end=1379,
 )
 
 
@@ -697,8 +767,8 @@ _FRAME_TRACINGRESULTENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1348,
-  serialized_end=1415,
+  serialized_start=1505,
+  serialized_end=1572,
 )
 
 _FRAME = _descriptor.Descriptor(
@@ -749,8 +819,8 @@ _FRAME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1225,
-  serialized_end=1415,
+  serialized_start=1382,
+  serialized_end=1572,
 )
 
 _STATE.fields_by_name['status'].enum_type = _STATE_STATUS
@@ -896,8 +966,8 @@ _COMMUNICATION = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1418,
-  serialized_end=1555,
+  serialized_start=1575,
+  serialized_end=1712,
   methods=[
   _descriptor.MethodDescriptor(
     name='SyncState',

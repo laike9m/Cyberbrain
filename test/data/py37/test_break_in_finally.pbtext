@@ -1,0 +1,16 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_block.py"
+events {
+  binding {
+    uid: "test_break_in_finally:0"
+    filename: "test_block.py"
+    lineno: 62
+    target: "x"
+    value: "0"
+    index: 0
+    offset: 20
+  }
+}
+identifiers: "x"

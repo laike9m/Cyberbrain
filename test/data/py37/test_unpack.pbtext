@@ -9,6 +9,8 @@ events {
     lineno: 12
     target: "a"
     value: "\"h\""
+    index: 0
+    offset: 44
   }
 }
 events {
@@ -18,6 +20,8 @@ events {
     lineno: 12
     target: "b"
     value: "\"i\""
+    index: 1
+    offset: 46
   }
 }
 events {
@@ -27,6 +31,8 @@ events {
     lineno: 13
     target: "l1"
     value: "[1, 2]"
+    index: 2
+    offset: 48
   }
 }
 events {
@@ -37,6 +43,8 @@ events {
     target: "a"
     value: "1"
     sources: "l1"
+    index: 3
+    offset: 52
   }
 }
 events {
@@ -47,6 +55,8 @@ events {
     target: "b"
     value: "2"
     sources: "l1"
+    index: 4
+    offset: 54
   }
 }
 events {
@@ -56,6 +66,8 @@ events {
     lineno: 14
     target: "numbers"
     value: "[1, 2, 3, 4]"
+    index: 5
+    offset: 56
   }
 }
 events {
@@ -66,6 +78,8 @@ events {
     target: "first"
     value: "1"
     sources: "numbers"
+    index: 6
+    offset: 60
   }
 }
 events {
@@ -76,6 +90,8 @@ events {
     target: "rest"
     value: "[2, 3, 4]"
     sources: "numbers"
+    index: 7
+    offset: 62
   }
 }
 events {
@@ -86,6 +102,8 @@ events {
     target: "beginning"
     value: "[1, 2, 3]"
     sources: "numbers"
+    index: 8
+    offset: 70
   }
 }
 events {
@@ -96,6 +114,8 @@ events {
     target: "last"
     value: "4"
     sources: "numbers"
+    index: 9
+    offset: 72
   }
 }
 events {
@@ -106,6 +126,8 @@ events {
     target: "head"
     value: "1"
     sources: "numbers"
+    index: 10
+    offset: 80
   }
 }
 events {
@@ -116,6 +138,8 @@ events {
     target: "middle"
     value: "[2, 3]"
     sources: "numbers"
+    index: 11
+    offset: 82
   }
 }
 events {
@@ -126,6 +150,8 @@ events {
     target: "tail"
     value: "4"
     sources: "numbers"
+    index: 12
+    offset: 84
   }
 }
 events {
@@ -137,6 +163,8 @@ events {
     value: "[1, 2, 1, 2, 3, 4]"
     sources: "l1"
     sources: "numbers"
+    index: 13
+    offset: 92
   }
 }
 events {
@@ -148,6 +176,8 @@ events {
     value: "[1, 2, 1, 2, 3, 4]"
     sources: "l1"
     sources: "numbers"
+    index: 14
+    offset: 100
   }
 }
 events {
@@ -159,6 +189,8 @@ events {
     value: "[1, 2, 3, 4]"
     sources: "l1"
     sources: "numbers"
+    index: 15
+    offset: 108
   }
 }
 events {
@@ -168,6 +200,8 @@ events {
     lineno: 20
     target: "m1"
     value: "{\"1\": 2}"
+    index: 16
+    offset: 110
   }
 }
 events {
@@ -177,6 +211,8 @@ events {
     lineno: 20
     target: "m2"
     value: "{\"1\": 2}"
+    index: 17
+    offset: 112
   }
 }
 events {
@@ -188,6 +224,8 @@ events {
     value: "{\"1\": 2}"
     sources: "m1"
     sources: "m2"
+    index: 18
+    offset: 116
   }
 }
 tracing_result {
