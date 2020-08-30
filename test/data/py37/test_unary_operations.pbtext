@@ -9,6 +9,8 @@ events {
     lineno: 10
     target: "a"
     value: "1"
+    index: 0
+    offset: 12
   }
 }
 events {
@@ -19,6 +21,8 @@ events {
     target: "b"
     value: "1"
     sources: "a"
+    index: 1
+    offset: 16
   }
 }
 events {
@@ -29,6 +33,8 @@ events {
     target: "b"
     value: "-1"
     sources: "a"
+    index: 2
+    offset: 22
   }
 }
 events {
@@ -39,6 +45,8 @@ events {
     target: "b"
     value: "false"
     sources: "a"
+    index: 3
+    offset: 28
   }
 }
 events {
@@ -49,6 +57,8 @@ events {
     target: "b"
     value: "-2"
     sources: "a"
+    index: 4
+    offset: 34
   }
 }
 tracing_result {

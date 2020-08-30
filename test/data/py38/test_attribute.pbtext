@@ -1,0 +1,71 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_attribute.py"
+events {
+  initial_value {
+    uid: "test_attribute:0"
+    filename: "test_attribute.py"
+    lineno: 16
+    target: "a2"
+    value: "{\"y\": 1}"
+    index: 0
+    offset: 40
+  }
+}
+events {
+  initial_value {
+    uid: "test_attribute:1"
+    filename: "test_attribute.py"
+    lineno: 16
+    target: "a1"
+    value: "{}"
+    index: 1
+    offset: 42
+  }
+}
+events {
+  mutation {
+    uid: "test_attribute:2"
+    filename: "test_attribute.py"
+    lineno: 16
+    target: "a1"
+    value: "{\"x\": {\"y\": 1}}"
+    delta: "{\"attribute_added\": {\"root.x\": {\"y\": 1}}}"
+    sources: "a2"
+    index: 2
+    offset: 44
+  }
+}
+events {
+  mutation {
+    uid: "test_attribute:3"
+    filename: "test_attribute.py"
+    lineno: 17
+    target: "a1"
+    value: "{\"x\": {\"y\": 2}}"
+    delta: "{\"values_changed\": {\"root.x.y\": {\"new_value\": 2}}}"
+    index: 3
+    offset: 52
+  }
+}
+events {
+  mutation {
+    uid: "test_attribute:4"
+    filename: "test_attribute.py"
+    lineno: 18
+    target: "a1"
+    value: "{}"
+    delta: "{\"attribute_removed\": {\"root.x\": {\"y\": 2}}}"
+    index: 4
+    offset: 56
+  }
+}
+tracing_result {
+  key: "test_attribute:2"
+  value {
+    event_uids: "test_attribute:0"
+  }
+}
+identifiers: "a2"
+identifiers: "a1"

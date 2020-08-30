@@ -1,0 +1,71 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_hello.py"
+events {
+  binding {
+    uid: "test_hello:0"
+    filename: "test_hello.py"
+    lineno: 6
+    target: "x"
+    value: "\"hello world\""
+    index: 0
+    offset: 10
+  }
+}
+events {
+  binding {
+    uid: "test_hello:1"
+    filename: "test_hello.py"
+    lineno: 7
+    target: "y"
+    value: "\"hello world\""
+    sources: "x"
+    index: 1
+    offset: 14
+  }
+}
+events {
+  binding {
+    uid: "test_hello:2"
+    filename: "test_hello.py"
+    lineno: 8
+    target: "x"
+    value: "\"hello world\""
+    sources: "y"
+    index: 2
+    offset: 22
+  }
+}
+events {
+  binding {
+    uid: "test_hello:3"
+    filename: "test_hello.py"
+    lineno: 8
+    target: "y"
+    value: "\"hello world\""
+    sources: "x"
+    index: 3
+    offset: 24
+  }
+}
+tracing_result {
+  key: "test_hello:1"
+  value {
+    event_uids: "test_hello:0"
+  }
+}
+tracing_result {
+  key: "test_hello:2"
+  value {
+    event_uids: "test_hello:1"
+  }
+}
+tracing_result {
+  key: "test_hello:3"
+  value {
+    event_uids: "test_hello:0"
+  }
+}
+identifiers: "x"
+identifiers: "y"

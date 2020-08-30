@@ -4,11 +4,13 @@
 filename: "test_block.py"
 events {
   binding {
-    uid: "test_break_in_finally:0"
+    uid: "test_try_except_finally:0"
     filename: "test_block.py"
-    lineno: 62
-    target: "x"
-    value: "0"
+    lineno: 50
+    target: "b"
+    value: "1"
+    index: 0
+    offset: 50
   }
 }
-identifiers: "x"
+identifiers: "b"
