@@ -24,6 +24,10 @@ def assert_GetFrame(
     # print(rpc_stub.GetFrame(communication_pb2.FrameLocater(frame_name=frame_name)))
     golden_filepath = f"test/data/{python_version}/{frame_name}.pbtext"
 
+    directory = os.path.dirname(golden_filepath)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
     # Generates golden data.
     if not os.path.exists(golden_filepath):
         with open(golden_filepath, "wt") as f:

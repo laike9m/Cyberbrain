@@ -183,10 +183,12 @@ events {
 loops {
   start_offset: 32
   end_offset: 44
+  start_lineno: 9
 }
 loops {
   start_offset: 18
   end_offset: 48
+  start_lineno: 8
 }
 tracing_result {
   key: "test_nested_loop:10"

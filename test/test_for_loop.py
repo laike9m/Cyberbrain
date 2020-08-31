@@ -73,22 +73,27 @@ def test_for_loop(tracer, rpc_stub):
         Loop(
             start_offset=get_value({"py38": 16, "py37": 18}),
             end_offset=get_value({"py38": 24, "py37": 26}),
+            start_lineno=8,
         ),
         Loop(
             start_offset=get_value({"py38": 56, "py37": 64}),
             end_offset=get_value({"py38": 60, "py37": 68}),
+            start_lineno=15,
         ),
         Loop(
             start_offset=get_value({"py38": 76, "py37": 88}),
             end_offset=get_value({"py38": 88, "py37": 100}),
+            start_lineno=19,
         ),
         Loop(
             start_offset=get_value({"py38": 100, "py37": 116}),
             end_offset=get_value({"py38": 110, "py37": 126}),
+            start_lineno=23,
         ),
         Loop(
             start_offset=get_value({"py38": 148, "py37": 168}),
             end_offset=get_value({"py38": 152, "py37": 172}),
+            start_lineno=32,
         ),
     ]
 

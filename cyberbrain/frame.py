@@ -173,7 +173,9 @@ class Frame:
                 )
             else:
                 self.loops[loop_start] = Loop(
-                    start_offset=loop_start, end_offset=instr.offset
+                    start_offset=loop_start,
+                    end_offset=instr.offset,
+                    start_lineno=self.offset_to_lineno[loop_start],
                 )
 
     def _add_new_event(self, event: Event):

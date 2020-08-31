@@ -33,7 +33,7 @@ def test_continue_in_finally(tracer, rpc_stub):
         Binding(target=Symbol("x"), value=1, lineno=22),
         JumpBackToLoopStart(lineno=26, jump_target=16),
     ]
-    assert tracer.loops == [Loop(start_offset=16, end_offset=32)]
+    assert tracer.loops == [Loop(start_offset=16, end_offset=32, start_lineno=22)]
 
     assert_GetFrame(rpc_stub, "test_continue_in_finally")
 
@@ -63,6 +63,6 @@ def test_continue_in_finally_with_exception(tracer, rpc_stub):
         Binding(target=Symbol("x"), value=1, lineno=52),
         JumpBackToLoopStart(lineno=56, jump_target=16),
     ]
-    assert tracer.loops == [Loop(start_offset=16, end_offset=36)]
+    assert tracer.loops == [Loop(start_offset=16, end_offset=36, start_lineno=52)]
 
     assert_GetFrame(rpc_stub, "test_continue_in_finally_with_exception")

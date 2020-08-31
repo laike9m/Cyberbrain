@@ -47,5 +47,6 @@ events {
 loops {
   start_offset: 16
   end_offset: 32
+  start_lineno: 22
 }
 identifiers: "x"

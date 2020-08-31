@@ -217,14 +217,17 @@ events {
 loops {
   start_offset: 14
   end_offset: 34
+  start_lineno: 9
 }
 loops {
   start_offset: 64
   end_offset: 80
+  start_lineno: 18
 }
 loops {
   start_offset: 92
   end_offset: 116
+  start_lineno: 23
 }
 tracing_result {
   key: "test_while_loop:1"
