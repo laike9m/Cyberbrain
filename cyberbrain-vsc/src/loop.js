@@ -1,7 +1,3 @@
-export function foo() {
-  console.log("Successfully imported the loop module. 😀😀😀");
-}
-
 function assertEqual(item1, item2, msg) {
   if (msg === undefined) {
     msg = `${item1} ${item2}`;
