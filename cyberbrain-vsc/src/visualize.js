@@ -167,7 +167,9 @@ window.addEventListener("message", (event) => {
   console.log(
     getInitialState(
       event.data.events,
-      event.data.loops.map((loop) => new Loop(loop.startOffset, loop.endOffset))
+      event.data.loops.map(
+        (loop) => new Loop(loop.startOffset, loop.endOffset, loop.startLineno)
+      )
     )
   );
 });

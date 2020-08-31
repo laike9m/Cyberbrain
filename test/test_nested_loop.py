@@ -41,10 +41,12 @@ def test_nested_loop(tracer, rpc_stub):
         Loop(
             start_offset=get_value({"py38": 28, "py37": 32}),
             end_offset=get_value({"py38": 40, "py37": 44}),
+            start_lineno=9,
         ),
         Loop(
             start_offset=get_value({"py38": 16, "py37": 18}),
             end_offset=get_value({"py38": 42, "py37": 48}),
+            start_lineno=8,
         ),
     ]
     assert_GetFrame(rpc_stub, "test_nested_loop")

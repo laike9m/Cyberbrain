@@ -135,6 +135,7 @@ message EventUidList {
 message Loop {
   optional int32 start_offset = 1;
   optional int32 end_offset = 2;
+  optional int32 start_lineno = 3;
 }
 
 message Frame {
