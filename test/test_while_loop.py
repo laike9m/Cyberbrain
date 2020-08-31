@@ -1,5 +1,5 @@
 from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop
-from utils import get_value
+from utils import get_value, assert_GetFrame
 
 
 def test_while_loop(tracer, rpc_stub):
@@ -81,3 +81,4 @@ def test_while_loop(tracer, rpc_stub):
             end_offset=get_value({"py38": 102, "py37": 116}),
         ),
     ]
+    assert_GetFrame(rpc_stub, "test_while_loop")
