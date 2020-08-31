@@ -1,5 +1,5 @@
 from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop
-from utils import get_value
+from utils import get_value, assert_GetFrame
 
 
 def test_nested_loop(tracer, rpc_stub):
@@ -47,3 +47,4 @@ def test_nested_loop(tracer, rpc_stub):
             end_offset=get_value({"py38": 42, "py37": 48}),
         ),
     ]
+    assert_GetFrame(rpc_stub, "test_nested_loop")

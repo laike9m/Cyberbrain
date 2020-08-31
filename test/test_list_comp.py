@@ -1,4 +1,5 @@
 from cyberbrain import Binding, Symbol
+from utils import assert_GetFrame
 
 
 def test_list_comprehension(tracer, rpc_stub):
@@ -12,10 +13,12 @@ def test_list_comprehension(tracer, rpc_stub):
     tracer.stop()
 
     assert tracer.events == [
-        Binding(target=Symbol("n"), value=2, lineno=7),
-        Binding(target=Symbol("x"), value=[0, 1], lineno=8, sources={Symbol("n")}),
-        Binding(target=Symbol("lst"), value=["foo", "bar"], lineno=9),
+        Binding(target=Symbol("n"), value=2, lineno=8),
+        Binding(target=Symbol("x"), value=[0, 1], lineno=9, sources={Symbol("n")}),
+        Binding(target=Symbol("lst"), value=["foo", "bar"], lineno=10),
         Binding(
-            target=Symbol("x"), value=["foo", "bar"], lineno=10, sources={Symbol("lst")}
+            target=Symbol("x"), value=["foo", "bar"], lineno=11, sources={Symbol("lst")}
         ),
     ]
+
+    assert_GetFrame(rpc_stub, "test_list_comprehension")
