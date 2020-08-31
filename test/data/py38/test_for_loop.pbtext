@@ -220,22 +220,27 @@ events {
 loops {
   start_offset: 16
   end_offset: 24
+  start_lineno: 8
 }
 loops {
   start_offset: 56
   end_offset: 60
+  start_lineno: 15
 }
 loops {
   start_offset: 76
   end_offset: 88
+  start_lineno: 19
 }
 loops {
   start_offset: 100
   end_offset: 110
+  start_lineno: 23
 }
 loops {
   start_offset: 148
   end_offset: 152
+  start_lineno: 32
 }
 tracing_result {
   key: "test_for_loop:1"

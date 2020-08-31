@@ -545,6 +545,11 @@ export class Loop extends jspb.Message {
   getEndOffset(): number | undefined;
   setEndOffset(value: number): void;
 
+  hasStartLineno(): boolean;
+  clearStartLineno(): void;
+  getStartLineno(): number | undefined;
+  setStartLineno(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Loop.AsObject;
   static toObject(includeInstance: boolean, msg: Loop): Loop.AsObject;
@@ -559,6 +564,7 @@ export namespace Loop {
   export type AsObject = {
     startOffset?: number,
     endOffset?: number,
+    startLineno?: number,
   }
 }
 

@@ -6,7 +6,8 @@ function assertEqual(item1, item2, msg) {
 }
 
 export class Loop {
-  constructor(startOffset, endOffset) {
+  constructor(startOffset, endOffset, startLineno) {
+    this.startLineno = startLineno;
     this.startOffset = startOffset;
     this.endOffset = endOffset;
     this.counter = 0;

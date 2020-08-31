@@ -138,9 +138,11 @@ export class JumpBackToLoopStart extends Event {
 export class Loop {
   startOffset: number;
   endOffset: number;
+  startLineno: number;
 
-  constructor(startOffset: number, endOffset: number) {
+  constructor(startOffset: number, endOffset: number, startLineno: number) {
     this.startOffset = startOffset;
     this.endOffset = endOffset;
+    this.startLineno = startLineno;
   }
 }
