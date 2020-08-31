@@ -7,6 +7,7 @@ import {
   Deletion,
   Event,
   InitialValue,
+  JumpBackToLoopStart,
   Loop,
   Mutation,
 } from "./basis";
@@ -37,6 +38,11 @@ export class Frame {
       }
       if (event.hasDeletion()) {
         this.events.push(new Deletion(event.getDeletion()!));
+      }
+      if (event.hasJumpBackToLoopStart()) {
+        this.events.push(
+          new JumpBackToLoopStart(event.getJumpBackToLoopStart()!)
+        );
       }
     });
     frame.getLoopsList().forEach((loop) => {
