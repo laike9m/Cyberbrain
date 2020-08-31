@@ -19,9 +19,115 @@ is poor, see: https://github.com/visjs/vis-network/issues/930
 */
 
 // The .js suffix is needed to make import work in vsc webview.
-import { foo } from "./loop.js";
+import { getInitialState, Loop } from "./loop.js";
 
-foo(); // Indicates whether import succeeds.
+class TraceGraph {
+  constructor(data) {
+    this.lines = new Set();
+    this.events = data.events;
+    this.tracingResult = data.tracingResult;
+    this.colorGenerator = new ColorGenerator(data.identifiers);
+    this.nodes = new vis.DataSet([]);
+    this.edges = new vis.DataSet([]);
+    this.container = document.getElementById("vis");
+    this.network = new vis.Network(
+      this.container,
+      {
+        nodes: this.nodes,
+        edges: this.edges,
+      },
+      options
+    );
+  }
+
+  initialize() {
+    let nodesToShow = [];
+    for (let event of this.events) {
+      if (event.type === "JumpBackToLoopStart") continue;
+
+      let linenoString = event.lineno.toString();
+      if (!this.lines.has(linenoString)) {
+        // Adds a "virtual node" to show line number. This node should precede other nodes
+        // on the same level. According to https://github.com/visjs/vis-network/issues/926,
+        // the order is not deterministic, but seems it's roughly the same as the insertion
+        // order.
+        this.lines.add(linenoString);
+        nodesToShow.push({
+          title: `Line ${event.lineno}`,
+          id: linenoString,
+          level: event.lineno,
+          label: linenoString,
+          borderWidth: 0,
+          // Disable physics so the lineno nodes are not pushed away to the left.
+          physics: false,
+          color: {
+            border: "rgba(0, 0, 0, 0)",
+            background: "rgba(0, 0, 0, 0)",
+            hover: {
+              background: "rgba(0, 0, 0, 0)",
+            },
+          },
+        });
+      }
+      nodesToShow.push({
+        title: getTooltipTextForEventNode(event),
+        id: event.uid,
+        level: event.lineno,
+        label: buildLabelText(event),
+        target: event.target,
+        // "value" is reserved, use "runtimeValue" instead.
+        runtimeValue: event.value,
+        color: {
+          background: this.colorGenerator.getColor(event.target),
+          hover: {
+            // Right now we let color keeps unchanged when hovering. We may slightly
+            // change the color to make the node obvious.
+            background: this.colorGenerator.getColor(event.target),
+          },
+        },
+      });
+    }
+
+    let edgesToShow = [];
+    // Add hidden edges so that lineno nodes are placed on the same vertical position.
+    let lines = Array.from(this.lines);
+    lines.sort();
+    for (let i = 0; i < lines.length - 1; i++) {
+      edgesToShow.push({
+        from: lines[i],
+        to: lines[i + 1],
+        color: {
+          color: "rgba(0, 0, 0, 0)",
+          hover: "rgba(0, 0, 0, 0)",
+        },
+      });
+    }
+
+    for (let event_uid in this.tracingResult) {
+      if (Object.prototype.hasOwnProperty.call(this.tracingResult, event_uid)) {
+        for (let source_event_uid of this.tracingResult[event_uid]) {
+          edgesToShow.push({
+            from: source_event_uid,
+            to: event_uid,
+          });
+        }
+      }
+    }
+
+    this.nodes.add(nodesToShow);
+    this.edges.add(edgesToShow);
+
+    this.network.on("hoverNode", (event) => {
+      let node = this.nodes.get(event.node);
+      if (!node.hasOwnProperty("target")) {
+        return;
+      }
+      console.log(
+        `${node.target}'s value at line ${node.level}: \n ${node.runtimeValue}`
+      );
+    });
+  }
+}
 
 const options = {
   nodes: {
@@ -55,98 +161,15 @@ window.addEventListener("message", (event) => {
   }
 
   console.log(event.data);
+  const graph = new TraceGraph(event.data);
+  graph.initialize();
 
-  let lines = new Set();
-  let events = event.data.events;
-  let colorGenerator = new ColorGenerator(event.data.identifiers);
-  let nodes = new vis.DataSet([]);
-  for (let event of events) {
-    let linenoString = event.lineno.toString();
-    if (!lines.has(linenoString)) {
-      // Adds a "virtual node" to show line number. This node should precede other nodes
-      // on the same level. According to https://github.com/visjs/vis-network/issues/926,
-      // the order is not deterministic, but seems it's roughly the same as the insertion
-      // order.
-      lines.add(linenoString);
-      nodes.add({
-        title: `Line ${event.lineno}`,
-        id: linenoString,
-        level: event.lineno,
-        label: linenoString,
-        borderWidth: 0,
-        // Disable physics so the lineno nodes are not pushed away to the left.
-        physics: false,
-        color: {
-          border: "rgba(0, 0, 0, 0)",
-          background: "rgba(0, 0, 0, 0)",
-          hover: {
-            background: "rgba(0, 0, 0, 0)",
-          },
-        },
-      });
-    }
-    nodes.add({
-      title: getTooltipTextForEventNode(event),
-      id: event.uid,
-      level: event.lineno,
-      label: buildLabelText(event),
-      target: event.target,
-      // "value" is reserved, use "runtimeValue" instead.
-      runtimeValue: event.value,
-      color: {
-        background: colorGenerator.getColor(event.target),
-        hover: {
-          // Right now we let color keeps unchanged when hovering. We may slightly
-          // change the color to make the node obvious.
-          background: colorGenerator.getColor(event.target),
-        },
-      },
-    });
-  }
-
-  const edges = new vis.DataSet([]);
-
-  // Add hidden edges so that lineno nodes are placed on the same vertical position.
-  lines = Array.from(lines);
-  lines.sort();
-  for (let i = 0; i < lines.length - 1; i++) {
-    edges.add({
-      from: lines[i],
-      to: lines[i + 1],
-      color: {
-        color: "rgba(0, 0, 0, 0)",
-        hover: "rgba(0, 0, 0, 0)",
-      },
-    });
-  }
-
-  let tracingResult = event.data.tracingResult;
-  for (let event_uid in tracingResult) {
-    if (Object.prototype.hasOwnProperty.call(tracingResult, event_uid)) {
-      for (let source_event_uid of tracingResult[event_uid]) {
-        edges.add({
-          from: source_event_uid,
-          to: event_uid,
-        });
-      }
-    }
-  }
-
-  const container = document.getElementById("vis");
-  const data = {
-    nodes: nodes,
-    edges: edges,
-  };
-  const network = new vis.Network(container, data, options);
-  network.on("hoverNode", function (event) {
-    let node = nodes.get(event.node);
-    if (!node.hasOwnProperty("target")) {
-      return;
-    }
-    console.log(
-      `${node.target}'s value at line ${node.level}: \n ${node.runtimeValue}`
-    );
-  });
+  console.log(
+    getInitialState(
+      event.data.events,
+      event.data.loops.map((loop) => new Loop(loop.startOffset, loop.endOffset))
+    )
+  );
 });
 
 ///////////////////////// Helper functions/classes /////////////////////////
