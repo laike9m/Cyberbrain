@@ -189,7 +189,9 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
         frame_proto.loops.extend(
             [
                 communication_pb2.Loop(
-                    start_offset=loop.start_offset, end_offset=loop.end_offset
+                    start_offset=loop.start_offset,
+                    end_offset=loop.end_offset,
+                    start_lineno=loop.start_lineno,
                 )
                 for loop in frame.loops.values()
             ]

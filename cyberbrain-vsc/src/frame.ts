@@ -46,7 +46,13 @@ export class Frame {
       }
     });
     frame.getLoopsList().forEach((loop) => {
-      this.loops.push(new Loop(loop.getStartOffset()!, loop.getEndOffset()!));
+      this.loops.push(
+        new Loop(
+          loop.getStartOffset()!,
+          loop.getEndOffset()!,
+          loop.getStartLineno()!
+        )
+      );
     });
     this.identifiers = frame.getIdentifiersList();
     frame.getTracingResultMap().forEach((predecessorEventUidList, eventUid) => {

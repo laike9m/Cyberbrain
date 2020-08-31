@@ -71,14 +71,17 @@ def test_while_loop(tracer, rpc_stub):
         Loop(
             start_offset=get_value({"py38": 12, "py37": 14}),
             end_offset=get_value({"py38": 32, "py37": 34}),
+            start_lineno=9,
         ),
         Loop(
             start_offset=get_value({"py38": 54, "py37": 64}),
             end_offset=get_value({"py38": 70, "py37": 80}),
+            start_lineno=18,
         ),
         Loop(
             start_offset=get_value({"py38": 78, "py37": 92}),
             end_offset=get_value({"py38": 102, "py37": 116}),
+            start_lineno=23,
         ),
     ]
     assert_GetFrame(rpc_stub, "test_while_loop")
