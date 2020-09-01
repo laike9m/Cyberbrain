@@ -49,7 +49,7 @@ Parameters:
   loops: a array of loops, sorted by loop start offset.
 
 Returns:
-  a list of events that will be shown in the trace graph
+  a list of events that should be displayed in the trace graph initially.
 
 Meanwhile, loops are filled with iteration starts.
 
