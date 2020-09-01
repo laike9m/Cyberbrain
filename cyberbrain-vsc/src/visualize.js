@@ -84,6 +84,29 @@ class TraceGraph {
     let edgesToShow = [];
     let [initialEvents, _] = getInitialState(this.events, this.loops);
 
+    // Add loop counter nodes.
+    for (let i = 0; i < this.loops.length; i++) {
+      let loop = this.loops[i];
+      nodesToShow.push({
+        title: "Loop counter",
+        id: `loop_counter${loop.startLineno}`,
+        level: loop.startLineno,
+        label: 0,
+        loop: loop,
+        color: {
+          background: "grey",
+        },
+      });
+      if (i < this.loops.length - 1) {
+        edgesToShow.push(
+          this.createHiddenEdge(
+            `loop_counter${loop.startLineno}`,
+            `loop_counter${this.loops[i + 1].startLineno}`
+          )
+        );
+      }
+    }
+
     for (let event of initialEvents) {
       if (event.type === "JumpBackToLoopStart") continue;
 
@@ -128,14 +151,7 @@ class TraceGraph {
     let lines = Array.from(this.lines);
     lines.sort();
     for (let i = 0; i < lines.length - 1; i++) {
-      edgesToShow.push({
-        from: lines[i],
-        to: lines[i + 1],
-        color: {
-          color: "rgba(0, 0, 0, 0)",
-          hover: "rgba(0, 0, 0, 0)",
-        },
-      });
+      edgesToShow.push(this.createHiddenEdge(lines[i], lines[i + 1]));
     }
 
     this.nodes.add(nodesToShow);
@@ -150,6 +166,17 @@ class TraceGraph {
         `${node.target}'s value at line ${node.level}: \n ${node.runtimeValue}`
       );
     });
+  }
+
+  createHiddenEdge(fromNode, toNode) {
+    return {
+      from: fromNode,
+      to: toNode,
+      color: {
+        color: "rgba(0, 0, 0, 0)",
+        hover: "rgba(0, 0, 0, 0)",
+      },
+    };
   }
 
   createNode(event) {
