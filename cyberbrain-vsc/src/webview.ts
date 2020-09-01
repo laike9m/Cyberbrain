@@ -6,7 +6,7 @@ import * as path from "path";
 export function createWebView() {
   return vscode.window.createWebviewPanel(
     "Cyberbrain",
-    "Cyberbrain Backtrace",
+    "Cyberbrain Trace Graph",
     vscode.ViewColumn.Two,
     {
       enableScripts: true, // 启用JS，默认禁用
