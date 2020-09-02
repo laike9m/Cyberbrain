@@ -97,9 +97,35 @@ export function setWebViewContent(
         bottom: 0px;
         left: 0px;
       }
+      #node-popUp {
+        display:none;
+        position:absolute;
+        top:350px;
+        left:170px;
+        z-index:299;
+        width:250px;
+        height:120px;
+        background-color: #f9f9f9;
+        border-style:solid;
+        border-width:3px;
+        border-color: #5394ed;
+        padding:10px;
+        text-align: center;
+      }
     </style>
 </head>
 <body>
+    <div id="node-popUp">
+      <span id="node-operation">node</span> <br>
+      <table style="margin:auto;">
+        <tr>
+          <td>Counter</td>
+          <td><input id="node-label" /></td>
+        </tr>
+      </table>
+      <input type="button" value="save" id="node-saveButton" />
+      <input type="button" value="cancel" id="node-cancelButton" />
+    </div>
     <div id='vis'>
     <script>
         const vscode = acquireVsCodeApi();
