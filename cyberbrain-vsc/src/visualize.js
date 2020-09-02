@@ -55,6 +55,19 @@ const options = {
       avoidOverlap: 1, // puts the most space around nodes to avoid overlapping.
     },
   },
+  manipulation: {
+    initiallyActive: true,
+    addEdge: false,
+    editEdge: false,
+    addNode: false,
+    deleteNode: false,
+    deleteEdge: false,
+    editNode: function (data, callback) {
+      // filling in the popup DOM elements
+      document.getElementById("node-operation").innerHTML = "Edit Loop Counter";
+      editNode(data, cancelNodeEdit, callback);
+    },
+  },
 };
 
 class TraceGraph {
@@ -87,14 +100,15 @@ class TraceGraph {
     // Add loop counter nodes.
     for (let i = 0; i < this.loops.length; i++) {
       let loop = this.loops[i];
+      // TODO: For loop counter nodes, handle click event to make editor visible
       nodesToShow.push({
         title: "Loop counter",
         id: `loop_counter${loop.startLineno}`,
         level: loop.startLineno,
-        label: 0,
+        label: "0",
         loop: loop,
         color: {
-          background: "grey",
+          background: "white",
         },
       });
       if (i < this.loops.length - 1) {
@@ -166,6 +180,21 @@ class TraceGraph {
         `${node.target}'s value at line ${node.level}: \n ${node.runtimeValue}`
       );
     });
+
+    // Only show edit button when clicking on loop counter nodes, otherwise hide the button.
+    this.network.on("selectNode", (event) => {
+      let selectedNode = this.nodes.get(event.nodes[0]);
+      setTimeout(() => {
+        if (selectedNode.loop === undefined) {
+          console.log("here");
+          document.querySelector(".vis-manipulation").style.display = "none";
+        } else {
+          document.querySelector(
+            ".vis-manipulation .vis-edit .vis-label"
+          ).innerText = "Edit loop counter";
+        }
+      }, 0);
+    });
   }
 
   createHiddenEdge(fromNode, toNode) {
@@ -198,6 +227,39 @@ class TraceGraph {
       },
     };
   }
+}
+
+///////////////////////// Node editing related /////////////////////////
+
+function editNode(data, cancelAction, callback) {
+  document.getElementById("node-label").value = data.label;
+  document.getElementById("node-saveButton").onclick = saveNodeData.bind(
+    this,
+    data,
+    callback
+  );
+  document.getElementById("node-cancelButton").onclick = cancelAction.bind(
+    this,
+    callback
+  );
+  document.getElementById("node-popUp").style.display = "block";
+}
+
+function cancelNodeEdit(callback) {
+  clearNodePopUp();
+  callback(null);
+}
+
+function saveNodeData(data, callback) {
+  data.label = document.getElementById("node-label").value;
+  clearNodePopUp();
+  callback(data);
+}
+
+function clearNodePopUp() {
+  document.getElementById("node-saveButton").onclick = null;
+  document.getElementById("node-cancelButton").onclick = null;
+  document.getElementById("node-popUp").style.display = "none";
 }
 
 ///////////////////////// Helper functions/classes /////////////////////////
