@@ -1,43 +1,31 @@
-<img src="https://img.shields.io/badge/code%20style-black-000000.svg">
-<a href="#badge">
-    <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"></a>
+# Cyberbrain: Intelligent Debugging to Set You Free
 
-[![Build Status](https://dev.azure.com/laike9m/laike9m/_apis/build/status/laike9m.cb-experimental?branchName=master)](https://dev.azure.com/laike9m/laike9m/_build/latest?definitionId=2&branchName=master)
+Cyberbrain is a Python debugging solution aiming to **free programmers**.
 
+## Install
 
-# Development environment setup
+TODO
 
-## Prerequisites
+## Status Quo and Milestones
 
-Make sure you have Python 3.7+ and the latest version of VS Code installed.
+*Updated 2020.9*
 
-## Protocol Buffer
-- [Install protoc](https://google.github.io/proto-lens/installing-protoc.html)
+Cyberbrain is still under active development. Milestones for the project are listed below, which may change in the future. Generally speaking, we'll release 1.0 when it reaches the *"Production ready"* milestone.
 
-## Python
-We'll use [Poetry](https://python-poetry.org/) to manage dependencies. Make sure you have set it up correctly.
-```
-poetry install
-```
-This will install dev dependencies as well.
+| Milestone        | Description                                                           | Status |
+|------------------|-----------------------------------------------------------------------|--------|
+| Examples ready   | Cyberbrain works on certain examples (in the `examples/` folder)      | [ ]    |
+| Live demo ready  | Cyberbrain can work with code you write in a live demo, in most cases | [ ]    |
+| Script ready     | Cyberbrain can work with most "scripts" programs                      | [ ]    |
+| Production ready | Cyberbrain can work with most programs in production                  | [ ]    |
 
-## VS Code
+Note that v1.0 means Cyberbrain is stable in the features it supports, it does **NOT** mean Cyberbrain is feature complete. Major features planned for each version are listed below. Again, expect it to change at any time.
 
-Make sure you have **Node.js 12** and npm installed. There's no guarantee that other versions will work.
+| Version | Features                        |
+|---------|---------------------------------|
+| 1.0     | Multi-frame tracing             |
+| 2.0     | Fine-grained symbol tracing     |
+| 3.0     | Async & multi-threading support |
 
-On Mac, you can `brew install node@12 && brew link --force --overwrite node@12` and add `/usr/local/opt/node@12/bin` to your $PATH.
-
-Then `npm install` inside the `cyberbrain-vsc` folder.
-
-### If you're using PyCharm
-Install [Protocol Buffer Editor](https://plugins.jetbrains.com/plugin/14004-protocol-buffer-editor).
-
-# Start making changes
-
-- `make gen_setup`
-   
-   Generate the latest setup.py, which you can use for [editable install](https://stackoverflow.com/a/35064498/2142577).
-    
-- `make proto_compile`
-
-   Generate language specific code for proto. Run it after you've changed any `.proto` file.
+## Interested in Contributing?
+Get started [here](https://github.com/laike9m/cb-experimental/docs/Development.md).
