@@ -28,6 +28,14 @@ export class Loop {
     return this._iterationStarts.get(this.getCounters().toString());
   }
 
+  /* Returns the index of the last iteration that the loop has.
+   * Note that this method needs improving. Right now the count might be actual size + 1,
+   * because we only counts "jump back", and does not check whether the iteration exists.
+   */
+  get maxIteration() {
+    return this._iterationStarts.size - 1;
+  }
+
   /* Calculates the counters array from top-level loop to the modified loop.
    *  Outer loop's counter will precedes inner loops'.
    */
