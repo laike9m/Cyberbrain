@@ -56,7 +56,7 @@ export class Frame {
     });
     this.identifiers = frame.getIdentifiersList();
     frame.getTracingResultMap().forEach((predecessorEventUidList, eventUid) => {
-      this.tracingResult[eventUid] = predecessorEventUidList.getEventUidsList();
+      this.tracingResult[eventUid] = predecessorEventUidList.getEventIdsList();
     });
   }
 

@@ -4,7 +4,7 @@
 filename: "test_block_py38.py"
 events {
   binding {
-    uid: "test_continue_in_finally_with_exception:0"
+    id: "test_continue_in_finally_with_exception:0"
     filename: "test_block_py38.py"
     lineno: 52
     target: "x"
@@ -15,7 +15,7 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_continue_in_finally_with_exception:1"
+    id: "test_continue_in_finally_with_exception:1"
     filename: "test_block_py38.py"
     lineno: 56
     index: 1
@@ -25,7 +25,7 @@ events {
 }
 events {
   binding {
-    uid: "test_continue_in_finally_with_exception:2"
+    id: "test_continue_in_finally_with_exception:2"
     filename: "test_block_py38.py"
     lineno: 52
     target: "x"
@@ -36,7 +36,7 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_continue_in_finally_with_exception:3"
+    id: "test_continue_in_finally_with_exception:3"
     filename: "test_block_py38.py"
     lineno: 56
     index: 3

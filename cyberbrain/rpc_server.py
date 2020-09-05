@@ -22,7 +22,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
     if isinstance(event, InitialValue):
         event_proto.initial_value.CopyFrom(
             communication_pb2.InitialValue(
-                uid=event.uid,
+                id=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
                 index=event.index,
@@ -34,7 +34,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
     elif isinstance(event, Binding):
         event_proto.binding.CopyFrom(
             communication_pb2.Binding(
-                uid=event.uid,
+                id=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
                 index=event.index,
@@ -48,7 +48,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
     elif isinstance(event, Mutation):
         event_proto.mutation.CopyFrom(
             communication_pb2.Mutation(
-                uid=event.uid,
+                id=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
                 index=event.index,
@@ -62,7 +62,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
     elif isinstance(event, Deletion):
         event_proto.deletion.CopyFrom(
             communication_pb2.Deletion(
-                uid=event.uid,
+                id=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
                 index=event.index,
@@ -73,7 +73,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
     elif isinstance(event, JumpBackToLoopStart):
         event_proto.jump_back_to_loop_start.CopyFrom(
             communication_pb2.JumpBackToLoopStart(
-                uid=event.uid,
+                id=event.uid,
                 filename=event.filename,
                 lineno=event.lineno,
                 index=event.index,
@@ -95,10 +95,10 @@ def _get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
     x, y = y, x
 
     which has events:
-        Binding(target="x", value="foo", uid='1'),
-        Binding(target="y", value="bar", uid='3'),
-        Binding(target="x", value="bar", sources={"y"}, uid='2'),
-        Binding(target="y", value="foo", sources={"x"}, uid='4'),
+        Binding(target="x", value="foo", id='1'),
+        Binding(target="y", value="bar", id='3'),
+        Binding(target="x", value="bar", sources={"y"}, id='2'),
+        Binding(target="y", value="foo", sources={"x"}, id='4'),
 
     Tracing result would be:
 
@@ -117,10 +117,10 @@ def _get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
 
     Here, the value assigned to `y` is "foo", but because on the bytecode level,
     `x = y` happens before `y = x`, so the program thinks y's source is
-     Mutation(target="x", value="bar", sources={"y"}, uid='2').
+     Mutation(target="x", value="bar", sources={"y"}, id='2').
 
     To solve this issue, we store snapshot in source's symbol. So by looking at the
-    snapshot, we know it points to the Binding(target="x", value="foo", uid='1') event,
+    snapshot, we know it points to the Binding(target="x", value="foo", id='1') event,
     not the mutation event. For mutation events, we update the snapshot in symbols that
     are still on value stack, because it needs to point to the mutation event since the
     object on value stack (if any) has changed. For binding events, because the object
@@ -198,10 +198,10 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
         )
         for event in frame.accumulated_events:
             frame_proto.events.append(_transform_event_to_proto(event))
-            event_uids = _get_event_sources_uids(event, frame)
-            if event_uids:
+            event_ids = _get_event_sources_uids(event, frame)
+            if event_ids:
                 frame_proto.tracing_result[event.uid].CopyFrom(
-                    communication_pb2.EventUidList(event_uids=event_uids)
+                    communication_pb2.EventIDList(event_ids=event_ids)
                 )
         return frame_proto
 

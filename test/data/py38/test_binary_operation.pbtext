@@ -4,7 +4,7 @@
 filename: "test_binary.py"
 events {
   initial_value {
-    uid: "test_binary_operation:0"
+    id: "test_binary_operation:0"
     filename: "test_binary.py"
     lineno: 10
     target: "a"
@@ -15,7 +15,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_binary_operation:1"
+    id: "test_binary_operation:1"
     filename: "test_binary.py"
     lineno: 10
     target: "b"
@@ -26,7 +26,7 @@ events {
 }
 events {
   binding {
-    uid: "test_binary_operation:2"
+    id: "test_binary_operation:2"
     filename: "test_binary.py"
     lineno: 10
     target: "c"
@@ -39,7 +39,7 @@ events {
 }
 events {
   binding {
-    uid: "test_binary_operation:3"
+    id: "test_binary_operation:3"
     filename: "test_binary.py"
     lineno: 11
     target: "c"
@@ -52,7 +52,7 @@ events {
 }
 events {
   binding {
-    uid: "test_binary_operation:4"
+    id: "test_binary_operation:4"
     filename: "test_binary.py"
     lineno: 12
     target: "c"
@@ -65,7 +65,7 @@ events {
 }
 events {
   binding {
-    uid: "test_binary_operation:5"
+    id: "test_binary_operation:5"
     filename: "test_binary.py"
     lineno: 13
     target: "c"
@@ -78,7 +78,7 @@ events {
 }
 events {
   binding {
-    uid: "test_binary_operation:6"
+    id: "test_binary_operation:6"
     filename: "test_binary.py"
     lineno: 14
     target: "c"
@@ -91,7 +91,7 @@ events {
 }
 events {
   binding {
-    uid: "test_binary_operation:7"
+    id: "test_binary_operation:7"
     filename: "test_binary.py"
     lineno: 15
     target: "c"
@@ -104,7 +104,7 @@ events {
 }
 events {
   binding {
-    uid: "test_binary_operation:8"
+    id: "test_binary_operation:8"
     filename: "test_binary.py"
     lineno: 16
     target: "c"
@@ -117,7 +117,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_binary_operation:9"
+    id: "test_binary_operation:9"
     filename: "test_binary.py"
     lineno: 17
     target: "lst"
@@ -128,7 +128,7 @@ events {
 }
 events {
   binding {
-    uid: "test_binary_operation:10"
+    id: "test_binary_operation:10"
     filename: "test_binary.py"
     lineno: 17
     target: "c"
@@ -141,7 +141,7 @@ events {
 }
 events {
   binding {
-    uid: "test_binary_operation:11"
+    id: "test_binary_operation:11"
     filename: "test_binary.py"
     lineno: 18
     target: "c"
@@ -154,7 +154,7 @@ events {
 }
 events {
   binding {
-    uid: "test_binary_operation:12"
+    id: "test_binary_operation:12"
     filename: "test_binary.py"
     lineno: 19
     target: "c"
@@ -167,7 +167,7 @@ events {
 }
 events {
   binding {
-    uid: "test_binary_operation:13"
+    id: "test_binary_operation:13"
     filename: "test_binary.py"
     lineno: 20
     target: "c"
@@ -180,7 +180,7 @@ events {
 }
 events {
   binding {
-    uid: "test_binary_operation:14"
+    id: "test_binary_operation:14"
     filename: "test_binary.py"
     lineno: 21
     target: "c"
@@ -193,7 +193,7 @@ events {
 }
 events {
   binding {
-    uid: "test_binary_operation:15"
+    id: "test_binary_operation:15"
     filename: "test_binary.py"
     lineno: 22
     target: "c"
@@ -207,92 +207,92 @@ events {
 tracing_result {
   key: "test_binary_operation:10"
   value {
-    event_uids: "test_binary_operation:0"
-    event_uids: "test_binary_operation:9"
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:9"
   }
 }
 tracing_result {
   key: "test_binary_operation:11"
   value {
-    event_uids: "test_binary_operation:0"
-    event_uids: "test_binary_operation:1"
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:1"
   }
 }
 tracing_result {
   key: "test_binary_operation:12"
   value {
-    event_uids: "test_binary_operation:0"
-    event_uids: "test_binary_operation:1"
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:1"
   }
 }
 tracing_result {
   key: "test_binary_operation:13"
   value {
-    event_uids: "test_binary_operation:0"
-    event_uids: "test_binary_operation:1"
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:1"
   }
 }
 tracing_result {
   key: "test_binary_operation:14"
   value {
-    event_uids: "test_binary_operation:0"
-    event_uids: "test_binary_operation:1"
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:1"
   }
 }
 tracing_result {
   key: "test_binary_operation:15"
   value {
-    event_uids: "test_binary_operation:0"
-    event_uids: "test_binary_operation:1"
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:1"
   }
 }
 tracing_result {
   key: "test_binary_operation:2"
   value {
-    event_uids: "test_binary_operation:0"
-    event_uids: "test_binary_operation:1"
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:1"
   }
 }
 tracing_result {
   key: "test_binary_operation:3"
   value {
-    event_uids: "test_binary_operation:0"
-    event_uids: "test_binary_operation:1"
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:1"
   }
 }
 tracing_result {
   key: "test_binary_operation:4"
   value {
-    event_uids: "test_binary_operation:0"
-    event_uids: "test_binary_operation:1"
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:1"
   }
 }
 tracing_result {
   key: "test_binary_operation:5"
   value {
-    event_uids: "test_binary_operation:0"
-    event_uids: "test_binary_operation:1"
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:1"
   }
 }
 tracing_result {
   key: "test_binary_operation:6"
   value {
-    event_uids: "test_binary_operation:0"
-    event_uids: "test_binary_operation:1"
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:1"
   }
 }
 tracing_result {
   key: "test_binary_operation:7"
   value {
-    event_uids: "test_binary_operation:0"
-    event_uids: "test_binary_operation:1"
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:1"
   }
 }
 tracing_result {
   key: "test_binary_operation:8"
   value {
-    event_uids: "test_binary_operation:0"
-    event_uids: "test_binary_operation:1"
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:1"
   }
 }
 identifiers: "a"

@@ -4,7 +4,7 @@
 filename: "test_inplace.py"
 events {
   initial_value {
-    uid: "test_inplace_operations:0"
+    id: "test_inplace_operations:0"
     filename: "test_inplace.py"
     lineno: 11
     target: "a1"
@@ -15,7 +15,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_inplace_operations:1"
+    id: "test_inplace_operations:1"
     filename: "test_inplace.py"
     lineno: 11
     target: "b"
@@ -26,7 +26,7 @@ events {
 }
 events {
   binding {
-    uid: "test_inplace_operations:2"
+    id: "test_inplace_operations:2"
     filename: "test_inplace.py"
     lineno: 11
     target: "a1"
@@ -39,7 +39,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_inplace_operations:3"
+    id: "test_inplace_operations:3"
     filename: "test_inplace.py"
     lineno: 12
     target: "a2"
@@ -50,7 +50,7 @@ events {
 }
 events {
   binding {
-    uid: "test_inplace_operations:4"
+    id: "test_inplace_operations:4"
     filename: "test_inplace.py"
     lineno: 12
     target: "a2"
@@ -63,7 +63,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_inplace_operations:5"
+    id: "test_inplace_operations:5"
     filename: "test_inplace.py"
     lineno: 13
     target: "a3"
@@ -74,7 +74,7 @@ events {
 }
 events {
   binding {
-    uid: "test_inplace_operations:6"
+    id: "test_inplace_operations:6"
     filename: "test_inplace.py"
     lineno: 13
     target: "a3"
@@ -87,7 +87,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_inplace_operations:7"
+    id: "test_inplace_operations:7"
     filename: "test_inplace.py"
     lineno: 14
     target: "a4"
@@ -98,7 +98,7 @@ events {
 }
 events {
   binding {
-    uid: "test_inplace_operations:8"
+    id: "test_inplace_operations:8"
     filename: "test_inplace.py"
     lineno: 14
     target: "a4"
@@ -111,7 +111,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_inplace_operations:9"
+    id: "test_inplace_operations:9"
     filename: "test_inplace.py"
     lineno: 15
     target: "a5"
@@ -122,7 +122,7 @@ events {
 }
 events {
   binding {
-    uid: "test_inplace_operations:10"
+    id: "test_inplace_operations:10"
     filename: "test_inplace.py"
     lineno: 15
     target: "a5"
@@ -135,7 +135,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_inplace_operations:11"
+    id: "test_inplace_operations:11"
     filename: "test_inplace.py"
     lineno: 16
     target: "a6"
@@ -146,7 +146,7 @@ events {
 }
 events {
   binding {
-    uid: "test_inplace_operations:12"
+    id: "test_inplace_operations:12"
     filename: "test_inplace.py"
     lineno: 16
     target: "a6"
@@ -159,7 +159,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_inplace_operations:13"
+    id: "test_inplace_operations:13"
     filename: "test_inplace.py"
     lineno: 17
     target: "a7"
@@ -170,7 +170,7 @@ events {
 }
 events {
   binding {
-    uid: "test_inplace_operations:14"
+    id: "test_inplace_operations:14"
     filename: "test_inplace.py"
     lineno: 17
     target: "a7"
@@ -183,7 +183,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_inplace_operations:15"
+    id: "test_inplace_operations:15"
     filename: "test_inplace.py"
     lineno: 18
     target: "a8"
@@ -194,7 +194,7 @@ events {
 }
 events {
   binding {
-    uid: "test_inplace_operations:16"
+    id: "test_inplace_operations:16"
     filename: "test_inplace.py"
     lineno: 18
     target: "a8"
@@ -207,7 +207,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_inplace_operations:17"
+    id: "test_inplace_operations:17"
     filename: "test_inplace.py"
     lineno: 19
     target: "a9"
@@ -218,7 +218,7 @@ events {
 }
 events {
   binding {
-    uid: "test_inplace_operations:18"
+    id: "test_inplace_operations:18"
     filename: "test_inplace.py"
     lineno: 19
     target: "a9"
@@ -231,7 +231,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_inplace_operations:19"
+    id: "test_inplace_operations:19"
     filename: "test_inplace.py"
     lineno: 20
     target: "a10"
@@ -242,7 +242,7 @@ events {
 }
 events {
   binding {
-    uid: "test_inplace_operations:20"
+    id: "test_inplace_operations:20"
     filename: "test_inplace.py"
     lineno: 20
     target: "a10"
@@ -255,7 +255,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_inplace_operations:21"
+    id: "test_inplace_operations:21"
     filename: "test_inplace.py"
     lineno: 21
     target: "a11"
@@ -266,7 +266,7 @@ events {
 }
 events {
   binding {
-    uid: "test_inplace_operations:22"
+    id: "test_inplace_operations:22"
     filename: "test_inplace.py"
     lineno: 21
     target: "a11"
@@ -279,7 +279,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_inplace_operations:23"
+    id: "test_inplace_operations:23"
     filename: "test_inplace.py"
     lineno: 22
     target: "a12"
@@ -290,7 +290,7 @@ events {
 }
 events {
   binding {
-    uid: "test_inplace_operations:24"
+    id: "test_inplace_operations:24"
     filename: "test_inplace.py"
     lineno: 22
     target: "a12"
@@ -304,85 +304,85 @@ events {
 tracing_result {
   key: "test_inplace_operations:10"
   value {
-    event_uids: "test_inplace_operations:9"
-    event_uids: "test_inplace_operations:1"
+    event_ids: "test_inplace_operations:9"
+    event_ids: "test_inplace_operations:1"
   }
 }
 tracing_result {
   key: "test_inplace_operations:12"
   value {
-    event_uids: "test_inplace_operations:11"
-    event_uids: "test_inplace_operations:1"
+    event_ids: "test_inplace_operations:11"
+    event_ids: "test_inplace_operations:1"
   }
 }
 tracing_result {
   key: "test_inplace_operations:14"
   value {
-    event_uids: "test_inplace_operations:13"
-    event_uids: "test_inplace_operations:1"
+    event_ids: "test_inplace_operations:13"
+    event_ids: "test_inplace_operations:1"
   }
 }
 tracing_result {
   key: "test_inplace_operations:16"
   value {
-    event_uids: "test_inplace_operations:15"
-    event_uids: "test_inplace_operations:1"
+    event_ids: "test_inplace_operations:15"
+    event_ids: "test_inplace_operations:1"
   }
 }
 tracing_result {
   key: "test_inplace_operations:18"
   value {
-    event_uids: "test_inplace_operations:17"
-    event_uids: "test_inplace_operations:1"
+    event_ids: "test_inplace_operations:17"
+    event_ids: "test_inplace_operations:1"
   }
 }
 tracing_result {
   key: "test_inplace_operations:2"
   value {
-    event_uids: "test_inplace_operations:0"
-    event_uids: "test_inplace_operations:1"
+    event_ids: "test_inplace_operations:0"
+    event_ids: "test_inplace_operations:1"
   }
 }
 tracing_result {
   key: "test_inplace_operations:20"
   value {
-    event_uids: "test_inplace_operations:19"
-    event_uids: "test_inplace_operations:1"
+    event_ids: "test_inplace_operations:19"
+    event_ids: "test_inplace_operations:1"
   }
 }
 tracing_result {
   key: "test_inplace_operations:22"
   value {
-    event_uids: "test_inplace_operations:21"
-    event_uids: "test_inplace_operations:1"
+    event_ids: "test_inplace_operations:21"
+    event_ids: "test_inplace_operations:1"
   }
 }
 tracing_result {
   key: "test_inplace_operations:24"
   value {
-    event_uids: "test_inplace_operations:23"
-    event_uids: "test_inplace_operations:1"
+    event_ids: "test_inplace_operations:23"
+    event_ids: "test_inplace_operations:1"
   }
 }
 tracing_result {
   key: "test_inplace_operations:4"
   value {
-    event_uids: "test_inplace_operations:3"
-    event_uids: "test_inplace_operations:1"
+    event_ids: "test_inplace_operations:3"
+    event_ids: "test_inplace_operations:1"
   }
 }
 tracing_result {
   key: "test_inplace_operations:6"
   value {
-    event_uids: "test_inplace_operations:5"
-    event_uids: "test_inplace_operations:1"
+    event_ids: "test_inplace_operations:5"
+    event_ids: "test_inplace_operations:1"
   }
 }
 tracing_result {
   key: "test_inplace_operations:8"
   value {
-    event_uids: "test_inplace_operations:7"
-    event_uids: "test_inplace_operations:1"
+    event_ids: "test_inplace_operations:7"
+    event_ids: "test_inplace_operations:1"
   }
 }
 identifiers: "a1"
