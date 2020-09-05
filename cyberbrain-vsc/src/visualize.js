@@ -201,7 +201,6 @@ class TraceGraph {
       for (let node of this.nodes.get(
         traceGraphNodeIds.concat(this.hoveredNodeId)
       )) {
-        console.log(node);
         let text = getTooltipTextForEventNode(node);
         let pos = this.network.getPosition(node.id);
         let rectX = pos.x + 10;

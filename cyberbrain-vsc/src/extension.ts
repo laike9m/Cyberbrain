@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { MessageCenter } from "./messaging";
+import { doIfInDevMode } from "./utils";
 
 export function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand(
@@ -13,6 +14,11 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(disposable);
+
+  // For ease of development.
+  doIfInDevMode(context, () => {
+    vscode.commands.executeCommand("cyberbrain.init");
+  });
 }
 
 // this method is called when your extension is deactivated
