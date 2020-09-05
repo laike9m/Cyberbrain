@@ -14,10 +14,10 @@ Cyberbrain is still under active development. Milestones for the project are lis
 
 | Milestone        | Description                                                           | Status |
 |------------------|-----------------------------------------------------------------------|--------|
-| Examples ready   | Cyberbrain works on certain examples (in the `examples/` folder)      | [ ]    |
-| Live demo ready  | Cyberbrain can work with code you write in a live demo, in most cases | [ ]    |
-| Script ready     | Cyberbrain can work with most "scripts" programs                      | [ ]    |
-| Production ready | Cyberbrain can work with most programs in production                  | [ ]    |
+| Examples ready   | Cyberbrain works on certain examples (in the `examples/` folder)      | WIP    |
+| Live demo ready  | Cyberbrain can work with code you write in a live demo, in most cases | Not started    |
+| Script ready     | Cyberbrain can work with most "scripts" programs                      | Not started    |
+| Production ready | Cyberbrain can work with most programs in production                  | Not started    |
 
 Note that v1.0 means Cyberbrain is stable in the features it supports, it does **NOT** mean Cyberbrain is feature complete. Major features planned for each version are listed below. Again, expect it to change at any time.
 
@@ -39,4 +39,5 @@ Get started [here](https://github.com/laike9m/cb-experimental/docs/Development.m
 ## Support
 
 Cyberbrain is a **long-term** project, your support is critical to sustain it. Let's make it the best Python debugging tool 🤟!
+
 [![](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-1.svg)](https://www.buymeacoffee.com/cyberbrain)
