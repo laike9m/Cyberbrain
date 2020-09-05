@@ -244,6 +244,7 @@ class TraceGraph {
       }
       this.hoveredNodeId = node.id;
 
+      console.clear();
       // TODO: show values of all local variables at this point.
       console.log(
         `${node.target}'s value at line ${node.level}: \n ${node.runtimeValue}`
@@ -259,7 +260,6 @@ class TraceGraph {
       let selectedNode = this.nodes.get(event.nodes[0]);
       setTimeout(() => {
         if (selectedNode.loop === undefined) {
-          console.log("here");
           document.querySelector(".vis-manipulation").style.display = "none";
         } else {
           document.querySelector(
