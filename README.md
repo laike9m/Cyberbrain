@@ -29,3 +29,8 @@ Note that v1.0 means Cyberbrain is stable in the features it supports, it does *
 
 ## Interested in Contributing?
 Get started [here](https://github.com/laike9m/cb-experimental/docs/Development.md).
+
+## Support
+
+Cyberbrain is a **long-term** project, your support is critical to sustain it. Let's make it the best Python debugging tool 🤟!
+[![](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-1.svg)](https://www.buymeacoffee.com/cyberbrain)
