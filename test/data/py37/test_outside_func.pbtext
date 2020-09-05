@@ -4,7 +4,7 @@
 filename: "test_outside_func.py"
 events {
   initial_value {
-    uid: "global:0"
+    id: "global:0"
     filename: "test_outside_func.py"
     lineno: 11
     target: "x"
@@ -15,7 +15,7 @@ events {
 }
 events {
   deletion {
-    uid: "global:1"
+    id: "global:1"
     filename: "test_outside_func.py"
     lineno: 11
     target: "x"
@@ -25,7 +25,7 @@ events {
 }
 events {
   initial_value {
-    uid: "global:2"
+    id: "global:2"
     filename: "test_outside_func.py"
     lineno: 12
     target: "__annotations__"
@@ -36,7 +36,7 @@ events {
 }
 events {
   mutation {
-    uid: "global:3"
+    id: "global:3"
     filename: "test_outside_func.py"
     lineno: 12
     target: "__annotations__"

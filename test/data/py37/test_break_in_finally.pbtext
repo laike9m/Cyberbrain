@@ -4,7 +4,7 @@
 filename: "test_block.py"
 events {
   binding {
-    uid: "test_break_in_finally:0"
+    id: "test_break_in_finally:0"
     filename: "test_block.py"
     lineno: 62
     target: "x"

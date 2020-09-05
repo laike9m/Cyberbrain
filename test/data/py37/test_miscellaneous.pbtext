@@ -4,7 +4,7 @@
 filename: "test_miscellaneous.py"
 events {
   initial_value {
-    uid: "test_miscellaneous:0"
+    id: "test_miscellaneous:0"
     filename: "test_miscellaneous.py"
     lineno: 16
     target: "a"
@@ -15,7 +15,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_miscellaneous:1"
+    id: "test_miscellaneous:1"
     filename: "test_miscellaneous.py"
     lineno: 16
     target: "b"
@@ -26,7 +26,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_miscellaneous:2"
+    id: "test_miscellaneous:2"
     filename: "test_miscellaneous.py"
     lineno: 16
     target: "c"
@@ -37,7 +37,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_miscellaneous:3"
+    id: "test_miscellaneous:3"
     filename: "test_miscellaneous.py"
     lineno: 16
     target: "d"
@@ -48,7 +48,7 @@ events {
 }
 events {
   binding {
-    uid: "test_miscellaneous:4"
+    id: "test_miscellaneous:4"
     filename: "test_miscellaneous.py"
     lineno: 16
     target: "x"
@@ -63,7 +63,7 @@ events {
 }
 events {
   binding {
-    uid: "test_miscellaneous:5"
+    id: "test_miscellaneous:5"
     filename: "test_miscellaneous.py"
     lineno: 17
     target: "x"
@@ -76,7 +76,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_miscellaneous:6"
+    id: "test_miscellaneous:6"
     filename: "test_miscellaneous.py"
     lineno: 18
     target: "e"
@@ -87,7 +87,7 @@ events {
 }
 events {
   mutation {
-    uid: "test_miscellaneous:7"
+    id: "test_miscellaneous:7"
     filename: "test_miscellaneous.py"
     lineno: 18
     target: "e"
@@ -99,7 +99,7 @@ events {
 }
 events {
   mutation {
-    uid: "test_miscellaneous:8"
+    id: "test_miscellaneous:8"
     filename: "test_miscellaneous.py"
     lineno: 18
     target: "e"
@@ -112,7 +112,7 @@ events {
 }
 events {
   deletion {
-    uid: "test_miscellaneous:9"
+    id: "test_miscellaneous:9"
     filename: "test_miscellaneous.py"
     lineno: 19
     target: "e"
@@ -122,7 +122,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_miscellaneous:10"
+    id: "test_miscellaneous:10"
     filename: "test_miscellaneous.py"
     lineno: 21
     target: "g"
@@ -133,7 +133,7 @@ events {
 }
 events {
   binding {
-    uid: "test_miscellaneous:11"
+    id: "test_miscellaneous:11"
     filename: "test_miscellaneous.py"
     lineno: 21
     target: "x"
@@ -145,7 +145,7 @@ events {
 }
 events {
   binding {
-    uid: "test_miscellaneous:12"
+    id: "test_miscellaneous:12"
     filename: "test_miscellaneous.py"
     lineno: 22
     target: "g"
@@ -156,7 +156,7 @@ events {
 }
 events {
   deletion {
-    uid: "test_miscellaneous:13"
+    id: "test_miscellaneous:13"
     filename: "test_miscellaneous.py"
     lineno: 23
     target: "g"
@@ -167,29 +167,29 @@ events {
 tracing_result {
   key: "test_miscellaneous:11"
   value {
-    event_uids: "test_miscellaneous:10"
+    event_ids: "test_miscellaneous:10"
   }
 }
 tracing_result {
   key: "test_miscellaneous:4"
   value {
-    event_uids: "test_miscellaneous:0"
-    event_uids: "test_miscellaneous:1"
-    event_uids: "test_miscellaneous:2"
-    event_uids: "test_miscellaneous:3"
+    event_ids: "test_miscellaneous:0"
+    event_ids: "test_miscellaneous:1"
+    event_ids: "test_miscellaneous:2"
+    event_ids: "test_miscellaneous:3"
   }
 }
 tracing_result {
   key: "test_miscellaneous:5"
   value {
-    event_uids: "test_miscellaneous:0"
-    event_uids: "test_miscellaneous:1"
+    event_ids: "test_miscellaneous:0"
+    event_ids: "test_miscellaneous:1"
   }
 }
 tracing_result {
   key: "test_miscellaneous:8"
   value {
-    event_uids: "test_miscellaneous:7"
+    event_ids: "test_miscellaneous:7"
   }
 }
 identifiers: "a"

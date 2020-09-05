@@ -4,7 +4,7 @@
 filename: "test_hello.py"
 events {
   binding {
-    uid: "test_hello:0"
+    id: "test_hello:0"
     filename: "test_hello.py"
     lineno: 6
     target: "x"
@@ -15,7 +15,7 @@ events {
 }
 events {
   binding {
-    uid: "test_hello:1"
+    id: "test_hello:1"
     filename: "test_hello.py"
     lineno: 7
     target: "y"
@@ -27,7 +27,7 @@ events {
 }
 events {
   binding {
-    uid: "test_hello:2"
+    id: "test_hello:2"
     filename: "test_hello.py"
     lineno: 8
     target: "x"
@@ -39,7 +39,7 @@ events {
 }
 events {
   binding {
-    uid: "test_hello:3"
+    id: "test_hello:3"
     filename: "test_hello.py"
     lineno: 8
     target: "y"
@@ -52,19 +52,19 @@ events {
 tracing_result {
   key: "test_hello:1"
   value {
-    event_uids: "test_hello:0"
+    event_ids: "test_hello:0"
   }
 }
 tracing_result {
   key: "test_hello:2"
   value {
-    event_uids: "test_hello:1"
+    event_ids: "test_hello:1"
   }
 }
 tracing_result {
   key: "test_hello:3"
   value {
-    event_uids: "test_hello:0"
+    event_ids: "test_hello:0"
   }
 }
 identifiers: "x"

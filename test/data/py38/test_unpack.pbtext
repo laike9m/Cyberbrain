@@ -4,7 +4,7 @@
 filename: "test_unpack.py"
 events {
   binding {
-    uid: "test_unpack:0"
+    id: "test_unpack:0"
     filename: "test_unpack.py"
     lineno: 12
     target: "a"
@@ -15,7 +15,7 @@ events {
 }
 events {
   binding {
-    uid: "test_unpack:1"
+    id: "test_unpack:1"
     filename: "test_unpack.py"
     lineno: 12
     target: "b"
@@ -26,7 +26,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_unpack:2"
+    id: "test_unpack:2"
     filename: "test_unpack.py"
     lineno: 13
     target: "l1"
@@ -37,7 +37,7 @@ events {
 }
 events {
   binding {
-    uid: "test_unpack:3"
+    id: "test_unpack:3"
     filename: "test_unpack.py"
     lineno: 13
     target: "a"
@@ -49,7 +49,7 @@ events {
 }
 events {
   binding {
-    uid: "test_unpack:4"
+    id: "test_unpack:4"
     filename: "test_unpack.py"
     lineno: 13
     target: "b"
@@ -61,7 +61,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_unpack:5"
+    id: "test_unpack:5"
     filename: "test_unpack.py"
     lineno: 14
     target: "numbers"
@@ -72,7 +72,7 @@ events {
 }
 events {
   binding {
-    uid: "test_unpack:6"
+    id: "test_unpack:6"
     filename: "test_unpack.py"
     lineno: 14
     target: "first"
@@ -84,7 +84,7 @@ events {
 }
 events {
   binding {
-    uid: "test_unpack:7"
+    id: "test_unpack:7"
     filename: "test_unpack.py"
     lineno: 14
     target: "rest"
@@ -96,7 +96,7 @@ events {
 }
 events {
   binding {
-    uid: "test_unpack:8"
+    id: "test_unpack:8"
     filename: "test_unpack.py"
     lineno: 15
     target: "beginning"
@@ -108,7 +108,7 @@ events {
 }
 events {
   binding {
-    uid: "test_unpack:9"
+    id: "test_unpack:9"
     filename: "test_unpack.py"
     lineno: 15
     target: "last"
@@ -120,7 +120,7 @@ events {
 }
 events {
   binding {
-    uid: "test_unpack:10"
+    id: "test_unpack:10"
     filename: "test_unpack.py"
     lineno: 16
     target: "head"
@@ -132,7 +132,7 @@ events {
 }
 events {
   binding {
-    uid: "test_unpack:11"
+    id: "test_unpack:11"
     filename: "test_unpack.py"
     lineno: 16
     target: "middle"
@@ -144,7 +144,7 @@ events {
 }
 events {
   binding {
-    uid: "test_unpack:12"
+    id: "test_unpack:12"
     filename: "test_unpack.py"
     lineno: 16
     target: "tail"
@@ -156,7 +156,7 @@ events {
 }
 events {
   binding {
-    uid: "test_unpack:13"
+    id: "test_unpack:13"
     filename: "test_unpack.py"
     lineno: 17
     target: "a"
@@ -169,7 +169,7 @@ events {
 }
 events {
   binding {
-    uid: "test_unpack:14"
+    id: "test_unpack:14"
     filename: "test_unpack.py"
     lineno: 18
     target: "a"
@@ -182,7 +182,7 @@ events {
 }
 events {
   binding {
-    uid: "test_unpack:15"
+    id: "test_unpack:15"
     filename: "test_unpack.py"
     lineno: 19
     target: "a"
@@ -195,7 +195,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_unpack:16"
+    id: "test_unpack:16"
     filename: "test_unpack.py"
     lineno: 20
     target: "m1"
@@ -206,7 +206,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_unpack:17"
+    id: "test_unpack:17"
     filename: "test_unpack.py"
     lineno: 20
     target: "m2"
@@ -217,7 +217,7 @@ events {
 }
 events {
   binding {
-    uid: "test_unpack:18"
+    id: "test_unpack:18"
     filename: "test_unpack.py"
     lineno: 20
     target: "a"
@@ -231,83 +231,83 @@ events {
 tracing_result {
   key: "test_unpack:10"
   value {
-    event_uids: "test_unpack:5"
+    event_ids: "test_unpack:5"
   }
 }
 tracing_result {
   key: "test_unpack:11"
   value {
-    event_uids: "test_unpack:5"
+    event_ids: "test_unpack:5"
   }
 }
 tracing_result {
   key: "test_unpack:12"
   value {
-    event_uids: "test_unpack:5"
+    event_ids: "test_unpack:5"
   }
 }
 tracing_result {
   key: "test_unpack:13"
   value {
-    event_uids: "test_unpack:2"
-    event_uids: "test_unpack:5"
+    event_ids: "test_unpack:2"
+    event_ids: "test_unpack:5"
   }
 }
 tracing_result {
   key: "test_unpack:14"
   value {
-    event_uids: "test_unpack:2"
-    event_uids: "test_unpack:5"
+    event_ids: "test_unpack:2"
+    event_ids: "test_unpack:5"
   }
 }
 tracing_result {
   key: "test_unpack:15"
   value {
-    event_uids: "test_unpack:2"
-    event_uids: "test_unpack:5"
+    event_ids: "test_unpack:2"
+    event_ids: "test_unpack:5"
   }
 }
 tracing_result {
   key: "test_unpack:18"
   value {
-    event_uids: "test_unpack:16"
-    event_uids: "test_unpack:17"
+    event_ids: "test_unpack:16"
+    event_ids: "test_unpack:17"
   }
 }
 tracing_result {
   key: "test_unpack:3"
   value {
-    event_uids: "test_unpack:2"
+    event_ids: "test_unpack:2"
   }
 }
 tracing_result {
   key: "test_unpack:4"
   value {
-    event_uids: "test_unpack:2"
+    event_ids: "test_unpack:2"
   }
 }
 tracing_result {
   key: "test_unpack:6"
   value {
-    event_uids: "test_unpack:5"
+    event_ids: "test_unpack:5"
   }
 }
 tracing_result {
   key: "test_unpack:7"
   value {
-    event_uids: "test_unpack:5"
+    event_ids: "test_unpack:5"
   }
 }
 tracing_result {
   key: "test_unpack:8"
   value {
-    event_uids: "test_unpack:5"
+    event_ids: "test_unpack:5"
   }
 }
 tracing_result {
   key: "test_unpack:9"
   value {
-    event_uids: "test_unpack:5"
+    event_ids: "test_unpack:5"
   }
 }
 identifiers: "a"

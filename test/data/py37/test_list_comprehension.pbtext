@@ -4,7 +4,7 @@
 filename: "test_list_comp.py"
 events {
   binding {
-    uid: "test_list_comprehension:0"
+    id: "test_list_comprehension:0"
     filename: "test_list_comp.py"
     lineno: 8
     target: "n"
@@ -15,7 +15,7 @@ events {
 }
 events {
   binding {
-    uid: "test_list_comprehension:1"
+    id: "test_list_comprehension:1"
     filename: "test_list_comp.py"
     lineno: 9
     target: "x"
@@ -27,7 +27,7 @@ events {
 }
 events {
   binding {
-    uid: "test_list_comprehension:2"
+    id: "test_list_comprehension:2"
     filename: "test_list_comp.py"
     lineno: 10
     target: "lst"
@@ -38,7 +38,7 @@ events {
 }
 events {
   binding {
-    uid: "test_list_comprehension:3"
+    id: "test_list_comprehension:3"
     filename: "test_list_comp.py"
     lineno: 11
     target: "x"
@@ -51,13 +51,13 @@ events {
 tracing_result {
   key: "test_list_comprehension:1"
   value {
-    event_uids: "test_list_comprehension:0"
+    event_ids: "test_list_comprehension:0"
   }
 }
 tracing_result {
   key: "test_list_comprehension:3"
   value {
-    event_uids: "test_list_comprehension:2"
+    event_ids: "test_list_comprehension:2"
   }
 }
 identifiers: "n"
