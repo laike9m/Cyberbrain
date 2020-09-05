@@ -169,12 +169,12 @@ class TraceGraph {
       nodesToShow.push(this.createNode(event));
 
       // Add edges.
-      if (Object.prototype.hasOwnProperty.call(this.tracingResult, event.uid)) {
-        for (let source_event_uid of this.tracingResult[event.uid]) {
+      if (Object.prototype.hasOwnProperty.call(this.tracingResult, event.id)) {
+        for (let source_event_id of this.tracingResult[event.id]) {
           edgesToShow.push({
-            from: source_event_uid,
-            to: event.uid,
-            id: source_event_uid + event.uid,
+            from: source_event_id,
+            to: event.id,
+            id: source_event_id + event.id,
           });
         }
       }
@@ -258,7 +258,6 @@ class TraceGraph {
     this.network.on("click", (event) => {
       let selectedNode = this.nodes.get(event.nodes[0]);
       setTimeout(() => {
-        cl(document.querySelector(".vis-manipulation"));
         if (selectedNode.loop === undefined) {
           document.querySelector(".vis-manipulation").style.display = "none";
         } else {
@@ -283,12 +282,13 @@ class TraceGraph {
 
   createNode(event) {
     return {
-      id: event.uid,
+      id: event.id,
       level: event.lineno,
       label: buildLabelText(event),
       target: event.target,
       // "value" is reserved, use "runtimeValue" instead.
       runtimeValue: event.value,
+      offset: event.offset,
       color: {
         background: this.colorGenerator.getColor(event.target),
         hover: {
@@ -301,7 +301,7 @@ class TraceGraph {
   }
 }
 
-///////////////////////// Loop node editing related /////////////////////////
+///////////////////////// Loop counter node related /////////////////////////
 
 function editNode(node, cancelAction, callback) {
   document.getElementById("node-label").value = node.label;
@@ -326,7 +326,7 @@ function editNode(node, cancelAction, callback) {
     infoText.originalHTML = infoText.innerHTML;
     popUp.insertBefore(infoText, null);
   } else {
-    // Clears counter exceed upper limit warning.
+    // Clears counter exceed upper limit warning if it exists.
     infoText.innerHTML = infoText.originalHTML;
   }
 }
@@ -351,6 +351,8 @@ function saveNodeData(node, callback) {
   }
 
   node.label = userSetCounterText;
+  node.loop.counter = userSetCounterValue;
+  // cl(generateNodeUpdate(this.events, visibleEvents, node.loop));
   clearNodePopUp();
   callback(node);
 }

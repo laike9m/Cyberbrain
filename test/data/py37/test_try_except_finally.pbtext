@@ -4,7 +4,7 @@
 filename: "test_block.py"
 events {
   binding {
-    uid: "test_try_except_finally:0"
+    id: "test_try_except_finally:0"
     filename: "test_block.py"
     lineno: 50
     target: "b"

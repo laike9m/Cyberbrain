@@ -4,7 +4,7 @@
 filename: "test_while_loop.py"
 events {
   binding {
-    uid: "test_while_loop:0"
+    id: "test_while_loop:0"
     filename: "test_while_loop.py"
     lineno: 8
     target: "i"
@@ -15,7 +15,7 @@ events {
 }
 events {
   binding {
-    uid: "test_while_loop:1"
+    id: "test_while_loop:1"
     filename: "test_while_loop.py"
     lineno: 10
     target: "a"
@@ -27,7 +27,7 @@ events {
 }
 events {
   binding {
-    uid: "test_while_loop:2"
+    id: "test_while_loop:2"
     filename: "test_while_loop.py"
     lineno: 11
     target: "i"
@@ -39,7 +39,7 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_while_loop:3"
+    id: "test_while_loop:3"
     filename: "test_while_loop.py"
     lineno: 11
     index: 3
@@ -49,7 +49,7 @@ events {
 }
 events {
   binding {
-    uid: "test_while_loop:4"
+    id: "test_while_loop:4"
     filename: "test_while_loop.py"
     lineno: 10
     target: "a"
@@ -61,7 +61,7 @@ events {
 }
 events {
   binding {
-    uid: "test_while_loop:5"
+    id: "test_while_loop:5"
     filename: "test_while_loop.py"
     lineno: 11
     target: "i"
@@ -73,7 +73,7 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_while_loop:6"
+    id: "test_while_loop:6"
     filename: "test_while_loop.py"
     lineno: 11
     index: 6
@@ -83,7 +83,7 @@ events {
 }
 events {
   binding {
-    uid: "test_while_loop:7"
+    id: "test_while_loop:7"
     filename: "test_while_loop.py"
     lineno: 13
     target: "i"
@@ -94,7 +94,7 @@ events {
 }
 events {
   binding {
-    uid: "test_while_loop:8"
+    id: "test_while_loop:8"
     filename: "test_while_loop.py"
     lineno: 17
     target: "i"
@@ -105,7 +105,7 @@ events {
 }
 events {
   binding {
-    uid: "test_while_loop:9"
+    id: "test_while_loop:9"
     filename: "test_while_loop.py"
     lineno: 19
     target: "i"
@@ -117,7 +117,7 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_while_loop:10"
+    id: "test_while_loop:10"
     filename: "test_while_loop.py"
     lineno: 20
     index: 10
@@ -127,7 +127,7 @@ events {
 }
 events {
   binding {
-    uid: "test_while_loop:11"
+    id: "test_while_loop:11"
     filename: "test_while_loop.py"
     lineno: 22
     target: "i"
@@ -138,7 +138,7 @@ events {
 }
 events {
   binding {
-    uid: "test_while_loop:12"
+    id: "test_while_loop:12"
     filename: "test_while_loop.py"
     lineno: 24
     target: "i"
@@ -150,7 +150,7 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_while_loop:13"
+    id: "test_while_loop:13"
     filename: "test_while_loop.py"
     lineno: 26
     index: 13
@@ -160,7 +160,7 @@ events {
 }
 events {
   binding {
-    uid: "test_while_loop:14"
+    id: "test_while_loop:14"
     filename: "test_while_loop.py"
     lineno: 24
     target: "i"
@@ -172,7 +172,7 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_while_loop:15"
+    id: "test_while_loop:15"
     filename: "test_while_loop.py"
     lineno: 25
     index: 15
@@ -182,7 +182,7 @@ events {
 }
 events {
   binding {
-    uid: "test_while_loop:16"
+    id: "test_while_loop:16"
     filename: "test_while_loop.py"
     lineno: 28
     target: "i"
@@ -193,7 +193,7 @@ events {
 }
 events {
   binding {
-    uid: "test_while_loop:17"
+    id: "test_while_loop:17"
     filename: "test_while_loop.py"
     lineno: 30
     target: "i"
@@ -205,7 +205,7 @@ events {
 }
 events {
   binding {
-    uid: "test_while_loop:18"
+    id: "test_while_loop:18"
     filename: "test_while_loop.py"
     lineno: 42
     target: "a"
@@ -232,49 +232,49 @@ loops {
 tracing_result {
   key: "test_while_loop:1"
   value {
-    event_uids: "test_while_loop:0"
+    event_ids: "test_while_loop:0"
   }
 }
 tracing_result {
   key: "test_while_loop:12"
   value {
-    event_uids: "test_while_loop:11"
+    event_ids: "test_while_loop:11"
   }
 }
 tracing_result {
   key: "test_while_loop:14"
   value {
-    event_uids: "test_while_loop:12"
+    event_ids: "test_while_loop:12"
   }
 }
 tracing_result {
   key: "test_while_loop:17"
   value {
-    event_uids: "test_while_loop:16"
+    event_ids: "test_while_loop:16"
   }
 }
 tracing_result {
   key: "test_while_loop:2"
   value {
-    event_uids: "test_while_loop:0"
+    event_ids: "test_while_loop:0"
   }
 }
 tracing_result {
   key: "test_while_loop:4"
   value {
-    event_uids: "test_while_loop:2"
+    event_ids: "test_while_loop:2"
   }
 }
 tracing_result {
   key: "test_while_loop:5"
   value {
-    event_uids: "test_while_loop:2"
+    event_ids: "test_while_loop:2"
   }
 }
 tracing_result {
   key: "test_while_loop:9"
   value {
-    event_uids: "test_while_loop:8"
+    event_ids: "test_while_loop:8"
   }
 }
 identifiers: "i"
