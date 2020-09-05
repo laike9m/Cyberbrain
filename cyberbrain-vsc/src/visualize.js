@@ -119,7 +119,6 @@ class TraceGraph {
     // Add loop counter nodes.
     for (let i = 0; i < this.loops.length; i++) {
       let loop = this.loops[i];
-      // TODO: For loop counter nodes, handle click event to make editor visible
       nodesToShow.push({
         title: "Loop counter",
         id: `loop_counter${loop.startLineno}`,
@@ -244,7 +243,7 @@ class TraceGraph {
       }
       this.hoveredNodeId = node.id;
 
-      console.clear();
+      // console.clear();
       // TODO: show values of all local variables at this point.
       console.log(
         `${node.target}'s value at line ${node.level}: \n ${node.runtimeValue}`
@@ -256,9 +255,10 @@ class TraceGraph {
     });
 
     // Only show edit button when clicking on loop counter nodes, otherwise hide it.
-    this.network.on("selectNode", (event) => {
+    this.network.on("click", (event) => {
       let selectedNode = this.nodes.get(event.nodes[0]);
       setTimeout(() => {
+        cl(document.querySelector(".vis-manipulation"));
         if (selectedNode.loop === undefined) {
           document.querySelector(".vis-manipulation").style.display = "none";
         } else {
@@ -301,31 +301,58 @@ class TraceGraph {
   }
 }
 
-///////////////////////// Node editing related /////////////////////////
+///////////////////////// Loop node editing related /////////////////////////
 
-function editNode(data, cancelAction, callback) {
-  document.getElementById("node-label").value = data.label;
+function editNode(node, cancelAction, callback) {
+  document.getElementById("node-label").value = node.label;
   document.getElementById("node-saveButton").onclick = saveNodeData.bind(
     this,
-    data,
+    node,
     callback
   );
   document.getElementById("node-cancelButton").onclick = cancelAction.bind(
     this,
     callback
   );
-  document.getElementById("node-popUp").style.display = "block";
+  let popUp = document.getElementById("node-popUp");
+  popUp.style.display = "block";
+
+  // Insert instruction text to help users modify counters.
+  let infoText = document.getElementById("counter_info");
+  if (infoText === null) {
+    infoText = document.createElement("p");
+    infoText.id = "counter_info";
+    infoText.innerText = `Counter max value: ${node.loop.maxIteration}`;
+    infoText.originalHTML = infoText.innerHTML;
+    popUp.insertBefore(infoText, null);
+  } else {
+    // Clears counter exceed upper limit warning.
+    infoText.innerHTML = infoText.originalHTML;
+  }
 }
 
 function cancelNodeEdit(callback) {
+  let infoText = document.getElementById("counter_info");
+  infoText.innerHTML = infoText.originalHTML;
   clearNodePopUp();
   callback(null);
 }
 
-function saveNodeData(data, callback) {
-  data.label = document.getElementById("node-label").value;
+function saveNodeData(node, callback) {
+  let userSetCounterText = document.getElementById("node-label").value;
+  let userSetCounterValue = parseInt(userSetCounterText);
+
+  if (userSetCounterValue > node.loop.maxIteration) {
+    let infoText = document.getElementById("counter_info");
+    infoText.innerHTML =
+      infoText.originalHTML +
+      "<p style='color:red'>Counter exceeds upper limit</p>";
+    return;
+  }
+
+  node.label = userSetCounterText;
   clearNodePopUp();
-  callback(data);
+  callback(node);
 }
 
 function clearNodePopUp() {
