@@ -4,7 +4,7 @@
 filename: "test_container.py"
 events {
   initial_value {
-    uid: "test_container:0"
+    id: "test_container:0"
     filename: "test_container.py"
     lineno: 12
     target: "a"
@@ -15,7 +15,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_container:1"
+    id: "test_container:1"
     filename: "test_container.py"
     lineno: 12
     target: "b"
@@ -26,7 +26,7 @@ events {
 }
 events {
   binding {
-    uid: "test_container:2"
+    id: "test_container:2"
     filename: "test_container.py"
     lineno: 12
     target: "d"
@@ -39,7 +39,7 @@ events {
 }
 events {
   binding {
-    uid: "test_container:3"
+    id: "test_container:3"
     filename: "test_container.py"
     lineno: 13
     target: "d"
@@ -52,7 +52,7 @@ events {
 }
 events {
   binding {
-    uid: "test_container:4"
+    id: "test_container:4"
     filename: "test_container.py"
     lineno: 14
     target: "d"
@@ -65,7 +65,7 @@ events {
 }
 events {
   binding {
-    uid: "test_container:5"
+    id: "test_container:5"
     filename: "test_container.py"
     lineno: 15
     target: "d"
@@ -78,7 +78,7 @@ events {
 }
 events {
   binding {
-    uid: "test_container:6"
+    id: "test_container:6"
     filename: "test_container.py"
     lineno: 16
     target: "d"
@@ -91,7 +91,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_container:7"
+    id: "test_container:7"
     filename: "test_container.py"
     lineno: 17
     target: "c"
@@ -102,7 +102,7 @@ events {
 }
 events {
   mutation {
-    uid: "test_container:8"
+    id: "test_container:8"
     filename: "test_container.py"
     lineno: 17
     target: "d"
@@ -116,7 +116,7 @@ events {
 }
 events {
   mutation {
-    uid: "test_container:9"
+    id: "test_container:9"
     filename: "test_container.py"
     lineno: 18
     target: "d"
@@ -129,7 +129,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_container:10"
+    id: "test_container:10"
     filename: "test_container.py"
     lineno: 19
     target: "e"
@@ -140,7 +140,7 @@ events {
 }
 events {
   binding {
-    uid: "test_container:11"
+    id: "test_container:11"
     filename: "test_container.py"
     lineno: 19
     target: "d"
@@ -155,7 +155,7 @@ events {
 }
 events {
   binding {
-    uid: "test_container:12"
+    id: "test_container:12"
     filename: "test_container.py"
     lineno: 20
     target: "d"
@@ -171,67 +171,67 @@ events {
 tracing_result {
   key: "test_container:11"
   value {
-    event_uids: "test_container:0"
-    event_uids: "test_container:1"
-    event_uids: "test_container:7"
-    event_uids: "test_container:10"
+    event_ids: "test_container:0"
+    event_ids: "test_container:1"
+    event_ids: "test_container:7"
+    event_ids: "test_container:10"
   }
 }
 tracing_result {
   key: "test_container:12"
   value {
-    event_uids: "test_container:0"
-    event_uids: "test_container:1"
-    event_uids: "test_container:7"
-    event_uids: "test_container:10"
+    event_ids: "test_container:0"
+    event_ids: "test_container:1"
+    event_ids: "test_container:7"
+    event_ids: "test_container:10"
   }
 }
 tracing_result {
   key: "test_container:2"
   value {
-    event_uids: "test_container:0"
-    event_uids: "test_container:1"
+    event_ids: "test_container:0"
+    event_ids: "test_container:1"
   }
 }
 tracing_result {
   key: "test_container:3"
   value {
-    event_uids: "test_container:0"
-    event_uids: "test_container:1"
+    event_ids: "test_container:0"
+    event_ids: "test_container:1"
   }
 }
 tracing_result {
   key: "test_container:4"
   value {
-    event_uids: "test_container:0"
-    event_uids: "test_container:1"
+    event_ids: "test_container:0"
+    event_ids: "test_container:1"
   }
 }
 tracing_result {
   key: "test_container:5"
   value {
-    event_uids: "test_container:0"
-    event_uids: "test_container:1"
+    event_ids: "test_container:0"
+    event_ids: "test_container:1"
   }
 }
 tracing_result {
   key: "test_container:6"
   value {
-    event_uids: "test_container:0"
-    event_uids: "test_container:1"
+    event_ids: "test_container:0"
+    event_ids: "test_container:1"
   }
 }
 tracing_result {
   key: "test_container:8"
   value {
-    event_uids: "test_container:0"
-    event_uids: "test_container:7"
+    event_ids: "test_container:0"
+    event_ids: "test_container:7"
   }
 }
 tracing_result {
   key: "test_container:9"
   value {
-    event_uids: "test_container:0"
+    event_ids: "test_container:0"
   }
 }
 identifiers: "a"

@@ -4,7 +4,7 @@
 filename: "test_for_loop.py"
 events {
   binding {
-    uid: "test_for_loop:0"
+    id: "test_for_loop:0"
     filename: "test_for_loop.py"
     lineno: 8
     target: "i"
@@ -15,7 +15,7 @@ events {
 }
 events {
   binding {
-    uid: "test_for_loop:1"
+    id: "test_for_loop:1"
     filename: "test_for_loop.py"
     lineno: 9
     target: "a"
@@ -27,7 +27,7 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_for_loop:2"
+    id: "test_for_loop:2"
     filename: "test_for_loop.py"
     lineno: 9
     index: 2
@@ -37,7 +37,7 @@ events {
 }
 events {
   binding {
-    uid: "test_for_loop:3"
+    id: "test_for_loop:3"
     filename: "test_for_loop.py"
     lineno: 8
     target: "i"
@@ -48,7 +48,7 @@ events {
 }
 events {
   binding {
-    uid: "test_for_loop:4"
+    id: "test_for_loop:4"
     filename: "test_for_loop.py"
     lineno: 9
     target: "a"
@@ -60,7 +60,7 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_for_loop:5"
+    id: "test_for_loop:5"
     filename: "test_for_loop.py"
     lineno: 9
     index: 5
@@ -70,7 +70,7 @@ events {
 }
 events {
   binding {
-    uid: "test_for_loop:6"
+    id: "test_for_loop:6"
     filename: "test_for_loop.py"
     lineno: 11
     target: "i"
@@ -81,7 +81,7 @@ events {
 }
 events {
   binding {
-    uid: "test_for_loop:7"
+    id: "test_for_loop:7"
     filename: "test_for_loop.py"
     lineno: 15
     target: "i"
@@ -92,7 +92,7 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_for_loop:8"
+    id: "test_for_loop:8"
     filename: "test_for_loop.py"
     lineno: 16
     index: 8
@@ -102,7 +102,7 @@ events {
 }
 events {
   binding {
-    uid: "test_for_loop:9"
+    id: "test_for_loop:9"
     filename: "test_for_loop.py"
     lineno: 19
     target: "i"
@@ -113,7 +113,7 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_for_loop:10"
+    id: "test_for_loop:10"
     filename: "test_for_loop.py"
     lineno: 21
     index: 10
@@ -123,7 +123,7 @@ events {
 }
 events {
   binding {
-    uid: "test_for_loop:11"
+    id: "test_for_loop:11"
     filename: "test_for_loop.py"
     lineno: 19
     target: "i"
@@ -134,7 +134,7 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_for_loop:12"
+    id: "test_for_loop:12"
     filename: "test_for_loop.py"
     lineno: 20
     index: 12
@@ -144,7 +144,7 @@ events {
 }
 events {
   binding {
-    uid: "test_for_loop:13"
+    id: "test_for_loop:13"
     filename: "test_for_loop.py"
     lineno: 23
     target: "i"
@@ -155,7 +155,7 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_for_loop:14"
+    id: "test_for_loop:14"
     filename: "test_for_loop.py"
     lineno: 24
     index: 14
@@ -165,7 +165,7 @@ events {
 }
 events {
   binding {
-    uid: "test_for_loop:15"
+    id: "test_for_loop:15"
     filename: "test_for_loop.py"
     lineno: 23
     target: "i"
@@ -176,7 +176,7 @@ events {
 }
 events {
   binding {
-    uid: "test_for_loop:16"
+    id: "test_for_loop:16"
     filename: "test_for_loop.py"
     lineno: 27
     target: "i"
@@ -187,7 +187,7 @@ events {
 }
 events {
   binding {
-    uid: "test_for_loop:17"
+    id: "test_for_loop:17"
     filename: "test_for_loop.py"
     lineno: 32
     target: "i"
@@ -198,7 +198,7 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    uid: "test_for_loop:18"
+    id: "test_for_loop:18"
     filename: "test_for_loop.py"
     lineno: 33
     index: 18
@@ -208,7 +208,7 @@ events {
 }
 events {
   binding {
-    uid: "test_for_loop:19"
+    id: "test_for_loop:19"
     filename: "test_for_loop.py"
     lineno: 35
     target: "a"
@@ -245,13 +245,13 @@ loops {
 tracing_result {
   key: "test_for_loop:1"
   value {
-    event_uids: "test_for_loop:0"
+    event_ids: "test_for_loop:0"
   }
 }
 tracing_result {
   key: "test_for_loop:4"
   value {
-    event_uids: "test_for_loop:3"
+    event_ids: "test_for_loop:3"
   }
 }
 identifiers: "i"

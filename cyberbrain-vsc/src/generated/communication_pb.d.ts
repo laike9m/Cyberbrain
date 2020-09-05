@@ -161,10 +161,10 @@ export namespace FrameLocaterList {
 }
 
 export class InitialValue extends jspb.Message {
-  hasUid(): boolean;
-  clearUid(): void;
-  getUid(): string | undefined;
-  setUid(value: string): void;
+  hasId(): boolean;
+  clearId(): void;
+  getId(): string | undefined;
+  setId(value: string): void;
 
   hasFilename(): boolean;
   clearFilename(): void;
@@ -208,7 +208,7 @@ export class InitialValue extends jspb.Message {
 
 export namespace InitialValue {
   export type AsObject = {
-    uid?: string,
+    id?: string,
     filename?: string,
     lineno?: number,
     index?: number,
@@ -219,10 +219,10 @@ export namespace InitialValue {
 }
 
 export class Binding extends jspb.Message {
-  hasUid(): boolean;
-  clearUid(): void;
-  getUid(): string | undefined;
-  setUid(value: string): void;
+  hasId(): boolean;
+  clearId(): void;
+  getId(): string | undefined;
+  setId(value: string): void;
 
   hasFilename(): boolean;
   clearFilename(): void;
@@ -271,7 +271,7 @@ export class Binding extends jspb.Message {
 
 export namespace Binding {
   export type AsObject = {
-    uid?: string,
+    id?: string,
     filename?: string,
     lineno?: number,
     target?: string,
@@ -283,10 +283,10 @@ export namespace Binding {
 }
 
 export class Mutation extends jspb.Message {
-  hasUid(): boolean;
-  clearUid(): void;
-  getUid(): string | undefined;
-  setUid(value: string): void;
+  hasId(): boolean;
+  clearId(): void;
+  getId(): string | undefined;
+  setId(value: string): void;
 
   hasFilename(): boolean;
   clearFilename(): void;
@@ -340,7 +340,7 @@ export class Mutation extends jspb.Message {
 
 export namespace Mutation {
   export type AsObject = {
-    uid?: string,
+    id?: string,
     filename?: string,
     lineno?: number,
     index?: number,
@@ -353,10 +353,10 @@ export namespace Mutation {
 }
 
 export class Deletion extends jspb.Message {
-  hasUid(): boolean;
-  clearUid(): void;
-  getUid(): string | undefined;
-  setUid(value: string): void;
+  hasId(): boolean;
+  clearId(): void;
+  getId(): string | undefined;
+  setId(value: string): void;
 
   hasFilename(): boolean;
   clearFilename(): void;
@@ -395,7 +395,7 @@ export class Deletion extends jspb.Message {
 
 export namespace Deletion {
   export type AsObject = {
-    uid?: string,
+    id?: string,
     filename?: string,
     lineno?: number,
     index?: number,
@@ -405,10 +405,10 @@ export namespace Deletion {
 }
 
 export class JumpBackToLoopStart extends jspb.Message {
-  hasUid(): boolean;
-  clearUid(): void;
-  getUid(): string | undefined;
-  setUid(value: string): void;
+  hasId(): boolean;
+  clearId(): void;
+  getId(): string | undefined;
+  setId(value: string): void;
 
   hasFilename(): boolean;
   clearFilename(): void;
@@ -447,7 +447,7 @@ export class JumpBackToLoopStart extends jspb.Message {
 
 export namespace JumpBackToLoopStart {
   export type AsObject = {
-    uid?: string,
+    id?: string,
     filename?: string,
     lineno?: number,
     index?: number,
@@ -512,25 +512,25 @@ export namespace Event {
   }
 }
 
-export class EventUidList extends jspb.Message {
-  clearEventUidsList(): void;
-  getEventUidsList(): Array<string>;
-  setEventUidsList(value: Array<string>): void;
-  addEventUids(value: string, index?: number): string;
+export class EventIDList extends jspb.Message {
+  clearEventIdsList(): void;
+  getEventIdsList(): Array<string>;
+  setEventIdsList(value: Array<string>): void;
+  addEventIds(value: string, index?: number): string;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): EventUidList.AsObject;
-  static toObject(includeInstance: boolean, msg: EventUidList): EventUidList.AsObject;
+  toObject(includeInstance?: boolean): EventIDList.AsObject;
+  static toObject(includeInstance: boolean, msg: EventIDList): EventIDList.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: EventUidList, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): EventUidList;
-  static deserializeBinaryFromReader(message: EventUidList, reader: jspb.BinaryReader): EventUidList;
+  static serializeBinaryToWriter(message: EventIDList, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): EventIDList;
+  static deserializeBinaryFromReader(message: EventIDList, reader: jspb.BinaryReader): EventIDList;
 }
 
-export namespace EventUidList {
+export namespace EventIDList {
   export type AsObject = {
-    eventUidsList: Array<string>,
+    eventIdsList: Array<string>,
   }
 }
 
@@ -584,7 +584,7 @@ export class Frame extends jspb.Message {
   setLoopsList(value: Array<Loop>): void;
   addLoops(value?: Loop, index?: number): Loop;
 
-  getTracingResultMap(): jspb.Map<string, EventUidList>;
+  getTracingResultMap(): jspb.Map<string, EventIDList>;
   clearTracingResultMap(): void;
   clearIdentifiersList(): void;
   getIdentifiersList(): Array<string>;
@@ -606,7 +606,7 @@ export namespace Frame {
     filename?: string,
     eventsList: Array<Event.AsObject>,
     loopsList: Array<Loop.AsObject>,
-    tracingResultMap: Array<[string, EventUidList.AsObject]>,
+    tracingResultMap: Array<[string, EventIDList.AsObject]>,
     identifiersList: Array<string>,
   }
 }

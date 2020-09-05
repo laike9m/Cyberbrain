@@ -4,7 +4,7 @@
 filename: "test_attribute.py"
 events {
   initial_value {
-    uid: "test_attribute:0"
+    id: "test_attribute:0"
     filename: "test_attribute.py"
     lineno: 16
     target: "a2"
@@ -15,7 +15,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_attribute:1"
+    id: "test_attribute:1"
     filename: "test_attribute.py"
     lineno: 16
     target: "a1"
@@ -26,7 +26,7 @@ events {
 }
 events {
   mutation {
-    uid: "test_attribute:2"
+    id: "test_attribute:2"
     filename: "test_attribute.py"
     lineno: 16
     target: "a1"
@@ -39,7 +39,7 @@ events {
 }
 events {
   mutation {
-    uid: "test_attribute:3"
+    id: "test_attribute:3"
     filename: "test_attribute.py"
     lineno: 17
     target: "a1"
@@ -51,7 +51,7 @@ events {
 }
 events {
   mutation {
-    uid: "test_attribute:4"
+    id: "test_attribute:4"
     filename: "test_attribute.py"
     lineno: 18
     target: "a1"
@@ -64,7 +64,7 @@ events {
 tracing_result {
   key: "test_attribute:2"
   value {
-    event_uids: "test_attribute:0"
+    event_ids: "test_attribute:0"
   }
 }
 identifiers: "a2"

@@ -65,7 +65,7 @@ message FrameLocaterList {
 
 // These four message types correspond to the types defined in cyberbrain/basis.py
 message InitialValue {
-  optional string uid = 1;
+  optional string id = 1;
   optional string filename = 2;
   optional int32 lineno = 3;
   optional int64 index = 6;
@@ -76,7 +76,7 @@ message InitialValue {
 }
 
 message Binding {
-  optional string uid = 1;
+  optional string id = 1;
   optional string filename = 2;
   optional int32 lineno = 3;
   optional string target = 4;
@@ -87,7 +87,7 @@ message Binding {
 }
 
 message Mutation {
-  optional string uid = 1;
+  optional string id = 1;
   optional string filename = 2;
   optional int32 lineno = 3;
   optional int64 index = 8;
@@ -101,7 +101,7 @@ message Mutation {
 }
 
 message Deletion {
-  optional string uid = 1;
+  optional string id = 1;
   optional string filename = 2;
   optional int32 lineno = 3;
   optional int64 index = 5;
@@ -110,7 +110,7 @@ message Deletion {
 }
 
 message JumpBackToLoopStart {
-  optional string uid = 1;
+  optional string id = 1;
   optional string filename = 2;
   optional int32 lineno = 3;
   optional int64 index = 4;
@@ -128,8 +128,8 @@ message Event {
   }
 }
 
-message EventUidList {
-  repeated string event_uids = 1;
+message EventIDList {
+  repeated string event_ids = 1;
 }
 
 message Loop {
@@ -147,7 +147,7 @@ message Frame {
   repeated Loop loops = 3;
 
   // Maps events to relevant predecessor events.
-  map</* event uid */ string, EventUidList> tracing_result = 4;
+  map</* event id */ string, EventIDList> tracing_result = 4;
 
   // Identifiers appeared in this frame. Used to initialize trace graph's color schema.
   repeated string identifiers = 5;

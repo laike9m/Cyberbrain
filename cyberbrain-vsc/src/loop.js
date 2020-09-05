@@ -132,7 +132,7 @@ export function getInitialState(events, loops) {
 
 Parameters:
   events: a sequence of events in one frame, sorted by the order they occurred.
-  visibleEvents: currently visible events.
+  visibleEvents: currently visible events, does it need to be sorted?
   loop: a loop whose counter is modified.
 
 Returns:

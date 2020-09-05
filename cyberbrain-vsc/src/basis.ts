@@ -20,7 +20,7 @@ enum EventType {
 export abstract class Event {
   lineno: number;
   filename: string;
-  uid: string;
+  id: string;
   // When passing an object to webview, its type is erased. Thus we need to explicitly store it here.
   type: EventType;
   index: number;
@@ -31,14 +31,14 @@ export abstract class Event {
     filename: string,
     index: number,
     offset: number,
-    uid: string,
+    id: string,
     type: EventType
   ) {
     this.lineno = lineno;
     this.filename = filename;
     this.index = index;
     this.offset = offset;
-    this.uid = uid;
+    this.id = id;
     this.type = type;
   }
 }
@@ -53,7 +53,7 @@ export class InitialValue extends Event {
       initialValue.getFilename()!,
       initialValue.getIndex()!,
       initialValue.getOffset()!,
-      initialValue.getUid()!,
+      initialValue.getId()!,
       EventType.InitialValue
     );
     this.target = initialValue.getTarget()!;
@@ -72,7 +72,7 @@ export class Binding extends Event {
       binding.getFilename()!,
       binding.getIndex()!,
       binding.getOffset()!,
-      binding.getUid()!,
+      binding.getId()!,
       EventType.Binding
     );
     this.target = binding.getTarget()!;
@@ -93,7 +93,7 @@ export class Mutation extends Event {
       mutation.getFilename()!,
       mutation.getIndex()!,
       mutation.getOffset()!,
-      mutation.getUid()!,
+      mutation.getId()!,
       EventType.Mutation
     );
     this.target = mutation.getTarget()!;
@@ -112,7 +112,7 @@ export class Deletion extends Event {
       deletion.getFilename()!,
       deletion.getIndex()!,
       deletion.getOffset()!,
-      deletion.getUid()!,
+      deletion.getId()!,
       EventType.Deletion
     );
     this.target = deletion.getTarget()!;
@@ -128,7 +128,7 @@ export class JumpBackToLoopStart extends Event {
       jumpBack.getFilename()!,
       jumpBack.getIndex()!,
       jumpBack.getOffset()!,
-      jumpBack.getUid()!,
+      jumpBack.getId()!,
       EventType.JumpBackToLoopStart
     );
     this.jump_target = jumpBack.getJumpTarget()!;

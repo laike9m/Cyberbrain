@@ -4,7 +4,7 @@
 filename: "test_jump.py"
 events {
   initial_value {
-    uid: "test_jump:0"
+    id: "test_jump:0"
     filename: "test_jump.py"
     lineno: 12
     target: "a"
@@ -15,7 +15,7 @@ events {
 }
 events {
   binding {
-    uid: "test_jump:1"
+    id: "test_jump:1"
     filename: "test_jump.py"
     lineno: 15
     target: "x"
@@ -26,7 +26,7 @@ events {
 }
 events {
   binding {
-    uid: "test_jump:2"
+    id: "test_jump:2"
     filename: "test_jump.py"
     lineno: 18
     target: "x"
@@ -37,7 +37,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_jump:3"
+    id: "test_jump:3"
     filename: "test_jump.py"
     lineno: 20
     target: "b"
@@ -48,7 +48,7 @@ events {
 }
 events {
   initial_value {
-    uid: "test_jump:4"
+    id: "test_jump:4"
     filename: "test_jump.py"
     lineno: 20
     target: "c"
@@ -59,7 +59,7 @@ events {
 }
 events {
   binding {
-    uid: "test_jump:5"
+    id: "test_jump:5"
     filename: "test_jump.py"
     lineno: 20
     target: "x"
@@ -72,7 +72,7 @@ events {
 }
 events {
   binding {
-    uid: "test_jump:6"
+    id: "test_jump:6"
     filename: "test_jump.py"
     lineno: 21
     target: "x"
@@ -85,14 +85,14 @@ events {
 tracing_result {
   key: "test_jump:5"
   value {
-    event_uids: "test_jump:3"
-    event_uids: "test_jump:4"
+    event_ids: "test_jump:3"
+    event_ids: "test_jump:4"
   }
 }
 tracing_result {
   key: "test_jump:6"
   value {
-    event_uids: "test_jump:4"
+    event_ids: "test_jump:4"
   }
 }
 identifiers: "a"
