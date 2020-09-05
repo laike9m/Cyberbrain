@@ -82,6 +82,7 @@ class TraceGraph {
     this.nodes = new vis.DataSet([]);
     this.edges = new vis.DataSet([]);
     this.container = document.getElementById("vis");
+    this.hoveredNodeId = undefined;
     this.network = new vis.Network(
       this.container,
       {
@@ -171,17 +172,56 @@ class TraceGraph {
     this.nodes.add(nodesToShow);
     this.edges.add(edgesToShow);
 
+    this.network.on("afterDrawing", (ctx) => {
+      if (this.hoveredNodeId === undefined) return;
+
+      let traceGraphNodeIds = this.network.getConnectedNodes(
+        this.hoveredNodeId
+      );
+
+      ctx.font = "14px consolas";
+      ctx.strokeStyle = "#89897d";
+
+      for (let node of this.nodes.get(
+        traceGraphNodeIds.concat(this.hoveredNodeId)
+      )) {
+        console.log(node);
+        let text = getTooltipTextForEventNode(node);
+        let pos = this.network.getPosition(node.id);
+        let rectX = pos.x + 10;
+        let rectY = pos.y - 30;
+        let rectWidth = ctx.measureText(text).width + 20;
+        let rectHeight = 25;
+
+        ctx.fillStyle = "#f5f4ed";
+        ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
+        ctx.strokeRect(rectX, rectY, rectWidth, rectHeight);
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        // Centers text at background rectangle's center.
+        ctx.fillText(text, rectX + rectWidth / 2, rectY + rectHeight / 2);
+      }
+    });
+
     this.network.on("hoverNode", (event) => {
       let node = this.nodes.get(event.node);
       if (!node.hasOwnProperty("target")) {
         return;
       }
+      this.hoveredNodeId = node.id;
+
+      // TODO: show values of all local variables at this point.
       console.log(
         `${node.target}'s value at line ${node.level}: \n ${node.runtimeValue}`
       );
     });
 
-    // Only show edit button when clicking on loop counter nodes, otherwise hide the button.
+    this.network.on("blurNode", (event) => {
+      this.hoveredNodeId = undefined;
+    });
+
+    // Only show edit button when clicking on loop counter nodes, otherwise hide it.
     this.network.on("selectNode", (event) => {
       let selectedNode = this.nodes.get(event.nodes[0]);
       setTimeout(() => {
@@ -210,7 +250,6 @@ class TraceGraph {
 
   createNode(event) {
     return {
-      title: getTooltipTextForEventNode(event),
       id: event.uid,
       level: event.lineno,
       label: buildLabelText(event),
@@ -289,7 +328,7 @@ function buildLabelText(event) {
   return `${event.target}: ${event.type}`;
 }
 
-function getTooltipTextForEventNode(event) {
+function getTooltipTextForEventNode(node) {
   // TODO: Truncate value.
-  return event.value;
+  return node.runtimeValue;
 }
