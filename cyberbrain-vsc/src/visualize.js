@@ -70,6 +70,21 @@ const options = {
   },
 };
 
+// A method to draw round corner rectangle on canvas.
+// From https://stackoverflow.com/a/7838871/2142577.
+CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+  if (w < 2 * r) r = w / 2;
+  if (h < 2 * r) r = h / 2;
+  this.beginPath();
+  this.moveTo(x + r, y);
+  this.arcTo(x + w, y, x + w, y + h, r);
+  this.arcTo(x + w, y + h, x, y + h, r);
+  this.arcTo(x, y + h, x, y, r);
+  this.arcTo(x, y, x + w, y, r);
+  this.closePath();
+  return this;
+};
+
 class TraceGraph {
   constructor(data) {
     this.lines = new Set();
@@ -182,6 +197,7 @@ class TraceGraph {
       ctx.font = "14px consolas";
       ctx.strokeStyle = "#89897d";
 
+      // Manually draw tooltips to show each node's value on the trace path.
       for (let node of this.nodes.get(
         traceGraphNodeIds.concat(this.hoveredNodeId)
       )) {
@@ -194,8 +210,8 @@ class TraceGraph {
         let rectHeight = 25;
 
         ctx.fillStyle = "#f5f4ed";
-        ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
-        ctx.strokeRect(rectX, rectY, rectWidth, rectHeight);
+        ctx.roundRect(rectX, rectY, rectWidth, rectHeight, 5).fill();
+        ctx.roundRect(rectX, rectY, rectWidth, rectHeight, 5).stroke();
         ctx.fillStyle = "black";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
