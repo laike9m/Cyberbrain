@@ -21,6 +21,8 @@ is poor, see: https://github.com/visjs/vis-network/issues/930
 // The .js suffix is needed to make import work in vsc webview.
 import { getInitialState, Loop } from "./loop.js";
 
+let cl = console.log;
+
 window.addEventListener("message", (event) => {
   if (!event.data.hasOwnProperty("events")) {
     return; // Server ready message.
@@ -172,6 +174,7 @@ class TraceGraph {
           edgesToShow.push({
             from: source_event_uid,
             to: event.uid,
+            id: source_event_uid + event.uid,
           });
         }
       }
@@ -187,24 +190,39 @@ class TraceGraph {
     this.nodes.add(nodesToShow);
     this.edges.add(edgesToShow);
 
+    /*
+     Manually draw tooltips to show each node's value on the trace path.
+     */
     this.network.on("afterDrawing", (ctx) => {
       if (this.hoveredNodeId === undefined) return;
 
-      let traceGraphNodeIds = this.network.getConnectedNodes(
+      cl(this.edges.get());
+      let [tracePathNodeIds, tracePathEdgeIds] = findNodesAndEdgesOnTracePath(
+        this.network,
+        this.edges,
         this.hoveredNodeId
       );
+      tracePathNodeIds = Array.from(tracePathNodeIds);
+      tracePathEdgeIds = Array.from(tracePathEdgeIds);
 
       ctx.font = "14px consolas";
       ctx.strokeStyle = "#89897d";
 
-      // Manually draw tooltips to show each node's value on the trace path.
-      for (let node of this.nodes.get(
-        traceGraphNodeIds.concat(this.hoveredNodeId)
-      )) {
+      this.network.setSelection(
+        {
+          nodes: tracePathNodeIds,
+          edges: tracePathEdgeIds,
+        },
+        {
+          highlightEdges: false,
+        }
+      );
+
+      for (let node of this.nodes.get(tracePathNodeIds)) {
         let text = getTooltipTextForEventNode(node);
         let pos = this.network.getPosition(node.id);
         let rectX = pos.x + 10;
-        let rectY = pos.y - 30;
+        let rectY = pos.y - 33;
         let rectWidth = ctx.measureText(text).width + 20;
         let rectHeight = 25;
 
@@ -346,4 +364,53 @@ function buildLabelText(event) {
 function getTooltipTextForEventNode(node) {
   // TODO: Truncate value.
   return node.runtimeValue;
+}
+
+/*
+Given a node, find all node on the trace path. Here we not only find all sources nodes,
+we also find all nodes that is a consequence of the given node, both directly and indirectly.
+    A
+   / \
+  B  D
+ /
+C
+
+Given the above graph and node "B", this function should return "A", "B", "C".
+
+Trace graph does not have loop, so we don't need to check repeated nodes during recursion.
+ */
+function findNodesAndEdgesOnTracePath(
+  network,
+  edges,
+  nodeId,
+  directions = ["from", "to"]
+) {
+  let resultNodes = new Set([nodeId]);
+  let resultEdges = new Set();
+
+  for (let direction of directions) {
+    for (let connectedNode of network.getConnectedNodes(nodeId, direction)) {
+      if (direction === "from") {
+        console.log(connectedNode + nodeId);
+        resultEdges.add(edges.get(connectedNode + nodeId).id);
+      } else if (direction === "to") {
+        console.log(nodeId + connectedNode);
+        resultEdges.add(edges.get(nodeId + connectedNode).id);
+      }
+      let [
+        indirectConnectedNodes,
+        indirectConnectedEdges,
+      ] = findNodesAndEdgesOnTracePath(network, edges, connectedNode, [
+        direction,
+      ]);
+      for (let indirectConnectedNode of indirectConnectedNodes) {
+        resultNodes.add(indirectConnectedNode);
+      }
+      for (let indirectConnectedEdge of indirectConnectedEdges) {
+        resultEdges.add(indirectConnectedEdge);
+      }
+    }
+  }
+
+  return [resultNodes, resultEdges];
 }
