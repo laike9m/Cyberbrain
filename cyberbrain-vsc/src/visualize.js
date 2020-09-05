@@ -50,6 +50,7 @@ const options = {
   layout: {
     hierarchical: {
       direction: "UD", // From up to bottom.
+      edgeMinimization: false, // To not let edges overlap with nodes.
     },
   },
   physics: {
@@ -196,7 +197,6 @@ class TraceGraph {
     this.network.on("afterDrawing", (ctx) => {
       if (this.hoveredNodeId === undefined) return;
 
-      cl(this.edges.get());
       let [tracePathNodeIds, tracePathEdgeIds] = findNodesAndEdgesOnTracePath(
         this.network,
         this.edges,
@@ -391,10 +391,8 @@ function findNodesAndEdgesOnTracePath(
   for (let direction of directions) {
     for (let connectedNode of network.getConnectedNodes(nodeId, direction)) {
       if (direction === "from") {
-        console.log(connectedNode + nodeId);
         resultEdges.add(edges.get(connectedNode + nodeId).id);
       } else if (direction === "to") {
-        console.log(nodeId + connectedNode);
         resultEdges.add(edges.get(nodeId + connectedNode).id);
       }
       let [
