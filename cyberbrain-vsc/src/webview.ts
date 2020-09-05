@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
+import { doIfInDevMode } from "./utils";
 
 // let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
@@ -57,9 +58,9 @@ export function setWebViewContent(
   // ExtensionMode: Production = 1, Development = 2, Test = 3.
   // See https://git.io/JJFvy. Use files in the src folder for development.
   let jsDir = "out";
-  if (context.extensionMode === 2) {
+  doIfInDevMode(context, () => {
     jsDir = "src";
-  }
+  });
 
   // Get the special URI to use with the webview
   const visNetworkJsURL = createWebviewUri(
