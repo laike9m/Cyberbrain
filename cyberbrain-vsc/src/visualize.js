@@ -180,6 +180,8 @@ class TraceGraph {
     }
 
     // Add hidden edges so that lineno nodes are placed on the same vertical position.
+    // Ideally we don't need these hidden edges, see
+    // https://github.com/visjs/vis-network/issues/1027
     let lines = Array.from(this.lines);
     lines.sort();
     for (let i = 0; i < lines.length - 1; i++) {
@@ -276,7 +278,8 @@ class TraceGraph {
       to: toNode,
       color: {
         color: "rgba(0, 0, 0, 0)",
-        hover: "rgba(0, 0, 0, 0)"
+        hover: "rgba(0, 0, 0, 0)",
+        highlight: "rgba(0, 0, 0, 0)"
       }
     };
   }
