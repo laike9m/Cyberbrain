@@ -15,6 +15,7 @@ export class Loop {
     this.counter = 0;
     this.parent = undefined;
     this.children = new Set();
+    this.id = `loop@line${startLineno}`;
 
     // Note that the number of iterations != maxCounter
     //
