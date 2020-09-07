@@ -28,7 +28,7 @@ export namespace State {
   export type AsObject = {
     status?: State.StatusMap[keyof State.StatusMap],
     message?: string,
-  }
+  };
 
   export interface StatusMap {
     CLIENT_READY: 1;
@@ -71,7 +71,7 @@ export namespace CursorPosition {
     filename?: string,
     lineno?: number,
     character?: number,
-  }
+  };
 }
 
 export class FrameLocater extends jspb.Message {
@@ -135,7 +135,7 @@ export namespace FrameLocater {
     callsiteFilename?: string,
     callsiteLineno?: number,
     arguments?: string,
-  }
+  };
 }
 
 export class FrameLocaterList extends jspb.Message {
@@ -157,7 +157,7 @@ export class FrameLocaterList extends jspb.Message {
 export namespace FrameLocaterList {
   export type AsObject = {
     frameLocatersList: Array<FrameLocater.AsObject>,
-  }
+  };
 }
 
 export class InitialValue extends jspb.Message {
@@ -215,7 +215,7 @@ export namespace InitialValue {
     offset?: number,
     target?: string,
     value?: string,
-  }
+  };
 }
 
 export class Binding extends jspb.Message {
@@ -279,7 +279,7 @@ export namespace Binding {
     offset?: number,
     value?: string,
     sourcesList: Array<string>,
-  }
+  };
 }
 
 export class Mutation extends jspb.Message {
@@ -349,7 +349,7 @@ export namespace Mutation {
     value?: string,
     delta?: string,
     sourcesList: Array<string>,
-  }
+  };
 }
 
 export class Deletion extends jspb.Message {
@@ -401,7 +401,7 @@ export namespace Deletion {
     index?: number,
     offset?: number,
     target?: string,
-  }
+  };
 }
 
 export class JumpBackToLoopStart extends jspb.Message {
@@ -453,7 +453,7 @@ export namespace JumpBackToLoopStart {
     index?: number,
     offset?: number,
     jumpTarget?: number,
-  }
+  };
 }
 
 export class Event extends jspb.Message {
@@ -500,7 +500,7 @@ export namespace Event {
     mutation?: Mutation.AsObject,
     deletion?: Deletion.AsObject,
     jumpBackToLoopStart?: JumpBackToLoopStart.AsObject,
-  }
+  };
 
   export enum ValueCase {
     VALUE_NOT_SET = 0,
@@ -531,7 +531,7 @@ export class EventIDList extends jspb.Message {
 export namespace EventIDList {
   export type AsObject = {
     eventIdsList: Array<string>,
-  }
+  };
 }
 
 export class Loop extends jspb.Message {
@@ -565,7 +565,7 @@ export namespace Loop {
     startOffset?: number,
     endOffset?: number,
     startLineno?: number,
-  }
+  };
 }
 
 export class Frame extends jspb.Message {
@@ -608,6 +608,6 @@ export namespace Frame {
     loopsList: Array<Loop.AsObject>,
     tracingResultMap: Array<[string, EventIDList.AsObject]>,
     identifiersList: Array<string>,
-  }
+  };
 }
 

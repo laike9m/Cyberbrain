@@ -78,14 +78,25 @@ export function getInitialState(events, loops) {
       visibleEvents.push(event);
     }
 
-    // Checks whether there actually is another iteration by inspecting whether the offset of
-    // next event is smaller than the current one.
+    // Pops loop out of the stack.
+    if (
+      loopStack.length > 0 &&
+      loopStack[loopStack.length - 1].endOffset < offset
+    ) {
+      console.log("Pops: ");
+      console.log(loopStack[loopStack.length - 1]);
+      loopStack.pop().counter = 0;
+    }
+
     if (
       event.type === "JumpBackToLoopStart" &&
       event.index < events.length - 1 &&
       events[event.index + 1].offset < offset
     ) {
       loopStack[loopStack.length - 1].counter++;
+      console.log(
+        `set ${loopStack.map((loop) => loop.counter)}: ${event.index + 1}`
+      );
       loopStack[loopStack.length - 1].addIterationStart(
         loopStack.map((loop) => loop.counter),
         event.index + 1 // The event following JumpBackToLoopStart is next iteration's start.
@@ -103,6 +114,9 @@ export function getInitialState(events, loops) {
           loop.parent = loopStack[loopStack.length - 1];
         }
         loopStack.push(loop);
+        console.log(
+          `set ${loopStack.map((loop) => loop.counter)}: ${event.index}`
+        );
         loop.addIterationStart(
           loopStack.map((loop) => loop.counter),
           event.index
@@ -110,14 +124,6 @@ export function getInitialState(events, loops) {
       }
     }
     previousEventOffset = offset;
-
-    // Pops loop out of the stack.
-    if (
-      loopStack.length > 0 &&
-      loopStack[loopStack.length - 1].endOffset < offset
-    ) {
-      loopStack.pop().counter = 0;
-    }
   }
 
   // Restores to the initial state.
@@ -146,8 +152,8 @@ export function generateNodeUpdate(events, visibleEvents, loop) {
 
   // Calculates events that should be hidden.
   for (let visibleEvent of visibleEvents) {
-    if (visibleEvent.offset < loop.startOffset) continue;
-    if (visibleEvent.offset > loop.endOffset) break;
+    if (visibleEvent.offset < loop.startOffset) {continue;}
+    if (visibleEvent.offset > loop.endOffset) {break;}
     eventsToHide.set(visibleEvent.offset, visibleEvent);
   }
 
@@ -156,7 +162,7 @@ export function generateNodeUpdate(events, visibleEvents, loop) {
   for (let i = loop.getCurrentIterationStart(); i < events.length; i++) {
     let event = events[i];
     let offset = event.offset;
-    if (offset > loop.endOffset) break;
+    if (offset > loop.endOffset) {break;}
     if (offset > maxReachedOffset) {
       maxReachedOffset = offset;
       if (!eventsToShow.has(event.offset)) {
