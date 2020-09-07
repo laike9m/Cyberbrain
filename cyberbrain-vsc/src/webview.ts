@@ -116,6 +116,10 @@ export function setWebViewContent(
         padding:10px;
         text-align: center;
       }
+      .vis-manipulation {
+        width: 155px !important;
+        background: rgba(0,0,0,0) !important;  /* Transparent */
+      }
     </style>
 </head>
 <body>
