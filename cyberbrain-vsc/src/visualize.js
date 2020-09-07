@@ -190,6 +190,7 @@ class TraceGraph {
 
     this.nodes.add(nodesToShow);
     this.edges.add(edgesToShow);
+    this.network.fit(); // Zooms out so all nodes fit on the canvas.
 
     /*
      Manually draw tooltips to show each node's value on the trace path.
@@ -271,6 +272,7 @@ class TraceGraph {
       }, 0);
     });
   }
+  // end initialize
 
   createHiddenEdge(fromNode, toNode) {
     return {
