@@ -67,7 +67,8 @@ Parameters:
 Returns:
   a list of events that should be displayed in the trace graph initially.
 
-Meanwhile, loops are filled with iteration starts.
+Updates:
+  The passed in loops, whose iterations are detected and recorded.
 
  */
 export function getInitialState(events, loops) {
@@ -94,7 +95,6 @@ export function getInitialState(events, loops) {
       loopStack.length > 0 &&
       loopStack[loopStack.length - 1].endOffset < offset
     ) {
-      debugLog("Pops: ", loopStack[loopStack.length - 1]);
       loopStack.pop().counter = 0;
     }
 
@@ -111,7 +111,6 @@ export function getInitialState(events, loops) {
         loopStack.map(loop => loop.counter),
         nextEventIndex // The event following JumpBackToLoopStart is next iteration's start.
       );
-      debugLog(`set ${currentLoop.getCounters()}: ${nextEventIndex}`);
     }
 
     // Pushes loop onto the stack.
@@ -125,7 +124,6 @@ export function getInitialState(events, loops) {
           loop.parent = currentLoop;
         }
         loopStack.push(loop);
-        debugLog(`set ${loopStack.map(loop => loop.counter)}: ${event.index}`);
         loop.addIterationStart(
           loopStack.map(loop => loop.counter),
           event.index
@@ -172,16 +170,9 @@ export function generateNodeUpdate(events, visibleEvents, loop) {
 
   // Calculates events that should be made visible, in this loop.
   let maxReachedOffset = -1;
-  debugLog(
-    `loop.getCurrentIterationStart(): ${loop.getCurrentIterationStart()}, events.length: ${
-      events.length
-    }`
-  );
   for (let i = loop.getCurrentIterationStart(); i < events.length; i++) {
     let event = events[i];
     let offset = event.offset;
-    debugLog(event);
-    debugLog(`offset: ${offset}, loop.endOffset: ${loop.endOffset}`);
     if (offset > loop.endOffset) {
       break;
     }
