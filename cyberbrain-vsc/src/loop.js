@@ -1,8 +1,10 @@
-function assertEqual(item1, item2, msg) {
-  if (msg === undefined) {
-    msg = `${item1} ${item2}`;
+let cl = console.log;
+
+function debugLog(...messages) {
+  // isDevMode is set in webview.ts
+  if (isDevMode) {
+    messages.forEach(msg => console.log(msg));
   }
-  console.assert(item1 === item2, msg);
 }
 
 export class Loop {
@@ -29,8 +31,6 @@ export class Loop {
   }
 
   /* Returns the index of the last iteration that the loop has.
-   * Note that this method needs improving. Right now the count might be actual size + 1,
-   * because we only counts "jump back", and does not check whether the iteration exists.
    */
   get maxIteration() {
     return this._iterationStarts.size - 1;
@@ -83,24 +83,24 @@ export function getInitialState(events, loops) {
       loopStack.length > 0 &&
       loopStack[loopStack.length - 1].endOffset < offset
     ) {
-      console.log("Pops: ");
-      console.log(loopStack[loopStack.length - 1]);
+      debugLog("Pops: ", loopStack[loopStack.length - 1]);
       loopStack.pop().counter = 0;
     }
+
+    let currentLoop = loopStack[loopStack.length - 1];
+    let nextEventIndex = event.index + 1;
 
     if (
       event.type === "JumpBackToLoopStart" &&
       event.index < events.length - 1 &&
-      events[event.index + 1].offset < offset
+      events[nextEventIndex].offset < offset
     ) {
-      loopStack[loopStack.length - 1].counter++;
-      console.log(
-        `set ${loopStack.map((loop) => loop.counter)}: ${event.index + 1}`
+      currentLoop.counter++;
+      currentLoop.addIterationStart(
+        loopStack.map(loop => loop.counter),
+        nextEventIndex // The event following JumpBackToLoopStart is next iteration's start.
       );
-      loopStack[loopStack.length - 1].addIterationStart(
-        loopStack.map((loop) => loop.counter),
-        event.index + 1 // The event following JumpBackToLoopStart is next iteration's start.
-      );
+      debugLog(`set ${currentLoop.getCounters()}: ${nextEventIndex}`);
     }
 
     // Pushes loop onto the stack.
@@ -110,15 +110,13 @@ export function getInitialState(events, loops) {
         loop.startOffset <= offset
       ) {
         if (loopStack.length > 0 && loop.parent === undefined) {
-          loopStack[loopStack.length - 1].children.add(loop);
-          loop.parent = loopStack[loopStack.length - 1];
+          currentLoop.children.add(loop);
+          loop.parent = currentLoop;
         }
         loopStack.push(loop);
-        console.log(
-          `set ${loopStack.map((loop) => loop.counter)}: ${event.index}`
-        );
+        debugLog(`set ${loopStack.map(loop => loop.counter)}: ${event.index}`);
         loop.addIterationStart(
-          loopStack.map((loop) => loop.counter),
+          loopStack.map(loop => loop.counter),
           event.index
         );
       }
@@ -152,8 +150,12 @@ export function generateNodeUpdate(events, visibleEvents, loop) {
 
   // Calculates events that should be hidden.
   for (let visibleEvent of visibleEvents) {
-    if (visibleEvent.offset < loop.startOffset) {continue;}
-    if (visibleEvent.offset > loop.endOffset) {break;}
+    if (visibleEvent.offset < loop.startOffset) {
+      continue;
+    }
+    if (visibleEvent.offset > loop.endOffset) {
+      break;
+    }
     eventsToHide.set(visibleEvent.offset, visibleEvent);
   }
 
@@ -162,7 +164,9 @@ export function generateNodeUpdate(events, visibleEvents, loop) {
   for (let i = loop.getCurrentIterationStart(); i < events.length; i++) {
     let event = events[i];
     let offset = event.offset;
-    if (offset > loop.endOffset) {break;}
+    if (offset > loop.endOffset) {
+      break;
+    }
     if (offset > maxReachedOffset) {
       maxReachedOffset = offset;
       if (!eventsToShow.has(event.offset)) {
