@@ -3,12 +3,13 @@ If we need to migrate tests to TS, see:
 https://dev.to/daniel_werner/testing-typescript-with-mocha-and-chai-5cl8
  */
 
-import pkg from "chai";
-import { generateNodeUpdate, getInitialState, Loop } from "../src/loop.js";
-import chaiSubset from "chai-subset";
+import hamjest from "hamjest";
 
-const { assert, use } = pkg;
-use(chaiSubset);
+import { generateNodeUpdate, getInitialState, Loop } from "../src/loop.js";
+
+const { assertThat, contains, hasProperty, hasProperties } = hamjest;
+
+let cl = console.log;
 
 function getUpdatedVisibleEvents(oldVisibleEvents, eventsToShow) {
   let offsetToEvent = new Map();
@@ -23,422 +24,462 @@ function getUpdatedVisibleEvents(oldVisibleEvents, eventsToShow) {
   return newEvents;
 }
 
-describe("Test nested loops", function () {
+describe("Test nested loops", function() {
   function prepareInitialState() {
     let events = [
-      {
-        type: "Binding",
-        index: 0,
-        offset: 0,
-      },
-      {
-        type: "Binding",
-        index: 1,
-        offset: 2,
-      },
-      {
-        type: "Binding",
-        index: 2,
-        offset: 4,
-      },
-      {
-        type: "JumpBackToLoopStart",
-        index: 3,
-        offset: 6,
-      },
-      {
-        type: "Binding",
-        index: 4,
-        offset: 2,
-      },
-      {
-        type: "Binding",
-        index: 5,
-        offset: 4,
-      },
-      {
-        type: "JumpBackToLoopStart",
-        index: 6,
-        offset: 6,
-      },
-      {
-        type: "Binding",
-        index: 7,
-        offset: 8,
-      },
-      {
-        type: "JumpBackToLoopStart",
-        index: 8,
-        offset: 10,
-      },
-      {
-        type: "Binding",
-        index: 9,
-        offset: 0,
-      },
-      {
-        type: "Binding",
-        index: 10,
-        offset: 2,
-      },
-      {
-        type: "Binding",
-        index: 11,
-        offset: 4,
-      },
-      {
-        type: "JumpBackToLoopStart",
-        index: 12,
-        offset: 6,
-      },
-      {
-        type: "Binding",
-        index: 13,
-        offset: 2,
-      },
-      {
-        type: "Binding",
-        index: 14,
-        offset: 4,
-      },
-      {
-        type: "JumpBackToLoopStart",
-        index: 15,
-        offset: 6,
-      },
-      {
-        type: "Binding",
-        index: 16,
-        offset: 8,
-      },
-      {
-        type: "JumpBackToLoopStart",
-        index: 17,
-        offset: 10,
-      },
-      {
-        type: "Binding",
-        index: 18,
-        offset: 12,
-      },
+      { type: "Binding", index: 0, offset: 0 },
+      { type: "Binding", index: 1, offset: 2 },
+      { type: "Binding", index: 2, offset: 4 },
+      { type: "JumpBackToLoopStart", index: 3, offset: 6 },
+      { type: "Binding", index: 4, offset: 2 },
+      { type: "Binding", index: 5, offset: 4 },
+      { type: "JumpBackToLoopStart", index: 6, offset: 6 },
+      { type: "Binding", index: 7, offset: 8 },
+      { type: "JumpBackToLoopStart", index: 8, offset: 10 },
+      { type: "Binding", index: 9, offset: 0 },
+      { type: "Binding", index: 10, offset: 2 },
+      { type: "Binding", index: 11, offset: 4 },
+      { type: "JumpBackToLoopStart", index: 12, offset: 6 },
+      { type: "Binding", index: 13, offset: 2 },
+      { type: "Binding", index: 14, offset: 4 },
+      { type: "JumpBackToLoopStart", index: 15, offset: 6 },
+      { type: "Binding", index: 16, offset: 8 },
+      { type: "JumpBackToLoopStart", index: 17, offset: 10 },
+      { type: "Binding", index: 18, offset: 12 }
     ];
     let loops = [new Loop(0, 10), new Loop(2, 6)];
     return [events].concat(getInitialState(events, loops));
   }
 
-  it("Test getVisibleEventsAndUpdateLoops", function () {
+  it("Test getVisibleEventsAndUpdateLoops", function() {
     let [_, visibleEvents, loops] = prepareInitialState();
-    assert.deepEqual(visibleEvents, [
+    assertThat(
+      visibleEvents,
+      contains(
+        { type: "Binding", index: 0, offset: 0 },
+        { type: "Binding", index: 1, offset: 2 },
+        { type: "Binding", index: 2, offset: 4 },
+        { type: "JumpBackToLoopStart", index: 3, offset: 6 },
+        { type: "Binding", index: 7, offset: 8 },
+        { type: "JumpBackToLoopStart", index: 8, offset: 10 },
+        { type: "Binding", index: 18, offset: 12 }
+      )
+    );
+
+    assertThat(
+      loops,
+      contains(
+        hasProperties({
+          startOffset: 0,
+          endOffset: 10,
+          counter: 0,
+          parent: undefined,
+          _iterationStarts: new Map([
+            ["0", 0],
+            ["1", 9]
+          ])
+        }),
+        hasProperties({
+          startOffset: 2,
+          endOffset: 6,
+          counter: 0,
+          parent: hasProperty("endOffset", 10),
+          _iterationStarts: new Map([
+            ["0,0", 1],
+            ["0,1", 4],
+            ["1,0", 10],
+            ["1,1", 13]
+          ])
+        })
+      )
+    );
+  });
+
+  describe("Test increase counter", function() {
+    let [events, visibleEvents, loops] = prepareInitialState();
+
+    loops[0].counter = 1;
+    const [eventsToHide0, eventsToShow0] = generateNodeUpdate(
+      events,
+      visibleEvents,
+      loops[0]
+    );
+    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
+
+    describe("(0, 0) -> (1, 0)", function() {
+      it("Test eventsToHide is correct", function() {
+        assertThat(Array.from(eventsToHide0.values()), [
+          { type: "Binding", index: 0, offset: 0 },
+          { type: "Binding", index: 1, offset: 2 },
+          { type: "Binding", index: 2, offset: 4 },
+          { type: "JumpBackToLoopStart", index: 3, offset: 6 },
+          { type: "Binding", index: 7, offset: 8 },
+          { type: "JumpBackToLoopStart", index: 8, offset: 10 }
+        ]);
+      });
+
+      it("Test eventsToShow is correct", function() {
+        assertThat(Array.from(eventsToShow0.values()), [
+          { type: "Binding", index: 9, offset: 0 },
+          { type: "Binding", index: 10, offset: 2 },
+          { type: "Binding", index: 11, offset: 4 },
+          { type: "JumpBackToLoopStart", index: 12, offset: 6 },
+          { type: "Binding", index: 16, offset: 8 },
+          { type: "JumpBackToLoopStart", index: 17, offset: 10 }
+        ]);
+      });
+    });
+
+    loops[1].counter = 1;
+    const [eventsToHide1, eventsToShow1] = generateNodeUpdate(
+      events,
+      visibleEvents,
+      loops[1]
+    );
+
+    describe("(1, 0) -> (1, 1)", function() {
+      it("Test eventsToHide is correct", function() {
+        assertThat(
+          Array.from(eventsToHide1.values()),
+          contains(
+            { type: "Binding", index: 10, offset: 2 },
+            { type: "Binding", index: 11, offset: 4 },
+            { type: "JumpBackToLoopStart", index: 12, offset: 6 }
+          )
+        );
+      });
+
+      it("Test eventsToShow is correct", function() {
+        assertThat(
+          Array.from(eventsToShow1.values()),
+          contains(
+            { type: "Binding", index: 13, offset: 2 },
+            { type: "Binding", index: 14, offset: 4 },
+            { type: "JumpBackToLoopStart", index: 15, offset: 6 }
+          )
+        );
+      });
+    });
+  });
+
+  describe("Test increase counter", function() {
+    let [events, visibleEvents, loops] = prepareInitialState();
+    loops[1].counter = 1;
+    const [eventsToHide0, eventsToShow0] = generateNodeUpdate(
+      events,
+      visibleEvents,
+      loops[1]
+    );
+    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
+
+    describe("(0, 0) -> (0, 1)", function() {
+      it("Test eventsToHide is correct", function() {
+        assertThat(
+          Array.from(eventsToHide0.values()),
+          contains(
+            { type: "Binding", index: 1, offset: 2 },
+            { type: "Binding", index: 2, offset: 4 },
+            { type: "JumpBackToLoopStart", index: 3, offset: 6 }
+          )
+        );
+      });
+
+      it("Test eventsToShow is correct", function() {
+        assertThat(
+          Array.from(eventsToShow0.values()),
+          contains(
+            { type: "Binding", index: 4, offset: 2 },
+            { type: "Binding", index: 5, offset: 4 },
+            { type: "JumpBackToLoopStart", index: 6, offset: 6 }
+          )
+        );
+      });
+    });
+
+    loops[0].counter = 1;
+    const [eventsToHide1, eventsToShow1] = generateNodeUpdate(
+      events,
+      visibleEvents,
+      loops[0]
+    );
+
+    describe("(0, 1) -> (1, 1)", function() {
+      it("Test eventsToHide is correct", function() {
+        assertThat(
+          Array.from(eventsToHide1.values()),
+          contains(
+            { type: "Binding", index: 0, offset: 0 },
+            { type: "Binding", index: 4, offset: 2 },
+            { type: "Binding", index: 5, offset: 4 },
+            { type: "JumpBackToLoopStart", index: 6, offset: 6 },
+            { type: "Binding", index: 7, offset: 8 },
+            { type: "JumpBackToLoopStart", index: 8, offset: 10 }
+          )
+        );
+      });
+
+      it("Test eventsToShow is correct", function() {
+        assertThat(
+          Array.from(eventsToShow1.values()),
+          contains(
+            { type: "Binding", index: 9, offset: 0 },
+            { type: "Binding", index: 13, offset: 2 },
+            { type: "Binding", index: 14, offset: 4 },
+            { type: "JumpBackToLoopStart", index: 15, offset: 6 },
+            { type: "Binding", index: 16, offset: 8 },
+            { type: "JumpBackToLoopStart", index: 17, offset: 10 }
+          )
+        );
+      });
+    });
+  });
+
+  describe("Test decrease counter", function() {
+    let [events, visibleEvents, loops] = prepareInitialState();
+
+    // Increase then decrease.
+    loops[0].counter = 1;
+    let [eventsToHide, eventsToShow] = generateNodeUpdate(
+      events,
+      visibleEvents,
+      loops[0]
+    );
+    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
+
+    loops[1].counter = 1;
+    [eventsToHide, eventsToShow] = generateNodeUpdate(
+      events,
+      visibleEvents,
+      loops[1]
+    );
+    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
+
+    loops[0].counter = 0;
+    let [eventsToHide0, eventsToShow0] = generateNodeUpdate(
+      events,
+      visibleEvents,
+      loops[0]
+    );
+
+    describe("(1, 1) -> (0, 1)", function() {
+      it("Test eventsHide is correct", function() {
+        assertThat(
+          Array.from(eventsToHide0.values()),
+          contains(
+            { type: "Binding", index: 9, offset: 0 },
+            { type: "Binding", index: 13, offset: 2 },
+            { type: "Binding", index: 14, offset: 4 },
+            { type: "JumpBackToLoopStart", index: 15, offset: 6 },
+            { type: "Binding", index: 16, offset: 8 },
+            { type: "JumpBackToLoopStart", index: 17, offset: 10 }
+          )
+        );
+      });
+
+      it("Test eventsToShow is correct", function() {
+        assertThat(
+          Array.from(eventsToShow0.values()),
+          contains(
+            { type: "Binding", index: 0, offset: 0 },
+            { type: "Binding", index: 4, offset: 2 },
+            { type: "Binding", index: 5, offset: 4 },
+            { type: "JumpBackToLoopStart", index: 6, offset: 6 },
+            { type: "Binding", index: 7, offset: 8 },
+            { type: "JumpBackToLoopStart", index: 8, offset: 10 }
+          )
+        );
+      });
+    });
+
+    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
+    loops[1].counter = 0;
+    let [eventsToHide1, eventsToShow1] = generateNodeUpdate(
+      events,
+      visibleEvents,
+      loops[1]
+    );
+
+    describe("(0, 1) -> (0, 0)", function() {
+      it("Test eventsToHide is correct", function() {
+        assertThat(
+          Array.from(eventsToHide1.values()),
+          contains(
+            { type: "Binding", index: 4, offset: 2 },
+            { type: "Binding", index: 5, offset: 4 },
+            { type: "JumpBackToLoopStart", index: 6, offset: 6 }
+          )
+        );
+      });
+
+      it("Test eventsToShow is correct", function() {
+        assertThat(
+          Array.from(eventsToShow1.values()),
+          contains(
+            { type: "Binding", index: 1, offset: 2 },
+            { type: "Binding", index: 2, offset: 4 },
+            { type: "JumpBackToLoopStart", index: 3, offset: 6 }
+          )
+        );
+      });
+    });
+  });
+
+  describe("Test decrease counter", function() {
+    let [events, visibleEvents, loops] = prepareInitialState();
+
+    // Increase then decrease.
+    loops[0].counter = 1;
+    let [eventsToHide, eventsToShow] = generateNodeUpdate(
+      events,
+      visibleEvents,
+      loops[0]
+    );
+    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
+
+    loops[1].counter = 1;
+    [eventsToHide, eventsToShow] = generateNodeUpdate(
+      events,
+      visibleEvents,
+      loops[1]
+    );
+    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
+
+    loops[1].counter = 0;
+    let [eventsToHide0, eventsToShow0] = generateNodeUpdate(
+      events,
+      visibleEvents,
+      loops[1]
+    );
+
+    describe("(1, 1) -> (1, 0)", function() {
+      it("Test eventsToHide is correct", function() {
+        assertThat(
+          Array.from(eventsToHide0.values()),
+          contains(
+            { type: "Binding", index: 13, offset: 2 },
+            { type: "Binding", index: 14, offset: 4 },
+            { type: "JumpBackToLoopStart", index: 15, offset: 6 }
+          )
+        );
+      });
+
+      it("Test eventsToShow is correct", function() {
+        assertThat(
+          Array.from(eventsToShow0.values()),
+          contains(
+            { type: "Binding", index: 10, offset: 2 },
+            { type: "Binding", index: 11, offset: 4 },
+            { type: "JumpBackToLoopStart", index: 12, offset: 6 }
+          )
+        );
+      });
+    });
+
+    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
+    loops[0].counter = 0;
+    let [eventsToHide1, eventsToShow1] = generateNodeUpdate(
+      events,
+      visibleEvents,
+      loops[0]
+    );
+
+    describe("(1, 0) -> (0, 0)", function() {
+      it("Test eventsHide is correct", function() {
+        assertThat(
+          Array.from(eventsToHide1.values()),
+          contains(
+            { type: "Binding", index: 9, offset: 0 },
+            { type: "Binding", index: 10, offset: 2 },
+            { type: "Binding", index: 11, offset: 4 },
+            { type: "JumpBackToLoopStart", index: 12, offset: 6 },
+            { type: "Binding", index: 16, offset: 8 },
+            { type: "JumpBackToLoopStart", index: 17, offset: 10 }
+          )
+        );
+      });
+
+      it("Test eventsToShow is correct", function() {
+        assertThat(
+          Array.from(eventsToShow1.values()),
+          contains(
+            { type: "Binding", index: 0, offset: 0 },
+            { type: "Binding", index: 1, offset: 2 },
+            { type: "Binding", index: 2, offset: 4 },
+            { type: "JumpBackToLoopStart", index: 3, offset: 6 },
+            { type: "Binding", index: 7, offset: 8 },
+            { type: "JumpBackToLoopStart", index: 8, offset: 10 }
+          )
+        );
+      });
+    });
+  });
+});
+
+describe("Test adjacent JumpBackToLoopStart", function() {
+  function prepareInitialState() {
+    let events = [
       { type: "Binding", index: 0, offset: 0 },
       { type: "Binding", index: 1, offset: 2 },
       { type: "Binding", index: 2, offset: 4 },
       { type: "JumpBackToLoopStart", index: 3, offset: 6 },
-      { type: "Binding", index: 7, offset: 8 },
-      { type: "JumpBackToLoopStart", index: 8, offset: 10 },
-      { type: "Binding", index: 18, offset: 12 },
-    ]);
-    assert.containSubset(loops, [
-      {
-        startOffset: 0,
-        endOffset: 10,
-        counter: 0,
-        parent: undefined,
-        _iterationStarts: new Map([
-          ["0", 0],
-          ["1", 9],
-        ]),
-      },
-      {
-        startOffset: 2,
-        endOffset: 6,
-        counter: 0,
-        parent: {
-          endOffset: 10,
-        },
-        _iterationStarts: new Map([
-          ["0,0", 1],
-          ["0,1", 4],
-          ["1,0", 10],
-          ["1,1", 13],
-        ]),
-      },
-    ]);
-  });
+      { type: "Binding", index: 4, offset: 2 },
+      { type: "Binding", index: 5, offset: 4 },
+      { type: "JumpBackToLoopStart", index: 6, offset: 6 },
+      { type: "JumpBackToLoopStart", index: 7, offset: 8 },
+      { type: "Binding", index: 8, offset: 0 },
+      { type: "Binding", index: 9, offset: 2 },
+      { type: "Binding", index: 10, offset: 4 },
+      { type: "JumpBackToLoopStart", index: 11, offset: 6 },
+      { type: "Binding", index: 12, offset: 2 },
+      { type: "Binding", index: 13, offset: 4 },
+      { type: "JumpBackToLoopStart", index: 14, offset: 6 },
+      { type: "JumpBackToLoopStart", index: 15, offset: 8 },
+      { type: "Binding", index: 16, offset: 10 }
+    ];
+    let loops = [new Loop(0, 8), new Loop(2, 6)];
+    return [events].concat(getInitialState(events, loops));
+  }
 
-  describe("Test increase counter", function () {
-    let [events, visibleEvents, loops] = prepareInitialState();
-
-    loops[0].counter = 1;
-    const [eventsToHide0, eventsToShow0] = generateNodeUpdate(
-      events,
+  it("Test initial state", function() {
+    let [_, visibleEvents, loops] = prepareInitialState();
+    assertThat(
       visibleEvents,
-      loops[0]
-    );
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
-
-    describe("(0, 0) -> (1, 0)", function () {
-      it("Test eventsToHide is correct", function () {
-        assert.deepEqual(Array.from(eventsToHide0.values()), [
-          { type: "Binding", index: 0, offset: 0 },
-          { type: "Binding", index: 1, offset: 2 },
-          { type: "Binding", index: 2, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 3, offset: 6 },
-          { type: "Binding", index: 7, offset: 8 },
-          { type: "JumpBackToLoopStart", index: 8, offset: 10 },
-        ]);
-      });
-
-      it("Test eventsToShow is correct", function () {
-        assert.deepEqual(Array.from(eventsToShow0.values()), [
-          { type: "Binding", index: 9, offset: 0 },
-          { type: "Binding", index: 10, offset: 2 },
-          { type: "Binding", index: 11, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 12, offset: 6 },
-          { type: "Binding", index: 16, offset: 8 },
-          { type: "JumpBackToLoopStart", index: 17, offset: 10 },
-        ]);
-      });
-    });
-
-    loops[1].counter = 1;
-    const [eventsToHide1, eventsToShow1] = generateNodeUpdate(
-      events,
-      visibleEvents,
-      loops[1]
+      contains(
+        { type: "Binding", index: 0, offset: 0 },
+        { type: "Binding", index: 1, offset: 2 },
+        { type: "Binding", index: 2, offset: 4 },
+        { type: "JumpBackToLoopStart", index: 3, offset: 6 },
+        { type: "JumpBackToLoopStart", index: 7, offset: 8 },
+        { type: "Binding", index: 16, offset: 10 }
+      )
     );
 
-    describe("(1, 0) -> (1, 1)", function () {
-      it("Test eventsToHide is correct", function () {
-        assert.deepEqual(Array.from(eventsToHide1.values()), [
-          { type: "Binding", index: 10, offset: 2 },
-          { type: "Binding", index: 11, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 12, offset: 6 },
-        ]);
-      });
-
-      it("Test eventsToShow is correct", function () {
-        assert.deepEqual(Array.from(eventsToShow1.values()), [
-          { type: "Binding", index: 13, offset: 2 },
-          { type: "Binding", index: 14, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 15, offset: 6 },
-        ]);
-      });
-    });
-  });
-
-  describe("Test increase counter", function () {
-    let [events, visibleEvents, loops] = prepareInitialState();
-    loops[1].counter = 1;
-    const [eventsToHide0, eventsToShow0] = generateNodeUpdate(
-      events,
-      visibleEvents,
-      loops[1]
+    assertThat(
+      loops,
+      contains(
+        hasProperties({
+          startOffset: 0,
+          endOffset: 8,
+          counter: 0,
+          parent: undefined,
+          _iterationStarts: new Map([
+            ["0", 0],
+            ["1", 8]
+          ])
+        }),
+        hasProperties({
+          startOffset: 2,
+          endOffset: 6,
+          counter: 0,
+          parent: hasProperty("endOffset", 8),
+          _iterationStarts: new Map([
+            ["0,0", 1],
+            ["0,1", 4],
+            ["1,0", 9],
+            ["1,1", 12]
+          ])
+        })
+      )
     );
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
-
-    describe("(0, 0) -> (0, 1)", function () {
-      it("Test eventsToHide is correct", function () {
-        assert.deepEqual(Array.from(eventsToHide0.values()), [
-          { type: "Binding", index: 1, offset: 2 },
-          { type: "Binding", index: 2, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 3, offset: 6 },
-        ]);
-      });
-
-      it("Test eventsToShow is correct", function () {
-        assert.deepEqual(Array.from(eventsToShow0.values()), [
-          { type: "Binding", index: 4, offset: 2 },
-          { type: "Binding", index: 5, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 6, offset: 6 },
-        ]);
-      });
-    });
-
-    loops[0].counter = 1;
-    const [eventsToHide1, eventsToShow1] = generateNodeUpdate(
-      events,
-      visibleEvents,
-      loops[0]
-    );
-
-    describe("(0, 1) -> (1, 1)", function () {
-      it("Test eventsToHide is correct", function () {
-        assert.deepEqual(Array.from(eventsToHide1.values()), [
-          { type: "Binding", index: 0, offset: 0 },
-          { type: "Binding", index: 4, offset: 2 },
-          { type: "Binding", index: 5, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 6, offset: 6 },
-          { type: "Binding", index: 7, offset: 8 },
-          { type: "JumpBackToLoopStart", index: 8, offset: 10 },
-        ]);
-      });
-
-      it("Test eventsToShow is correct", function () {
-        assert.deepEqual(Array.from(eventsToShow1.values()), [
-          { type: "Binding", index: 9, offset: 0 },
-          { type: "Binding", index: 13, offset: 2 },
-          { type: "Binding", index: 14, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 15, offset: 6 },
-          { type: "Binding", index: 16, offset: 8 },
-          { type: "JumpBackToLoopStart", index: 17, offset: 10 },
-        ]);
-      });
-    });
-  });
-
-  describe("Test decrease counter", function () {
-    let [events, visibleEvents, loops] = prepareInitialState();
-
-    // Increase then decrease.
-    loops[0].counter = 1;
-    let [eventsToHide, eventsToShow] = generateNodeUpdate(
-      events,
-      visibleEvents,
-      loops[0]
-    );
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
-
-    loops[1].counter = 1;
-    [eventsToHide, eventsToShow] = generateNodeUpdate(
-      events,
-      visibleEvents,
-      loops[1]
-    );
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
-
-    loops[0].counter = 0;
-    let [eventsToHide0, eventsToShow0] = generateNodeUpdate(
-      events,
-      visibleEvents,
-      loops[0]
-    );
-
-    describe("(1, 1) -> (0, 1)", function () {
-      it("Test eventsHide is correct", function () {
-        assert.deepEqual(Array.from(eventsToHide0.values()), [
-          { type: "Binding", index: 9, offset: 0 },
-          { type: "Binding", index: 13, offset: 2 },
-          { type: "Binding", index: 14, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 15, offset: 6 },
-          { type: "Binding", index: 16, offset: 8 },
-          { type: "JumpBackToLoopStart", index: 17, offset: 10 },
-        ]);
-      });
-
-      it("Test eventsToShow is correct", function () {
-        assert.deepEqual(Array.from(eventsToShow0.values()), [
-          { type: "Binding", index: 0, offset: 0 },
-          { type: "Binding", index: 4, offset: 2 },
-          { type: "Binding", index: 5, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 6, offset: 6 },
-          { type: "Binding", index: 7, offset: 8 },
-          { type: "JumpBackToLoopStart", index: 8, offset: 10 },
-        ]);
-      });
-    });
-
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
-    loops[1].counter = 0;
-    let [eventsToHide1, eventsToShow1] = generateNodeUpdate(
-      events,
-      visibleEvents,
-      loops[1]
-    );
-
-    describe("(0, 1) -> (0, 0)", function () {
-      it("Test eventsToHide is correct", function () {
-        assert.deepEqual(Array.from(eventsToHide1.values()), [
-          { type: "Binding", index: 4, offset: 2 },
-          { type: "Binding", index: 5, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 6, offset: 6 },
-        ]);
-      });
-
-      it("Test eventsToShow is correct", function () {
-        assert.deepEqual(Array.from(eventsToShow1.values()), [
-          { type: "Binding", index: 1, offset: 2 },
-          { type: "Binding", index: 2, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 3, offset: 6 },
-        ]);
-      });
-    });
-  });
-
-  describe("Test decrease counter", function () {
-    let [events, visibleEvents, loops] = prepareInitialState();
-
-    // Increase then decrease.
-    loops[0].counter = 1;
-    let [eventsToHide, eventsToShow] = generateNodeUpdate(
-      events,
-      visibleEvents,
-      loops[0]
-    );
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
-
-    loops[1].counter = 1;
-    [eventsToHide, eventsToShow] = generateNodeUpdate(
-      events,
-      visibleEvents,
-      loops[1]
-    );
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
-
-    loops[1].counter = 0;
-    let [eventsToHide0, eventsToShow0] = generateNodeUpdate(
-      events,
-      visibleEvents,
-      loops[1]
-    );
-
-    describe("(1, 1) -> (1, 0)", function () {
-      it("Test eventsToHide is correct", function () {
-        assert.deepEqual(Array.from(eventsToHide0.values()), [
-          { type: "Binding", index: 13, offset: 2 },
-          { type: "Binding", index: 14, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 15, offset: 6 },
-        ]);
-      });
-
-      it("Test eventsToShow is correct", function () {
-        assert.deepEqual(Array.from(eventsToShow0.values()), [
-          { type: "Binding", index: 10, offset: 2 },
-          { type: "Binding", index: 11, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 12, offset: 6 },
-        ]);
-      });
-    });
-
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
-    loops[0].counter = 0;
-    let [eventsToHide1, eventsToShow1] = generateNodeUpdate(
-      events,
-      visibleEvents,
-      loops[0]
-    );
-
-    describe("(1, 0) -> (0, 0)", function () {
-      it("Test eventsHide is correct", function () {
-        assert.deepEqual(Array.from(eventsToHide1.values()), [
-          { type: "Binding", index: 9, offset: 0 },
-          { type: "Binding", index: 10, offset: 2 },
-          { type: "Binding", index: 11, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 12, offset: 6 },
-          { type: "Binding", index: 16, offset: 8 },
-          { type: "JumpBackToLoopStart", index: 17, offset: 10 },
-        ]);
-      });
-
-      it("Test eventsToShow is correct", function () {
-        assert.deepEqual(Array.from(eventsToShow1.values()), [
-          { type: "Binding", index: 0, offset: 0 },
-          { type: "Binding", index: 1, offset: 2 },
-          { type: "Binding", index: 2, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 3, offset: 6 },
-          { type: "Binding", index: 7, offset: 8 },
-          { type: "JumpBackToLoopStart", index: 8, offset: 10 },
-        ]);
-      });
-    });
   });
 });

@@ -76,8 +76,8 @@ const options = {
 // A method to draw round corner rectangle on canvas.
 // From https://stackoverflow.com/a/7838871/2142577.
 CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
-  if (w < 2 * r) r = w / 2;
-  if (h < 2 * r) r = h / 2;
+  if (w < 2 * r) {r = w / 2;}
+  if (h < 2 * r) {r = h / 2;}
   this.beginPath();
   this.moveTo(x + r, y);
   this.arcTo(x + w, y, x + w, y + h, r);
@@ -140,7 +140,7 @@ class TraceGraph {
     }
 
     for (let event of initialEvents) {
-      if (event.type === "JumpBackToLoopStart") continue;
+      if (event.type === "JumpBackToLoopStart") {continue;}
 
       let linenoString = event.lineno.toString();
       if (!this.lines.has(linenoString)) {
@@ -194,7 +194,7 @@ class TraceGraph {
      Manually draw tooltips to show each node's value on the trace path.
      */
     this.network.on("afterDrawing", (ctx) => {
-      if (this.hoveredNodeId === undefined) return;
+      if (this.hoveredNodeId === undefined) {return;}
 
       let [tracePathNodeIds, tracePathEdgeIds] = findNodesAndEdgesOnTracePath(
         this.network,
@@ -317,6 +317,8 @@ function editNode(node, cancelAction, callback) {
   let popUp = document.getElementById("node-popUp");
   popUp.style.display = "block";
 
+  cl(node.loop);
+
   // Insert instruction text to help users modify counters.
   let infoText = document.getElementById("counter_info");
   if (infoText === null) {
@@ -352,6 +354,15 @@ function saveNodeData(node, callback) {
 
   node.label = userSetCounterText;
   node.loop.counter = userSetCounterValue;
+
+  let visibleEvents = this.nodes.get({
+    filter: (node) => {
+      return node.hasOwnProperty("offset");
+    },
+  });
+
+  cl(visibleEvents);
+
   // cl(generateNodeUpdate(this.events, visibleEvents, node.loop));
   clearNodePopUp();
   callback(node);
