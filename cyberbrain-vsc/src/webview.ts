@@ -74,7 +74,9 @@ export function setWebViewContent(
   );
   const visualizationJsURL = createWebviewUri(`${jsDir}/visualize.js`);
   const loopJsURL = createWebviewUri(`${jsDir}/loop.js`);
-  console.log(loopJsURL);
+
+  let isDevMode = false;
+  doIfInDevMode(context, () => isDevMode = true);
 
   webviewPanel.webview.html = `<!DOCTYPE html>
 <html lang="en">
@@ -82,6 +84,7 @@ export function setWebViewContent(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Tracing Result</title>
+    <script>const isDevMode = ${isDevMode};</script>
     <script type="text/javascript" src="${randomColorJsURL}"></script>
     <script type="module" src="${loopJsURL}"></script>
     <script type="module" src="${visNetworkJsURL}"></script>
