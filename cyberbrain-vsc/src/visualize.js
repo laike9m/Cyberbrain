@@ -127,7 +127,7 @@ class TraceGraph {
       let loop = this.loops[i];
       nodesToShow.push({
         title: "Loop counter",
-        id: `loop_counter${loop.startLineno}`,
+        id: loop.id,
         level: loop.startLineno,
         label: "0",
         loop: loop,
@@ -136,12 +136,7 @@ class TraceGraph {
         }
       });
       if (i < this.loops.length - 1) {
-        edgesToShow.push(
-          this.createHiddenEdge(
-            `loop_counter${loop.startLineno}`,
-            `loop_counter${this.loops[i + 1].startLineno}`
-          )
-        );
+        edgesToShow.push(this.createHiddenEdge(loop.id, this.loops[i + 1].id));
       }
     }
 
@@ -190,6 +185,8 @@ class TraceGraph {
     for (let i = 0; i < lines.length - 1; i++) {
       edgesToShow.push(this.createHiddenEdge(lines[i], lines[i + 1]));
     }
+
+    cl(nodesToShow);
 
     this.nodes.add(nodesToShow);
     this.edges.add(edgesToShow);
@@ -359,6 +356,7 @@ function saveNodeData(node, callback) {
 
   node.label = userSetCounterText;
   node.loop.counter = userSetCounterValue;
+  traceGraph.nodes.update({ id: node.loop.id, label: userSetCounterText });
 
   let visibleEvents = traceGraph.nodes.get({
     filter: node => {
@@ -367,8 +365,19 @@ function saveNodeData(node, callback) {
   });
 
   // cl(visibleEvents);
-  cl(node.loop);
-  cl(generateNodeUpdate(traceGraph.events, visibleEvents, node.loop));
+  let [eventsToHide, eventsToShow] = generateNodeUpdate(
+    traceGraph.events,
+    visibleEvents,
+    node.loop
+  );
+
+  for (let event of eventsToHide.values()) {
+    traceGraph.nodes.remove(event);
+  }
+  for (let event of eventsToShow.values()) {
+    cl(traceGraph.createNode(event));
+    traceGraph.nodes.update(traceGraph.createNode(event));
+  }
 
   clearNodePopUp();
   callback(node);
