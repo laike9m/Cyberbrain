@@ -101,7 +101,7 @@ class TraceGraph {
     this.loops = data.loops.map(
       loop => new Loop(loop.startOffset, loop.endOffset, loop.startLineno)
     );
-    this.tracingResult = data.tracingResult;
+    this.tracingResult = new Map(Object.entries(data.tracingResult));
     this.colorGenerator = new ColorGenerator(data.identifiers);
     this.nodes = new vis.DataSet([]);
     this.edges = new vis.DataSet([]);
@@ -168,8 +168,8 @@ class TraceGraph {
       nodesToShow.push(this.createNode(event));
 
       // Add edges.
-      if (Object.prototype.hasOwnProperty.call(this.tracingResult, event.id)) {
-        for (let source_event_id of this.tracingResult[event.id]) {
+      if (this.tracingResult.has(event.id)) {
+        for (let source_event_id of this.tracingResult.get(event.id)) {
           edgesToShow.push({
             from: source_event_id,
             to: event.id,
@@ -185,8 +185,6 @@ class TraceGraph {
     for (let i = 0; i < lines.length - 1; i++) {
       edgesToShow.push(this.createHiddenEdge(lines[i], lines[i + 1]));
     }
-
-    cl(nodesToShow);
 
     this.nodes.add(nodesToShow);
     this.edges.add(edgesToShow);
@@ -358,25 +356,31 @@ function saveNodeData(node, callback) {
   node.loop.counter = userSetCounterValue;
   traceGraph.nodes.update({ id: node.loop.id, label: userSetCounterText });
 
-  let visibleEvents = traceGraph.nodes.get({
-    filter: node => {
-      return node.hasOwnProperty("offset");
-    }
-  });
-
-  // cl(visibleEvents);
-  let [eventsToHide, eventsToShow] = generateNodeUpdate(
+  let [nodesToHide, nodesToShow] = generateNodeUpdate(
     traceGraph.events,
-    visibleEvents,
+    /* visibleEvents= */ traceGraph.nodes.get({
+      filter: node => {
+        return node.hasOwnProperty("offset");
+      }
+    }),
     node.loop
   );
 
-  for (let event of eventsToHide.values()) {
+  // TODO: move the nodes update logic to TraceGraph.
+  for (let event of nodesToHide.values()) {
     traceGraph.nodes.remove(event);
   }
-  for (let event of eventsToShow.values()) {
-    cl(traceGraph.createNode(event));
+  for (let event of nodesToShow.values()) {
     traceGraph.nodes.update(traceGraph.createNode(event));
+    if (traceGraph.tracingResult.has(event.id)) {
+      for (let source_event_id of traceGraph.tracingResult.get(event.id)) {
+        traceGraph.edges.update({
+          from: source_event_id,
+          to: event.id,
+          id: source_event_id + event.id
+        });
+      }
+    }
   }
 
   clearNodePopUp();

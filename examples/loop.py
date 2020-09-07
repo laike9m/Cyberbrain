@@ -5,9 +5,12 @@ def run_loop():
     tracer = Tracer()
     tracer.start()
 
-    for i in range(2):
-        for j in range(2):
-            a = i + j
+    for i in range(5):
+        a = i
+        for j in range(5):
+            b = i + j
+            for k in range(2):
+                c = i + j + k
 
     tracer.stop()
 
