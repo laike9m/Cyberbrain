@@ -23,7 +23,7 @@ import { getInitialState, Loop } from "./loop.js";
 
 let cl = console.log;
 
-window.addEventListener("message", (event) => {
+window.addEventListener("message", event => {
   if (!event.data.hasOwnProperty("events")) {
     return; // Server ready message.
   }
@@ -35,28 +35,28 @@ window.addEventListener("message", (event) => {
 
 const options = {
   nodes: {
-    shape: "box",
+    shape: "box"
   },
   edges: {
     smooth: {
       type: "cubicBezier",
-      forceDirection: "vertical",
-    },
+      forceDirection: "vertical"
+    }
   },
   interaction: {
     dragNodes: false,
-    hover: true,
+    hover: true
   },
   layout: {
     hierarchical: {
       direction: "UD", // From up to bottom.
-      edgeMinimization: false, // To not let edges overlap with nodes.
-    },
+      edgeMinimization: false // To not let edges overlap with nodes.
+    }
   },
   physics: {
     hierarchicalRepulsion: {
-      avoidOverlap: 1, // puts the most space around nodes to avoid overlapping.
-    },
+      avoidOverlap: 1 // puts the most space around nodes to avoid overlapping.
+    }
   },
   manipulation: {
     initiallyActive: true,
@@ -65,19 +65,23 @@ const options = {
     addNode: false,
     deleteNode: false,
     deleteEdge: false,
-    editNode: function (data, callback) {
+    editNode: function(data, callback) {
       // filling in the popup DOM elements
       document.getElementById("node-operation").innerHTML = "Edit Loop Counter";
       editNode(data, cancelNodeEdit, callback);
-    },
-  },
+    }
+  }
 };
 
 // A method to draw round corner rectangle on canvas.
 // From https://stackoverflow.com/a/7838871/2142577.
-CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
-  if (w < 2 * r) {r = w / 2;}
-  if (h < 2 * r) {r = h / 2;}
+CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+  if (w < 2 * r) {
+    r = w / 2;
+  }
+  if (h < 2 * r) {
+    r = h / 2;
+  }
   this.beginPath();
   this.moveTo(x + r, y);
   this.arcTo(x + w, y, x + w, y + h, r);
@@ -93,7 +97,7 @@ class TraceGraph {
     this.lines = new Set();
     this.events = data.events;
     this.loops = data.loops.map(
-      (loop) => new Loop(loop.startOffset, loop.endOffset, loop.startLineno)
+      loop => new Loop(loop.startOffset, loop.endOffset, loop.startLineno)
     );
     this.tracingResult = data.tracingResult;
     this.colorGenerator = new ColorGenerator(data.identifiers);
@@ -105,7 +109,7 @@ class TraceGraph {
       this.container,
       {
         nodes: this.nodes,
-        edges: this.edges,
+        edges: this.edges
       },
       options
     );
@@ -126,8 +130,8 @@ class TraceGraph {
         label: "0",
         loop: loop,
         color: {
-          background: "white",
-        },
+          background: "white"
+        }
       });
       if (i < this.loops.length - 1) {
         edgesToShow.push(
@@ -140,7 +144,9 @@ class TraceGraph {
     }
 
     for (let event of initialEvents) {
-      if (event.type === "JumpBackToLoopStart") {continue;}
+      if (event.type === "JumpBackToLoopStart") {
+        continue;
+      }
 
       let linenoString = event.lineno.toString();
       if (!this.lines.has(linenoString)) {
@@ -161,9 +167,9 @@ class TraceGraph {
             border: "rgba(0, 0, 0, 0)",
             background: "rgba(0, 0, 0, 0)",
             hover: {
-              background: "rgba(0, 0, 0, 0)",
-            },
-          },
+              background: "rgba(0, 0, 0, 0)"
+            }
+          }
         });
       }
       nodesToShow.push(this.createNode(event));
@@ -174,7 +180,7 @@ class TraceGraph {
           edgesToShow.push({
             from: source_event_id,
             to: event.id,
-            id: source_event_id + event.id,
+            id: source_event_id + event.id
           });
         }
       }
@@ -193,8 +199,10 @@ class TraceGraph {
     /*
      Manually draw tooltips to show each node's value on the trace path.
      */
-    this.network.on("afterDrawing", (ctx) => {
-      if (this.hoveredNodeId === undefined) {return;}
+    this.network.on("afterDrawing", ctx => {
+      if (this.hoveredNodeId === undefined) {
+        return;
+      }
 
       let [tracePathNodeIds, tracePathEdgeIds] = findNodesAndEdgesOnTracePath(
         this.network,
@@ -210,10 +218,10 @@ class TraceGraph {
       this.network.setSelection(
         {
           nodes: tracePathNodeIds,
-          edges: tracePathEdgeIds,
+          edges: tracePathEdgeIds
         },
         {
-          highlightEdges: false,
+          highlightEdges: false
         }
       );
 
@@ -236,7 +244,7 @@ class TraceGraph {
       }
     });
 
-    this.network.on("hoverNode", (event) => {
+    this.network.on("hoverNode", event => {
       let node = this.nodes.get(event.node);
       if (!node.hasOwnProperty("target")) {
         return;
@@ -250,12 +258,12 @@ class TraceGraph {
       );
     });
 
-    this.network.on("blurNode", (event) => {
+    this.network.on("blurNode", event => {
       this.hoveredNodeId = undefined;
     });
 
     // Only show edit button when clicking on loop counter nodes, otherwise hide it.
-    this.network.on("click", (event) => {
+    this.network.on("click", event => {
       let selectedNode = this.nodes.get(event.nodes[0]);
       setTimeout(() => {
         if (selectedNode.loop === undefined) {
@@ -275,8 +283,8 @@ class TraceGraph {
       to: toNode,
       color: {
         color: "rgba(0, 0, 0, 0)",
-        hover: "rgba(0, 0, 0, 0)",
-      },
+        hover: "rgba(0, 0, 0, 0)"
+      }
     };
   }
 
@@ -294,9 +302,9 @@ class TraceGraph {
         hover: {
           // Right now we let color keeps unchanged when hovering. We may slightly
           // change the color to make the node obvious.
-          background: this.colorGenerator.getColor(event.target),
-        },
-      },
+          background: this.colorGenerator.getColor(event.target)
+        }
+      }
     };
   }
 }
@@ -321,21 +329,19 @@ function editNode(node, cancelAction, callback) {
 
   // Insert instruction text to help users modify counters.
   let infoText = document.getElementById("counter_info");
-  if (infoText === null) {
+  let infoTextNotExist = infoText === null;
+  if (infoTextNotExist) {
     infoText = document.createElement("p");
     infoText.id = "counter_info";
-    infoText.innerText = `Counter max value: ${node.loop.maxIteration}`;
-    infoText.originalHTML = infoText.innerHTML;
+  }
+  infoText.innerText = `Counter max value: ${node.loop.maxIteration}`;
+  infoText.hasWarning = false;
+  if (infoTextNotExist) {
     popUp.insertBefore(infoText, null);
-  } else {
-    // Clears counter exceed upper limit warning if it exists.
-    infoText.innerHTML = infoText.originalHTML;
   }
 }
 
 function cancelNodeEdit(callback) {
-  let infoText = document.getElementById("counter_info");
-  infoText.innerHTML = infoText.originalHTML;
   clearNodePopUp();
   callback(null);
 }
@@ -346,22 +352,25 @@ function saveNodeData(node, callback) {
 
   if (userSetCounterValue > node.loop.maxIteration) {
     let infoText = document.getElementById("counter_info");
-    infoText.innerHTML =
-      infoText.originalHTML +
-      "<p style='color:red'>Counter exceeds upper limit</p>";
+    if (!infoText.hasWarning) {
+      infoText.innerHTML =
+        infoText.innerHTML +
+        "<p style='color:red'>Counter exceeds upper limit</p>";
+      infoText.hasWarning = true;
+    }
     return;
   }
 
-  node.label = userSetCounterText;
-  node.loop.counter = userSetCounterValue;
-
-  let visibleEvents = this.nodes.get({
-    filter: (node) => {
-      return node.hasOwnProperty("offset");
-    },
-  });
-
-  cl(visibleEvents);
+  // node.label = userSetCounterText;
+  // node.loop.counter = userSetCounterValue;
+  //
+  // let visibleEvents = this.nodes.get({
+  //   filter: node => {
+  //     return node.hasOwnProperty("offset");
+  //   }
+  // });
+  //
+  // cl(visibleEvents);
 
   // cl(generateNodeUpdate(this.events, visibleEvents, node.loop));
   clearNodePopUp();
@@ -384,7 +393,7 @@ class ColorGenerator {
       // See https://github.com/davidmerfield/randomColor/issues/136
       seed: 1000,
       count: count,
-      luminosity: "light",
+      luminosity: "light"
     });
     this.colorMap = new Map();
     for (let i = 0; i < count; i++) {
@@ -437,9 +446,9 @@ function findNodesAndEdgesOnTracePath(
       }
       let [
         indirectConnectedNodes,
-        indirectConnectedEdges,
+        indirectConnectedEdges
       ] = findNodesAndEdgesOnTracePath(network, edges, connectedNode, [
-        direction,
+        direction
       ]);
       for (let indirectConnectedNode of indirectConnectedNodes) {
         resultNodes.add(indirectConnectedNode);
