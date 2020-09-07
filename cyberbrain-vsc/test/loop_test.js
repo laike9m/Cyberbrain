@@ -3,6 +3,11 @@ If we need to migrate tests to TS, see:
 https://dev.to/daniel_werner/testing-typescript-with-mocha-and-chai-5cl8
  */
 
+// Need to set isDevMode to avoid ReferenceError: isDevMode is not defined
+// https://stackoverflow.com/a/59243202/2142577
+const global = (0, eval)("this");
+global.isDevMode = false;
+
 import hamjest from "hamjest";
 
 import { generateNodeUpdate, getInitialState, Loop } from "../src/loop.js";
@@ -59,9 +64,7 @@ describe("Test nested loops", function() {
         { type: "Binding", index: 0, offset: 0 },
         { type: "Binding", index: 1, offset: 2 },
         { type: "Binding", index: 2, offset: 4 },
-        { type: "JumpBackToLoopStart", index: 3, offset: 6 },
         { type: "Binding", index: 7, offset: 8 },
-        { type: "JumpBackToLoopStart", index: 8, offset: 10 },
         { type: "Binding", index: 18, offset: 12 }
       )
     );
@@ -112,9 +115,7 @@ describe("Test nested loops", function() {
           { type: "Binding", index: 0, offset: 0 },
           { type: "Binding", index: 1, offset: 2 },
           { type: "Binding", index: 2, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 3, offset: 6 },
-          { type: "Binding", index: 7, offset: 8 },
-          { type: "JumpBackToLoopStart", index: 8, offset: 10 }
+          { type: "Binding", index: 7, offset: 8 }
         ]);
       });
 
@@ -123,9 +124,7 @@ describe("Test nested loops", function() {
           { type: "Binding", index: 9, offset: 0 },
           { type: "Binding", index: 10, offset: 2 },
           { type: "Binding", index: 11, offset: 4 },
-          { type: "JumpBackToLoopStart", index: 12, offset: 6 },
-          { type: "Binding", index: 16, offset: 8 },
-          { type: "JumpBackToLoopStart", index: 17, offset: 10 }
+          { type: "Binding", index: 16, offset: 8 }
         ]);
       });
     });
@@ -143,8 +142,7 @@ describe("Test nested loops", function() {
           Array.from(eventsToHide1.values()),
           contains(
             { type: "Binding", index: 10, offset: 2 },
-            { type: "Binding", index: 11, offset: 4 },
-            { type: "JumpBackToLoopStart", index: 12, offset: 6 }
+            { type: "Binding", index: 11, offset: 4 }
           )
         );
       });
@@ -154,8 +152,7 @@ describe("Test nested loops", function() {
           Array.from(eventsToShow1.values()),
           contains(
             { type: "Binding", index: 13, offset: 2 },
-            { type: "Binding", index: 14, offset: 4 },
-            { type: "JumpBackToLoopStart", index: 15, offset: 6 }
+            { type: "Binding", index: 14, offset: 4 }
           )
         );
       });
@@ -178,8 +175,7 @@ describe("Test nested loops", function() {
           Array.from(eventsToHide0.values()),
           contains(
             { type: "Binding", index: 1, offset: 2 },
-            { type: "Binding", index: 2, offset: 4 },
-            { type: "JumpBackToLoopStart", index: 3, offset: 6 }
+            { type: "Binding", index: 2, offset: 4 }
           )
         );
       });
@@ -189,8 +185,7 @@ describe("Test nested loops", function() {
           Array.from(eventsToShow0.values()),
           contains(
             { type: "Binding", index: 4, offset: 2 },
-            { type: "Binding", index: 5, offset: 4 },
-            { type: "JumpBackToLoopStart", index: 6, offset: 6 }
+            { type: "Binding", index: 5, offset: 4 }
           )
         );
       });
@@ -211,9 +206,7 @@ describe("Test nested loops", function() {
             { type: "Binding", index: 0, offset: 0 },
             { type: "Binding", index: 4, offset: 2 },
             { type: "Binding", index: 5, offset: 4 },
-            { type: "JumpBackToLoopStart", index: 6, offset: 6 },
-            { type: "Binding", index: 7, offset: 8 },
-            { type: "JumpBackToLoopStart", index: 8, offset: 10 }
+            { type: "Binding", index: 7, offset: 8 }
           )
         );
       });
@@ -225,9 +218,7 @@ describe("Test nested loops", function() {
             { type: "Binding", index: 9, offset: 0 },
             { type: "Binding", index: 13, offset: 2 },
             { type: "Binding", index: 14, offset: 4 },
-            { type: "JumpBackToLoopStart", index: 15, offset: 6 },
-            { type: "Binding", index: 16, offset: 8 },
-            { type: "JumpBackToLoopStart", index: 17, offset: 10 }
+            { type: "Binding", index: 16, offset: 8 }
           )
         );
       });
@@ -269,9 +260,7 @@ describe("Test nested loops", function() {
             { type: "Binding", index: 9, offset: 0 },
             { type: "Binding", index: 13, offset: 2 },
             { type: "Binding", index: 14, offset: 4 },
-            { type: "JumpBackToLoopStart", index: 15, offset: 6 },
-            { type: "Binding", index: 16, offset: 8 },
-            { type: "JumpBackToLoopStart", index: 17, offset: 10 }
+            { type: "Binding", index: 16, offset: 8 }
           )
         );
       });
@@ -283,9 +272,7 @@ describe("Test nested loops", function() {
             { type: "Binding", index: 0, offset: 0 },
             { type: "Binding", index: 4, offset: 2 },
             { type: "Binding", index: 5, offset: 4 },
-            { type: "JumpBackToLoopStart", index: 6, offset: 6 },
-            { type: "Binding", index: 7, offset: 8 },
-            { type: "JumpBackToLoopStart", index: 8, offset: 10 }
+            { type: "Binding", index: 7, offset: 8 }
           )
         );
       });
@@ -305,8 +292,7 @@ describe("Test nested loops", function() {
           Array.from(eventsToHide1.values()),
           contains(
             { type: "Binding", index: 4, offset: 2 },
-            { type: "Binding", index: 5, offset: 4 },
-            { type: "JumpBackToLoopStart", index: 6, offset: 6 }
+            { type: "Binding", index: 5, offset: 4 }
           )
         );
       });
@@ -316,8 +302,7 @@ describe("Test nested loops", function() {
           Array.from(eventsToShow1.values()),
           contains(
             { type: "Binding", index: 1, offset: 2 },
-            { type: "Binding", index: 2, offset: 4 },
-            { type: "JumpBackToLoopStart", index: 3, offset: 6 }
+            { type: "Binding", index: 2, offset: 4 }
           )
         );
       });
@@ -357,8 +342,7 @@ describe("Test nested loops", function() {
           Array.from(eventsToHide0.values()),
           contains(
             { type: "Binding", index: 13, offset: 2 },
-            { type: "Binding", index: 14, offset: 4 },
-            { type: "JumpBackToLoopStart", index: 15, offset: 6 }
+            { type: "Binding", index: 14, offset: 4 }
           )
         );
       });
@@ -368,8 +352,7 @@ describe("Test nested loops", function() {
           Array.from(eventsToShow0.values()),
           contains(
             { type: "Binding", index: 10, offset: 2 },
-            { type: "Binding", index: 11, offset: 4 },
-            { type: "JumpBackToLoopStart", index: 12, offset: 6 }
+            { type: "Binding", index: 11, offset: 4 }
           )
         );
       });
@@ -391,9 +374,7 @@ describe("Test nested loops", function() {
             { type: "Binding", index: 9, offset: 0 },
             { type: "Binding", index: 10, offset: 2 },
             { type: "Binding", index: 11, offset: 4 },
-            { type: "JumpBackToLoopStart", index: 12, offset: 6 },
-            { type: "Binding", index: 16, offset: 8 },
-            { type: "JumpBackToLoopStart", index: 17, offset: 10 }
+            { type: "Binding", index: 16, offset: 8 }
           )
         );
       });
@@ -405,9 +386,7 @@ describe("Test nested loops", function() {
             { type: "Binding", index: 0, offset: 0 },
             { type: "Binding", index: 1, offset: 2 },
             { type: "Binding", index: 2, offset: 4 },
-            { type: "JumpBackToLoopStart", index: 3, offset: 6 },
-            { type: "Binding", index: 7, offset: 8 },
-            { type: "JumpBackToLoopStart", index: 8, offset: 10 }
+            { type: "Binding", index: 7, offset: 8 }
           )
         );
       });
@@ -448,8 +427,6 @@ describe("Test adjacent JumpBackToLoopStart", function() {
         { type: "Binding", index: 0, offset: 0 },
         { type: "Binding", index: 1, offset: 2 },
         { type: "Binding", index: 2, offset: 4 },
-        { type: "JumpBackToLoopStart", index: 3, offset: 6 },
-        { type: "JumpBackToLoopStart", index: 7, offset: 8 },
         { type: "Binding", index: 16, offset: 10 }
       )
     );
