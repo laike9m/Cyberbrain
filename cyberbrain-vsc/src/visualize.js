@@ -19,9 +19,11 @@ is poor, see: https://github.com/visjs/vis-network/issues/930
 */
 
 // The .js suffix is needed to make import work in vsc webview.
-import { getInitialState, Loop } from "./loop.js";
+import { generateNodeUpdate, getInitialState, Loop } from "./loop.js";
 
 let cl = console.log;
+
+let traceGraph;
 
 window.addEventListener("message", event => {
   if (!event.data.hasOwnProperty("events")) {
@@ -29,8 +31,8 @@ window.addEventListener("message", event => {
   }
 
   console.log(event.data);
-  const graph = new TraceGraph(event.data);
-  graph.initialize();
+  traceGraph = new TraceGraph(event.data);
+  traceGraph.initialize();
 });
 
 const options = {
@@ -144,10 +146,6 @@ class TraceGraph {
     }
 
     for (let event of initialEvents) {
-      if (event.type === "JumpBackToLoopStart") {
-        continue;
-      }
-
       let linenoString = event.lineno.toString();
       if (!this.lines.has(linenoString)) {
         // Adds a "virtual node" to show line number. This node should precede other nodes
@@ -325,8 +323,6 @@ function editNode(node, cancelAction, callback) {
   let popUp = document.getElementById("node-popUp");
   popUp.style.display = "block";
 
-  cl(node.loop);
-
   // Insert instruction text to help users modify counters.
   let infoText = document.getElementById("counter_info");
   let infoTextNotExist = infoText === null;
@@ -334,7 +330,7 @@ function editNode(node, cancelAction, callback) {
     infoText = document.createElement("p");
     infoText.id = "counter_info";
   }
-  infoText.innerText = `Counter max value: ${node.loop.maxIteration}`;
+  infoText.innerText = `Counter max value: ${node.loop.maxCounter}`;
   infoText.hasWarning = false;
   if (infoTextNotExist) {
     popUp.insertBefore(infoText, null);
@@ -350,7 +346,7 @@ function saveNodeData(node, callback) {
   let userSetCounterText = document.getElementById("node-label").value;
   let userSetCounterValue = parseInt(userSetCounterText);
 
-  if (userSetCounterValue > node.loop.maxIteration) {
+  if (userSetCounterValue > node.loop.maxCounter) {
     let infoText = document.getElementById("counter_info");
     if (!infoText.hasWarning) {
       infoText.innerHTML =
@@ -361,18 +357,19 @@ function saveNodeData(node, callback) {
     return;
   }
 
-  // node.label = userSetCounterText;
-  // node.loop.counter = userSetCounterValue;
-  //
-  // let visibleEvents = this.nodes.get({
-  //   filter: node => {
-  //     return node.hasOwnProperty("offset");
-  //   }
-  // });
-  //
-  // cl(visibleEvents);
+  node.label = userSetCounterText;
+  node.loop.counter = userSetCounterValue;
 
-  // cl(generateNodeUpdate(this.events, visibleEvents, node.loop));
+  let visibleEvents = traceGraph.nodes.get({
+    filter: node => {
+      return node.hasOwnProperty("offset");
+    }
+  });
+
+  // cl(visibleEvents);
+  cl(node.loop);
+  cl(generateNodeUpdate(traceGraph.events, visibleEvents, node.loop));
+
   clearNodePopUp();
   callback(node);
 }

@@ -16,9 +16,22 @@ export class Loop {
     this.parent = undefined;
     this.children = new Set();
 
+    // Note that the number of iterations != maxCounter
+    //
+    // for i in range(2):
+    //   for j in range(2):
+    //
+    // For the inner loop, number of iterations is 4, but maxCounter is 1.
+    this.maxCounter = 0;
+
     // The index of the first event in each iteration of this loop.
     // Maps counter to index. Note that the counter includes parent's counter, like [0,0,1]
     this._iterationStarts = new Map();
+  }
+
+  incrementCounter() {
+    this.counter++;
+    this.maxCounter = Math.max(this.counter, this.maxCounter);
   }
 
   addIterationStart(counters, eventIndex) {
@@ -28,12 +41,6 @@ export class Loop {
 
   getCurrentIterationStart() {
     return this._iterationStarts.get(this.getCounters().toString());
-  }
-
-  /* Returns the index of the last iteration that the loop has.
-   */
-  get maxIteration() {
-    return this._iterationStarts.size - 1;
   }
 
   /* Calculates the counters array from top-level loop to the modified loop.
@@ -61,7 +68,6 @@ Returns:
 
 Meanwhile, loops are filled with iteration starts.
 
-TODO: Decide whether to show JumpBackToLoopStart node in trace graph.
  */
 export function getInitialState(events, loops) {
   let loopStack = [];
@@ -75,7 +81,11 @@ export function getInitialState(events, loops) {
     // sequence in which the next event always has a larger offset than the previous one.
     if (offset > maxReachedOffset) {
       maxReachedOffset = offset;
-      visibleEvents.push(event);
+
+      // Don't include JumpBackToLoopStart in visible events.
+      if (event.type !== "JumpBackToLoopStart") {
+        visibleEvents.push(event);
+      }
     }
 
     // Pops loop out of the stack.
@@ -95,7 +105,7 @@ export function getInitialState(events, loops) {
       event.index < events.length - 1 &&
       events[nextEventIndex].offset < offset
     ) {
-      currentLoop.counter++;
+      currentLoop.incrementCounter();
       currentLoop.addIterationStart(
         loopStack.map(loop => loop.counter),
         nextEventIndex // The event following JumpBackToLoopStart is next iteration's start.
@@ -161,15 +171,25 @@ export function generateNodeUpdate(events, visibleEvents, loop) {
 
   // Calculates events that should be made visible, in this loop.
   let maxReachedOffset = -1;
+  debugLog(
+    `loop.getCurrentIterationStart(): ${loop.getCurrentIterationStart()}, events.length: ${
+      events.length
+    }`
+  );
   for (let i = loop.getCurrentIterationStart(); i < events.length; i++) {
     let event = events[i];
     let offset = event.offset;
+    debugLog(event);
+    debugLog(`offset: ${offset}, loop.endOffset: ${loop.endOffset}`);
     if (offset > loop.endOffset) {
       break;
     }
     if (offset > maxReachedOffset) {
       maxReachedOffset = offset;
-      if (!eventsToShow.has(event.offset)) {
+      if (
+        !eventsToShow.has(event.offset) &&
+        event.type !== "JumpBackToLoopStart"
+      ) {
         // Only set once (target iteration), don't let later iterations override the result.
         eventsToShow.set(event.offset, event);
       }
@@ -187,6 +207,5 @@ export function generateNodeUpdate(events, visibleEvents, loop) {
     eventsToShow = new Map([...eventsToShow, ...eventsToShowFromInner]);
   }
 
-  console.assert(eventsToShow.size === eventsToHide.size);
   return [eventsToHide, eventsToShow];
 }
