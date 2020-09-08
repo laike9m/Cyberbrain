@@ -35,7 +35,7 @@ Join the [Cyberbrain community Discord](https://discord.gg/2TFYtBh) 💬
 All questions & suggestions & discussions welcomed.
 
 ## Interested in Contributing?
-Get started [here](https://github.com/laike9m/cb-experimental/blob/master/docs/Development.md).
+Get started [here](https://github.com/laike9m/Cyberbrain/blob/master/docs/Development.md).
 
 ## Support
 
