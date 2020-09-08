@@ -4,7 +4,7 @@
 	"description": "A cyberbrain that helps you remember everything.",
 	"version": "0.0.1",
 	"publisher": "laike9m",
-	"repository": "https://github.com/laike9m/cb-experimental",
+	"repository": "https://github.com/laike9m/Cyberbrain",
 	"license": "MIT",
 	"engines": {
 		"vscode": "^1.46.0"
