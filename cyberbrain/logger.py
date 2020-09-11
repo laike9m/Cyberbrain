@@ -16,11 +16,19 @@ from .utils import pprint, computed_gotos_enabled, shorten_path
 _implicit_jump_ops = {"BREAK_LOOP", "CONTINUE_LOOP", "RAISE_VARARGS", "END_FINALLY"}
 
 PREDICT_MAP = {
-    "FOR_ITER": {"POP_BLOCK"},
+    "LIST_APPEND": {"JUMP_ABSOLUTE"},
+    "SET_ADD": {"JUMP_ABSOLUTE"},
+    "GET_ANEXT": {"LOAD_CONST"},
+    "GET_AWAITABLE": {"LOAD_CONST"},
+    "MAP_ADD": {"JUMP_ABSOLUTE"},
     "COMPARE_OP": {"POP_JUMP_IF_FALSE", "POP_JUMP_IF_TRUE"},
-    "WITH_CLEANUP_FINISH": {"END_FINALLY"},
+    "GET_ITER": {"FOR_ITER", "CALL_FUNCTION"},
+    "GET_YIELD_FROM_ITER": {"LOAD_CONST"},
+    "FOR_ITER": {"STORE_FAST", "UNPACK_SEQUENCE", "POP_BLOCK"},
+    "BEFORE_ASYNC_WITH": {"GET_AWAITABLE"},
     "WITH_CLEANUP_START": {"WITH_CLEANUP_FINISH"},
-}  # TODO: Add more.
+    "WITH_CLEANUP_FINISH": {"END_FINALLY"},
+}
 
 COMPUTED_GOTOS_ENABLED = computed_gotos_enabled()
 
