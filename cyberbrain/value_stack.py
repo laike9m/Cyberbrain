@@ -469,7 +469,7 @@ class GeneralValueStack:
             # so that _do_raise sees the correct value type.
             self._push(callable_obj())
         else:
-            elements = []
+            elements: list = callable_obj  # callable_obj is already a list
             for arg in args:
                 if isinstance(arg, list):
                     elements.extend(arg)
@@ -495,7 +495,8 @@ class GeneralValueStack:
 
     def _MAKE_FUNCTION_handler(self, instr):
         function_obj = []
-        function_obj.extend(self._pop(2))  # qualified_name, code_obj
+        function_obj.extend(self._pop())  # qualified_name
+        function_obj.extend(self._pop())  # code_obj
 
         if instr.argval & 0x08:
             function_obj.append(self._pop())  # closure
@@ -573,8 +574,20 @@ class GeneralValueStack:
             self._push(self.tos)
             return self._return_jump_back_event_if_exists(instr)
 
+    def _SETUP_WITH_handler(self):
+        enter_func = self.tos
+        # We ignored the operation to replace context manager on tos with __exit__,
+        # because it is a noop in our stack.
+        self._push_block(BlockType.SETUP_FINALLY)
+        self._push(enter_func)  # The return value of __enter__()
+
+    def _WITH_CLEANUP_FINISH_handler(self):
+        self._pop(2)
+        # Again, this assumes there's no unhandled exception, and ignored the handling
+        # for those exceptions.
+
     def _return_jump_back_event_if_exists(self, instr):
-        jump_target = utils.get_jump_target(instr)
+        jump_target = utils.get_jump_target_or_none(instr)
         if jump_target is not None and jump_target < instr.offset:
             return EventInfo(type=JumpBackToLoopStartType, jump_target=jump_target)
 
@@ -690,6 +703,22 @@ class Py37ValueStack(GeneralValueStack):
         self.why = Why.EXCEPTION
         self._fast_block_end()
 
+    def _WITH_CLEANUP_START_handler(self):
+        exc = self.tos
+        exit_func: any
+        if not exc:  # Checks if tos is None, which in our stack, is []
+            exit_func = self.stack.pop(-2)
+        elif isinstance(exc, Why):
+            if exc in {Why.RETURN, Why.CONTINUE}:
+                exit_func = self.stack.pop(-2)  # why, ret_val, __exit__
+            else:
+                exit_func = self.stack.pop(-1)  # why, __exit__
+        else:
+            assert False, "Unhandled exception is not supported by Cyberbrain"
+
+        self._push(_placeholder)  # exc, set to None
+        self._push(exit_func)
+
     def _END_FINALLY_handler(self):
         status = self._pop()
         if isinstance(status, Why):
@@ -716,7 +745,6 @@ class Py37ValueStack(GeneralValueStack):
         assert status is not None
 
     def _fast_block_end(self):
-        print("inside _fast_block_end")
         assert self.why is not Why.NOT
 
         while self.block_stack.is_not_empty():
@@ -762,7 +790,6 @@ class Py37ValueStack(GeneralValueStack):
             if block.b_type is BlockType.SETUP_FINALLY:
                 if self.why in {Why.RETURN, Why.CONTINUE}:
                     self._push(self.return_value)
-                print("☀️")
                 self._push(self.why)
                 self.why = Why.NOT
                 break
@@ -841,6 +868,20 @@ class Py38ValueStack(GeneralValueStack):
             self._exception_unwind(instr)
         else:
             raise ValueStackException(f"TOS has wrong value: {self.tos}")
+
+    def _WITH_CLEANUP_START_handler(self):
+        if self.tos == NULL:  # Pushed by BEGIN_FINALLY
+            exit_func = self.stack.pop(-2)
+            self._push([])  # Pushes None to the stack
+            self._push(exit_func)
+        else:
+            # Note that in real CPython code, this clause is used to process unhandled
+            # exceptions thrown inside `with`. However, since our stack is just a
+            # simulation, we won't push exceptions onto the stack even if an unhandled
+            # happened, which, makes it meaningless to write any code here.
+            # Essentially, users shouldn't use Cyberbrain if there will ever be
+            # unhandled exceptions.
+            pass
 
     def _exception_unwind(self, instr):
         print("inside _exception_unwind")
