@@ -13,11 +13,13 @@ from .frame import Frame
 from .frame_tree import FrameTree
 from .utils import pprint, computed_gotos_enabled, shorten_path
 
-_implicit_jump_ops = {"BREAK_LOOP", "RAISE_VARARGS", "END_FINALLY"}
+_implicit_jump_ops = {"BREAK_LOOP", "CONTINUE_LOOP", "RAISE_VARARGS", "END_FINALLY"}
 
 PREDICT_MAP = {
     "FOR_ITER": {"POP_BLOCK"},
     "COMPARE_OP": {"POP_JUMP_IF_FALSE", "POP_JUMP_IF_TRUE"},
+    "WITH_CLEANUP_FINISH": {"END_FINALLY"},
+    "WITH_CLEANUP_START": {"WITH_CLEANUP_FINISH"},
 }  # TODO: Add more.
 
 COMPUTED_GOTOS_ENABLED = computed_gotos_enabled()
@@ -216,18 +218,25 @@ class JumpDetector:
 
     def detects_jump(self, instr: Instruction, last_i) -> (bool, Optional[int]):
         """
+        An instruction could have both implicit_jump_target and implicit_jump_target.
+        e.g. CONTINUE_LOOP, when it's inside a `with` clause, there's an implicit
+        jump to the following WITH_CLEANUP_START instruction.
+
+        From observation, implicit jump instructions don't contain PREDICT. So we only
+        process PREDICT if there's explicit_jump_target.
+        TODO: Verify if this is always true.
+
         Returns: (whether jump occurred, jumped-to location)
         """
-        if instr.opname in _implicit_jump_ops:
-            jump_target = last_i  # For implicit_jump_ops, assume it's last_i.
-        else:
-            jump_target = utils.get_jump_target(instr)
 
-        if jump_target is None:
-            return False, jump_target
+        explicit_jump_target = utils.get_jump_target_or_none(instr)
+        implicit_jump_target = last_i if instr.opname in _implicit_jump_ops else None
 
-        computed_last_i = jump_target
-        if not COMPUTED_GOTOS_ENABLED:
+        if not any([implicit_jump_target, explicit_jump_target]):
+            return False, None
+
+        computed_last_i = explicit_jump_target
+        if not COMPUTED_GOTOS_ENABLED and explicit_jump_target is not None:
             # Here we assume that PREDICT happens at most once. I'm not sure if this
             # is always true. If it's not, we can modify the code.
             # Example:
@@ -242,18 +251,25 @@ class JumpDetector:
             # With COMPUTED_GOTOS, PREDICT is a noop, last_i is 24.
             # Without COMPUTED_GOTOS, PREDICT causes last_i to not update for POP_BLOCK,
             # so last_i is 26.
-            opname_next = self.instructions[jump_target].opname
+            opname_next = self.instructions[explicit_jump_target].opname
             if opname_next in PREDICT_MAP.get(instr.opname, {}):
                 print(f"Found PREDICT!! {instr.opname} -> {opname_next}")
                 computed_last_i += 2
 
         if computed_last_i == last_i:
             _debug_log(
-                self.debug_mode, f"Jumped to instruction at offset: {jump_target}"
+                self.debug_mode,
+                f"Jumped to instruction at offset: {explicit_jump_target}",
             )
-            return True, jump_target
+            return True, explicit_jump_target
+        elif implicit_jump_target:
+            _debug_log(
+                self.debug_mode,
+                f"Jumped to instruction at offset: {implicit_jump_target}",
+            )
+            return True, implicit_jump_target
 
-        return False, jump_target
+        return False, None
 
 
 def _debug_log(debug_mode, *msg, condition=True):

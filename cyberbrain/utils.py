@@ -23,7 +23,7 @@ _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
 _PYTHON_EXECUTABLE_PATH = sys.executable
 
 
-def get_jump_target(instr: dis.Instruction) -> Optional[int]:
+def get_jump_target_or_none(instr: dis.Instruction) -> Optional[int]:
     if instr.opcode in dis.hasjrel:
         return instr.offset + 2 + instr.arg
     elif instr.opcode in dis.hasjabs:
