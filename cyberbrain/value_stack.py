@@ -451,6 +451,20 @@ class GeneralValueStack:
     def _STORE_FAST_handler(self, instr):
         return self._STORE_NAME_handler(instr)
 
+    def _LOAD_CLOSURE_handler(self, instr, frame):
+        self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
+
+    def _LOAD_DEREF_handler(self, instr, frame):
+        self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
+
+    @emit_event
+    def _STORE_DEREF_handler(self, instr):
+        return self._STORE_NAME_handler(instr)
+
+    @emit_event
+    def _DELETE_DEREF_handler(self, instr):
+        return EventInfo(type=DeletionType, target=Symbol(instr.argrepr))
+
     @emit_event
     def _DELETE_FAST_handler(self, instr):
         return EventInfo(type=DeletionType, target=Symbol(instr.argrepr))
@@ -499,13 +513,13 @@ class GeneralValueStack:
         function_obj.extend(self._pop())  # code_obj
 
         if instr.argval & 0x08:
-            function_obj.append(self._pop())  # closure
+            function_obj.extend(self._pop())  # closure
         if instr.argval & 0x04:
-            function_obj.append(self._pop())  # annotations
+            function_obj.extend(self._pop())  # annotations
         if instr.argval & 0x02:
-            function_obj.append(self._pop())  # kwargs defaults
+            function_obj.extend(self._pop())  # kwargs defaults
         if instr.argval & 0x01:
-            function_obj.append(self._pop())  # args defaults
+            function_obj.extend(self._pop())  # args defaults
 
         self._push(function_obj)
 
@@ -573,6 +587,9 @@ class GeneralValueStack:
         else:
             self._push(self.tos)
             return self._return_jump_back_event_if_exists(instr)
+
+    def _LOAD_BUILD_CLASS_handler(self):
+        self._push(_placeholder)  # builtins.__build_class__()
 
     def _SETUP_WITH_handler(self):
         enter_func = self.tos
