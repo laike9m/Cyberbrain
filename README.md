@@ -1,4 +1,4 @@
-# Cyberbrain: Intelligent Debugging to Set You Free
+# Cyberbrain - Python debugging. Redefined.
 
 Cyberbrain is a Python debugging solution aiming to **free programmers**.
 
