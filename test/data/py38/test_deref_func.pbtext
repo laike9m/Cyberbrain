@@ -1,0 +1,37 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_cellvar.py"
+events {
+  initial_value {
+    id: "test_deref:0"
+    filename: "test_cellvar.py"
+    lineno: 12
+    target: "a"
+    value: "1"
+    index: 0
+    offset: 10
+  }
+}
+events {
+  binding {
+    id: "test_deref:1"
+    filename: "test_cellvar.py"
+    lineno: 13
+    target: "a"
+    value: "2"
+    index: 1
+    offset: 18
+  }
+}
+events {
+  deletion {
+    id: "test_deref:2"
+    filename: "test_cellvar.py"
+    lineno: 14
+    target: "a"
+    index: 2
+    offset: 20
+  }
+}
+identifiers: "a"
