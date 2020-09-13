@@ -1,4 +1,4 @@
-from .api import Tracer
+from .api import Tracer as _Tracer  # Don't let users initiate _Tracer directly.
 from .basis import (
     Binding,
     InitialValue,
@@ -12,4 +12,4 @@ from .basis import (
 # Test only
 from .utils import pprint
 
-trace = tracer = Tracer(debug_mode=True)
+trace = tracer = _Tracer()
