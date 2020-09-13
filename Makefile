@@ -25,6 +25,10 @@ test:
 gen_setup:
 	dephell deps convert
 
+update_dep:
+	poetry update
+	cd cyberbrain-vsc/ && npm update
+
 proto_compile:
 	python -m grpc_tools.protoc -I protos --python_out=cyberbrain/generated \
            --grpc_python_out=cyberbrain/generated protos/*.proto
