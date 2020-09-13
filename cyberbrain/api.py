@@ -68,6 +68,8 @@ class Tracer:
             self.server.wait_for_termination()
 
     def __call__(self, f):
+        """Enables users to decorate their functions with @cyberbrain.trace"""
+
         self.decorated_function_code_id = id(f.__code__)
 
         @functools.wraps(f)

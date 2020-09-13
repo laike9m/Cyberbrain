@@ -45,6 +45,10 @@ def assert_GetFrame(
     with open(golden_filepath, "rt") as f:
         response_text = f.read()
 
-    assert rpc_stub.GetFrame(
+    frame_proto = rpc_stub.GetFrame(
         communication_pb2.FrameLocater(frame_name=frame_name)
-    ) == text_format.Parse(response_text, communication_pb2.Frame())
+    )
+
+    assert frame_proto == text_format.Parse(
+        response_text, communication_pb2.Frame()
+    ), frame_proto
