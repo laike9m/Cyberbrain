@@ -246,7 +246,7 @@ class JumpDetector:
         computed_last_i = explicit_jump_target
         if not COMPUTED_GOTOS_ENABLED and explicit_jump_target is not None:
             # Here we assume that PREDICT happens at most once. I'm not sure if this
-            # is always true. If it's not, we can modify the code.
+            # is always true. If not, we can modify the code.
             # Example:
             #              16 GET_ITER
             #         >>   18 FOR_ITER                 4 (to 24)
