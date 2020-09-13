@@ -18,7 +18,7 @@ def test_with(tracer, rpc_stub):
 
     tracer.start()
 
-    with ContextManagerNoReturn():
+    with ContextManagerNoReturn():  # SETUP_WITH,WITH_CLEANUP_START,WITH_CLEANUP_FINISH
         a = 1
 
     with ContextManagerWithReturn() as b:

@@ -352,6 +352,9 @@ class GeneralValueStack:
     def _BUILD_TUPLE_UNPACK_handler(self, instr):
         self._pop_n_push_one(instr.arg)
 
+    def _BUILD_TUPLE_UNPACK_WITH_CALL_handler(self, instr):
+        self._pop_n_push_one(instr.arg)
+
     def _BUILD_LIST_UNPACK_handler(self, instr):
         self._pop_n_push_one(instr.arg)
 
@@ -359,6 +362,9 @@ class GeneralValueStack:
         self._pop_n_push_one(instr.arg)
 
     def _BUILD_MAP_UNPACK_handler(self, instr):
+        self._pop_n_push_one(instr.arg)
+
+    def _BUILD_MAP_UNPACK_WITH_CALL_handler(self, instr):
         self._pop_n_push_one(instr.arg)
 
     def _LOAD_ATTR_handler(self, instr):
@@ -470,30 +476,48 @@ class GeneralValueStack:
         return EventInfo(type=DeletionType, target=Symbol(instr.argrepr))
 
     def _LOAD_METHOD_handler(self):
-        # TODO: Implement full behaviors.
+        # NULL should be pushed if method lookup failed, but this would lead to an
+        # exception anyway, and should be very rare, so ignoring it.
+        # See https://docs.python.org/3/library/dis.html#opcode-LOAD_METHOD.
         self._push(self.tos)
 
-    def _CALL_FUNCTION_handler(self, instr):
-        # TODO: Deal with callsite.
-        args = self._pop(instr.arg)
-        callable_obj = self._pop()
+    def _push_arguments_or_exception(self, callable_obj, args):
         if utils.is_exception_class(callable_obj):
             # In `raise IndexError()`
             # We need to make sure the result of `IndexError()` is an exception inst,
             # so that _do_raise sees the correct value type.
             self._push(callable_obj())
         else:
-            elements: list = callable_obj  # callable_obj is already a list
+            # Use a list containing the callable and all arguments to from return value
+            return_value: list = callable_obj  # callable_obj is already a list
             for arg in args:
                 if isinstance(arg, list):
-                    elements.extend(arg)
+                    return_value.extend(arg)
                 else:
-                    elements.append(arg)
-            self._push(elements)
+                    return_value.append(arg)
+            self._push(return_value)
+
+    def _CALL_FUNCTION_handler(self, instr):
+        args = self._pop(instr.arg)
+        callable_obj = self._pop()
+        self._push_arguments_or_exception(callable_obj, args)
+
+    def _CALL_FUNCTION_KW_handler(self, instr: Instruction):
+        args_num = instr.arg
+        _ = self._pop()  # A tuple of keyword argument names.
+        args = self._pop(args_num)
+        callable_obj = self._pop()
+        self._push_arguments_or_exception(callable_obj, args)
+
+    def _CALL_FUNCTION_EX_handler(self, instr):
+        kwargs = self._pop() if (instr.arg & 0x01) else []
+        args = self._pop()
+        args.extend(kwargs)
+        callable_obj = self._pop()
+        self._push_arguments_or_exception(callable_obj, args)
 
     @emit_event
     def _CALL_METHOD_handler(self, instr):
-        # TODO: Deal with callsite.
         args = self._pop(instr.arg)
         inst_or_callable = self._pop()
         method_or_null = self._pop()  # method or NULL
