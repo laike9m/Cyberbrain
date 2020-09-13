@@ -80,7 +80,7 @@ def is_exception_class(obj) -> bool:
 
 
 def should_exclude(frame):
-    """Determines whether we should log events from file.
+    """Determines whether we should log events from this frame.
 
     As of now, we exclude files from installation path, which usually means:
     .../3.7.1/lib/python3.7

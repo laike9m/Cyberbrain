@@ -1,7 +1,9 @@
 """Cyberbrain public API and tracer setup."""
 
 import argparse
+import functools
 import sys
+from typing import Optional
 
 from get_port import get_port
 
@@ -20,15 +22,20 @@ if not utils.run_in_test():
         help="Whether to log more stuff for debugging.",
     )
     parser.set_defaults(debug_mode=False)
-    args, _ = parser.parse_known_args()
-    _debug_mode = args.debug_mode
+    cb_args, _ = parser.parse_known_args()
+    _debug_mode = cb_args.debug_mode
 
 
 class Tracer:
-    def __init__(self, debug_mode=_debug_mode):
+
+    debug_mode = _debug_mode
+
+    def __init__(self, debug_mode=None):
         self.global_frame = None
-        self.frame_logger = None
-        self.debug_mode = debug_mode
+        self.decorated_function_code_id = None
+        self.frame_logger: Optional[logger.BaseFrameLogger] = None
+        if debug_mode is not None:
+            self.debug_mode = debug_mode
 
         # For now server is put inside Tracer. Later when we need to trace multiple
         # frames it should be moved to somewhere else.
@@ -42,7 +49,7 @@ class Tracer:
     def start(self):
         """Initializes tracing."""
         self.global_frame = sys._getframe(1)
-        self.frame_logger = logger.FrameLogger(
+        self.frame_logger = logger.FrameLoggerForExplicitTracer(
             self.global_frame, debug_mode=self.debug_mode
         )
         self.global_frame.f_trace_opcodes = True
@@ -60,6 +67,18 @@ class Tracer:
             # If run in production, let the server wait for termination.
             self.server.wait_for_termination()
 
+    def __call__(self, f):
+        self.decorated_function_code_id = id(f.__code__)
+
+        @functools.wraps(f)
+        def wrapper(*args, **kwargs):
+            sys.settrace(self.global_tracer)
+            result = f(*args, **kwargs)
+            sys.settrace(None)
+            return result
+
+        return wrapper
+
     @property
     def events(self):
         return self.frame_logger.frame.accumulated_events
@@ -72,12 +91,15 @@ class Tracer:
     @property
     def global_tracer(self):
         def _global_tracer(frame, event, arg):
-            # For now, we don't want to trace called functions.
-            if utils.should_exclude(frame) or event == "call":
-                return
-            frame.f_trace_opcodes = True
-            # print(frame, event, arg)
-            return self.local_tracer
+            # Later when we need to trace more functions, we should identify those
+            # functions or at least use utils.should_exclude(frame) to avoid tracing
+            # unnecessary frames.
+            if event == "call" and id(frame.f_code) == self.decorated_function_code_id:
+                frame.f_trace_opcodes = True
+                self.frame_logger = logger.FrameLoggerForDecorator(
+                    frame, debug_mode=self.debug_mode
+                )
+                return self.local_tracer
 
         return _global_tracer
 
