@@ -1,7 +1,7 @@
 import grpc
 import pytest
 
-from cyberbrain import Tracer
+from cyberbrain import _Tracer
 from cyberbrain.generated import communication_pb2_grpc
 
 
@@ -11,7 +11,7 @@ def pytest_addoption(parser):
 
 @pytest.fixture(scope="module")
 def tracer(request):
-    return Tracer(request.config.getoption("--debug_mode"))
+    return _Tracer(request.config.getoption("--debug_mode"))
 
 
 @pytest.fixture(scope="module")

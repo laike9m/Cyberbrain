@@ -6,44 +6,44 @@ events {
   initial_value {
     id: "global:0"
     filename: "test_outside_func.py"
-    lineno: 11
+    lineno: 10
     target: "x"
     value: "1"
     index: 0
-    offset: 64
+    offset: 58
   }
 }
 events {
   deletion {
     id: "global:1"
     filename: "test_outside_func.py"
-    lineno: 11
+    lineno: 10
     target: "x"
     index: 1
-    offset: 64
+    offset: 58
   }
 }
 events {
   initial_value {
     id: "global:2"
     filename: "test_outside_func.py"
-    lineno: 12
+    lineno: 11
     target: "__annotations__"
     value: "{}"
     index: 2
-    offset: 68
+    offset: 62
   }
 }
 events {
   mutation {
     id: "global:3"
     filename: "test_outside_func.py"
-    lineno: 12
+    lineno: 11
     target: "__annotations__"
     value: "{\"y\": {\"py/type\": \"builtins.int\"}}"
     delta: "{\"dictionary_item_added\": {\"root[\'y\']\": {\"py/type\": \"builtins.int\"}}}"
     index: 3
-    offset: 72
+    offset: 66
   }
 }
 identifiers: "x"
