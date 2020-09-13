@@ -12,5 +12,4 @@ from .basis import (
 # Test only
 from .utils import pprint
 
-# TODO: Create a Tracer object automatically.
-trace = Tracer()
+trace = tracer = Tracer(debug_mode=True)
