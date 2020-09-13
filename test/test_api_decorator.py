@@ -2,9 +2,13 @@ from cyberbrain import trace
 
 
 def test_decorator_api(rpc_stub):
+    def f(foo):
+        return foo
+
     @trace
     def decorated_func():
         a = 1
+        b = f(a)
         return a
 
     assert decorated_func() == 1
