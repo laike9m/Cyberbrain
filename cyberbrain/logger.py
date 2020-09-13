@@ -33,10 +33,10 @@ PREDICT_MAP = {
 COMPUTED_GOTOS_ENABLED = computed_gotos_enabled()
 
 
-class FrameLogger:
+class BaseFrameLogger:
     """Logger for a frame."""
 
-    def __init__(self, frame: FrameType, debug_mode=False):
+    def __init__(self, initial_instr_pointer: int, frame: FrameType, debug_mode=False):
         frame_name = (
             # Use filename as frame name if code is run at module level.
             os.path.basename(frame.f_code.co_filename).rstrip(".py")
@@ -57,16 +57,7 @@ class FrameLogger:
             instr.offset: instr for instr in dis.get_instructions(frame.f_code)
         }
 
-        # tracer.init() contains the following instructions:
-        #               0 LOAD_FAST                0 (tracer)
-        #               2 LOAD_METHOD              0 (init)
-        #               4 CALL_METHOD              0
-        #               6 POP_TOP
-        # However logger is initialized before executing CALL_METHOD, last_i is already
-        # at 4. This will make value stack don't have enough elements. So we need to
-        # move the instr_pointer back to LOAD_FAST, and make sure LOAD_FAST and
-        # LOAD_METHOD are scanned, so that value stack can be in correct state.
-        self.instr_pointer = frame.f_lasti - 4
+        self.instr_pointer = initial_instr_pointer
         self.jump_detector = JumpDetector(
             instructions=self.instructions, debug_mode=debug_mode
         )
@@ -98,6 +89,8 @@ class FrameLogger:
         like "STORE_NAME" and "STORE_ATTR", and prints them.
         """
         last_i = frame.f_lasti
+        if last_i == 0:  # Skips when no instruction has been executed.
+            return
         # print(f"last_i={last_i}, frame={frame}")
 
         # Why do we care about jump?
@@ -215,6 +208,34 @@ class FrameLogger:
         # Log InitialValue events that's relevant to the line that's about to be
         # executed, this way we record the value before it's (potentially) modified.
         self.frame.log_initial_value_events(frame, self.instructions[last_i])
+
+
+class FrameLoggerForExplicitTracer(BaseFrameLogger):
+    """
+    Logger initialized when calling tracer.init().
+    """
+
+    def __init__(self, frame: FrameType, debug_mode=False):
+        # tracer.init() contains the following instructions:
+        #               0 LOAD_FAST                0 (tracer)
+        #               2 LOAD_METHOD              0 (init)
+        #               4 CALL_METHOD              0
+        #               6 POP_TOP
+        # However logger is initialized before executing CALL_METHOD, last_i is already
+        # at 4. This will make value stack don't have enough elements. So we need to
+        # move the instr_pointer back to LOAD_FAST, and make sure LOAD_FAST and
+        # LOAD_METHOD are scanned, so that value stack can be in correct state.
+        super().__init__(frame.f_lasti - 4, frame, debug_mode)
+
+
+class FrameLoggerForDecorator(BaseFrameLogger):
+    """
+    Logger initialized when using tracer as a decorator.
+    """
+
+    def __init__(self, frame: FrameType, debug_mode=False):
+        # Set instr_pointer at the first frame instruction, aka 0.
+        super().__init__(0, frame, debug_mode)
 
 
 class JumpDetector:

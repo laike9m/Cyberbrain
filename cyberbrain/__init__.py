@@ -13,3 +13,4 @@ from .basis import (
 from .utils import pprint
 
 # TODO: Create a Tracer object automatically.
+trace = Tracer()

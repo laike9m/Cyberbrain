@@ -1,0 +1,16 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_api_usage.py"
+events {
+  binding {
+    id: "test_decorator_api:0"
+    filename: "test_api_usage.py"
+    lineno: 7
+    target: "a"
+    value: "1"
+    index: 0
+    offset: 2
+  }
+}
+identifiers: "a"
