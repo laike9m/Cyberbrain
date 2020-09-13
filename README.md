@@ -19,7 +19,7 @@ Cyberbrain is still under active development. Milestones for the project are lis
 | Examples ready   | Cyberbrain works on certain examples (in the `examples/` folder)      | WIP    |
 | Live demo ready  | Cyberbrain can work with code you write in a live demo, in most cases | Not started    |
 | Scripts ready     | Cyberbrain can work with most "scripting" programs                      | Not started    |
-| HN / Reddit ready | Cyberbrain is ready to be shared on Hacker News and Reddit. **Please don't broadcast Cyberbrain before it reaches this milestone. First impression is vital.**                  | Not started    |
+| Announcement ready | Cyberbrain is ready to be shared on Hacker News and Reddit. **Please don't broadcast Cyberbrain before it reaches this milestone.**                  | Not started    |
 | Production ready | Cyberbrain can work with most programs in production                  | Not started    |
 
 Note that v1.0 means Cyberbrain is stable in the features it supports, it does **NOT** mean Cyberbrain is feature complete. Major features planned for each version are listed below. Again, expect it to change at any time.
