@@ -12,7 +12,7 @@ be:
 line 9  Binding(target=Symbol("x"), value=0, lineno=7)  # Not changed
 line 11  Binding(target=Symbol("x"), value=0, lineno=7)
 
-$ python change_lineno.py test/test_block.py
+$ python change_lineno.py test/test_block.py --line_delta 3 --start_from 10
 """
 
 import os
@@ -24,7 +24,7 @@ import fire
 test_dir = os.path.abspath("test")
 
 
-def hello(file: str, line_delta: int, start_from: int = 0):
+def locate_file_and_apply_changes(file: str, line_delta: int, start_from: int = 0):
     """Rewrite a test file's content.
 
     Args:
@@ -51,4 +51,4 @@ def hello(file: str, line_delta: int, start_from: int = 0):
 
 
 if __name__ == "__main__":
-    fire.Fire(hello)
+    fire.Fire(locate_file_and_apply_changes)
