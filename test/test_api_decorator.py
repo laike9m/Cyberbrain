@@ -1,7 +1,4 @@
-from cyberbrain import trace
-
-
-def test_decorator_api(rpc_stub):
+def test_decorator_api(trace, rpc_stub):
     def f(foo):
         return foo
 
