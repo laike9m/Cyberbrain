@@ -4,9 +4,9 @@
 filename: "test_api_disabled.py"
 events {
   binding {
-    id: "test_decorator_with_argument:1"
+    id: "test_decorator_with_argument:0"
     filename: "test_api_disabled.py"
-    lineno: 20
+    lineno: 17
     target: "a"
     value: "2"
     index: 0

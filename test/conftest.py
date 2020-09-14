@@ -2,6 +2,7 @@ import grpc
 import pytest
 
 from cyberbrain import _Tracer
+from cyberbrain import trace as trace_decorator
 from cyberbrain.generated import communication_pb2_grpc
 
 
@@ -14,6 +15,17 @@ def tracer(request):
     # We still create a new Tracer object for each test to make sure Tracer has a fresh
     # state for each test.
     return _Tracer(debug_mode=request.config.getoption("--debug_mode"))
+
+
+@pytest.fixture(scope="function")
+def trace(request):
+    trace_decorator.debug_mode = request.config.getoption("--debug_mode")
+    yield trace_decorator
+
+    # Do cleanup because the trace decorator is reused across tests.
+    trace_decorator.global_frame = None
+    trace_decorator.decorated_function_code_id = None
+    trace_decorator.frame_logger = None
 
 
 @pytest.fixture(scope="function")
