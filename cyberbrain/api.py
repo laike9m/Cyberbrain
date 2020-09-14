@@ -67,11 +67,19 @@ class Tracer:
             return
 
         sys.settrace(None)
-        self.global_frame.f_trace = None
-        del self.global_frame
-        # Checks the value stack is in correct state: no extra elements left on stack.
-        # These two are tracers replaced with placeholders.
-        assert self.frame_logger.frame.value_stack.stack == [[], []]
+
+        # self.global_frame is set means tracer.start() was called explicitly.
+        # Otherwise the @trace decorator is used.
+        if self.global_frame:
+            self.global_frame.f_trace = None
+            del self.global_frame
+            # Checks the value stack is in correct state: no extra elements left on
+            # stack.These two are tracers replaced with placeholders.
+            assert self.frame_logger.frame.value_stack.stack == [[], []]
+        else:
+            # TODO: Once return is tracked, stack should be empty.
+            assert len(self.frame_logger.frame.value_stack.stack) == 1
+
         if not utils.run_in_test():
             # If run in production, let the server wait for termination.
             self.server.wait_for_termination()
@@ -95,7 +103,7 @@ class Tracer:
         This is ugly and I hope to find a way to change it. singledispatch[method] won't
         work, because it does not take keyword arguments. TypeDispatch from fastcore
         (https://fastcore.fast.ai/dispatch.html) is similar to singledispatch, but it's
-        not ideal either as it requires to put method implementation outside of class.
+        not ideal either as it requires putting method implementation outside of class.
         """
 
         def decorator(f):
@@ -105,7 +113,7 @@ class Tracer:
                     self.decorated_function_code_id = id(f.__code__)
                     sys.settrace(self.global_tracer)
                 result = f(*args, **kwargs)
-                sys.settrace(None)
+                self.stop()
                 return result
 
             return wrapper
