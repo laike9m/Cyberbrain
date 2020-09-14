@@ -358,6 +358,21 @@ apipkg = ">=1.4"
 testing = ["pre-commit"]
 
 [[package]]
+category = "main"
+description = "Python supercharged for fastai development"
+name = "fastcore"
+optional = false
+python-versions = ">=3.6"
+version = "1.0.9"
+
+[package.dependencies]
+packaging = "*"
+pip = "*"
+
+[package.extras]
+dev = ["numpy", "nbdev (>=0.2.39)", "matplotlib", "pillow", "torch", "pandas"]
+
+[[package]]
 category = "dev"
 description = "A platform independent file lock."
 name = "filelock"
@@ -525,7 +540,7 @@ python-versions = ">=3.5"
 version = "4.0.2"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Core utilities for Python packages"
 name = "packaging"
 optional = false
@@ -608,7 +623,7 @@ python-versions = ">=3.5"
 version = "2.0.2"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Python parsing module"
 name = "pyparsing"
 optional = false
@@ -870,7 +885,6 @@ version = "1.0.0"
 [[package]]
 category = "main"
 description = "Backport of pathlib-compatible object wrapper for zip files"
-marker = "python_version < \"3.8\""
 name = "zipp"
 optional = false
 python-versions = ">=3.6"
@@ -881,7 +895,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "59a16b3a4746d42ce1e6d9cbfca291e91cbebea36bf0cedfc1a3991478cfa65a"
+content-hash = "673fd8cf0ce77ed0d5e3fcec5a980c28ec611c74bf88ee33035eb5fed69580cd"
 python-versions = "^3.7.0"
 
 [metadata.files]
@@ -1013,6 +1027,10 @@ docutils = [
 execnet = [
     {file = "execnet-1.7.1-py2.py3-none-any.whl", hash = "sha256:d4efd397930c46415f62f8a31388d6be4f27a91d7550eb79bc64a756e0056547"},
     {file = "execnet-1.7.1.tar.gz", hash = "sha256:cacb9df31c9680ec5f95553976c4da484d407e85e41c83cb812aa014f0eddc50"},
+]
+fastcore = [
+    {file = "fastcore-1.0.9-py3-none-any.whl", hash = "sha256:0714175f313a4a4bcc47e4a18762a78550e47eca727ba4f63318649c14b2c622"},
+    {file = "fastcore-1.0.9.tar.gz", hash = "sha256:fec98b33a09c6c110c7ba32ca209c3b2ec37949a8aebbf8be111d97c6f0712df"},
 ]
 filelock = [
     {file = "filelock-3.0.12-py3-none-any.whl", hash = "sha256:929b7d63ec5b7d6b71b0fa5ac14e030b3f70b75747cef1b10da9b879fef15836"},
