@@ -32,7 +32,6 @@ class Tracer:
     debug_mode = _debug_mode
 
     def __init__(self, debug_mode=None):
-        self.disabled = False
         self.global_frame = None
         self.decorated_function_code_id = None
         self.frame_logger: Optional[logger.BaseFrameLogger] = None
@@ -48,10 +47,9 @@ class Tracer:
         else:
             self.server.serve()
 
-    def start(self, disabled=False):
+    def start(self, *, disabled=False):
         """Initializes tracing."""
         if disabled:
-            self.disabled = True
             return
 
         self.global_frame = sys._getframe(1)
@@ -63,7 +61,8 @@ class Tracer:
         sys.settrace(self.global_tracer)
 
     def stop(self):
-        if self.disabled:
+        if not self.frame_logger:
+            # No frame_logger means start() did not run.
             return
 
         sys.settrace(None)
@@ -106,12 +105,14 @@ class Tracer:
         not ideal either as it requires putting method implementation outside of class.
         """
 
-        def decorator(f):
+        def decorator(f, disabled_by_user=False):
             @functools.wraps(f)
             def wrapper(*args, **kwargs):
-                if not self.disabled:
-                    self.decorated_function_code_id = id(f.__code__)
-                    sys.settrace(self.global_tracer)
+                if disabled_by_user:
+                    return f(*args, **kwargs)
+
+                self.decorated_function_code_id = id(f.__code__)
+                sys.settrace(self.global_tracer)
                 result = f(*args, **kwargs)
                 self.stop()
                 return result
@@ -119,8 +120,7 @@ class Tracer:
             return wrapper
 
         if type(disabled) == bool:
-            self.disabled = disabled
-            return decorator
+            return functools.partial(decorator, disabled_by_user=disabled)
         else:
             decorated_function = disabled
             return decorator(decorated_function)

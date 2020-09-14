@@ -24,6 +24,7 @@ class FrameTree:
     @classmethod
     def add_frame(cls, frame_id, frame: Frame):
         cls.frames[frame_id] = frame
+        print(frame_id, frame)
 
     @classmethod
     def find_frames(cls, position: CursorPosition) -> list[Frame]:
