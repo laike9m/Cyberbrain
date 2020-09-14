@@ -1,4 +1,5 @@
-from .api import Tracer as _Tracer  # Don't let users initiate _Tracer directly.
+# Users shouldn't need to instantiate a Tracer object themselves.
+from .api import Tracer as _Tracer
 from .basis import (
     Binding,
     InitialValue,

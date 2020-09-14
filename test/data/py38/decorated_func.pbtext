@@ -1,0 +1,49 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_api_decorator.py"
+events {
+  binding {
+    id: "test_decorator_api:0"
+    filename: "test_api_decorator.py"
+    lineno: 10
+    target: "a"
+    value: "1"
+    index: 0
+    offset: 2
+  }
+}
+events {
+  initial_value {
+    id: "test_decorator_api:1"
+    filename: "test_api_decorator.py"
+    lineno: 11
+    target: "f"
+    value: "null"
+    index: 1
+    offset: 4
+  }
+}
+events {
+  binding {
+    id: "test_decorator_api:2"
+    filename: "test_api_decorator.py"
+    lineno: 11
+    target: "b"
+    value: "1"
+    sources: "a"
+    sources: "f"
+    index: 2
+    offset: 10
+  }
+}
+tracing_result {
+  key: "test_decorator_api:2"
+  value {
+    event_ids: "test_decorator_api:0"
+    event_ids: "test_decorator_api:1"
+  }
+}
+identifiers: "a"
+identifiers: "f"
+identifiers: "b"

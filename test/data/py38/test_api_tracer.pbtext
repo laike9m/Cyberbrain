@@ -4,7 +4,7 @@
 filename: "test_api_tracer.py"
 events {
   binding {
-    id: "test_tracer_api:0"
+    id: "test_api_tracer:0"
     filename: "test_api_tracer.py"
     lineno: 6
     target: "a"

@@ -3,7 +3,8 @@
 import argparse
 import functools
 import sys
-from typing import Optional
+from types import MethodType, FunctionType
+from typing import Optional, Union
 
 from get_port import get_port
 
@@ -31,6 +32,7 @@ class Tracer:
     debug_mode = _debug_mode
 
     def __init__(self, debug_mode=None):
+        self.disabled = False
         self.global_frame = None
         self.decorated_function_code_id = None
         self.frame_logger: Optional[logger.BaseFrameLogger] = None
@@ -46,8 +48,12 @@ class Tracer:
         else:
             self.server.serve()
 
-    def start(self):
+    def start(self, disabled=False):
         """Initializes tracing."""
+        if disabled:
+            self.disabled = True
+            return
+
         self.global_frame = sys._getframe(1)
         self.frame_logger = logger.FrameLoggerForExplicitTracer(
             self.global_frame, debug_mode=self.debug_mode
@@ -57,6 +63,9 @@ class Tracer:
         sys.settrace(self.global_tracer)
 
     def stop(self):
+        if self.disabled:
+            return
+
         sys.settrace(None)
         self.global_frame.f_trace = None
         del self.global_frame
@@ -67,19 +76,46 @@ class Tracer:
             # If run in production, let the server wait for termination.
             self.server.wait_for_termination()
 
-    def __call__(self, f):
-        """Enables users to decorate their functions with @cyberbrain.trace"""
+    def __call__(self, disabled: Union[Union[FunctionType, MethodType], bool] = False):
+        """Enables the tracer object to be used as a decorator.
 
-        self.decorated_function_code_id = id(f.__code__)
+        Note that the decorator can take a `disabled` argument, or no argument:
 
-        @functools.wraps(f)
-        def wrapper(*args, **kwargs):
-            sys.settrace(self.global_tracer)
-            result = f(*args, **kwargs)
-            sys.settrace(None)
-            return result
+            @tracer(disabled=True)
+            def f():
+        or
+            @tracer
+            def f():
 
-        return wrapper
+        To achieve this, the `disabled` parameter can either be a boolean, or the
+        decorated function. To match the semantics, a better name for the parameter is
+        "function_or_disabled", but users being able to write `disabled=True` is a
+        must-have feature, therefore we have no choice but to name it "disabled".
+
+        This is ugly and I hope to find a way to change it. singledispatch[method] won't
+        work, because it does not take keyword arguments. TypeDispatch from fastcore
+        (https://fastcore.fast.ai/dispatch.html) is similar to singledispatch, but it's
+        not ideal either as it requires to put method implementation outside of class.
+        """
+
+        def decorator(f):
+            @functools.wraps(f)
+            def wrapper(*args, **kwargs):
+                if not self.disabled:
+                    self.decorated_function_code_id = id(f.__code__)
+                    sys.settrace(self.global_tracer)
+                result = f(*args, **kwargs)
+                sys.settrace(None)
+                return result
+
+            return wrapper
+
+        if type(disabled) == bool:
+            self.disabled = disabled
+            return decorator
+        else:
+            decorated_function = disabled
+            return decorator(decorated_function)
 
     @property
     def events(self):
