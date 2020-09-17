@@ -83,7 +83,7 @@ class Frame:
         return self._latest_snapshot
 
     def log_initial_value_events(self, frame: FrameType, instr: Instruction):
-        from .api import Tracer
+        from .tracer import Tracer
 
         # We must use instr.argrepr instead of instr.argval. Example:
         # x = "hello"
