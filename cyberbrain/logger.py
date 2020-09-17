@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import dis
-import os
 from dis import Instruction
 from types import FrameType
 from typing import Optional
@@ -10,8 +8,7 @@ from crayons import yellow, cyan
 
 from . import utils
 from .frame import Frame
-from .frame_tree import FrameTree
-from .utils import pprint, computed_gotos_enabled, shorten_path
+from .utils import pprint, computed_gotos_enabled
 
 _implicit_jump_ops = {"BREAK_LOOP", "CONTINUE_LOOP", "RAISE_VARARGS", "END_FINALLY"}
 
@@ -33,54 +30,23 @@ PREDICT_MAP = {
 COMPUTED_GOTOS_ENABLED = computed_gotos_enabled()
 
 
-class BaseFrameLogger:
+class FrameLogger:
     """Logger for a frame."""
 
-    def __init__(self, initial_instr_pointer: int, frame: FrameType, debug_mode=False):
-        frame_name = (
-            # Use filename as frame name if code is run at module level.
-            os.path.basename(frame.f_code.co_filename).rstrip(".py")
-            if frame.f_code.co_name == "<module>"
-            else frame.f_code.co_name
-        )
-        # TODO: move frame and frame tree to tracer. Logger should only keep a copy,
-        #  but not own them.
-        self.frame = Frame(
-            # For testing, only stores the basename so it's separator agnostic.
-            filename=shorten_path(
-                frame.f_code.co_filename, 1 if utils.run_in_test() else 3
-            ),
-            frame_name=frame_name,
-            offset_to_lineno=self._map_bytecode_offset_to_lineno(frame),
-        )
-
-        FrameTree.add_frame(self.frame.frame_id, self.frame)
-        self.instructions = {
-            instr.offset: instr for instr in dis.get_instructions(frame.f_code)
-        }
-
+    def __init__(
+        self,
+        instructions: dict[int, Instruction],
+        initial_instr_pointer: int,
+        frame: Frame,
+        debug_mode=False,
+    ):
+        self.instructions = instructions
+        self.frame = frame
         self.instr_pointer = initial_instr_pointer
         self.jump_detector = JumpDetector(
             instructions=self.instructions, debug_mode=debug_mode
         )
         self.debug_mode = debug_mode
-
-    def _map_bytecode_offset_to_lineno(self, frame) -> dict[int, int]:
-        """Maps bytecode offset to lineno in file.
-
-        Note that the lineno may not be accurate for multi-line statements. If we find
-        this to be blocking, we might need to use a Range to represent lineno.
-        """
-        mapping = dict(dis.findlinestarts(frame.f_code))
-        frame_byte_count = len(frame.f_code.co_code)
-        for offset, lineno in mapping.copy().items():
-            while offset <= frame_byte_count:
-                offset += 2
-                if offset in mapping:
-                    break
-                mapping[offset] = lineno
-
-        return mapping
 
     def update(self, frame: FrameType):
         """Prints names whose values changed since this function is called last time.
@@ -210,34 +176,6 @@ class BaseFrameLogger:
         # Log InitialValue events that's relevant to the line that's about to be
         # executed, this way we record the value before it's (potentially) modified.
         self.frame.log_initial_value_events(frame, self.instructions[last_i])
-
-
-class FrameLoggerForExplicitTracer(BaseFrameLogger):
-    """
-    Logger initialized when calling tracer.init().
-    """
-
-    def __init__(self, frame: FrameType, debug_mode=False):
-        # tracer.init() contains the following instructions:
-        #               0 LOAD_FAST                0 (tracer)
-        #               2 LOAD_METHOD              0 (init)
-        #               4 CALL_METHOD              0
-        #               6 POP_TOP
-        # However logger is initialized before executing CALL_METHOD, last_i is already
-        # at 4. This will make value stack don't have enough elements. So we need to
-        # move the instr_pointer back to LOAD_FAST, and make sure LOAD_FAST and
-        # LOAD_METHOD are scanned, so that value stack can be in correct state.
-        super().__init__(frame.f_lasti - 4, frame, debug_mode)
-
-
-class FrameLoggerForDecorator(BaseFrameLogger):
-    """
-    Logger initialized when using tracer as a decorator.
-    """
-
-    def __init__(self, frame: FrameType, debug_mode=False):
-        # Set instr_pointer at the first frame instruction, aka 0.
-        super().__init__(0, frame, debug_mode)
 
 
 class JumpDetector:
