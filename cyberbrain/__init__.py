@@ -1,5 +1,5 @@
 # Users shouldn't need to instantiate a Tracer object themselves.
-from .tracer import Tracer as _Tracer
+from .tracer import Tracer as _Tracer, TracerFSM as _TracerFSM
 from .basis import (
     Binding,
     InitialValue,

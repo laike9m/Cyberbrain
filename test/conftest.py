@@ -1,7 +1,7 @@
 import grpc
 import pytest
 
-from cyberbrain import _Tracer
+from cyberbrain import _Tracer, _TracerFSM
 from cyberbrain import trace as trace_decorator
 from cyberbrain.generated import communication_pb2_grpc
 
@@ -23,9 +23,10 @@ def trace(request):
     yield trace_decorator
 
     # Do cleanup because the trace decorator is reused across tests.
-    trace_decorator.global_frame = None
+    trace_decorator.raw_frame = None
     trace_decorator.decorated_function_code_id = None
     trace_decorator.frame_logger = None
+    trace_decorator.tracer_state = _TracerFSM.INITIAL
 
 
 @pytest.fixture(scope="function")
