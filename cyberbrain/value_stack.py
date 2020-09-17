@@ -435,7 +435,7 @@ class GeneralValueStack:
         """
         val = utils.get_value_from_frame(name, frame)
 
-        from .api import Tracer
+        from .tracer import Tracer
 
         if isinstance(val, Tracer):
             return []
