@@ -1,5 +1,7 @@
 """Utility functions."""
 
+from __future__ import annotations
+
 import collections
 import dis
 import inspect
@@ -21,6 +23,24 @@ from pygments.lexers import PythonLexer
 
 _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
 _PYTHON_EXECUTABLE_PATH = sys.executable
+
+
+def map_bytecode_offset_to_lineno(frame: FrameType) -> dict[int, int]:
+    """Maps bytecode offset to lineno in file.
+
+    Note that the lineno may not be accurate for multi-line statements. If we find
+    this to be blocking, we might need to use a Range to represent lineno.
+    """
+    mapping = dict(dis.findlinestarts(frame.f_code))
+    frame_byte_count = len(frame.f_code.co_code)
+    for offset, lineno in mapping.copy().items():
+        while offset <= frame_byte_count:
+            offset += 2
+            if offset in mapping:
+                break
+            mapping[offset] = lineno
+
+    return mapping
 
 
 def get_jump_target_or_none(instr: dis.Instruction) -> Optional[int]:
