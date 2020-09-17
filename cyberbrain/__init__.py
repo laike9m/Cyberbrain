@@ -1,5 +1,5 @@
 # Users shouldn't need to instantiate a Tracer object themselves.
-from .api import Tracer as _Tracer
+from .tracer import Tracer as _Tracer
 from .basis import (
     Binding,
     InitialValue,
