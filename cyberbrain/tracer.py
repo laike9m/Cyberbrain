@@ -31,6 +31,23 @@ if not utils.run_in_test():
     _debug_mode = cb_args.debug_mode
 
 
+class TracerFSM:
+    # States
+    INITIAL = 0
+    ACTIVE = 1
+    CALLED = 2
+
+    # Operations
+    START = 3
+    STOP = 4
+
+    mapping = {(INITIAL, START): ACTIVE, (ACTIVE, STOP): CALLED}
+
+    @classmethod
+    def next_state(cls, current_state, operation):
+        return cls.mapping[(current_state, operation)]
+
+
 class Tracer:
 
     debug_mode = _debug_mode
@@ -42,6 +59,8 @@ class Tracer:
         self.frame_logger: Optional[logger.FrameLogger] = None
         if debug_mode is not None:
             self.debug_mode = debug_mode
+
+        self.tracer_state = TracerFSM.INITIAL
 
         # For now server is put inside Tracer. Later when we need to trace multiple
         # frames it should be moved to somewhere else.
@@ -81,9 +100,13 @@ class Tracer:
 
     def start(self, *, disabled=False):
         """Initializes tracing."""
-        if disabled:
+
+        # For now, we only allow triggering tracing once. This might change in the
+        # future.
+        if disabled or self.tracer_state == TracerFSM.CALLED:
             return
 
+        self.tracer_state = TracerFSM.next_state(self.tracer_state, TracerFSM.START)
         self.raw_frame = sys._getframe(1)
         # tracer.init() contains the following instructions:
         #               0 LOAD_FAST                0 (tracer)
@@ -94,16 +117,19 @@ class Tracer:
         # at 4. This will make value stack don't have enough elements. So we need to
         # move the instr_pointer back to LOAD_FAST, and make sure LOAD_FAST and
         # LOAD_METHOD are scanned, so that value stack can be in correct state.
-        self._initialize_frame_and_logger(self.raw_frame, self.raw_frame.f_lasti - 4)
+        self._initialize_frame_and_logger(
+            self.raw_frame, initial_instr_pointer=self.raw_frame.f_lasti - 4
+        )
         self.raw_frame.f_trace_opcodes = True
         self.raw_frame.f_trace = self.local_tracer
         sys.settrace(self.global_tracer)
 
     def stop(self):
-        if not self.frame_logger:
+        if not self.frame_logger or self.tracer_state == TracerFSM.CALLED:
             # No frame_logger means start() did not run.
             return
 
+        self.tracer_state = TracerFSM.next_state(self.tracer_state, TracerFSM.STOP)
         sys.settrace(None)
 
         # self.global_frame is set means tracer.start() was called explicitly.
@@ -147,9 +173,12 @@ class Tracer:
         def decorator(f, disabled_by_user=False):
             @functools.wraps(f)
             def wrapper(*args, **kwargs):
-                if disabled_by_user:
+                if disabled_by_user or self.tracer_state == TracerFSM.CALLED:
                     return f(*args, **kwargs)
 
+                self.tracer_state = TracerFSM.next_state(
+                    self.tracer_state, TracerFSM.START
+                )
                 self.decorated_function_code_id = id(f.__code__)
                 sys.settrace(self.global_tracer)
                 result = f(*args, **kwargs)
