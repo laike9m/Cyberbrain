@@ -43,6 +43,8 @@ class BaseFrameLogger:
             if frame.f_code.co_name == "<module>"
             else frame.f_code.co_name
         )
+        # TODO: move frame and frame tree to tracer. Logger should only keep a copy,
+        #  but not own them.
         self.frame = Frame(
             # For testing, only stores the basename so it's separator agnostic.
             filename=shorten_path(

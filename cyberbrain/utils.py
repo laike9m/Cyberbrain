@@ -94,7 +94,7 @@ def should_exclude(frame):
 
     # Exclude 'call' event of "tracer.init/register()", so that the execution of
     # these methods will never be traced.
-    if filename.endswith(os.path.join("cyberbrain", "api.py")):
+    if filename.endswith(os.path.join("cyberbrain", "tracer.py")):
         return True
 
     if any(filename.startswith(path) for path in _INSTALLATION_PATHS):
