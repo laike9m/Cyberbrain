@@ -1,8 +1,7 @@
-from cyberbrain import Tracer
+from cyberbrain import tracer
 
 
 def run_loop():
-    tracer = Tracer()
     tracer.start()
 
     for i in range(5):
