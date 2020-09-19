@@ -114,7 +114,15 @@ legacy/
 .pytype/
 
 .idea/
-.vscode/
+
+# Config files are necessary for team work so I added them.
+# See https://stackoverflow.com/q/32964920/2142577
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
 .vscode-test/
 
 # Files for development
