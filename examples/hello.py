@@ -1,8 +1,7 @@
-from cyberbrain import Tracer
+from cyberbrain import tracer
 
 
 def hello():
-    tracer = Tracer()
     tracer.start()
     x = "hello"
     y = x + " world"
