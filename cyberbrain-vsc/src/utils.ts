@@ -14,3 +14,8 @@ export function doIfInDevMode(context: vscode.ExtensionContext, callback: any) {
     callback();
   }
 }
+
+export function underTestMode(context: vscode.ExtensionContext) {
+  // ExtensionMode: Production = 1, Development = 2, Test = 3.
+  return context.extensionMode === 3;
+}
