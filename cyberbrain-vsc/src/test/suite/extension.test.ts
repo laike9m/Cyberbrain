@@ -6,9 +6,10 @@ let cl = console.log;
 
 const cbRoot = path.resolve(__dirname, "../../../..");
 
-const fileBeingTraced = path.resolve(cbRoot, "examples/loop.py");
+// const fileBeingTraced = path.resolve(cbRoot, "examples/loop.py");
+const fileBeingTraced = path.resolve(cbRoot, "examples/word_count/wc.py");
 
-let serverProcess = spawn("python", ["-m", "examples.loop"], {
+let serverProcess = spawn("python", ["-m", "examples.word_count.wc"], {
   cwd: cbRoot
 });
 
