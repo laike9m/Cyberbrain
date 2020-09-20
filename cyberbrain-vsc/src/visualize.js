@@ -52,12 +52,16 @@ const options = {
   layout: {
     hierarchical: {
       direction: "UD", // From up to bottom.
-      edgeMinimization: false // To not let edges overlap with nodes.
+      edgeMinimization: true, // true leads to loosely placed nodes.
+      levelSeparation: 40,
+      treeSpacing: 50,
+      nodeSpacing: 60
     }
   },
   physics: {
     hierarchicalRepulsion: {
-      avoidOverlap: 1 // puts the most space around nodes to avoid overlapping.
+      avoidOverlap: 0.5, // puts the least space around nodes to save space.
+      nodeDistance: 50
     }
   },
   manipulation: {
@@ -145,7 +149,7 @@ class TraceGraph {
       if (!this.lines.has(linenoString)) {
         // Adds a "virtual node" to show line number. This node should precede other nodes
         // on the same level. According to https://github.com/visjs/vis-network/issues/926,
-        // the order is not deterministic, but seems it's roughly the same as the insertion
+        // the order is non-deterministic, but seems it's roughly the same as the insertion
         // order.
         this.lines.add(linenoString);
         nodesToShow.push({
@@ -422,7 +426,7 @@ class ColorGenerator {
 }
 
 function buildLabelText(event) {
-  return `${event.target}: ${event.type}`;
+  return `${event.target}`;
 }
 
 function getTooltipTextForEventNode(node) {
