@@ -10,6 +10,7 @@ import { Position, TextDocument } from "vscode";
 import * as assert from "assert";
 import { Frame } from "./frame";
 import { createWebView, setWebViewContent } from "./webview";
+import { underTestMode } from "./utils";
 
 export class MessageCenter {
   private rpcClient: RpcClient;
@@ -26,7 +27,7 @@ export class MessageCenter {
   async wait() {
     return new Promise((resolve, reject) => {
       this.webviewPanel.webview.onDidReceiveMessage(
-        async (message) => {
+        async message => {
           console.log(message.data);
           switch (message) {
             case "Exit": {
@@ -43,9 +44,13 @@ export class MessageCenter {
 
               // TODO: Pass real cursor position.
               await this.findFrames(undefined, undefined);
-              vscode.commands.executeCommand(
-                "workbench.action.webview.openDeveloperTools"
-              );
+
+              // If under test, don't open the devtools window because it will cover the trace graph.
+              if (!underTestMode(this.context)) {
+                vscode.commands.executeCommand(
+                  "workbench.action.webview.openDeveloperTools"
+                );
+              }
               break;
             }
           }
@@ -84,23 +89,23 @@ export class MessageCenter {
           break;
         case State.Status.EXECUTION_COMPLETE:
           this.sendMessageToBacktracePanel({
-            "server status": "Program execution completes",
+            "server status": "Program execution completes"
           });
           break;
         case State.Status.BACKTRACING_COMPLETE:
           this.sendMessageToBacktracePanel({
-            "server status": "Backtracing completes",
+            "server status": "Backtracing completes"
           });
           break;
       }
     });
-    call.on("end", function () {
+    call.on("end", function() {
       console.log("syncState call ends");
     });
-    call.on("error", function (err: any) {
+    call.on("error", function(err: any) {
       console.log(`syncState error: ${err}`);
     });
-    call.on("status", function (status: any) {
+    call.on("status", function(status: any) {
       console.log(`Received server RPC status: ${status}`);
     });
   }
