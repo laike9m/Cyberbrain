@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { doIfInDevMode } from "./utils";
+import { underDevMode } from "./utils";
 
 // let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
@@ -11,7 +11,7 @@ export function createWebView() {
     vscode.ViewColumn.Two,
     {
       enableScripts: true, // 启用JS，默认禁用
-      retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
+      retainContextWhenHidden: true // webview被隐藏时保持状态，避免被重置
     }
   );
 }
@@ -58,9 +58,9 @@ export function setWebViewContent(
   // ExtensionMode: Production = 1, Development = 2, Test = 3.
   // See https://git.io/JJFvy. Use files in the src folder for development.
   let jsDir = "out";
-  doIfInDevMode(context, () => {
+  if (underDevMode(context)) {
     jsDir = "src";
-  });
+  }
 
   // Get the special URI to use with the webview
   const visNetworkJsURL = createWebviewUri(
@@ -76,7 +76,9 @@ export function setWebViewContent(
   const loopJsURL = createWebviewUri(`${jsDir}/loop.js`);
 
   let isDevMode = false;
-  doIfInDevMode(context, () => isDevMode = true);
+  if (underDevMode(context)) {
+    isDevMode = true;
+  }
 
   webviewPanel.webview.html = `<!DOCTYPE html>
 <html lang="en">
