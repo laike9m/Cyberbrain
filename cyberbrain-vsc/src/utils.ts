@@ -8,11 +8,9 @@ export function decodeJson(jsonString: string) {
   return JSON.parse(jsonString);
 }
 
-export function doIfInDevMode(context: vscode.ExtensionContext, callback: any) {
+export function underDevMode(context: vscode.ExtensionContext) {
   // ExtensionMode: Production = 1, Development = 2, Test = 3.
-  if (context.extensionMode === 2) {
-    callback();
-  }
+  return context.extensionMode === 2;
 }
 
 export function underTestMode(context: vscode.ExtensionContext) {
