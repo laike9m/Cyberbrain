@@ -58,6 +58,8 @@ class FrameLogger:
         """
         last_i = frame.f_lasti
         if last_i == 0:  # Skips when no instruction has been executed.
+            # Tracks possible initial value events of symbols in the first instruction.
+            self.frame.log_initial_value_events(frame, self.instructions[last_i])
             return
         # print(f"last_i={last_i}, frame={frame}")
 

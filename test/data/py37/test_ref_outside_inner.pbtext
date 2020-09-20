@@ -1,0 +1,35 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+filename: "test_ref_outside.py"
+events {
+  initial_value {
+    id: "test_ref_outside:0"
+    filename: "test_ref_outside.py"
+    lineno: 11
+    target: "f"
+    value: "null"
+    index: 0
+    offset: 0
+  }
+}
+events {
+  binding {
+    id: "test_ref_outside:1"
+    filename: "test_ref_outside.py"
+    lineno: 11
+    target: "a"
+    value: "1"
+    sources: "f"
+    index: 1
+    offset: 4
+  }
+}
+tracing_result {
+  key: "test_ref_outside:1"
+  value {
+    event_ids: "test_ref_outside:0"
+  }
+}
+identifiers: "f"
+identifiers: "a"
