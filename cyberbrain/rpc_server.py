@@ -233,6 +233,7 @@ class Server:
 
     @property
     def port(self):
+        """Test only. In production the port will is a fixed number 50051."""
         return self._port
 
 
