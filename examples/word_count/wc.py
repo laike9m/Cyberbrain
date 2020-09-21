@@ -28,10 +28,6 @@ def get_args():
     return parser.parse_args()
 
 
-# TODO: Problems:
-#   1. Trace graph is not compact enough
-#   2. The inner loop and symbol "line" is not tracked
-
 # --------------------------------------------------
 @tracer
 def main():

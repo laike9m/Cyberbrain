@@ -460,3 +460,54 @@ describe("Test adjacent JumpBackToLoopStart", function() {
     );
   });
 });
+
+describe("Test loop with empty first iteration.", function() {
+  function prepareInitialState() {
+    let events = [
+      { type: "Binding", index: 0, offset: 0 },
+      { type: "JumpBackToLoopStart", index: 1, offset: 4 },
+      { type: "Binding", index: 2, offset: 0 },
+      { type: "Binding", index: 3, offset: 2 },
+      { type: "JumpBackToLoopStart", index: 4, offset: 4 }
+    ];
+    let loops = [new Loop(0, 4)];
+    return [events].concat(getInitialState(events, loops));
+  }
+
+  it("Test getVisibleEventsAndUpdateLoops", function() {
+    let [_, visibleEvents, loops] = prepareInitialState();
+    assertThat(
+      visibleEvents,
+      contains({ type: "Binding", index: 0, offset: 0 })
+    );
+
+    assertThat(
+      loops,
+      contains(
+        hasProperties({
+          startOffset: 0,
+          endOffset: 4,
+          counter: 0,
+          parent: undefined,
+          _iterationStarts: new Map([
+            ["0", 0],
+            ["1", 2]
+          ])
+        })
+      )
+    );
+  });
+
+  it("0 -> 1", function() {
+    let [events, visibleEvents, loops] = prepareInitialState();
+    loops[0].counter = 1;
+    let [_, eventsToShow] = generateNodeUpdate(events, visibleEvents, loops[0]);
+    assertThat(
+      Array.from(eventsToShow.values()),
+      contains(
+        { type: "Binding", index: 2, offset: 0 },
+        { type: "Binding", index: 3, offset: 2 }
+      )
+    );
+  });
+});
