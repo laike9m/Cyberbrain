@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "cyberbrain"
-version = "0.0.0.1"
+version = "0.0.1"
 authors = ["laike9m <laike9m@gmail.com>"]
-description = "A Cyberbrain that helps you remember everything."
+description = "Python debugging. Redefined."
 
 [tool.poetry.dependencies]
 python = "^3.7.0"
