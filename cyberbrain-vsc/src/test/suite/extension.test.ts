@@ -15,15 +15,7 @@ const examples = [
   },
   {
     file: "examples/telephone/main.py",
-    args: [
-      "-m",
-      "examples.telephone.main",
-      "--seed",
-      "2",
-      "--mutations",
-      ".6",
-      "examples/telephone/fox.txt"
-    ]
+    args: ["-m", "examples.telephone.main"]
   }
 ];
 

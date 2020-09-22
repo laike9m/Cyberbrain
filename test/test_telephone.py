@@ -30,3 +30,14 @@ def test_telephone(trace):
 
     # Events should exclude modules.
     assert_that(trace.events, not_(has_item(has_property("target", Symbol("random")))))
+    assert_that(
+        trace.events,
+        has_item(
+            has_properties(
+                {
+                    "target": Symbol("i"),
+                    "sources": {Symbol("len_text"), Symbol("num_mutations")},
+                }
+            )
+        ),
+    )
