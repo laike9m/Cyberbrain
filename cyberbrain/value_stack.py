@@ -435,23 +435,14 @@ class GeneralValueStack:
         """
         val = utils.get_value_from_frame(name, frame)
 
-        from .tracer import Tracer
+        if utils.is_exception(val):
+            # Keeps exceptions as they are so that they can be identified.
+            return val
 
-        if isinstance(val, Tracer):
+        if utils.should_ignore_event(target=name, value=val, frame=frame):
             return []
 
-        # We don't want to put modules as sources, nor track their changes.
-        if inspect.ismodule(val):
-            return []
-
-        if name not in frame.f_builtins:
-            return name
-
-        if not utils.is_exception(val):
-            # Keeps exceptions so that they can be identified.
-            val = []
-
-        return val
+        return name
 
     @emit_event
     def _STORE_FAST_handler(self, instr):
@@ -527,8 +518,11 @@ class GeneralValueStack:
         # See the _fetch_value_for_load method.
         if not inst_or_callable:
             return
+
         return EventInfo(
-            type=MutationType, target=inst_or_callable[0], sources=set(args)
+            type=MutationType,
+            target=inst_or_callable[0],
+            sources=set(utils.flatten(*args)),
         )
 
     def _MAKE_FUNCTION_handler(self, instr):
