@@ -472,6 +472,7 @@ class GeneralValueStack:
         # See https://docs.python.org/3/library/dis.html#opcode-LOAD_METHOD.
         self._push(self.tos)
 
+    # TODO: Consolidate this method with utils.flatten
     def _push_arguments_or_exception(self, callable_obj, args):
         if utils.is_exception_class(callable_obj):
             # In `raise IndexError()`
@@ -512,7 +513,7 @@ class GeneralValueStack:
         args = self._pop(instr.arg)
         inst_or_callable = self._pop()
         method_or_null = self._pop()  # method or NULL
-        self._push(utils.flatten(inst_or_callable, method_or_null))
+        self._push(utils.flatten(inst_or_callable, method_or_null, *args))
 
         # The real callable can be omitted for various reasons.
         # See the _fetch_value_for_load method.
