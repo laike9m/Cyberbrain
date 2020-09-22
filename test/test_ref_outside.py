@@ -1,11 +1,11 @@
-from cyberbrain import trace, InitialValue, Binding, Symbol
+from cyberbrain import InitialValue, Binding, Symbol
 
 
 def f():
     return 1
 
 
-def test_ref_outside(rpc_stub):
+def test_ref_outside(trace, rpc_stub):
     @trace
     def test_ref_outside_inner():
         a = f()
