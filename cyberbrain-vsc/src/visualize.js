@@ -52,7 +52,7 @@ const options = {
   layout: {
     hierarchical: {
       direction: "UD", // From up to bottom.
-      edgeMinimization: true, // true leads to loosely placed nodes.
+      edgeMinimization: false, // true leads to loosely placed nodes.
       levelSeparation: 40,
       treeSpacing: 50,
       nodeSpacing: 60
