@@ -25,6 +25,27 @@ _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
 _PYTHON_EXECUTABLE_PATH = sys.executable
 
 
+def should_ignore_event(
+    *, target: str, value: Any, frame: Optional[FrameType] = None
+) -> bool:
+    """Determines whether we should ignore this event."""
+    from .tracer import Tracer
+
+    # Excludes events from tracer.
+    if isinstance(value, Tracer):
+        return True
+
+    # Excludes events from modules.
+    if inspect.ismodule(value):
+        return True
+
+    # Excludes events from builtins.
+    if frame and target in frame.f_builtins:
+        return True
+
+    return False
+
+
 def map_bytecode_offset_to_lineno(frame: FrameType) -> dict[int, int]:
     """Maps bytecode offset to lineno in file.
 
@@ -73,7 +94,7 @@ def computed_gotos_enabled() -> bool:
     return stdout == b"True"
 
 
-def flatten(*args):
+def flatten(*args: any) -> list:
     """Flattens the given series of inputs, accepts list or non-list."""
     result = []
     for arg in args:

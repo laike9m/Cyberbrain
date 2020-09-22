@@ -12,11 +12,23 @@ const examples = [
   {
     file: "examples/word_count/wc.py",
     args: ["-m", "examples.word_count.wc", "examples/word_count/inputs/*.txt"]
+  },
+  {
+    file: "examples/telephone/main.py",
+    args: [
+      "-m",
+      "examples.telephone.main",
+      "--seed",
+      "2",
+      "--mutations",
+      ".6",
+      "examples/telephone/fox.txt"
+    ]
   }
 ];
 
 suite("Extension Test Suite", function() {
-  this.timeout(40000);
+  this.timeout(0); // Disabled timeout.
 
   test("Render Trace Graph", async function() {
     for (const example of examples) {
