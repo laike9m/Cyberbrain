@@ -8,6 +8,7 @@ const cbRoot = path.resolve(__dirname, "../../../..");
 
 const examples = [
   { file: "examples/hello.py", args: ["-m", "examples.hello"] },
+  { file: "examples/nonlocal.py", args: ["-m", "examples.nonlocal"] },
   { file: "examples/loop.py", args: ["-m", "examples.loop"] },
   {
     file: "examples/word_count/wc.py",
