@@ -21,6 +21,10 @@ const examples = [
   {
     file: "examples/bottles_of_beer/bottle.py",
     args: ["-m", "examples.bottles_of_beer.bottle"]
+  },
+  {
+    file: "examples/twelve_days/twelve.py",
+    args: ["-m", "examples.twelve_days.twelve"]
   }
 ];
 
@@ -62,11 +66,12 @@ suite("Extension Test Suite", function() {
     vscode.commands.executeCommand("cyberbrain.init");
 
     // Waits for 5 seconds so we have time to inspect the trace graph.
+    // TODO: Find a way to detect trace graph rendering ready, and make wait time flexible.
     return new Promise(resolve => {
       setTimeout(() => {
         serverProcess.kill();
         resolve();
-      }, 5000);
+      }, 7000);
     });
   }
 });

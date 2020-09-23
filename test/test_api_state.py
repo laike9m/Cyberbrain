@@ -1,4 +1,4 @@
-from cyberbrain import Binding, Symbol
+from cyberbrain import Binding, Symbol, InitialValue
 
 
 def test_call_tracer_multiple_times(tracer):
@@ -17,13 +17,19 @@ def test_call_tracer_multiple_times(tracer):
 
 def test_decorator_multiple_times(trace, rpc_stub):
     @trace
-    def func():
-        a = 1
+    def func(b):
+        a = b
+        return a
 
-    func()
+    func(1)
 
-    func()
+    # Test that server wait does not block user code execution.
+    trace._wait_for_termination()
 
+    assert func(2) == 2
     assert trace.events == [
-        Binding(lineno=21, target=Symbol("a"), value=1, sources=set())
+        InitialValue(lineno=21, target=Symbol("b"), value=1,),
+        Binding(lineno=21, target=Symbol("a"), value=1, sources={Symbol("b")}),
     ]
+
+    trace.server.stop()
