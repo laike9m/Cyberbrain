@@ -79,9 +79,19 @@ export function getInitialState(events, loops) {
 
   for (let event of events) {
     let offset = event.offset;
+
     // For initial state, all loop counters are 0, thus visible events should form a
     // sequence in which the next event always has a larger offset than the previous one.
-    if (offset > maxReachedOffset) {
+    //
+    // Note that we use >= instead of >. This is because we may need to two nodes of the
+    // same offset. e.g.
+    //
+    //    nonlocal a
+    //    a = 1
+    //
+    // In this case, the initial value event and binding event has the same offset because
+    // they are both triggered by the STORE_DEREF instruction.
+    if (offset >= maxReachedOffset) {
       maxReachedOffset = offset;
 
       // Don't include JumpBackToLoopStart in visible events.
