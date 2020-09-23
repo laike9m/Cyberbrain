@@ -17,6 +17,10 @@ const examples = [
   {
     file: "examples/telephone/main.py",
     args: ["-m", "examples.telephone.main"]
+  },
+  {
+    file: "examples/bottles_of_beer/bottle.py",
+    args: ["-m", "examples.bottles_of_beer.bottle"]
   }
 ];
 
