@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Bottles of beer song"""
 
-from cyberbrain import trace
+from cyberbrain import trace  # noqa
 
 
 def main():

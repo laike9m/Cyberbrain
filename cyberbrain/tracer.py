@@ -144,9 +144,18 @@ class Tracer:
             # TODO: Once return is tracked, stack should be empty.
             assert len(self.frame_logger.frame.value_stack.stack) == 1
 
+        # If run in production, let the server wait for termination.
         if not utils.run_in_test():
-            # If run in production, let the server wait for termination.
-            self.server.wait_for_termination()
+            self._wait_for_termination()
+
+    def _wait_for_termination(self):
+        """
+        RPC server should keep running until explicitly terminated, but it should not
+        block the execution of user code. Thus we let it wait in a separate thread.
+        """
+        from threading import Thread
+
+        Thread(target=self.server.wait_for_termination).start()
 
     def __call__(self, disabled: Union[Union[FunctionType, MethodType], bool] = False):
         """Enables the tracer object to be used as a decorator.
