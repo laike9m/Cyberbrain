@@ -26,9 +26,12 @@ Note that v1.0 means Cyberbrain is stable in the features it supports, it does *
 
 | Version | Features                        |
 |---------|---------------------------------|
-| 1.0     | Multi-frame tracing             |
-| 2.0     | Fine-grained symbol tracing     |
-| 3.0     | Async & multi-threading support |
+| 1.0     | Mutual interaction between source code and the trace graph ([#7][m1])  |
+| 2.0     | Multi-frame tracing             |
+| 3.0     | Fine-grained symbol tracing     |
+| 4.0     | Async & multi-threading support |
+
+[m1]: https://github.com/laike9m/Cyberbrain/issues/7
 
 ## Community
 
