@@ -37,11 +37,30 @@ events {
     offset: 10
   }
 }
+events {
+  return {
+    id: "test_decorator_api:3"
+    filename: "test_api_decorator.py"
+    lineno: 9
+    index: 3
+    offset: 18
+    value: "2"
+    sources: "a"
+    sources: "b"
+  }
+}
 tracing_result {
   key: "test_decorator_api:2"
   value {
     event_ids: "test_decorator_api:0"
     event_ids: "test_decorator_api:1"
+  }
+}
+tracing_result {
+  key: "test_decorator_api:3"
+  value {
+    event_ids: "test_decorator_api:0"
+    event_ids: "test_decorator_api:2"
   }
 }
 identifiers: "a"

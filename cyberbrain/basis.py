@@ -155,6 +155,24 @@ class Deletion(Event):
         )
 
 
+@attr.s(auto_attribs=True, eq=False)
+class Return(Event):
+    """Return from a callable.
+
+    The return event does not have "target" attr because there isn't always one, e.g.
+    return 1 + 2, return a if b else c
+    """
+
+    value: Any = attr.ib(kw_only=True)
+    sources: set[Symbol] = set()
+
+    def __eq__(self, other: Return):
+        return isinstance(other, Return) and (self.value, self.sources) == (
+            other.value,
+            self.sources,
+        )
+
+
 @attr.s
 class JumpBackToLoopStart(Event):
     jump_target: int = attr.ib(kw_only=True)

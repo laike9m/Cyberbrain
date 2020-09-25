@@ -90,6 +90,7 @@ class Communication(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
+            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -98,7 +99,7 @@ class Communication(object):
             communication__pb2.State.SerializeToString,
             communication__pb2.State.FromString,
             options, channel_credentials,
-            call_credentials, compression, wait_for_ready, timeout, metadata)
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def FindFrames(request,
@@ -106,6 +107,7 @@ class Communication(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
+            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -114,7 +116,7 @@ class Communication(object):
             communication__pb2.CursorPosition.SerializeToString,
             communication__pb2.FrameLocaterList.FromString,
             options, channel_credentials,
-            call_credentials, compression, wait_for_ready, timeout, metadata)
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetFrame(request,
@@ -122,6 +124,7 @@ class Communication(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
+            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -130,4 +133,4 @@ class Communication(object):
             communication__pb2.FrameLocater.SerializeToString,
             communication__pb2.Frame.FromString,
             options, channel_credentials,
-            call_credentials, compression, wait_for_ready, timeout, metadata)
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
