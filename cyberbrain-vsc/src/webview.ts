@@ -74,6 +74,7 @@ export function setWebViewContent(
   );
   const visualizationJsURL = createWebviewUri(`${jsDir}/visualize.js`);
   const loopJsURL = createWebviewUri(`${jsDir}/loop.js`);
+  const valueJsURL = createWebviewUri(`${jsDir}/value.js`);
 
   let isDevMode = false;
   if (underDevMode(context)) {
@@ -88,6 +89,7 @@ export function setWebViewContent(
     <title>Code Tracing Result</title>
     <script>const isDevMode = ${isDevMode};</script>
     <script type="text/javascript" src="${randomColorJsURL}"></script>
+    <script type="module" src="${valueJsURL}"></script>
     <script type="module" src="${loopJsURL}"></script>
     <script type="module" src="${visNetworkJsURL}"></script>
     <script type="module" src="${visualizationJsURL}"></script>
