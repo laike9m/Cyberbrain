@@ -426,7 +426,7 @@ class ColorGenerator {
 }
 
 function buildLabelText(event) {
-  return `${event.target}`;
+  return event.type === "Return" ? "return" : `${event.target}`;
 }
 
 function getTooltipTextForEventNode(node) {

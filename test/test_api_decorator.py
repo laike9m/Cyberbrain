@@ -6,9 +6,9 @@ def test_decorator_api(trace, rpc_stub):
     def decorated_func():
         a = 1
         b = f(a)
-        return a
+        return a + b
 
-    assert decorated_func() == 1
+    assert decorated_func() == 2
 
     from utils import assert_GetFrame
 

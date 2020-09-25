@@ -11,7 +11,15 @@ from datetime import datetime
 import grpc
 
 from . import utils
-from .basis import Event, InitialValue, Binding, Mutation, Deletion, JumpBackToLoopStart
+from .basis import (
+    Event,
+    InitialValue,
+    Binding,
+    Mutation,
+    Deletion,
+    Return,
+    JumpBackToLoopStart,
+)
 from .frame_tree import FrameTree
 from .generated import communication_pb2
 from .generated import communication_pb2_grpc
@@ -68,6 +76,18 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 index=event.index,
                 offset=event.offset,
                 target=event.target.name,
+            )
+        )
+    elif isinstance(event, Return):
+        getattr(event_proto, "return").CopyFrom(
+            communication_pb2.Return(
+                id=event.uid,
+                filename=event.filename,
+                lineno=event.lineno,
+                index=event.index,
+                offset=event.offset,
+                value=utils.to_json(event.value),
+                sources=sorted(source.name for source in event.sources),
             )
         )
     elif isinstance(event, JumpBackToLoopStart):
@@ -127,10 +147,12 @@ def _get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
     on value stack is not changed, therefore no need to update snapshots.
     """
 
-    if type(event) in {InitialValue, Deletion, JumpBackToLoopStart}:
+    event_type = type(event)
+
+    if event_type in {InitialValue, Deletion, JumpBackToLoopStart}:
         return
 
-    assert isinstance(event, Binding) or isinstance(event, Mutation)
+    assert event_type in {Binding, Mutation, Return}
 
     if not event.sources:
         return

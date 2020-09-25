@@ -14,6 +14,7 @@ from .basis import (
     Binding,
     Mutation,
     Deletion,
+    Return,
     EventType,
     Symbol,
     Loop,
@@ -81,6 +82,21 @@ class Frame:
     @property
     def latest_snapshot(self):
         return self._latest_snapshot
+
+    def log_return_event(self, frame: FrameType, value: Any):
+        # There should be one and only one item left on the stack before return.
+        assert self.value_stack.stack_level == 1
+        returned_obj = self.value_stack._pop()
+        self.events.append(
+            Return(
+                value=value,
+                lineno=self.offset_to_lineno[frame.f_lasti],
+                filename=self.filename,
+                offset=frame.f_lasti,
+                sources=set(utils.flatten(returned_obj)),
+                index=len(self.events),
+            )
+        )
 
     def log_initial_value_events(self, frame: FrameType, instr: Instruction):
         # We must use instr.argrepr instead of instr.argval. Example:
@@ -233,9 +249,7 @@ class Frame:
     @property
     def accumulated_events(self) -> list[Event]:
         """
-        The same as accumulated_events, but returns a list.
-
-        It will modify the original events, but should be fine.
+        It modifies the original events, but should be fine.
 
         Now that FrameState only stores delta for Mutation event, if we need to know
         the value after a certain Mutation event (like in tests), the value has to be
