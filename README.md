@@ -8,6 +8,8 @@ Cyberbrain consists of a Python library and various editor/IDE integrations. Cur
 
 TODO
 
+Can Cyberbrain work with other IDEs and editors? See our [plan](https://github.com/laike9m/Cyberbrain/issues/24).
+
 ## Status Quo and Milestones
 
 *Updated 2020.9*
