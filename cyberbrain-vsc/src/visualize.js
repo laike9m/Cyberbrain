@@ -20,6 +20,7 @@ is poor, see: https://github.com/visjs/vis-network/issues/930
 
 // The .js suffix is needed to make import work in vsc webview.
 import { generateNodeUpdate, getInitialState, Loop } from "./loop.js";
+import { displayValueInConsole, getTooltipTextForEventNode } from "./value.js";
 
 let cl = console.log;
 
@@ -250,12 +251,8 @@ class TraceGraph {
         return;
       }
       this.hoveredNodeId = node.id;
-
-      // console.clear();
       // TODO: show values of all local variables at this point.
-      console.log(
-        `${node.target}'s value at line ${node.level}: \n ${node.runtimeValue}`
-      );
+      displayValueInConsole(node);
     });
 
     this.network.on("blurNode", event => {
@@ -296,9 +293,10 @@ class TraceGraph {
       level: event.lineno,
       label: buildLabelText(event),
       target: event.target,
-      // "value" is reserved, use "runtimeValue" instead.
+      // "value" is a reserved property, use "runtimeValue" instead.
       runtimeValue: event.value,
       offset: event.offset,
+      type: event.type,
       color: {
         background: this.colorGenerator.getColor(event.target),
         hover: {
@@ -427,11 +425,6 @@ class ColorGenerator {
 
 function buildLabelText(event) {
   return event.type === "Return" ? "return" : `${event.target}`;
-}
-
-function getTooltipTextForEventNode(node) {
-  // TODO: Truncate value.
-  return node.runtimeValue;
 }
 
 /*
