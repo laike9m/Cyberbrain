@@ -109,6 +109,16 @@ message Deletion {
   optional string target = 4;
 }
 
+message Return {
+  optional string id = 1;
+  optional string filename = 2;
+  optional int32 lineno = 3;
+  optional int64 index = 4;
+  optional int32 offset = 5;
+  optional string value = 6;
+  repeated string sources = 7;
+}
+
 message JumpBackToLoopStart {
   optional string id = 1;
   optional string filename = 2;
@@ -124,7 +134,8 @@ message Event {
     Binding binding = 2;
     Mutation mutation = 3;
     Deletion deletion = 4;
-    JumpBackToLoopStart jump_back_to_loop_start = 5;
+    Return return = 5;
+    JumpBackToLoopStart jump_back_to_loop_start = 6;
   }
 }
 

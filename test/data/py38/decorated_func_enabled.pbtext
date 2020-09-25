@@ -13,4 +13,21 @@ events {
     offset: 2
   }
 }
+events {
+  return {
+    id: "test_decorator_with_argument:1"
+    filename: "test_api_disabled.py"
+    lineno: 18
+    index: 1
+    offset: 6
+    value: "2"
+    sources: "a"
+  }
+}
+tracing_result {
+  key: "test_decorator_with_argument:1"
+  value {
+    event_ids: "test_decorator_with_argument:0"
+  }
+}
 identifiers: "a"

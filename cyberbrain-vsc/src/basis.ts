@@ -6,6 +6,7 @@ import {
   InitialValue as InitialValueProto,
   JumpBackToLoopStart as JumpBackToLoopStartProto,
   Mutation as MutationProto,
+  Return as ReturnProto
 } from "./generated/communication_pb";
 import { decodeJson } from "./utils";
 
@@ -14,7 +15,8 @@ enum EventType {
   Binding = "Binding",
   Mutation = "Mutation",
   Deletion = "Deletion",
-  JumpBackToLoopStart = "JumpBackToLoopStart",
+  Return = "Return",
+  JumpBackToLoopStart = "JumpBackToLoopStart"
 }
 
 export abstract class Event {
@@ -116,6 +118,24 @@ export class Deletion extends Event {
       EventType.Deletion
     );
     this.target = deletion.getTarget()!;
+  }
+}
+
+export class Return extends Event {
+  value: any;
+  sources: string[];
+
+  constructor(binding: ReturnProto) {
+    super(
+      binding.getLineno()!,
+      binding.getFilename()!,
+      binding.getIndex()!,
+      binding.getOffset()!,
+      binding.getId()!,
+      EventType.Return
+    );
+    this.value = decodeJson(binding.getValue()!);
+    this.sources = binding.getSourcesList();
   }
 }
 

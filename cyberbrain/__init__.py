@@ -5,6 +5,7 @@ from .basis import (
     InitialValue,
     Deletion,
     Mutation,
+    Return,
     Symbol,
     Loop,
     JumpBackToLoopStart,
