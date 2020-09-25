@@ -25,6 +25,16 @@ events {
     offset: 4
   }
 }
+events {
+  return {
+    id: "test_ref_outside:2"
+    filename: "test_ref_outside.py"
+    lineno: 11
+    index: 2
+    offset: 8
+    value: "null"
+  }
+}
 tracing_result {
   key: "test_ref_outside:1"
   value {

@@ -1,4 +1,4 @@
-from cyberbrain import Binding, Symbol, InitialValue
+from cyberbrain import Binding, Symbol, InitialValue, Return
 
 
 def test_call_tracer_multiple_times(tracer):
@@ -28,8 +28,13 @@ def test_decorator_multiple_times(trace, rpc_stub):
 
     assert func(2) == 2
     assert trace.events == [
-        InitialValue(lineno=21, target=Symbol("b"), value=1,),
+        InitialValue(
+            lineno=21,
+            target=Symbol("b"),
+            value=1,
+        ),
         Binding(lineno=21, target=Symbol("a"), value=1, sources={Symbol("b")}),
+        Return(lineno=22, value=1, sources={Symbol("a")}),
     ]
 
     trace.server.stop()

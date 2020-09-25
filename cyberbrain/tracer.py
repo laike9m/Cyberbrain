@@ -141,8 +141,7 @@ class Tracer:
             # stack.These two are tracers replaced with placeholders.
             assert self.frame_logger.frame.value_stack.stack == [[], []]
         else:
-            # TODO: Once return is tracked, stack should be empty.
-            assert len(self.frame_logger.frame.value_stack.stack) == 1
+            assert len(self.frame_logger.frame.value_stack.stack) == 0
 
         # If run in production, let the server wait for termination.
         if not utils.run_in_test():
@@ -233,7 +232,9 @@ class Tracer:
             if utils.should_exclude(raw_frame):
                 return
             if event == "opcode":
-                # print(frame, event, arg)
                 self.frame_logger.update(raw_frame)
+            if event == "return":
+                # print(raw_frame, event, arg)
+                self.frame.log_return_event(raw_frame, value=arg)
 
         return _local_tracer

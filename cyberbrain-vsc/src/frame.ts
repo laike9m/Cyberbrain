@@ -10,6 +10,7 @@ import {
   JumpBackToLoopStart,
   Loop,
   Mutation,
+  Return
 } from "./basis";
 
 export class Frame {
@@ -26,7 +27,7 @@ export class Frame {
 
   constructor(frame: FrameProto) {
     this.filename = frame.getFilename();
-    frame.getEventsList().forEach((event) => {
+    frame.getEventsList().forEach(event => {
       if (event.hasInitialValue()) {
         this.events.push(new InitialValue(event.getInitialValue()!));
       }
@@ -39,13 +40,16 @@ export class Frame {
       if (event.hasDeletion()) {
         this.events.push(new Deletion(event.getDeletion()!));
       }
+      if (event.hasReturn()) {
+        this.events.push(new Return(event.getReturn()!));
+      }
       if (event.hasJumpBackToLoopStart()) {
         this.events.push(
           new JumpBackToLoopStart(event.getJumpBackToLoopStart()!)
         );
       }
     });
-    frame.getLoopsList().forEach((loop) => {
+    frame.getLoopsList().forEach(loop => {
       this.loops.push(
         new Loop(
           loop.getStartOffset()!,

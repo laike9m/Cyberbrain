@@ -1,4 +1,4 @@
-from cyberbrain import InitialValue, Binding, Symbol
+from cyberbrain import InitialValue, Binding, Symbol, Return
 
 
 def f():
@@ -15,6 +15,7 @@ def test_ref_outside(trace, rpc_stub):
     assert trace.events == [
         InitialValue(lineno=11, target=Symbol("f"), value=f),
         Binding(lineno=11, target=Symbol("a"), value=1, sources={Symbol("f")}),
+        Return(lineno=11, value=None, sources=set()),
     ]
 
     from utils import assert_GetFrame
