@@ -288,7 +288,7 @@ class TraceGraph {
   }
 
   createNode(event) {
-    return {
+    let node = {
       id: event.id,
       level: event.lineno,
       label: buildLabelText(event),
@@ -306,6 +306,20 @@ class TraceGraph {
         }
       }
     };
+
+    // Shows return node differently
+    if (event.type === "Return") {
+      node.font = {
+        color: "red",
+        multi: "html"
+      };
+      node.color = {
+        border: "red",
+        background: "rgba(0, 0, 0, 0)"
+      };
+    }
+
+    return node;
   }
 }
 
@@ -424,7 +438,7 @@ class ColorGenerator {
 }
 
 function buildLabelText(event) {
-  return event.type === "Return" ? "return" : `${event.target}`;
+  return event.type === "Return" ? "<b>return</b>" : `${event.target}`;
 }
 
 /*
