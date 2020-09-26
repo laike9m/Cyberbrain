@@ -62,7 +62,7 @@ class Event:
 
 @attr.s(auto_attribs=True)
 class InitialValue(Event):
-    """Identifiers come from other places, or simply exist before tracking starts.
+    """Identifiers already exist before tracking starts.
 
     e.g. Global variables, passed in arguments.
 
@@ -70,7 +70,7 @@ class InitialValue(Event):
 
     a = 1
     cyberbrain.init()
-    a = 2  --> emit two events: first InitialValue, then Mutation.
+    a = 2  --> emit two events: first InitialValue, then Binding.
     cyberbrain.init()
 
     Compared to this one, which only emits a Binding event.
@@ -116,6 +116,7 @@ class Mutation(Event):
         a = 1       # Binding, not Mutation!!
         b = []      # Binding
         b.append(1) # Mutation
+        inst.foo()  # Mutation, though we should check whether it actually happened.
     """
 
     target: Symbol = attr.ib(kw_only=True)
@@ -144,7 +145,7 @@ class Mutation(Event):
 
 @attr.s(auto_attribs=True, eq=False)
 class Deletion(Event):
-    """An identifiers is deleted."""
+    """An identifier is deleted by `del`."""
 
     target: Symbol = attr.ib(kw_only=True)
 
@@ -159,7 +160,9 @@ class Deletion(Event):
 class Return(Event):
     """Return from a callable.
 
-    The return event does not have "target" attr because there isn't always one, e.g.
+    The return event, if exist, is always the last event of a frame.
+
+    The return event does not have a "target" attr because there isn't always one, e.g.
     return 1 + 2, return a if b else c
     """
 
@@ -175,6 +178,17 @@ class Return(Event):
 
 @attr.s
 class JumpBackToLoopStart(Event):
+    """
+    As the name suggests, this type of events represent a jump to loop start. Here,
+    "jump back" means the offset of next instruction is smaller than the current one.
+    In fact, in Python, the destination of a jump back is always a loop start.
+
+    Not like other types of events, JumpBackToLoopStart is irrelevant to any identifier,
+    nor is it showed on the trace graph. We need it to help track iterations of loops.
+    See loop.js for more information.
+    """
+
+    # The jump target's offset, which is guaranteed to be a loop start.
     jump_target: int = attr.ib(kw_only=True)
 
 
