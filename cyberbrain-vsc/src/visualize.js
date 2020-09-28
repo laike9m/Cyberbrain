@@ -45,6 +45,13 @@ const options = {
     smooth: {
       type: "cubicBezier",
       forceDirection: "vertical"
+    },
+    arrows: {
+      to: {
+        enabled: true,
+        scaleFactor: 0.4,
+        type: "triangle"
+      }
     }
   },
   interaction: {
