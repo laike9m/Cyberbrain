@@ -6,7 +6,7 @@ from cyberbrain import trace
 
 
 def main():
-    verses = list(map(verse, range(1, 13)))
+    verses = list(map(verse, range(2, 13)))
     print(verses)
 
 

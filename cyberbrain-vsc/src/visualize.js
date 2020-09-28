@@ -121,12 +121,18 @@ class TraceGraph {
       },
       options
     );
+    this.linenoMapping = null;
   }
 
   initialize() {
     let nodesToShow = [];
     let edgesToShow = [];
-    let [initialEvents, _] = getInitialState(this.events, this.loops);
+    let [initialEvents, _, linenoMapping] = getInitialState(
+      this.events,
+      this.loops
+    );
+    this.linenoMapping = linenoMapping;
+    cl(linenoMapping);
 
     // Add loop counter nodes.
     for (let i = 0; i < this.loops.length; i++) {
@@ -134,7 +140,7 @@ class TraceGraph {
       nodesToShow.push({
         title: "Loop counter",
         id: loop.id,
-        level: loop.startLineno,
+        level: linenoMapping.get(loop.startLineno),
         label: "0",
         loop: loop,
         color: {
@@ -157,7 +163,7 @@ class TraceGraph {
         nodesToShow.push({
           title: `Line ${event.lineno}`,
           id: linenoString,
-          level: event.lineno,
+          level: this.linenoMapping.get(event.lineno),
           label: linenoString,
           borderWidth: 0,
           // Disable physics so the lineno nodes are not pushed away to the left.
@@ -291,7 +297,7 @@ class TraceGraph {
   createNode(event) {
     let node = {
       id: event.id,
-      level: event.lineno,
+      level: this.linenoMapping.get(event.lineno),
       label: buildLabelText(event),
       target: event.target,
       // "value" is a reserved property, use "runtimeValue" instead.
