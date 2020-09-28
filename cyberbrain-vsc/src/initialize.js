@@ -1,3 +1,5 @@
+let cl = console.log;
+
 /* Initialize the trace graph.
 
 Parameters:
@@ -5,7 +7,11 @@ Parameters:
   loops: a array of loops, sorted by loop start offset.
 
 Returns:
-  a list of events that should be displayed in the trace graph initially.
+  - A list of events that should be displayed in the trace graph initially.
+  - Updated loops.
+  - A mapping from a lineno to its rank among all appeared linen numbers.
+    For example, appeared line numbers are 2, 3, 5
+    returned mapping is {2 => 1, 3 => 2, 5 => 3}
 
 Updates:
   The passed in loops, whose iterations are detected and recorded.
@@ -16,9 +22,11 @@ export function getInitialState(events, loops) {
   let maxReachedOffset = -1;
   let visibleEvents = [];
   let previousEventOffset = -2;
+  let appearedLineNumbers = new Set();
 
   for (let event of events) {
     let offset = event.offset;
+    appearedLineNumbers.add(event.lineno);
 
     // For initial state, all loop counters are 0, thus visible events should form a
     // sequence in which the next event always has a larger offset than the previous one.
@@ -88,5 +96,12 @@ export function getInitialState(events, loops) {
     loop.counter = 0;
   }
 
-  return [visibleEvents, loops];
+  let linenoMapping = new Map();
+  Array.from(appearedLineNumbers)
+    .sort((a, b) => a - b)
+    .forEach((lineno, ranking) => {
+      linenoMapping.set(lineno, ranking);
+    });
+
+  return [visibleEvents, loops, linenoMapping];
 }
