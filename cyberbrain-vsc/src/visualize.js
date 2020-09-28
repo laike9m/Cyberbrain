@@ -322,7 +322,7 @@ class TraceGraph {
       };
       node.color = {
         border: "red",
-        background: "rgba(0, 0, 0, 0)"
+        background: "white"
       };
     }
 
