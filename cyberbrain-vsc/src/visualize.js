@@ -19,7 +19,8 @@ is poor, see: https://github.com/visjs/vis-network/issues/930
 */
 
 // The .js suffix is needed to make import work in vsc webview.
-import { generateNodeUpdate, getInitialState, Loop } from "./loop.js";
+import { Loop } from "./loop.js";
+import { getInitialState } from "./initialize.js";
 import { displayValueInConsole, getTooltipTextForEventNode } from "./value.js";
 
 let cl = console.log;
@@ -377,14 +378,13 @@ function saveNodeData(node, callback) {
   node.loop.counter = userSetCounterValue;
   traceGraph.nodes.update({ id: node.loop.id, label: userSetCounterText });
 
-  let [nodesToHide, nodesToShow] = generateNodeUpdate(
+  let [nodesToHide, nodesToShow] = node.loop.generateNodeUpdate(
     traceGraph.events,
     /* visibleEvents= */ traceGraph.nodes.get({
       filter: node => {
         return node.hasOwnProperty("offset");
       }
-    }),
-    node.loop
+    })
   );
 
   // TODO: move the nodes update logic to TraceGraph.
