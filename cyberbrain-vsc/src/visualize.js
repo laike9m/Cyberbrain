@@ -321,6 +321,10 @@ class TraceGraph {
       }
     };
 
+    if (node.type === "InitialValue") {
+      node.level = 0;
+    }
+
     // Shows return node differently
     if (event.type === "Return") {
       node.font = {
