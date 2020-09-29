@@ -37,6 +37,8 @@ window.addEventListener("message", event => {
   traceGraph.initialize();
 });
 
+const lineHeight = 40;
+
 const options = {
   nodes: {
     shape: "box"
@@ -54,14 +56,13 @@ const options = {
     }
   },
   interaction: {
-    dragNodes: false,
     hover: true
   },
   layout: {
     hierarchical: {
       direction: "UD", // From up to bottom.
       edgeMinimization: false, // true leads to loosely placed nodes.
-      levelSeparation: 40,
+      levelSeparation: lineHeight,
       treeSpacing: 50,
       nodeSpacing: 60
     }
@@ -158,30 +159,6 @@ class TraceGraph {
     }
 
     for (let event of initialEvents) {
-      let linenoString = event.lineno.toString();
-      if (!this.lines.has(linenoString)) {
-        // Adds a "virtual node" to show line number. This node should precede other nodes
-        // on the same level. According to https://github.com/visjs/vis-network/issues/926,
-        // the order is non-deterministic, but seems it's roughly the same as the insertion
-        // order.
-        this.lines.add(linenoString);
-        nodesToShow.push({
-          title: `Line ${event.lineno}`,
-          id: linenoString,
-          level: this.linenoMapping.get(event.lineno),
-          label: linenoString,
-          borderWidth: 0,
-          // Disable physics so the lineno nodes are not pushed away to the left.
-          physics: false,
-          color: {
-            border: "rgba(0, 0, 0, 0)",
-            background: "rgba(0, 0, 0, 0)",
-            hover: {
-              background: "rgba(0, 0, 0, 0)"
-            }
-          }
-        });
-      }
       nodesToShow.push(this.createNode(event));
 
       // Add edges.
@@ -196,15 +173,6 @@ class TraceGraph {
       }
     }
 
-    // Add hidden edges so that lineno nodes are placed on the same vertical position.
-    // Ideally we don't need these hidden edges, see
-    // https://github.com/visjs/vis-network/issues/1027
-    let lines = Array.from(this.lines);
-    lines.sort();
-    for (let i = 0; i < lines.length - 1; i++) {
-      edgesToShow.push(this.createHiddenEdge(lines[i], lines[i + 1]));
-    }
-
     this.nodes.add(nodesToShow);
     this.edges.add(edgesToShow);
     this.network.fit(); // Zooms out so all nodes fit on the canvas.
@@ -216,6 +184,23 @@ class TraceGraph {
      Manually draw tooltips to show each node's value on the trace path.
      */
     this.network.on("afterDrawing", ctx => {
+      const topNode = this.nodes.min("level");
+      const topNodeLevel = topNode.level;
+      const topNodePos = this.network.getPosition(topNode.id);
+
+      ctx.font = "14px consolas";
+      ctx.strokeStyle = "#89897d";
+
+      // Draw lineno nodes.
+      for (let [lineno, ranking] of this.linenoMapping) {
+        const centerX = -150;
+        const centerY = topNodePos.y + lineHeight * (ranking - topNodeLevel);
+        ctx.fillStyle = "#95ACB9";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(lineno, centerX, centerY);
+      }
+
       // Give a move to a top-level node to avoid nodes being placed on one line.
       // See https://github.com/laike9m/Cyberbrain/issues/29
       // Moving any node would work actually.
@@ -226,12 +211,12 @@ class TraceGraph {
         );
         // Checks whether all nodes are at the same horizontal positions.
         if (Math.max(x_positions) === Math.min(x_positions)) {
-          let topNode = this.nodes.min("level");
-          let topNodePos = this.network.getPosition(topNode.id);
-          this.network.moveNode(topNode.id, topNodePos.x + 30, topNodePos.y);
+          this.network.moveNode(topNode.id, topNodePos.x - 40, topNodePos.y);
         }
         this.moved = true;
       }
+
+      this.network.fit();
 
       if (this.hoveredNodeId === undefined) {
         return;
@@ -244,9 +229,6 @@ class TraceGraph {
       );
       tracePathNodeIds = Array.from(tracePathNodeIds);
       tracePathEdgeIds = Array.from(tracePathEdgeIds);
-
-      ctx.font = "14px consolas";
-      ctx.strokeStyle = "#89897d";
 
       this.network.setSelection(
         {
