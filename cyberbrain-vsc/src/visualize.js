@@ -43,8 +43,7 @@ const options = {
   },
   edges: {
     smooth: {
-      type: "cubicBezier",
-      forceDirection: "vertical"
+      type: "dynamic"
     },
     arrows: {
       to: {
@@ -139,7 +138,6 @@ class TraceGraph {
       this.loops
     );
     this.linenoMapping = linenoMapping;
-    cl(linenoMapping);
 
     // Add loop counter nodes.
     for (let i = 0; i < this.loops.length; i++) {
@@ -211,10 +209,30 @@ class TraceGraph {
     this.edges.add(edgesToShow);
     this.network.fit(); // Zooms out so all nodes fit on the canvas.
 
+    // Whether we have kicked a move to avoid edge overlap.
+    this.moved = false;
+
     /*
      Manually draw tooltips to show each node's value on the trace path.
      */
     this.network.on("afterDrawing", ctx => {
+      // Give a move to a top-level node to avoid nodes being placed on one line.
+      // See https://github.com/laike9m/Cyberbrain/issues/29
+      // Moving any node would work actually.
+      if (!this.moved) {
+        const ids = initialEvents.map(event => event.id);
+        const x_positions = Array.from(this.network.getPositions(ids)).map(
+          ([_, pos]) => pos.x
+        );
+        // Checks whether all nodes are at the same horizontal positions.
+        if (Math.max(x_positions) === Math.min(x_positions)) {
+          let topNode = this.nodes.min("level");
+          let topNodePos = this.network.getPosition(topNode.id);
+          this.network.moveNode(topNode.id, topNodePos.x + 30, topNodePos.y);
+        }
+        this.moved = true;
+      }
+
       if (this.hoveredNodeId === undefined) {
         return;
       }
