@@ -1,7 +1,9 @@
 # proto-file: communication.proto
 # proto-message: Frame
 
-filename: "test_with.py"
+metadata {
+  frame_name: "test_with"
+}
 events {
   initial_value {
     id: "test_with:0"

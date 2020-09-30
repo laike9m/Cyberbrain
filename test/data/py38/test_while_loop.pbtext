@@ -1,7 +1,9 @@
 # proto-file: communication.proto
 # proto-message: Frame
 
-filename: "test_while_loop.py"
+metadata {
+  frame_name: "test_while_loop"
+}
 events {
   binding {
     id: "test_while_loop:0"

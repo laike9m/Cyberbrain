@@ -1,7 +1,9 @@
 # proto-file: communication.proto
 # proto-message: Frame
 
-filename: "test_nested_loop.py"
+metadata {
+  frame_name: "test_nested_loop"
+}
 events {
   binding {
     id: "test_nested_loop:0"

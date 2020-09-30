@@ -7,7 +7,7 @@
 	"repository": "https://github.com/laike9m/Cyberbrain",
 	"license": "MIT",
 	"engines": {
-		"vscode": "^1.46.0"
+		"vscode": "^1.49.0"
 	},
 	"categories": [
 		"Debuggers"

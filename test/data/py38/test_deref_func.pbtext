@@ -1,7 +1,9 @@
 # proto-file: communication.proto
 # proto-message: Frame
 
-filename: "test_cellvar.py"
+metadata {
+  frame_name: "test_deref_func"
+}
 events {
   initial_value {
     id: "test_deref:0"

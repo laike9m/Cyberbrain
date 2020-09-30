@@ -1,7 +1,9 @@
 # proto-file: communication.proto
 # proto-message: Frame
 
-filename: "test_list_comp.py"
+metadata {
+  frame_name: "test_list_comprehension"
+}
 events {
   binding {
     id: "test_list_comprehension:0"
