@@ -110,6 +110,7 @@ CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
 class TraceGraph {
   constructor(data) {
     this.lines = new Set();
+    this.frameMetadata = data.metadata;
     this.events = data.events;
     this.loops = data.loops.map(
       loop => new Loop(loop.startOffset, loop.endOffset, loop.startLineno)
@@ -192,6 +193,15 @@ class TraceGraph {
       ctx.strokeStyle = "#89897d";
       const leftBoundary = this.getTraceGraphLeftBoundary();
 
+      // Draws frame info https://github.com/laike9m/Cyberbrain/issues/17
+      ctx.textAlign = "center";
+      ctx.fillStyle = "black";
+      ctx.fillText(
+        `${this.frameMetadata.filename} ${this.frameMetadata.frame_name}`,
+        0,
+        topNodePos.y - 30
+      );
+
       // Draw lineno nodes.
       for (let [lineno, ranking] of this.linenoMapping) {
         const centerX = Math.min(-150, leftBoundary - 10);
@@ -215,9 +225,8 @@ class TraceGraph {
           this.network.moveNode(topNode.id, topNodePos.x - 40, topNodePos.y);
         }
         this.moved = true;
+        this.network.fit();
       }
-
-      this.network.fit();
 
       if (this.hoveredNodeId === undefined) {
         return;

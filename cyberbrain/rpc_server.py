@@ -201,12 +201,12 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
         )
 
     def GetFrame(
-        self, request: communication_pb2.FrameLocater, context
+        self, frame_locator: communication_pb2.FrameLocater, context
     ) -> communication_pb2.Frame:
-        print(f"Received request GetFrame: {type(request)} {request}")
+        print(f"Received request GetFrame: {type(frame_locator)} {frame_locator}")
         # TODO: Use frame ID for non-test.
-        frame = FrameTree.get_frame(request.frame_name)
-        frame_proto = communication_pb2.Frame(filename=frame.filename)
+        frame = FrameTree.get_frame(frame_locator.frame_name)
+        frame_proto = communication_pb2.Frame(metadata=frame_locator)
         frame_proto.identifiers.extend(list(frame.identifier_to_events.keys()))
         frame_proto.loops.extend(
             [
