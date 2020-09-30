@@ -190,10 +190,11 @@ class TraceGraph {
 
       ctx.font = "14px consolas";
       ctx.strokeStyle = "#89897d";
+      const leftBoundary = this.getTraceGraphLeftBoundary();
 
       // Draw lineno nodes.
       for (let [lineno, ranking] of this.linenoMapping) {
-        const centerX = -150;
+        const centerX = Math.min(-150, leftBoundary - 10);
         const centerY = topNodePos.y + lineHeight * (ranking - topNodeLevel);
         ctx.fillStyle = "#95ACB9";
         ctx.textAlign = "center";
@@ -288,6 +289,20 @@ class TraceGraph {
     });
   }
   // end initialize
+
+  // Get the left boundary in canvas of the leftmost node.
+  getTraceGraphLeftBoundary() {
+    const positions = this.network.getPositions(this.nodes.getIds());
+    let leftBoundary = Infinity;
+    let leftMostNodeId = null;
+    for (let id in positions) {
+      if (positions[id].x < leftBoundary) {
+        leftBoundary = positions[id].x;
+        leftMostNodeId = id;
+      }
+    }
+    return this.network.getBoundingBox(leftMostNodeId).left;
+  }
 
   createHiddenEdge(fromNode, toNode) {
     return {
