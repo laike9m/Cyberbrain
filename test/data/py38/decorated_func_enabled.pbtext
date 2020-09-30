@@ -1,7 +1,9 @@
 # proto-file: communication.proto
 # proto-message: Frame
 
-filename: "test_api_disabled.py"
+metadata {
+  frame_name: "decorated_func_enabled"
+}
 events {
   binding {
     id: "test_decorator_with_argument:0"

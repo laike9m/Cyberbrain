@@ -1,7 +1,9 @@
 # proto-file: communication.proto
 # proto-message: Frame
 
-filename: "test_ref_outside.py"
+metadata {
+  frame_name: "test_ref_outside_inner"
+}
 events {
   initial_value {
     id: "test_ref_outside:0"
