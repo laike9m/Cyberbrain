@@ -1,6 +1,9 @@
 /* Holding a frame passed from backend and handles console logging. */
 
-import { Frame as FrameProto } from "./generated/communication_pb";
+import {
+  Frame as FrameProto,
+  FrameLocater
+} from "./generated/communication_pb";
 
 import {
   Binding,
@@ -13,8 +16,31 @@ import {
   Return
 } from "./basis";
 
+// Essentially the FrameLocater proto message.
+class FrameMetadata {
+  frame_id?: String;
+  frame_name?: String;
+  filename?: String;
+  start_lineno?: Number;
+  end_lineno?: Number;
+  callsite_filename?: String;
+  callsite_lineno?: Number;
+  arguments?: String;
+
+  constructor(locater: FrameLocater) {
+    this.frame_id = locater.getFrameId();
+    this.frame_name = locater.getFrameName();
+    this.filename = locater.getFilename();
+    this.start_lineno = locater.getStartLineno();
+    this.end_lineno = locater.getEndLineno();
+    this.callsite_filename = locater.getCallsiteFilename();
+    this.callsite_lineno = locater.getCallsiteLineno();
+    this.arguments = locater.getArguments();
+  }
+}
+
 export class Frame {
-  filename?: string;
+  metadata: FrameMetadata;
   events: Array<Event> = [];
   identifiers: Array<string> = [];
   loops: Array<Loop> = [];
@@ -26,7 +52,7 @@ export class Frame {
   > = {};
 
   constructor(frame: FrameProto) {
-    this.filename = frame.getFilename();
+    this.metadata = new FrameMetadata(frame.getMetadata()!);
     frame.getEventsList().forEach(event => {
       if (event.hasInitialValue()) {
         this.events.push(new InitialValue(event.getInitialValue()!));

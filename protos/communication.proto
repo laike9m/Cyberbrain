@@ -150,7 +150,7 @@ message Loop {
 }
 
 message Frame {
-  optional string filename = 1;
+  optional FrameLocater metadata = 1;
 
   // Events that happened in this frame, arranged by the order they occurred.
   repeated Event events = 2;
