@@ -1,7 +1,9 @@
 # proto-file: communication.proto
 # proto-message: Frame
 
-filename: "test_unary.py"
+metadata {
+  frame_name: "test_unary_operations"
+}
 events {
   initial_value {
     id: "test_unary_operations:0"

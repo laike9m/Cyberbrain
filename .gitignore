@@ -128,3 +128,5 @@ legacy/
 # Files for development
 cyberbrain/generated/client.py
 mocks/
+
+setup.py
