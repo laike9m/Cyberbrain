@@ -1,4 +1,6 @@
 # proto-file: communication.proto
 # proto-message: Frame
 
-filename: "test_block.py"
+metadata {
+  frame_name: "test_basic_try_except"
+}

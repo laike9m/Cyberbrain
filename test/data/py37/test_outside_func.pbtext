@@ -1,7 +1,9 @@
 # proto-file: communication.proto
 # proto-message: Frame
 
-filename: "test_outside_func.py"
+metadata {
+  frame_name: "test_outside_func"
+}
 events {
   initial_value {
     id: "global:0"

@@ -1,7 +1,9 @@
 # proto-file: communication.proto
 # proto-message: Frame
 
-filename: "test_api_tracer.py"
+metadata {
+  frame_name: "test_api_tracer"
+}
 events {
   binding {
     id: "test_api_tracer:0"

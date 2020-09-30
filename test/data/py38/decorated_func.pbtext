@@ -1,7 +1,9 @@
 # proto-file: communication.proto
 # proto-message: Frame
 
-filename: "test_api_decorator.py"
+metadata {
+  frame_name: "decorated_func"
+}
 events {
   binding {
     id: "test_decorator_api:0"

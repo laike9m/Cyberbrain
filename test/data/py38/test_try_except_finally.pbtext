@@ -1,7 +1,9 @@
 # proto-file: communication.proto
 # proto-message: Frame
 
-filename: "test_block.py"
+metadata {
+  frame_name: "test_try_except_finally"
+}
 events {
   binding {
     id: "test_try_except_finally:0"
