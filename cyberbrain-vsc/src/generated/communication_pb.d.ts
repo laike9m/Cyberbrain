@@ -756,10 +756,10 @@ export namespace Loop {
 }
 
 export class Frame extends jspb.Message {
-  hasFilename(): boolean;
-  clearFilename(): void;
-  getFilename(): string | undefined;
-  setFilename(value: string): void;
+  hasMetadata(): boolean;
+  clearMetadata(): void;
+  getMetadata(): FrameLocater | undefined;
+  setMetadata(value?: FrameLocater): void;
 
   clearEventsList(): void;
   getEventsList(): Array<Event>;
@@ -798,7 +798,7 @@ export class Frame extends jspb.Message {
 
 export namespace Frame {
   export type AsObject = {
-    filename?: string;
+    metadata?: FrameLocater.AsObject;
     eventsList: Array<Event.AsObject>;
     loopsList: Array<Loop.AsObject>;
     tracingResultMap: Array<[string, EventIDList.AsObject]>;
