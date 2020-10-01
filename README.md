@@ -2,15 +2,29 @@
 
 Cyberbrain is a Python debugging solution aiming to **free programmers**. It visualizes **program execution** and **how each variable changes**. Never spend hours stepping through the program, let Cyberbrain tell you.
 
-![](docs/images/p1.png)
+![](https://github.com/laike9m/Cyberbrain/docs/images/p1.png)
 
 ## Install
 
 Cyberbrain consists of a Python library and various editor/IDE integrations. Currently VS Code is the only supported editor, but we have **[plans](https://github.com/laike9m/Cyberbrain/issues/24)** to expand the support.
 
+To install Cyberbrain:
+
 ```
 pip install cyberbrain
+code --install-extension laike9m.cyberbrain
 ```
+
+Or if you prefer, install from [PyPI](https://pypi.org/project/cyberbrain/) and [VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=laike9m.cyberbrain).
+
+## How to Use
+
+Cyberbrain keeps your workflow unchanged. You run a program 
+
+![](https://github.com/laike9m/Cyberbrain/docs/images/usage.gif)
+
+Note: Cyberbrain may conflict with other debuggers. If you set breakpoints and use VSC's debugger, Cyberbrain may not function normally. Generally speaking, **prefer "Run Without Debugging"** (Like shown in the gif).
+
 
 ## Status Quo and Milestones
 
