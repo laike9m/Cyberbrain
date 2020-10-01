@@ -1,12 +1,16 @@
 # Cyberbrain: Python debugging, **redefined**.
 
-Cyberbrain is a Python debugging solution aiming to **free programmers**.
+Cyberbrain is a Python debugging solution aiming to **free programmers**. It visualizes **program execution** and **how each variable changes**. Never spend hours stepping through the program, let Cyberbrain tell you.
+
+![](docs/images/p1.png)
 
 ## Install
 
 Cyberbrain consists of a Python library and various editor/IDE integrations. Currently VS Code is the only supported editor, but we have **[plans](https://github.com/laike9m/Cyberbrain/issues/24)** to expand the support.
 
-TODO
+```
+pip install cyberbrain
+```
 
 ## Status Quo and Milestones
 
