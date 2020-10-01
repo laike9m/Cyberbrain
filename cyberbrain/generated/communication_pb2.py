@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto2',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x13\x63ommunication.proto\"\x97\x01\n\x05State\x12\x1d\n\x06status\x18\x01 \x01(\x0e\x32\r.State.Status\x12\x0f\n\x07message\x18\x02 \x01(\t\"^\n\x06Status\x12\x10\n\x0c\x43LIENT_READY\x10\x01\x12\x10\n\x0cSERVER_READY\x10\x02\x12\x16\n\x12\x45XECUTION_COMPLETE\x10\x03\x12\x18\n\x14\x42\x41\x43KTRACING_COMPLETE\x10\x04\"E\n\x0e\x43ursorPosition\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x0e\n\x06lineno\x18\x02 \x01(\x05\x12\x11\n\tcharacter\x18\x03 \x01(\x05\"\xb7\x01\n\x0c\x46rameLocater\x12\x10\n\x08\x66rame_id\x18\x01 \x01(\t\x12\x12\n\nframe_name\x18\x02 \x01(\t\x12\x10\n\x08\x66ilename\x18\x03 \x01(\t\x12\x14\n\x0cstart_lineno\x18\x04 \x01(\x03\x12\x12\n\nend_lineno\x18\x05 \x01(\x03\x12\x19\n\x11\x63\x61llsite_filename\x18\x06 \x01(\t\x12\x17\n\x0f\x63\x61llsite_lineno\x18\x07 \x01(\x03\x12\x11\n\targuments\x18\x08 \x01(\t\"9\n\x10\x46rameLocaterList\x12%\n\x0e\x66rame_locaters\x18\x01 \x03(\x0b\x32\r.FrameLocater\"z\n\x0cInitialValue\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\r\n\x05index\x18\x06 \x01(\x03\x12\x0e\n\x06offset\x18\x07 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\"\x86\x01\n\x07\x42inding\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05index\x18\x07 \x01(\x03\x12\x0e\n\x06offset\x18\x08 \x01(\x05\x12\r\n\x05value\x18\x05 \x01(\t\x12\x0f\n\x07sources\x18\x06 \x03(\t\"\x96\x01\n\x08Mutation\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\r\n\x05index\x18\x08 \x01(\x03\x12\x0e\n\x06offset\x18\t \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\x12\r\n\x05\x64\x65lta\x18\x06 \x01(\t\x12\x0f\n\x07sources\x18\x07 \x03(\t\"g\n\x08\x44\x65letion\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\r\n\x05index\x18\x05 \x01(\x03\x12\x0e\n\x06offset\x18\x06 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\"u\n\x06Return\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\r\n\x05index\x18\x04 \x01(\x03\x12\x0e\n\x06offset\x18\x05 \x01(\x05\x12\r\n\x05value\x18\x06 \x01(\t\x12\x0f\n\x07sources\x18\x07 \x03(\t\"w\n\x13JumpBackToLoopStart\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\r\n\x05index\x18\x04 \x01(\x03\x12\x0e\n\x06offset\x18\x05 \x01(\x05\x12\x13\n\x0bjump_target\x18\x06 \x01(\x05\"\xe7\x01\n\x05\x45vent\x12&\n\rinitial_value\x18\x01 \x01(\x0b\x32\r.InitialValueH\x00\x12\x1b\n\x07\x62inding\x18\x02 \x01(\x0b\x32\x08.BindingH\x00\x12\x1d\n\x08mutation\x18\x03 \x01(\x0b\x32\t.MutationH\x00\x12\x1d\n\x08\x64\x65letion\x18\x04 \x01(\x0b\x32\t.DeletionH\x00\x12\x19\n\x06return\x18\x05 \x01(\x0b\x32\x07.ReturnH\x00\x12\x37\n\x17jump_back_to_loop_start\x18\x06 \x01(\x0b\x32\x14.JumpBackToLoopStartH\x00\x42\x07\n\x05value\" \n\x0b\x45ventIDList\x12\x11\n\tevent_ids\x18\x01 \x03(\t\"F\n\x04Loop\x12\x14\n\x0cstart_offset\x18\x01 \x01(\x05\x12\x12\n\nend_offset\x18\x02 \x01(\x05\x12\x14\n\x0cstart_lineno\x18\x03 \x01(\x05\"\xe2\x01\n\x05\x46rame\x12\x1f\n\x08metadata\x18\x01 \x01(\x0b\x32\r.FrameLocater\x12\x16\n\x06\x65vents\x18\x02 \x03(\x0b\x32\x06.Event\x12\x14\n\x05loops\x18\x03 \x03(\x0b\x32\x05.Loop\x12\x31\n\x0etracing_result\x18\x04 \x03(\x0b\x32\x19.Frame.TracingResultEntry\x12\x13\n\x0bidentifiers\x18\x05 \x03(\t\x1a\x42\n\x12TracingResultEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1b\n\x05value\x18\x02 \x01(\x0b\x32\x0c.EventIDList:\x02\x38\x01\x32\x89\x01\n\rCommunication\x12\x1f\n\tSyncState\x12\x06.State\x1a\x06.State\"\x00\x30\x01\x12\x32\n\nFindFrames\x12\x0f.CursorPosition\x1a\x11.FrameLocaterList\"\x00\x12#\n\x08GetFrame\x12\r.FrameLocater\x1a\x06.Frame\"\x00'
+  serialized_pb=b'\n\x13\x63ommunication.proto\"}\n\x05State\x12\x1d\n\x06status\x18\x01 \x01(\x0e\x32\r.State.Status\x12\x0f\n\x07message\x18\x02 \x01(\t\"D\n\x06Status\x12\x10\n\x0c\x43LIENT_READY\x10\x01\x12\x10\n\x0cSERVER_READY\x10\x02\x12\x16\n\x12\x45XECUTION_COMPLETE\x10\x03\"E\n\x0e\x43ursorPosition\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\x0e\n\x06lineno\x18\x02 \x01(\x05\x12\x11\n\tcharacter\x18\x03 \x01(\x05\"\xb7\x01\n\x0c\x46rameLocater\x12\x10\n\x08\x66rame_id\x18\x01 \x01(\t\x12\x12\n\nframe_name\x18\x02 \x01(\t\x12\x10\n\x08\x66ilename\x18\x03 \x01(\t\x12\x14\n\x0cstart_lineno\x18\x04 \x01(\x03\x12\x12\n\nend_lineno\x18\x05 \x01(\x03\x12\x19\n\x11\x63\x61llsite_filename\x18\x06 \x01(\t\x12\x17\n\x0f\x63\x61llsite_lineno\x18\x07 \x01(\x03\x12\x11\n\targuments\x18\x08 \x01(\t\"9\n\x10\x46rameLocaterList\x12%\n\x0e\x66rame_locaters\x18\x01 \x03(\x0b\x32\r.FrameLocater\"z\n\x0cInitialValue\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\r\n\x05index\x18\x06 \x01(\x03\x12\x0e\n\x06offset\x18\x07 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\"\x86\x01\n\x07\x42inding\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05index\x18\x07 \x01(\x03\x12\x0e\n\x06offset\x18\x08 \x01(\x05\x12\r\n\x05value\x18\x05 \x01(\t\x12\x0f\n\x07sources\x18\x06 \x03(\t\"\x96\x01\n\x08Mutation\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\r\n\x05index\x18\x08 \x01(\x03\x12\x0e\n\x06offset\x18\t \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\x12\r\n\x05\x64\x65lta\x18\x06 \x01(\t\x12\x0f\n\x07sources\x18\x07 \x03(\t\"g\n\x08\x44\x65letion\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\r\n\x05index\x18\x05 \x01(\x03\x12\x0e\n\x06offset\x18\x06 \x01(\x05\x12\x0e\n\x06target\x18\x04 \x01(\t\"u\n\x06Return\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\r\n\x05index\x18\x04 \x01(\x03\x12\x0e\n\x06offset\x18\x05 \x01(\x05\x12\r\n\x05value\x18\x06 \x01(\t\x12\x0f\n\x07sources\x18\x07 \x03(\t\"w\n\x13JumpBackToLoopStart\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0e\n\x06lineno\x18\x03 \x01(\x05\x12\r\n\x05index\x18\x04 \x01(\x03\x12\x0e\n\x06offset\x18\x05 \x01(\x05\x12\x13\n\x0bjump_target\x18\x06 \x01(\x05\"\xe7\x01\n\x05\x45vent\x12&\n\rinitial_value\x18\x01 \x01(\x0b\x32\r.InitialValueH\x00\x12\x1b\n\x07\x62inding\x18\x02 \x01(\x0b\x32\x08.BindingH\x00\x12\x1d\n\x08mutation\x18\x03 \x01(\x0b\x32\t.MutationH\x00\x12\x1d\n\x08\x64\x65letion\x18\x04 \x01(\x0b\x32\t.DeletionH\x00\x12\x19\n\x06return\x18\x05 \x01(\x0b\x32\x07.ReturnH\x00\x12\x37\n\x17jump_back_to_loop_start\x18\x06 \x01(\x0b\x32\x14.JumpBackToLoopStartH\x00\x42\x07\n\x05value\" \n\x0b\x45ventIDList\x12\x11\n\tevent_ids\x18\x01 \x03(\t\"F\n\x04Loop\x12\x14\n\x0cstart_offset\x18\x01 \x01(\x05\x12\x12\n\nend_offset\x18\x02 \x01(\x05\x12\x14\n\x0cstart_lineno\x18\x03 \x01(\x05\"\xe2\x01\n\x05\x46rame\x12\x1f\n\x08metadata\x18\x01 \x01(\x0b\x32\r.FrameLocater\x12\x16\n\x06\x65vents\x18\x02 \x03(\x0b\x32\x06.Event\x12\x14\n\x05loops\x18\x03 \x03(\x0b\x32\x05.Loop\x12\x31\n\x0etracing_result\x18\x04 \x03(\x0b\x32\x19.Frame.TracingResultEntry\x12\x13\n\x0bidentifiers\x18\x05 \x03(\t\x1a\x42\n\x12TracingResultEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1b\n\x05value\x18\x02 \x01(\x0b\x32\x0c.EventIDList:\x02\x38\x01\x32\x89\x01\n\rCommunication\x12\x1f\n\tSyncState\x12\x06.State\x1a\x06.State\"\x00\x30\x01\x12\x32\n\nFindFrames\x12\x0f.CursorPosition\x1a\x11.FrameLocaterList\"\x00\x12#\n\x08GetFrame\x12\r.FrameLocater\x1a\x06.Frame\"\x00'
 )
 
 
@@ -46,16 +46,11 @@ _STATE_STATUS = _descriptor.EnumDescriptor(
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='BACKTRACING_COMPLETE', index=3, number=4,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=81,
-  serialized_end=175,
+  serialized_start=80,
+  serialized_end=148,
 )
 _sym_db.RegisterEnumDescriptor(_STATE_STATUS)
 
@@ -95,8 +90,8 @@ _STATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=24,
-  serialized_end=175,
+  serialized_start=23,
+  serialized_end=148,
 )
 
 
@@ -141,8 +136,8 @@ _CURSORPOSITION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=177,
-  serialized_end=246,
+  serialized_start=150,
+  serialized_end=219,
 )
 
 
@@ -222,8 +217,8 @@ _FRAMELOCATER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=249,
-  serialized_end=432,
+  serialized_start=222,
+  serialized_end=405,
 )
 
 
@@ -254,8 +249,8 @@ _FRAMELOCATERLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=434,
-  serialized_end=491,
+  serialized_start=407,
+  serialized_end=464,
 )
 
 
@@ -328,8 +323,8 @@ _INITIALVALUE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=493,
-  serialized_end=615,
+  serialized_start=466,
+  serialized_end=588,
 )
 
 
@@ -409,8 +404,8 @@ _BINDING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=618,
-  serialized_end=752,
+  serialized_start=591,
+  serialized_end=725,
 )
 
 
@@ -497,8 +492,8 @@ _MUTATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=755,
-  serialized_end=905,
+  serialized_start=728,
+  serialized_end=878,
 )
 
 
@@ -564,8 +559,8 @@ _DELETION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=907,
-  serialized_end=1010,
+  serialized_start=880,
+  serialized_end=983,
 )
 
 
@@ -638,8 +633,8 @@ _RETURN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1012,
-  serialized_end=1129,
+  serialized_start=985,
+  serialized_end=1102,
 )
 
 
@@ -705,8 +700,8 @@ _JUMPBACKTOLOOPSTART = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1131,
-  serialized_end=1250,
+  serialized_start=1104,
+  serialized_end=1223,
 )
 
 
@@ -777,8 +772,8 @@ _EVENT = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=1253,
-  serialized_end=1484,
+  serialized_start=1226,
+  serialized_end=1457,
 )
 
 
@@ -809,8 +804,8 @@ _EVENTIDLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1486,
-  serialized_end=1518,
+  serialized_start=1459,
+  serialized_end=1491,
 )
 
 
@@ -855,8 +850,8 @@ _LOOP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1520,
-  serialized_end=1590,
+  serialized_start=1493,
+  serialized_end=1563,
 )
 
 
@@ -894,8 +889,8 @@ _FRAME_TRACINGRESULTENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1753,
-  serialized_end=1819,
+  serialized_start=1726,
+  serialized_end=1792,
 )
 
 _FRAME = _descriptor.Descriptor(
@@ -953,8 +948,8 @@ _FRAME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1593,
-  serialized_end=1819,
+  serialized_start=1566,
+  serialized_end=1792,
 )
 
 _STATE.fields_by_name['status'].enum_type = _STATE_STATUS
@@ -1122,8 +1117,8 @@ _COMMUNICATION = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1822,
-  serialized_end=1959,
+  serialized_start=1795,
+  serialized_end=1932,
   methods=[
   _descriptor.MethodDescriptor(
     name='SyncState',

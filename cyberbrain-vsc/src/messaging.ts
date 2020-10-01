@@ -88,13 +88,9 @@ export class MessageCenter {
           this.sendMessageToBacktracePanel({ "server status": "Ready" });
           break;
         case State.Status.EXECUTION_COMPLETE:
+          vscode.commands.executeCommand("workbench.action.closePanel");
           this.sendMessageToBacktracePanel({
             "server status": "Program execution completes"
-          });
-          break;
-        case State.Status.BACKTRACING_COMPLETE:
-          this.sendMessageToBacktracePanel({
-            "server status": "Backtracing completes"
           });
           break;
       }

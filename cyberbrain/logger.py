@@ -224,7 +224,10 @@ class JumpDetector:
             # so last_i is 26.
             opname_next = self.instructions[explicit_jump_target].opname
             if opname_next in PREDICT_MAP.get(instr.opname, {}):
-                print(f"Found PREDICT!! {instr.opname} -> {opname_next}")
+                _debug_log(
+                    self.debug_mode,
+                    f"Found PREDICT!! {instr.opname} -> {opname_next}",
+                )
                 computed_last_i += 2
 
         if computed_last_i == last_i:
