@@ -2,7 +2,15 @@
 name = "cyberbrain"
 version = "0.0.1"
 authors = ["laike9m <laike9m@gmail.com>"]
-description = "Python debugging. Redefined."
+homepage = "https://github.com/laike9m/Cyberbrain"
+repository = "https://github.com/laike9m/Cyberbrain"
+description = "Python debugging, redefined."
+license = "MIT"
+readme = "README.md"
+keywords = ["debugging", "debugger", "visualization"]
+include = [
+    "LICENSE",
+]
 
 [tool.poetry.dependencies]
 python = "^3.7.0"
