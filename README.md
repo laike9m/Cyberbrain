@@ -1,6 +1,8 @@
 # Cyberbrain: Python debugging, **redefined**.
 
-Cyberbrain is a Python debugging solution aiming to **free programmers**. It visualizes **program execution** and **how each variable changes**. Never spend hours stepping through the program, let Cyberbrain tell you.
+Cyberbrain is a Python debugging solution aiming to **free programmers**. It visualizes **program execution** and **how each variable changes**.
+
+Never spend hours stepping through a program, let Cyberbrain tell you.
 
 ![](docs/images/p1.png)
 
