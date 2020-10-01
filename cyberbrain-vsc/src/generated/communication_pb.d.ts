@@ -42,7 +42,6 @@ export namespace State {
     CLIENT_READY: 1;
     SERVER_READY: 2;
     EXECUTION_COMPLETE: 3;
-    BACKTRACING_COMPLETE: 4;
   }
 
   export const Status: StatusMap;
