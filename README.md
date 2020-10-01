@@ -19,18 +19,37 @@ Or if you prefer, install from [PyPI](https://pypi.org/project/cyberbrain/) and 
 
 ## How to Use
 
-Cyberbrain keeps your workflow unchanged. You run a program 
+Suppose you want to trace a function called `foo`. Decorate it with `@trace`.
+
+```python
+from cyberbrain import trace
+
+@trace  # You can disable tracing with `@trace(disabled=True)`
+def foo():
+    ...
+```
+
+Cyberbrain keeps your workflow unchanged. You run a program (from vscode or command line, both work), call **"Initialize Cyberbrain"** from the [command palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette), and a new panel will be opened to visualize how your program execution.
+
+The following gif demonstrates the  workflow:
 
 ![](docs/images/usage.gif)
 
-Note: Cyberbrain may conflict with other debuggers. If you set breakpoints and use VSC's debugger, Cyberbrain may not function normally. Generally speaking, **prefer "Run Without Debugging"** (Like shown in the gif).
+Features provided:
+- Dataflow analysis
+- Variable tracing (try hover on any variable, it only highlights **relevant** variables)
+- Object inspection (value is logged in the opened devtools console)
+- Expect more to come 🤟
 
+Note: Cyberbrain may conflict with other debuggers. If you set breakpoints and use VSC's debugger, Cyberbrain may not function normally. Generally speaking, **prefer "Run Without Debugging"** (Like shown in the gif).
 
 ## Status Quo and Milestones
 
 *Updated 2020.9*
 
-Cyberbrain is still under active development. Milestones for the project are listed below, which may change over time. Generally speaking, we'll release 1.0 when it reaches  "*Production ready*".
+Cyberbrain is new and under active development, bugs are expected. If you met any, I appreciate if you can [create an issue](https://github.com/laike9m/Cyberbrain/issues/new). At this point, you should **NOT** use Cyberbrain in production.
+
+Milestones for the project are listed below, which may change over time. Generally speaking, we'll release 1.0 when it reaches  "*Production ready*".
 
 | Milestone        | Description                                                           | Status |
 |------------------|-----------------------------------------------------------------------|--------|
@@ -50,6 +69,8 @@ Note that v1.0 means Cyberbrain is stable in the features it supports, it does *
 | 4.0     | Async & multi-threading support |
 
 [m1]: https://github.com/laike9m/Cyberbrain/issues/7
+
+Visit our project [kanban](https://github.com/users/laike9m/projects/1?fullscreen=true) to learn more about the current development schedule.
 
 ## Community
 
