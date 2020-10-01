@@ -2,7 +2,7 @@
 
 Cyberbrain is a Python debugging solution aiming to **free programmers**. It visualizes **program execution** and **how each variable changes**. Never spend hours stepping through the program, let Cyberbrain tell you.
 
-![](https://github.com/laike9m/Cyberbrain/docs/images/p1.png)
+![](docs/images/p1.png)
 
 ## Install
 
@@ -21,7 +21,7 @@ Or if you prefer, install from [PyPI](https://pypi.org/project/cyberbrain/) and 
 
 Cyberbrain keeps your workflow unchanged. You run a program 
 
-![](https://github.com/laike9m/Cyberbrain/docs/images/usage.gif)
+![](docs/images/usage.gif)
 
 Note: Cyberbrain may conflict with other debuggers. If you set breakpoints and use VSC's debugger, Cyberbrain may not function normally. Generally speaking, **prefer "Run Without Debugging"** (Like shown in the gif).
 
