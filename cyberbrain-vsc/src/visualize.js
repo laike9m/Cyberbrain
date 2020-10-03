@@ -195,7 +195,7 @@ class TraceGraph {
 
       // Draws frame info https://github.com/laike9m/Cyberbrain/issues/17
       ctx.textAlign = "center";
-      ctx.fillStyle = "black";
+      ctx.fillStyle = "#cfa138";
       ctx.fillText(
         `${this.frameMetadata.filename} ${this.frameMetadata.frame_name}`,
         0,
