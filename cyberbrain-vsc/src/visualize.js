@@ -222,7 +222,7 @@ class TraceGraph {
         );
         // Checks whether all nodes are at the same horizontal positions.
         if (Math.max(x_positions) === Math.min(x_positions)) {
-          this.network.moveNode(topNode.id, topNodePos.x - 40, topNodePos.y);
+          this.network.moveNode(topNode.id, topNodePos.x - 30, topNodePos.y);
         }
         this.moved = true;
         this.network.fit();
