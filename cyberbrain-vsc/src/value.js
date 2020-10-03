@@ -7,27 +7,49 @@ and make them more "Python-like", while loosing as few information as possible.
 
 let cl = console.log;
 
+// An enum of Js object types.
+const Types = Object.freeze({ NULL: "Null", STRING: "String" });
+
+// From https://bonsaiden.github.io/JavaScript-Garden/#types.typeof
+// Returns the type of a Js object. Possible return values:
+// Arguments, Array, Boolean, Date, Error, Function, JSON, Math, Number, Object, RegExp, String, NULL.
+function getType(obj) {
+  return Object.prototype.toString.call(obj).slice(8, -1);
+}
+
 // TODO: Generalize special value handling.
+// Displays a Js object in devtools console so that it looks like a Python.
+//
+// See http://shorturl.at/gkzJS for how format of output.
 export function displayValueInConsole(node) {
   if (node.type === "Return") {
     cl("Return value is:\n");
   } else {
     cl(`${node.target}'s value at line ${node.level}:\n`);
   }
+  const obj = node.runtimeValue;
 
-  let jsValue = node.runtimeValue;
-  cl(convertValueFromJsToPython(jsValue));
+  switch (getType(obj)) {
+    case Types.NULL:
+      cl("None");
+      break;
+    case Types.STRING:
+      cl('"' + `%c${obj}` + '%c"', "color: #b43024", "");
+      break;
+    default:
+      cl(obj);
+  }
 }
 
-// TODO: Truncate value or make values multiline.
-export function getTooltipTextForEventNode(node) {
-  return convertValueFromJsToPython(node.runtimeValue);
-}
-
-function convertValueFromJsToPython(jsValue) {
-  if (jsValue === null) {
-    return "None";
-  } else {
-    return jsValue;
+// TODO: Truncate value or make it display in multilines.
+// Transforms a Js object to a form that "behaves like" a Python in tooltips.
+export function prepareObjectForTooltip(obj) {
+  switch (getType(obj)) {
+    case Types.NULL:
+      return "None";
+    case Types.STRING:
+      return `"${obj}"`;
+    default:
+      return obj;
   }
 }
