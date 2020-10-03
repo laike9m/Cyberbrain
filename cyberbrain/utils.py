@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import collections
 import dis
 import inspect
 import os
@@ -17,6 +16,7 @@ from types import FrameType
 from typing import Any, Optional
 
 import jsonpickle
+import more_itertools
 from pygments import highlight
 from pygments.formatters import Terminal256Formatter
 from pygments.lexers import PythonLexer
@@ -94,25 +94,9 @@ def computed_gotos_enabled() -> bool:
     return stdout == b"True"
 
 
-def flatten(*args: any) -> list:
-    """Flattens the given series of inputs, accepts list or non-list."""
-    result = []
-    for arg in args:
-        if isinstance(arg, collections.abc.Iterable):
-            for elem in arg:
-                result.append(elem)
-        else:
-            result.append(arg)
-
-    return result
-
-
 def is_exception(obj) -> bool:
     """Checks whether the given obj is an exception instance or class."""
-    if isinstance(obj, BaseException):
-        return True
-
-    return is_exception_class(obj)
+    return isinstance(obj, BaseException) or is_exception_class(obj)
 
 
 def is_exception_class(obj) -> bool:
@@ -153,6 +137,11 @@ def should_exclude(frame):
         return True
 
     return False
+
+
+def flatten(*args: any) -> list:
+    """Flattens the given series of inputs, accepts nested list or non-list."""
+    return list(more_itertools.collapse(args))
 
 
 def pprint(*args):
