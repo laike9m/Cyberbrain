@@ -72,7 +72,7 @@ Note that v1.0 means Cyberbrain is stable in the features it supports, it does *
 
 [m1]: https://github.com/laike9m/Cyberbrain/issues/7
 
-Visit our project [kanban](https://github.com/users/laike9m/projects/1?fullscreen=true) to learn more about the current development schedule.
+Visit the project's [kanban](https://github.com/laike9m/Cyberbrain/projects/1) to learn more about the current development schedule.
 
 ## Community
 
