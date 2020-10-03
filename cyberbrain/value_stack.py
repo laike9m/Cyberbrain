@@ -472,7 +472,6 @@ class GeneralValueStack:
         # See https://docs.python.org/3/library/dis.html#opcode-LOAD_METHOD.
         self._push(self.tos)
 
-    # TODO: Consolidate this method with utils.flatten
     def _push_arguments_or_exception(self, callable_obj, args):
         if utils.is_exception_class(callable_obj):
             # In `raise IndexError()`
@@ -480,14 +479,8 @@ class GeneralValueStack:
             # so that _do_raise sees the correct value type.
             self._push(callable_obj())
         else:
-            # Use a list containing the callable and all arguments to from return value
-            return_value: list = callable_obj  # callable_obj is already a list
-            for arg in args:
-                if isinstance(arg, list):
-                    return_value.extend(arg)
-                else:
-                    return_value.append(arg)
-            self._push(return_value)
+            # Return value is a list containing the callable and all arguments
+            self._push(utils.flatten(callable_obj, args))
 
     def _CALL_FUNCTION_handler(self, instr):
         args = self._pop(instr.arg)
@@ -523,7 +516,7 @@ class GeneralValueStack:
         return EventInfo(
             type=MutationType,
             target=inst_or_callable[0],
-            sources=set(utils.flatten(*args)),
+            sources=set(utils.flatten(args)),
         )
 
     def _MAKE_FUNCTION_handler(self, instr):

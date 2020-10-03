@@ -24,6 +24,7 @@ attrs = "^19.3.0"
 get-port = "^0.0.5"
 jsonpickle = "^1.4.1"
 typing-extensions = "^3.7.4"
+more-itertools = "^8.5.0"
 
 [tool.poetry.dev-dependencies]
 tox = "^3.14"
