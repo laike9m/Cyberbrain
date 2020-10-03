@@ -17,8 +17,7 @@ function getType(obj) {
   return Object.prototype.toString.call(obj).slice(8, -1);
 }
 
-// TODO: Generalize special value handling.
-// Displays a Js object in devtools console so that it looks like a Python.
+// Displays a Js object in devtools console so that it looks like a Python object.
 //
 // See http://shorturl.at/gkzJS for how format of output.
 export function displayValueInConsole(node) {
@@ -42,14 +41,15 @@ export function displayValueInConsole(node) {
 }
 
 // TODO: Truncate value or make it display in multilines.
-// Transforms a Js object to a form that "behaves like" a Python in tooltips.
-export function prepareObjectForTooltip(obj) {
+// Gets the text representation of a Js object that looks like a Python object.
+export function getTooltipText(obj) {
   switch (getType(obj)) {
     case Types.NULL:
       return "None";
     case Types.STRING:
       return `"${obj}"`;
     default:
-      return obj;
+      // To keep the brackets of arrays.
+      return JSON.stringify(obj);
   }
 }
