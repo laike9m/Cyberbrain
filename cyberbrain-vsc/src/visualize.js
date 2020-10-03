@@ -21,7 +21,7 @@ is poor, see: https://github.com/visjs/vis-network/issues/930
 // The .js suffix is needed to make import work in vsc webview.
 import { Loop } from "./loop.js";
 import { getInitialState } from "./initialize.js";
-import { displayValueInConsole, getTooltipTextForEventNode } from "./value.js";
+import { displayValueInConsole, prepareObjectForTooltip } from "./value.js";
 
 let cl = console.log;
 
@@ -251,7 +251,7 @@ class TraceGraph {
       );
 
       for (let node of this.nodes.get(tracePathNodeIds)) {
-        let text = getTooltipTextForEventNode(node);
+        let text = prepareObjectForTooltip(node.runtimeValue);
         let pos = this.network.getPosition(node.id);
         let rectX = pos.x + 10;
         let rectY = pos.y - 33;
