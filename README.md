@@ -1,5 +1,9 @@
 # Cyberbrain: Python debugging, **redefined**.
 
+[![support-version](https://img.shields.io/pypi/pyversions/cyberbrain)](https://img.shields.io/pypi/pyversions/cyberbrain) [![PyPI implementation](https://img.shields.io/pypi/implementation/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/) [![PyPI version shields.io](https://img.shields.io/pypi/v/cyberbrain.svg)](https://pypi.python.org/pypi/cyberbrain/)
+
+
+
 Cyberbrain is a Python debugging solution aiming to **free programmers**. It visualizes **program execution** and **how each variable changes**.
 
 Never spend hours stepping through a program, let Cyberbrain tell you.
