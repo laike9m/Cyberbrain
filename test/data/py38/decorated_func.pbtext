@@ -22,7 +22,7 @@ events {
     filename: "test_api_decorator.py"
     lineno: 8
     target: "f"
-    value: "null"
+    value: "{\"repr\": \"<function test_decorator_api.<locals>.f\"}"
     index: 1
     offset: 4
     repr: "<function test_decorator_api.<locals>.f"
