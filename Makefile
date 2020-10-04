@@ -35,3 +35,7 @@ proto_compile:
 	sed -i "" -e 's/import communication_pb2/from . import communication_pb2/g' \
            cyberbrain/generated/communication_pb2_grpc.py
 	cd ./cyberbrain-vsc && ./build-proto.sh
+
+publish:
+	poetry build && poetry publish
+	cd ./cyberbrain-vsc && vsce package && vsce publish
