@@ -13,6 +13,7 @@ events {
     value: "{\"py/type\": \"test_with.test_with.<locals>.ContextManagerNoReturn\"}"
     index: 0
     offset: 36
+    repr: "<class \'test_with.test_with....als>.ContextManagerNoReturn\'>"
   }
 }
 events {
@@ -24,6 +25,7 @@ events {
     value: "1"
     index: 1
     offset: 46
+    repr: "1"
   }
 }
 events {
@@ -35,6 +37,7 @@ events {
     value: "{\"py/type\": \"test_with.test_with.<locals>.ContextManagerWithReturn\"}"
     index: 2
     offset: 58
+    repr: "<class \'test_with.test_with....s>.ContextManagerWithReturn\'>"
   }
 }
 events {
@@ -47,6 +50,7 @@ events {
     sources: "ContextManagerWithReturn"
     index: 3
     offset: 64
+    repr: "2"
   }
 }
 events {
@@ -59,6 +63,7 @@ events {
     sources: "ContextManagerWithReturn"
     index: 4
     offset: 82
+    repr: "2"
   }
 }
 events {
@@ -71,6 +76,7 @@ events {
     sources: "ContextManagerNoReturn"
     index: 5
     offset: 90
+    repr: "None"
   }
 }
 events {
@@ -83,6 +89,7 @@ events {
     sources: "ContextManagerWithReturn"
     index: 6
     offset: 118
+    repr: "2"
   }
 }
 events {
@@ -95,6 +102,7 @@ events {
     sources: "ContextManagerWithReturn"
     index: 7
     offset: 126
+    repr: "2"
   }
 }
 events {
@@ -106,6 +114,7 @@ events {
     value: "1"
     index: 8
     offset: 160
+    repr: "1"
   }
 }
 events {
@@ -117,6 +126,7 @@ events {
     value: "0"
     index: 9
     offset: 212
+    repr: "0"
   }
 }
 tracing_result {

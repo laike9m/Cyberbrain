@@ -60,7 +60,7 @@ class Event:
     uid: string = attr.ib(factory=UUIDGenerator.generate_uuid, eq=False, repr=False)
 
 
-@attr.s(auto_attribs=True)
+@attr.s(auto_attribs=True, eq=False)
 class InitialValue(Event):
     """Identifiers already exist before tracking starts.
 
@@ -85,10 +85,21 @@ class InitialValue(Event):
     # kw_only is required to make inheritance work
     # see https://github.com/python-attrs/attrs/issues/38
     value: Any = attr.ib(kw_only=True)
-    # TODO: Add sources if it's a function parameter.
+    repr: str = ""
+
+    def __eq__(self, other: InitialValue):
+        return (
+            isinstance(other, InitialValue)
+            and (
+                self.target,
+                self.value,
+                self.lineno,
+            )
+            == (other.target, other.value, other.lineno)
+        )
 
 
-@attr.s(auto_attribs=True)
+@attr.s(auto_attribs=True, eq=False)
 class Binding(Event):
     """An identifier is bound to an value.
 
@@ -102,7 +113,20 @@ class Binding(Event):
 
     target: Symbol = attr.ib(kw_only=True)
     value: Any = attr.ib(kw_only=True)
+    repr: str = ""
     sources: set[Symbol] = set()  # Source can be empty, like a = 1
+
+    def __eq__(self, other: Binding):
+        return (
+            isinstance(other, Binding)
+            and (
+                self.target,
+                self.value,
+                self.sources,
+                self.lineno,
+            )
+            == (other.target, other.value, other.sources, other.lineno)
+        )
 
 
 # For now, we don't want to compare delta, so disable auto-generated __eq__.
@@ -129,6 +153,7 @@ class Mutation(Event):
     # Value is optional. It is set on demand during testing. Other code MUSTN'T rely
     # on it.
     value: Any = _dummy
+    repr: str = ""
 
     def __eq__(self, other: Mutation):
         return (
@@ -167,6 +192,7 @@ class Return(Event):
     """
 
     value: Any = attr.ib(kw_only=True)
+    repr: str = ""
     sources: set[Symbol] = set()
 
     def __eq__(self, other: Return):

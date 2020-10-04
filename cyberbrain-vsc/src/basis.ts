@@ -46,8 +46,9 @@ export abstract class Event {
 }
 
 export class InitialValue extends Event {
-  value: any;
   target: string;
+  value: any;
+  repr: string;
 
   constructor(initialValue: InitialValueProto) {
     super(
@@ -60,12 +61,14 @@ export class InitialValue extends Event {
     );
     this.target = initialValue.getTarget()!;
     this.value = decodeJson(initialValue.getValue()!);
+    this.repr = initialValue.getRepr()!;
   }
 }
 
 export class Binding extends Event {
   target: string;
   value: any;
+  repr: string;
   sources: string[];
 
   constructor(binding: BindingProto) {
@@ -79,6 +82,7 @@ export class Binding extends Event {
     );
     this.target = binding.getTarget()!;
     this.value = decodeJson(binding.getValue()!);
+    this.repr = binding.getRepr()!;
     this.sources = binding.getSourcesList();
   }
 }
@@ -86,6 +90,7 @@ export class Binding extends Event {
 export class Mutation extends Event {
   target: string;
   value: any;
+  repr: string;
   delta: string;
   sources: string[];
 
@@ -100,6 +105,7 @@ export class Mutation extends Event {
     );
     this.target = mutation.getTarget()!;
     this.value = decodeJson(mutation.getValue()!);
+    this.repr = mutation.getRepr()!;
     this.delta = mutation.getDelta()!;
     this.sources = mutation.getSourcesList();
   }
@@ -123,6 +129,7 @@ export class Deletion extends Event {
 
 export class Return extends Event {
   value: any;
+  repr: string;
   sources: string[];
 
   constructor(binding: ReturnProto) {
@@ -135,6 +142,7 @@ export class Return extends Event {
       EventType.Return
     );
     this.value = decodeJson(binding.getValue()!);
+    this.repr = binding.getRepr()!;
     this.sources = binding.getSourcesList();
   }
 }

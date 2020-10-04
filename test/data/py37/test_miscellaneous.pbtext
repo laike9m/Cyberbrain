@@ -13,6 +13,7 @@ events {
     value: "\"a\""
     index: 0
     offset: 34
+    repr: "\"a\""
   }
 }
 events {
@@ -24,6 +25,7 @@ events {
     value: "\"b\""
     index: 1
     offset: 40
+    repr: "\"b\""
   }
 }
 events {
@@ -35,6 +37,7 @@ events {
     value: "\"c\""
     index: 2
     offset: 48
+    repr: "\"c\""
   }
 }
 events {
@@ -46,6 +49,7 @@ events {
     value: "\"d\""
     index: 3
     offset: 54
+    repr: "\"d\""
   }
 }
 events {
@@ -61,6 +65,7 @@ events {
     sources: "d"
     index: 4
     offset: 62
+    repr: "\"a b    \'c\' \'d\' \""
   }
 }
 events {
@@ -74,6 +79,7 @@ events {
     sources: "b"
     index: 5
     offset: 86
+    repr: "False"
   }
 }
 events {
@@ -85,6 +91,7 @@ events {
     value: "[1, 2, 3]"
     index: 6
     offset: 88
+    repr: "[1, 2, 3]"
   }
 }
 events {
@@ -97,6 +104,7 @@ events {
     delta: "{\"iterable_item_removed\": {\"root[2]\": 3}}"
     index: 7
     offset: 100
+    repr: "[1, 2]"
   }
 }
 events {
@@ -110,6 +118,7 @@ events {
     sources: "e"
     index: 8
     offset: 106
+    repr: "[4, 2]"
   }
 }
 events {
@@ -131,6 +140,7 @@ events {
     value: "0"
     index: 10
     offset: 110
+    repr: "0"
   }
 }
 events {
@@ -143,6 +153,7 @@ events {
     sources: "g"
     index: 11
     offset: 112
+    repr: "0"
   }
 }
 events {
@@ -154,6 +165,7 @@ events {
     value: "1"
     index: 12
     offset: 116
+    repr: "1"
   }
 }
 events {

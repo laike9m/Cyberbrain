@@ -13,6 +13,7 @@ events {
     value: "\"h\""
     index: 0
     offset: 44
+    repr: "\"h\""
   }
 }
 events {
@@ -24,6 +25,7 @@ events {
     value: "\"i\""
     index: 1
     offset: 46
+    repr: "\"i\""
   }
 }
 events {
@@ -35,6 +37,7 @@ events {
     value: "[1, 2]"
     index: 2
     offset: 48
+    repr: "[1, 2]"
   }
 }
 events {
@@ -47,6 +50,7 @@ events {
     sources: "l1"
     index: 3
     offset: 52
+    repr: "1"
   }
 }
 events {
@@ -59,6 +63,7 @@ events {
     sources: "l1"
     index: 4
     offset: 54
+    repr: "2"
   }
 }
 events {
@@ -70,6 +75,7 @@ events {
     value: "[1, 2, 3, 4]"
     index: 5
     offset: 56
+    repr: "[1, 2, 3, 4]"
   }
 }
 events {
@@ -82,6 +88,7 @@ events {
     sources: "numbers"
     index: 6
     offset: 60
+    repr: "1"
   }
 }
 events {
@@ -94,6 +101,7 @@ events {
     sources: "numbers"
     index: 7
     offset: 62
+    repr: "[2, 3, 4]"
   }
 }
 events {
@@ -106,6 +114,7 @@ events {
     sources: "numbers"
     index: 8
     offset: 70
+    repr: "[1, 2, 3]"
   }
 }
 events {
@@ -118,6 +127,7 @@ events {
     sources: "numbers"
     index: 9
     offset: 72
+    repr: "4"
   }
 }
 events {
@@ -130,6 +140,7 @@ events {
     sources: "numbers"
     index: 10
     offset: 80
+    repr: "1"
   }
 }
 events {
@@ -142,6 +153,7 @@ events {
     sources: "numbers"
     index: 11
     offset: 82
+    repr: "[2, 3]"
   }
 }
 events {
@@ -154,6 +166,7 @@ events {
     sources: "numbers"
     index: 12
     offset: 84
+    repr: "4"
   }
 }
 events {
@@ -167,6 +180,7 @@ events {
     sources: "numbers"
     index: 13
     offset: 92
+    repr: "(1, 2, 1, 2, 3, 4)"
   }
 }
 events {
@@ -180,6 +194,7 @@ events {
     sources: "numbers"
     index: 14
     offset: 100
+    repr: "[1, 2, 1, 2, 3, 4]"
   }
 }
 events {
@@ -193,6 +208,7 @@ events {
     sources: "numbers"
     index: 15
     offset: 108
+    repr: "{1, 2, 3, 4}"
   }
 }
 events {
@@ -204,6 +220,7 @@ events {
     value: "{\"1\": 2}"
     index: 16
     offset: 110
+    repr: "{1: 2}"
   }
 }
 events {
@@ -215,6 +232,7 @@ events {
     value: "{\"1\": 2}"
     index: 17
     offset: 112
+    repr: "{1: 2}"
   }
 }
 events {
@@ -228,6 +246,7 @@ events {
     sources: "m2"
     index: 18
     offset: 116
+    repr: "{1: 2}"
   }
 }
 tracing_result {

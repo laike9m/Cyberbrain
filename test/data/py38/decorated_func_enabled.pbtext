@@ -13,6 +13,7 @@ events {
     value: "2"
     index: 0
     offset: 2
+    repr: "2"
   }
 }
 events {
@@ -24,6 +25,7 @@ events {
     offset: 6
     value: "2"
     sources: "a"
+    repr: "2"
   }
 }
 tracing_result {
