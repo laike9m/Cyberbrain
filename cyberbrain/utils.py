@@ -75,7 +75,11 @@ def get_jump_target_or_none(instr: dis.Instruction) -> Optional[int]:
 
 def to_json(python_object: Any):
     # TODO: Once we implemented better deserialization in Js, use unpicklable=True.
-    return jsonpickle.encode(python_object, unpicklable=False)
+    json = jsonpickle.encode(python_object, unpicklable=False)
+    if json == "null" and python_object is not None:
+        return '{"repr": "%s"}' % get_repr(python_object)
+    else:
+        return json
 
 
 @lru_cache(maxsize=1)
