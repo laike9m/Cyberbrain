@@ -68,7 +68,7 @@ Milestones for the project are listed below, which may change over time. General
 Note that v1.0 means Cyberbrain is stable in the features it supports, it does **NOT** mean Cyberbrain is feature complete. Major features planned for each future version are listed below. Again, expect it to change at any time.
 
 | Version | Features                        |
-|---------|---------------------------------|
+|:-------:|---------------------------------|
 | 1.0     | Mutual interaction between source code and the trace graph ([#7][m1])  |
 | 2.0     | Multi-frame tracing             |
 | 3.0     | Fine-grained symbol tracing     |
