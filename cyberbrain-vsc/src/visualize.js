@@ -38,7 +38,7 @@ window.addEventListener("message", event => {
     if (isDevMode) {
       cl(event.data);
     }
-  }, 500);
+  }, 1000);
 });
 
 const lineHeight = 40;
