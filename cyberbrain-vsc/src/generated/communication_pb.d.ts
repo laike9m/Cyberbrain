@@ -236,6 +236,11 @@ export class InitialValue extends jspb.Message {
   getValue(): string | undefined;
   setValue(value: string): void;
 
+  hasRepr(): boolean;
+  clearRepr(): void;
+  getRepr(): string | undefined;
+  setRepr(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): InitialValue.AsObject;
   static toObject(
@@ -266,6 +271,7 @@ export namespace InitialValue {
     offset?: number;
     target?: string;
     value?: string;
+    repr?: string;
   };
 }
 
@@ -305,6 +311,11 @@ export class Binding extends jspb.Message {
   getValue(): string | undefined;
   setValue(value: string): void;
 
+  hasRepr(): boolean;
+  clearRepr(): void;
+  getRepr(): string | undefined;
+  setRepr(value: string): void;
+
   clearSourcesList(): void;
   getSourcesList(): Array<string>;
   setSourcesList(value: Array<string>): void;
@@ -337,6 +348,7 @@ export namespace Binding {
     index?: number;
     offset?: number;
     value?: string;
+    repr?: string;
     sourcesList: Array<string>;
   };
 }
@@ -377,6 +389,11 @@ export class Mutation extends jspb.Message {
   getValue(): string | undefined;
   setValue(value: string): void;
 
+  hasRepr(): boolean;
+  clearRepr(): void;
+  getRepr(): string | undefined;
+  setRepr(value: string): void;
+
   hasDelta(): boolean;
   clearDelta(): void;
   getDelta(): string | undefined;
@@ -414,6 +431,7 @@ export namespace Mutation {
     offset?: number;
     target?: string;
     value?: string;
+    repr?: string;
     delta?: string;
     sourcesList: Array<string>;
   };
@@ -510,6 +528,11 @@ export class Return extends jspb.Message {
   getValue(): string | undefined;
   setValue(value: string): void;
 
+  hasRepr(): boolean;
+  clearRepr(): void;
+  getRepr(): string | undefined;
+  setRepr(value: string): void;
+
   clearSourcesList(): void;
   getSourcesList(): Array<string>;
   setSourcesList(value: Array<string>): void;
@@ -541,6 +564,7 @@ export namespace Return {
     index?: number;
     offset?: number;
     value?: string;
+    repr?: string;
     sourcesList: Array<string>;
   };
 }

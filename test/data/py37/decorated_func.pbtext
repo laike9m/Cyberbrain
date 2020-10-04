@@ -13,6 +13,7 @@ events {
     value: "1"
     index: 0
     offset: 2
+    repr: "1"
   }
 }
 events {
@@ -24,6 +25,7 @@ events {
     value: "null"
     index: 1
     offset: 4
+    repr: "<function test_decorator_api.<locals>.f"
   }
 }
 events {
@@ -37,6 +39,7 @@ events {
     sources: "f"
     index: 2
     offset: 10
+    repr: "1"
   }
 }
 events {
@@ -49,6 +52,7 @@ events {
     value: "2"
     sources: "a"
     sources: "b"
+    repr: "2"
   }
 }
 tracing_result {

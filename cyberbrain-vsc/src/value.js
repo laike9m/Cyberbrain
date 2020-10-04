@@ -39,17 +39,3 @@ export function displayValueInConsole(node) {
       cl(obj);
   }
 }
-
-// TODO: Truncate value or make it display in multilines.
-// Gets the text representation of a Js object that looks like a Python object.
-export function getTooltipText(obj) {
-  switch (getType(obj)) {
-    case Types.NULL:
-      return "None";
-    case Types.STRING:
-      return `"${obj}"`;
-    default:
-      // To keep the brackets of arrays.
-      return JSON.stringify(obj);
-  }
-}

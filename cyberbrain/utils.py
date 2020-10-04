@@ -5,6 +5,7 @@ from __future__ import annotations
 import dis
 import inspect
 import os
+import re
 import subprocess
 import sys
 import sysconfig
@@ -17,6 +18,7 @@ from typing import Any, Optional
 
 import jsonpickle
 import more_itertools
+from cheap_repr import cheap_repr
 from pygments import highlight
 from pygments.formatters import Terminal256Formatter
 from pygments.lexers import PythonLexer
@@ -158,7 +160,7 @@ def pprint(*args):
     print(output)
 
 
-def deepcopy_value_from_frame(name: str, frame: FrameType):
+def deepcopy_value_from_frame(name: str, frame: FrameType) -> Tuple[any, str]:
     """Given a frame and a name(identifier) saw in this frame, returns its value.
 
     The value has to be deep copied to avoid being changed by code coming later.
@@ -168,14 +170,16 @@ def deepcopy_value_from_frame(name: str, frame: FrameType):
     code and store names with their scopes, like (a, local), (b, global).
 
     Once we have a frame class, we might move this method there.
+
+    Returns the copy and its repr string.
     """
     value = get_value_from_frame(name, frame)
 
     # There are certain things you can't copy, like module.
     try:
-        return deepcopy(value)
+        return deepcopy(value), get_repr(value)
     except TypeError:
-        return repr(value)
+        return get_repr(value), get_repr(value)
 
 
 def get_value_from_frame(name: str, frame: FrameType):
@@ -193,6 +197,29 @@ def name_exist_in_frame(name: str, frame: FrameType) -> bool:
     return any(
         [name in frame.f_locals, name in frame.f_globals, name in frame.f_builtins]
     )
+
+
+def get_repr(obj: Any) -> str:
+    """Returns a short repr text of the given object.
+
+    It uses cheap_repr (https://github.com/alexmojaki/cheap_repr) to get a short and
+    optimized repr text, but that's not enough. For objects, the repr look like:
+    "<test_attribute.foo>.A object at 0x10cd41700>"
+    of which the address " at 0x10cd41700" part is a bit redundant (considering the
+    limited space in the trace graph). So we'll remove the address part if it exists.
+    """
+
+    # String is different, because we need to display the quotes in the tooltip, so
+    # adding a pair of extra quote.
+    if type(obj) == str:
+        return f'"{obj}"'
+
+    repr_text = cheap_repr(obj)
+    match = re.search("at 0x", repr_text)
+    if not match:
+        return repr_text
+    else:
+        return repr_text[: match.start(0) - 1]
 
 
 def shorten_path(file_path, length):

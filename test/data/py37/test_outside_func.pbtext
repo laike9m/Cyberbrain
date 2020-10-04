@@ -13,6 +13,7 @@ events {
     value: "1"
     index: 0
     offset: 58
+    repr: "1"
   }
 }
 events {
@@ -34,6 +35,7 @@ events {
     value: "{}"
     index: 2
     offset: 62
+    repr: "{}"
   }
 }
 events {
@@ -46,6 +48,7 @@ events {
     delta: "{\"dictionary_item_added\": {\"root[\'y\']\": {\"py/type\": \"builtins.int\"}}}"
     index: 3
     offset: 66
+    repr: "{\'y\': <class \'int\'>}"
   }
 }
 identifiers: "x"
