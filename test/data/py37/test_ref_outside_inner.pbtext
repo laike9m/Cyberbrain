@@ -10,7 +10,7 @@ events {
     filename: "test_ref_outside.py"
     lineno: 11
     target: "f"
-    value: "null"
+    value: "{\"repr\": \"<function f\"}"
     index: 0
     offset: 0
     repr: "<function f"
