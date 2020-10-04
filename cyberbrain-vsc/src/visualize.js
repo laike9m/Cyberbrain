@@ -31,10 +31,14 @@ window.addEventListener("message", event => {
   if (!event.data.hasOwnProperty("events")) {
     return; // Server ready message.
   }
-
-  console.log(event.data);
   traceGraph = new TraceGraph(event.data);
   traceGraph.initialize();
+  setTimeout(() => {
+    console.clear();
+    if (isDevMode) {
+      cl(event.data);
+    }
+  }, 500);
 });
 
 const lineHeight = 40;
