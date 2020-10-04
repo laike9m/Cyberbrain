@@ -13,6 +13,7 @@ events {
     value: "0"
     index: 0
     offset: 20
+    repr: "0"
   }
 }
 identifiers: "x"

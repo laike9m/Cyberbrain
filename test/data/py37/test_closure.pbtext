@@ -13,6 +13,7 @@ events {
     value: "1"
     index: 0
     offset: 10
+    repr: "1"
   }
 }
 events {
@@ -25,6 +26,7 @@ events {
     sources: "a"
     index: 1
     offset: 28
+    repr: "<class \'test_cellvar.test_closure.<locals>.Foo\'>"
   }
 }
 tracing_result {

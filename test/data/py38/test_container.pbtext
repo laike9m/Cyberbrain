@@ -13,6 +13,7 @@ events {
     value: "1"
     index: 0
     offset: 24
+    repr: "1"
   }
 }
 events {
@@ -24,6 +25,7 @@ events {
     value: "1"
     index: 1
     offset: 26
+    repr: "1"
   }
 }
 events {
@@ -37,6 +39,7 @@ events {
     sources: "b"
     index: 2
     offset: 30
+    repr: "[1, 1]"
   }
 }
 events {
@@ -50,6 +53,7 @@ events {
     sources: "b"
     index: 3
     offset: 38
+    repr: "(1, 1)"
   }
 }
 events {
@@ -63,6 +67,7 @@ events {
     sources: "b"
     index: 4
     offset: 46
+    repr: "{1}"
   }
 }
 events {
@@ -76,6 +81,7 @@ events {
     sources: "b"
     index: 5
     offset: 54
+    repr: "{1: 1}"
   }
 }
 events {
@@ -89,6 +95,7 @@ events {
     sources: "b"
     index: 6
     offset: 64
+    repr: "{1: 1, 2: 1}"
   }
 }
 events {
@@ -100,6 +107,7 @@ events {
     value: "2"
     index: 7
     offset: 66
+    repr: "2"
   }
 }
 events {
@@ -114,6 +122,7 @@ events {
     sources: "c"
     index: 8
     offset: 72
+    repr: "{1: 2, 2: 1}"
   }
 }
 events {
@@ -127,6 +136,7 @@ events {
     sources: "a"
     index: 9
     offset: 78
+    repr: "{2: 1}"
   }
 }
 events {
@@ -138,6 +148,7 @@ events {
     value: "0"
     index: 10
     offset: 88
+    repr: "0"
   }
 }
 events {
@@ -153,6 +164,7 @@ events {
     sources: "e"
     index: 11
     offset: 96
+    repr: "[1, 1]"
   }
 }
 events {
@@ -168,6 +180,7 @@ events {
     sources: "e"
     index: 12
     offset: 116
+    repr: "[1, 1]"
   }
 }
 tracing_result {

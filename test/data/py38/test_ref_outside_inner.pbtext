@@ -13,6 +13,7 @@ events {
     value: "null"
     index: 0
     offset: 0
+    repr: "<function f"
   }
 }
 events {
@@ -25,6 +26,7 @@ events {
     sources: "f"
     index: 1
     offset: 4
+    repr: "1"
   }
 }
 events {
@@ -35,6 +37,7 @@ events {
     index: 2
     offset: 8
     value: "null"
+    repr: "None"
   }
 }
 tracing_result {

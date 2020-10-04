@@ -13,6 +13,7 @@ events {
     value: "{\"y\": 1}"
     index: 0
     offset: 40
+    repr: "<test_attribute.test_attribu...als>.A object"
   }
 }
 events {
@@ -24,6 +25,7 @@ events {
     value: "{}"
     index: 1
     offset: 42
+    repr: "<test_attribute.test_attribu...als>.A object"
   }
 }
 events {
@@ -37,6 +39,7 @@ events {
     sources: "a2"
     index: 2
     offset: 44
+    repr: "<test_attribute.test_attribu...als>.A object"
   }
 }
 events {
@@ -49,6 +52,7 @@ events {
     delta: "{\"values_changed\": {\"root.x.y\": {\"new_value\": 2}}}"
     index: 3
     offset: 52
+    repr: "<test_attribute.test_attribu...als>.A object"
   }
 }
 events {
@@ -61,6 +65,7 @@ events {
     delta: "{\"attribute_removed\": {\"root.x\": {\"y\": 2}}}"
     index: 4
     offset: 56
+    repr: "<test_attribute.test_attribu...als>.A object"
   }
 }
 tracing_result {

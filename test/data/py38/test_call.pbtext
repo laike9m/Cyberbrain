@@ -13,6 +13,7 @@ events {
     value: "0"
     index: 0
     offset: 28
+    repr: "0"
   }
 }
 events {
@@ -25,6 +26,7 @@ events {
     sources: "counter"
     index: 1
     offset: 38
+    repr: "<function test_call.<locals>.f"
   }
 }
 events {
@@ -36,6 +38,7 @@ events {
     value: "1"
     index: 2
     offset: 42
+    repr: "1"
   }
 }
 events {
@@ -47,6 +50,7 @@ events {
     value: "1"
     index: 3
     offset: 44
+    repr: "1"
   }
 }
 events {
@@ -61,6 +65,7 @@ events {
     sources: "f"
     index: 4
     offset: 48
+    repr: "1"
   }
 }
 events {
@@ -75,6 +80,7 @@ events {
     sources: "f"
     index: 5
     offset: 60
+    repr: "2"
   }
 }
 events {
@@ -86,6 +92,7 @@ events {
     value: "1"
     index: 6
     offset: 70
+    repr: "1"
   }
 }
 events {
@@ -97,6 +104,7 @@ events {
     value: "1"
     index: 7
     offset: 72
+    repr: "1"
   }
 }
 events {
@@ -113,6 +121,7 @@ events {
     sources: "f"
     index: 8
     offset: 80
+    repr: "3"
   }
 }
 events {
@@ -129,6 +138,7 @@ events {
     sources: "f"
     index: 9
     offset: 104
+    repr: "4"
   }
 }
 events {
@@ -144,6 +154,7 @@ events {
     sources: "f"
     index: 10
     offset: 128
+    repr: "5"
   }
 }
 tracing_result {
