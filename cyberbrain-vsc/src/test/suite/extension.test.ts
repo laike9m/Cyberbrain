@@ -25,6 +25,10 @@ const examples = [
   {
     file: "examples/twelve_days/twelve.py",
     args: ["-m", "examples.twelve_days.twelve"]
+  },
+  {
+    file: "examples/rhymer/rhymer.py",
+    args: ["-m", "examples.rhymer.rhymer"]
   }
 ];
 
