@@ -21,12 +21,27 @@ function getType(obj) {
 //
 // See http://shorturl.at/gkzJS for how format of output.
 export function displayValueInConsole(node) {
+  cl("\n");
   if (node.type === "Return") {
     cl("Return value is:\n");
   } else {
-    cl(`${node.target}'s value at line ${node.level}:\n`);
+    cl(
+      `Value of %c${node.target} %cat line %c${node.level}%c:`,
+      "color: #b43024",
+      "",
+      "color: #b43024",
+      ""
+    );
   }
   const obj = node.runtimeValue;
+
+  // When there's only one property "repr", it means we currently can't rely
+  // on JSON pickle for serialization. As a fallback, log the repr text.
+  const keys = Object.keys(obj);
+  if (keys.length === 1 && keys[0] === "repr") {
+    cl(obj.repr);
+    return;
+  }
 
   switch (getType(obj)) {
     case Types.NULL:
