@@ -2,7 +2,7 @@
 	"name": "cyberbrain",
 	"displayName": "Cyberbrain",
 	"description": "Python debugging, redefined.",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"publisher": "laike9m",
 	"repository": "https://github.com/laike9m/Cyberbrain",
 	"license": "MIT",
