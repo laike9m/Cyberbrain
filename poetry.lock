@@ -100,6 +100,17 @@ version = "3.0.4"
 
 [[package]]
 category = "main"
+description = "Better version of repr/reprlib for short, cheap string representations."
+name = "cheap-repr"
+optional = false
+python-versions = "*"
+version = "0.4.2"
+
+[package.extras]
+tests = ["django", "numpy (>=1.16.3)", "pandas (>=0.24.2)", "pytest"]
+
+[[package]]
+category = "main"
 description = "Cross-platform colored terminal text."
 name = "colorama"
 optional = false
@@ -891,7 +902,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pytest-cov", "jaraco.test (>=3.2.0)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
 [metadata]
-content-hash = "17852cd178c4c691d4884d463aba7c4a093797d6378a2da901f1f92a739fce86"
+content-hash = "6b2efe4cb7b01bec2e3ecfaa522ec50c5b5c9a3de93757aed0ae27f7e4590e51"
 python-versions = "^3.7.0"
 
 [metadata.files]
@@ -943,6 +954,9 @@ certifi = [
 chardet = [
     {file = "chardet-3.0.4-py2.py3-none-any.whl", hash = "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691"},
     {file = "chardet-3.0.4.tar.gz", hash = "sha256:84ab92ed1c4d4f16916e05906b6b75a6c0fb5db821cc65e70cbd64a3e2a5eaae"},
+]
+cheap-repr = [
+    {file = "cheap_repr-0.4.2.tar.gz", hash = "sha256:3d6428acab94a2fd94127ebe6a7c838ff52286632c934e0ca526c8318b27e46c"},
 ]
 colorama = [
     {file = "colorama-0.4.3-py2.py3-none-any.whl", hash = "sha256:7d73d2a99753107a36ac6b455ee49046802e59d9d076ef8e47b61499fa29afff"},

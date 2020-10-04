@@ -89,7 +89,8 @@ class Frame:
         returned_obj = self.value_stack._pop()
         self.events.append(
             Return(
-                value=value,
+                value=value,  # TODO: deepcopy
+                repr=utils.get_repr(value),
                 lineno=self.offset_to_lineno[frame.f_lasti],
                 filename=self.filename,
                 offset=frame.f_lasti,
@@ -115,10 +116,12 @@ class Frame:
 
         # Logs InitialValue event if it hasn't been recorded yet.
         if utils.name_exist_in_frame(target, frame) and not self._knows(target):
+            value, value_repr = utils.deepcopy_value_from_frame(target, frame)
             self._add_new_event(
                 InitialValue(
                     target=Symbol(target),
-                    value=utils.deepcopy_value_from_frame(target, frame),
+                    repr=value_repr,
+                    value=value,
                     lineno=self.offset_to_lineno[instr.offset],
                     filename=self.filename,
                     offset=instr.offset,
@@ -140,15 +143,14 @@ class Frame:
 
         # TODO: For mutation, add the mutated object as a source.
         if event_info.type is EventType.Mutation:
-            diff = DeepDiff(
-                self._latest_value_of(target),
-                utils.get_value_from_frame(target.name, frame),
-            )
+            value = utils.get_value_from_frame(target.name, frame)
+            diff = DeepDiff(self._latest_value_of(target), value)
             if diff != {}:
                 # noinspection PyArgumentList
                 self._add_new_event(
                     Mutation(
                         target=target,
+                        repr=utils.get_repr(value),
                         filename=self.filename,
                         lineno=self.offset_to_lineno[instr.offset],
                         delta=Delta(diff=diff),
@@ -157,10 +159,12 @@ class Frame:
                     )
                 )
         elif event_info.type is EventType.Binding:
+            value, value_repr = utils.deepcopy_value_from_frame(target.name, frame)
             self._add_new_event(
                 Binding(
                     target=target,
-                    value=utils.deepcopy_value_from_frame(target.name, frame),
+                    value=value,
+                    repr=value_repr,
                     sources=event_info.sources,
                     filename=self.filename,
                     lineno=self.offset_to_lineno[instr.offset],

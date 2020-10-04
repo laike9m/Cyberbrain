@@ -13,6 +13,7 @@ events {
     value: "\"hello world\""
     index: 0
     offset: 10
+    repr: "\"hello world\""
   }
 }
 events {
@@ -25,6 +26,7 @@ events {
     sources: "x"
     index: 1
     offset: 14
+    repr: "\"hello world\""
   }
 }
 events {
@@ -37,6 +39,7 @@ events {
     sources: "y"
     index: 2
     offset: 22
+    repr: "\"hello world\""
   }
 }
 events {
@@ -49,6 +52,7 @@ events {
     sources: "x"
     index: 3
     offset: 24
+    repr: "\"hello world\""
   }
 }
 tracing_result {

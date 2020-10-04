@@ -13,6 +13,7 @@ events {
     value: "2"
     index: 0
     offset: 10
+    repr: "2"
   }
 }
 events {
@@ -25,6 +26,7 @@ events {
     sources: "n"
     index: 1
     offset: 28
+    repr: "[0, 1]"
   }
 }
 events {
@@ -36,6 +38,7 @@ events {
     value: "[\"foo\", \"bar\"]"
     index: 2
     offset: 36
+    repr: "[\'foo\', \'bar\']"
   }
 }
 events {
@@ -48,6 +51,7 @@ events {
     sources: "lst"
     index: 3
     offset: 50
+    repr: "[\'foo\', \'bar\']"
   }
 }
 tracing_result {

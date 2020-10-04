@@ -21,7 +21,7 @@ is poor, see: https://github.com/visjs/vis-network/issues/930
 // The .js suffix is needed to make import work in vsc webview.
 import { Loop } from "./loop.js";
 import { getInitialState } from "./initialize.js";
-import { displayValueInConsole, getTooltipText } from "./value.js";
+import { displayValueInConsole } from "./value.js";
 
 let cl = console.log;
 
@@ -255,11 +255,13 @@ class TraceGraph {
       );
 
       for (let node of this.nodes.get(tracePathNodeIds)) {
-        let text = getTooltipText(node.runtimeValue);
+        if (node.repr === undefined) {
+          continue;
+        }
         let pos = this.network.getPosition(node.id);
         let rectX = pos.x + 10;
         let rectY = pos.y - 33;
-        let rectWidth = ctx.measureText(text).width + 20;
+        let rectWidth = ctx.measureText(node.repr).width + 20;
         let rectHeight = 25;
 
         ctx.fillStyle = "#f5f4ed";
@@ -269,7 +271,7 @@ class TraceGraph {
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         // Centers text at background rectangle's center.
-        ctx.fillText(text, rectX + rectWidth / 2, rectY + rectHeight / 2);
+        ctx.fillText(node.repr, rectX + rectWidth / 2, rectY + rectHeight / 2);
       }
     });
 
@@ -337,6 +339,7 @@ class TraceGraph {
       target: event.target,
       // "value" is a reserved property, use "runtimeValue" instead.
       runtimeValue: event.value,
+      repr: event.repr,
       offset: event.offset,
       type: event.type,
       color: {

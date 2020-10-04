@@ -13,6 +13,7 @@ events {
     value: "0"
     index: 0
     offset: 18
+    repr: "0"
   }
 }
 events {
@@ -34,6 +35,7 @@ events {
     value: "1"
     index: 2
     offset: 18
+    repr: "1"
   }
 }
 events {

@@ -13,6 +13,7 @@ events {
     value: "[]"
     index: 0
     offset: 20
+    repr: "[]"
   }
 }
 events {
@@ -24,6 +25,7 @@ events {
     value: "1"
     index: 1
     offset: 28
+    repr: "1"
   }
 }
 events {
@@ -35,6 +37,7 @@ events {
     value: "2"
     index: 2
     offset: 36
+    repr: "2"
   }
 }
 events {
@@ -46,6 +49,7 @@ events {
     value: "\"b\""
     index: 3
     offset: 40
+    repr: "\"b\""
   }
 }
 events {
@@ -57,6 +61,7 @@ events {
     value: "\"c\""
     index: 4
     offset: 50
+    repr: "\"c\""
   }
 }
 events {
@@ -70,6 +75,7 @@ events {
     sources: "c"
     index: 5
     offset: 60
+    repr: "True"
   }
 }
 events {
@@ -82,6 +88,7 @@ events {
     sources: "c"
     index: 6
     offset: 72
+    repr: "\"c\""
   }
 }
 tracing_result {

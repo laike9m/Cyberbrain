@@ -13,6 +13,7 @@ events {
     value: "0"
     index: 0
     offset: 10
+    repr: "0"
   }
 }
 events {
@@ -25,6 +26,7 @@ events {
     sources: "i"
     index: 1
     offset: 24
+    repr: "0"
   }
 }
 events {
@@ -37,6 +39,7 @@ events {
     sources: "i"
     index: 2
     offset: 32
+    repr: "1"
   }
 }
 events {
@@ -59,6 +62,7 @@ events {
     sources: "i"
     index: 4
     offset: 24
+    repr: "1"
   }
 }
 events {
@@ -71,6 +75,7 @@ events {
     sources: "i"
     index: 5
     offset: 32
+    repr: "2"
   }
 }
 events {
@@ -92,6 +97,7 @@ events {
     value: "0"
     index: 7
     offset: 40
+    repr: "0"
   }
 }
 events {
@@ -103,6 +109,7 @@ events {
     value: "0"
     index: 8
     offset: 60
+    repr: "0"
   }
 }
 events {
@@ -115,6 +122,7 @@ events {
     sources: "i"
     index: 9
     offset: 78
+    repr: "1"
   }
 }
 events {
@@ -136,6 +144,7 @@ events {
     value: "0"
     index: 11
     offset: 88
+    repr: "0"
   }
 }
 events {
@@ -148,6 +157,7 @@ events {
     sources: "i"
     index: 12
     offset: 106
+    repr: "1"
   }
 }
 events {
@@ -170,6 +180,7 @@ events {
     sources: "i"
     index: 14
     offset: 106
+    repr: "2"
   }
 }
 events {
@@ -191,6 +202,7 @@ events {
     value: "0"
     index: 16
     offset: 124
+    repr: "0"
   }
 }
 events {
@@ -203,6 +215,7 @@ events {
     sources: "i"
     index: 17
     offset: 142
+    repr: "1"
   }
 }
 events {
@@ -214,6 +227,7 @@ events {
     value: "1"
     index: 18
     offset: 172
+    repr: "1"
   }
 }
 loops {
