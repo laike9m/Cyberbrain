@@ -10,6 +10,7 @@ def test_decorator_api(trace, rpc_stub):
 
     assert decorated_func() == 2
 
-    from utils import assert_GetFrame
-
-    assert_GetFrame(rpc_stub, "decorated_func")
+    # Disabled until https://github.com/alexmojaki/cheap_repr/issues/13 is resolved.
+    # from utils import assert_GetFrame
+    #
+    # assert_GetFrame(rpc_stub, "decorated_func")
