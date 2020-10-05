@@ -22,11 +22,11 @@ events {
     filename: "test_call.py"
     lineno: 10
     target: "f"
-    value: "{\"repr\": \"<function test_call.<locals>.f\"}"
+    value: "{\"repr\": \"<function test_call.<locals>.f>\"}"
     sources: "counter"
     index: 1
     offset: 38
-    repr: "<function test_call.<locals>.f"
+    repr: "<function test_call.<locals>.f>"
   }
 }
 events {

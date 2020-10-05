@@ -2,8 +2,12 @@ import re
 
 
 def test_repr(tracer, rpc_stub):
+    class A:
+        pass
+
     tracer.start()
     match = re.match("foo", "foobar")
+    a = A()
     tracer.stop()
 
     from utils import return_GetFrame
@@ -19,3 +23,7 @@ def test_repr(tracer, rpc_stub):
         binding_match_event.binding.value
         == '{"repr": "<re.Match object; span=(0, 3), match=\'foo\'>"}'
     )
+
+    binding_a_event = frame_proto.events[2]
+    assert binding_a_event.binding.repr == "{}"
+    assert binding_a_event.binding.value == "<test_to_json.test_repr.<locals>.A object>"
