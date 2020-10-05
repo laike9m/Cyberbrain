@@ -20,7 +20,9 @@ def test_module(rpc_stub):
         Mutation(
             target=Symbol("__annotations__"),
             value={"y": int},
-            sources=set(),  # `int` is a built-in so is excluded from sources.
+            sources={
+                Symbol("__annotations__")
+            },  # `int` is a built-in so is excluded from sources.
             lineno=11,
         ),
     ]

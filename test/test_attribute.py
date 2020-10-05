@@ -48,7 +48,7 @@ def test_attribute(tracer, rpc_stub):
                     {
                         "target": Symbol("a1"),
                         "value": has_property("x", has_property("y", 1)),
-                        "sources": {Symbol("a2")},
+                        "sources": {Symbol("a1"), Symbol("a2")},
                         "lineno": 16,
                     }
                 ),
@@ -59,7 +59,7 @@ def test_attribute(tracer, rpc_stub):
                     {
                         "target": Symbol("a1"),
                         "value": has_property("x", has_property("y", 2)),
-                        "sources": set(),
+                        "sources": {Symbol("a1")},
                         "lineno": 17,
                     }
                 ),
@@ -70,7 +70,7 @@ def test_attribute(tracer, rpc_stub):
                     {
                         "target": Symbol("a1"),
                         "value": not_(has_property("x")),
-                        "sources": set(),
+                        "sources": {Symbol("a1")},
                         "lineno": 18,
                     }
                 ),

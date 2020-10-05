@@ -120,6 +120,7 @@ events {
     delta: "{\"values_changed\": {\"root[1]\": {\"new_value\": 2}}}"
     sources: "a"
     sources: "c"
+    sources: "d"
     index: 8
     offset: 72
     repr: "{1: 2, 2: 1}"
@@ -134,6 +135,7 @@ events {
     value: "{\"2\": 1}"
     delta: "{\"dictionary_item_removed\": {\"root[1]\": 2}}"
     sources: "a"
+    sources: "d"
     index: 9
     offset: 78
     repr: "{2: 1}"
@@ -241,12 +243,14 @@ tracing_result {
   value {
     event_ids: "test_container:0"
     event_ids: "test_container:7"
+    event_ids: "test_container:6"
   }
 }
 tracing_result {
   key: "test_container:9"
   value {
     event_ids: "test_container:0"
+    event_ids: "test_container:8"
   }
 }
 identifiers: "a"

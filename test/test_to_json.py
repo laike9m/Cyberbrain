@@ -25,5 +25,5 @@ def test_repr(tracer, rpc_stub):
     )
 
     binding_a_event = frame_proto.events[2]
-    assert binding_a_event.binding.repr == "{}"
-    assert binding_a_event.binding.value == "<test_to_json.test_repr.<locals>.A object>"
+    assert binding_a_event.binding.repr == "<test_to_json.test_repr.<locals>.A object>"
+    assert binding_a_event.binding.value == "{}"

@@ -5,7 +5,7 @@ from __future__ import annotations
 import enum
 import os
 from collections import defaultdict
-from typing import Any, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING, Optional
 
 import attr
 import shortuuid
@@ -14,7 +14,7 @@ from deepdiff import Delta
 from . import utils
 
 if TYPE_CHECKING:
-    pass
+    from .frame import Snapshot
 
 _dummy = object()
 
@@ -247,7 +247,7 @@ class Symbol:
     snapshot can be omitted.
     """
 
-    def __init__(self, name: str, snapshot=None):
+    def __init__(self, name: str, snapshot: Optional[Snapshot] = None):
         self.name = name
         self.snapshot = snapshot
 

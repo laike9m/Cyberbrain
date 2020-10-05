@@ -42,7 +42,7 @@ def test_miscellaneous(tracer, rpc_stub):
             lineno=17,
         ),
         InitialValue(target=Symbol("e"), value=[1, 2, 3], lineno=18),
-        Mutation(target=Symbol("e"), value=[1, 2], lineno=18),
+        Mutation(target=Symbol("e"), value=[1, 2], sources={Symbol("e")}, lineno=18),
         Mutation(target=Symbol("e"), value=[4, 2], sources={Symbol("e")}, lineno=18),
         Deletion(target=Symbol("e"), lineno=19),
         InitialValue(target=Symbol("g"), value=0, lineno=21),
