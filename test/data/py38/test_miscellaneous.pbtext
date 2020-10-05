@@ -102,6 +102,7 @@ events {
     target: "e"
     value: "[1, 2]"
     delta: "{\"iterable_item_removed\": {\"root[2]\": 3}}"
+    sources: "e"
     index: 7
     offset: 100
     repr: "[1, 2]"
@@ -198,6 +199,12 @@ tracing_result {
   value {
     event_ids: "test_miscellaneous:0"
     event_ids: "test_miscellaneous:1"
+  }
+}
+tracing_result {
+  key: "test_miscellaneous:7"
+  value {
+    event_ids: "test_miscellaneous:6"
   }
 }
 tracing_result {
