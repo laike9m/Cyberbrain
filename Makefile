@@ -36,6 +36,7 @@ proto_compile:
            cyberbrain/generated/communication_pb2_grpc.py
 	cd ./cyberbrain-vsc && ./build-proto.sh
 
+# We must use npm not yarn. See https://github.com/microsoft/vscode-vsce/issues/497
 publish:
 	poetry build && poetry publish
-	cd ./cyberbrain-vsc && vsce package && vsce publish
+	cd ./cyberbrain-vsc && vsce package --no-yarn && vsce publish --no-yarn
