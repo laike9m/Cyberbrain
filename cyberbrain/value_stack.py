@@ -7,6 +7,7 @@ import enum
 import functools
 import inspect
 import sys
+from copy import copy
 from dis import Instruction
 from types import FrameType
 from typing import Optional
@@ -187,6 +188,14 @@ class GeneralValueStack:
                 for index, item in enumerate(value):
                     if isinstance(item, str):
                         value[index] = Symbol(item, snapshot=self.snapshot)
+                    else:  # Already a Symbol.
+                        # Why copy? Because the symbols on the stack might be modified
+                        # later in the update_snapshot method. If we don't copy, a
+                        # symbol that's already been popped out of the stack will be
+                        # affected by the change (if it has the same name with the
+                        # modified symbol on the stack). A copy will make symbols
+                        # isolated from each other.
+                        value[index] = copy(value[index])
             # For NULL or int used by block related handlers, keep the original value.
             self.stack.append(value)
 
@@ -273,14 +282,16 @@ class GeneralValueStack:
     def _STORE_SUBSCR_handler(self):
         tos, tos1, tos2 = self._pop(3)
         assert len(tos1) == 1
-        return EventInfo(type=MutationType, target=tos1[0], sources=set(tos + tos2))
+        return EventInfo(
+            type=MutationType, target=tos1[0], sources=set(tos + tos1 + tos2)
+        )
 
     # noinspection DuplicatedCode
     @emit_event
     def _DELETE_SUBSCR_handler(self):
         tos, tos1 = self._pop(2)
         assert len(tos1) == 1
-        return EventInfo(type=MutationType, target=tos1[0], sources=set(tos))
+        return EventInfo(type=MutationType, target=tos1[0], sources=set(tos + tos1))
 
     def _SETUP_ANNOTATIONS_handler(self):
         pass
@@ -315,13 +326,13 @@ class GeneralValueStack:
     def _STORE_ATTR_handler(self):
         tos, tos1 = self._pop(2)
         assert len(tos) == 1
-        return EventInfo(type=MutationType, target=tos[0], sources=set(tos1))
+        return EventInfo(type=MutationType, target=tos[0], sources=set(tos + tos1))
 
     @emit_event
     def _DELETE_ATTR_handler(self):
         tos = self._pop()
         assert len(tos) == 1
-        return EventInfo(type=MutationType, target=tos[0])
+        return EventInfo(type=MutationType, target=tos[0], sources=set(tos))
 
     @emit_event
     def _STORE_GLOBAL_handler(self, instr):
@@ -513,10 +524,13 @@ class GeneralValueStack:
         if not inst_or_callable:
             return
 
+        # Actually, there could be multiple identifiers in inst_or_callable, but right
+        # now we'll assume there's just one, and improve it as part of fine-grained
+        # symbol tracing (main feature of version 3).
         return EventInfo(
             type=MutationType,
             target=inst_or_callable[0],
-            sources=set(utils.flatten(args)),
+            sources=set(utils.flatten(args, inst_or_callable)),
         )
 
     def _MAKE_FUNCTION_handler(self, instr):
