@@ -22,10 +22,10 @@ events {
     filename: "test_api_decorator.py"
     lineno: 8
     target: "f"
-    value: "{\"repr\": \"<function test_decorator_api.<locals>.f\"}"
+    value: "{\"repr\": \"<function test_decorator_api.<locals>.f>\"}"
     index: 1
     offset: 4
-    repr: "<function test_decorator_api.<locals>.f"
+    repr: "<function test_decorator_api.<locals>.f>"
   }
 }
 events {
