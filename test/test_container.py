@@ -21,10 +21,6 @@ def test_container(tracer, rpc_stub):
 
     tracer.stop()
 
-    import pprint
-
-    pprint.pprint(tracer.events)
-
     assert tracer.events == [
         InitialValue(target=Symbol("a"), value=1, lineno=12),
         InitialValue(target=Symbol("b"), value=1, lineno=12),
@@ -59,10 +55,15 @@ def test_container(tracer, rpc_stub):
         Mutation(
             target=Symbol("d"),
             value={1: 2, 2: 1},
-            sources={Symbol("a"), Symbol("c")},
+            sources={Symbol("d"), Symbol("a"), Symbol("c")},
             lineno=17,
         ),
-        Mutation(target=Symbol("d"), value={2: 1}, sources={Symbol("a")}, lineno=18),
+        Mutation(
+            target=Symbol("d"),
+            value={2: 1},
+            sources={Symbol("d"), Symbol("a")},
+            lineno=18,
+        ),
         InitialValue(target=Symbol("e"), value=0, lineno=19),
         Binding(
             target=Symbol("d"),
