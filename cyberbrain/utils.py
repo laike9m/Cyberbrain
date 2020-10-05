@@ -223,7 +223,10 @@ def get_repr(obj: Any) -> str:
     if not match:
         return repr_text
     else:
-        return repr_text[: match.start(0) - 1]
+        repr_text = repr_text[: match.start(0) - 1]
+        # Sometimes repr_text is like "<function f", add a '>' at the end.
+        if repr_text.startswith("<") and not repr_text.endswith(">"):
+            return repr_text + ">"
 
 
 def shorten_path(file_path, length):
