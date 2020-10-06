@@ -12,7 +12,9 @@
 
    ![](start.jpg)
 
-4. **Press `Cmd+Shift+P` (or `Ctrl+Shift+P`) to open the command palette**
+4. **Press `Cmd+Shift+P` (or `Ctrl+Shift+P`, or click `View` -> `Find Command...`) to open the command palette**
+
+   ![](find_command.jpg)
 
 5. **Find the `Initialize Cyberbrain` command, press "Enter"**
 
