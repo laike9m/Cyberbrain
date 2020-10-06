@@ -41,7 +41,7 @@ Cyberbrain keeps your workflow unchanged. You run a program (from vscode or comm
 
 The following gif demonstrates the  workflow:
 
-![](docs/images/usage.gif)
+![](https://github.com/laike9m/images/raw/master/usage.gif)
 
 Features provided:
 - Dataflow analysis
@@ -71,7 +71,7 @@ Note that v1.0 means Cyberbrain is stable in the features it supports, it does *
 
 | Version | Features                        |
 |:-------:|---------------------------------|
-| 1.0     | Mutual interaction between source code and the trace graph ([#7][m1])  |
+| 1.0     | Code & trace interaction ([#7][m1]), remote debugging, trace dump
 | 2.0     | Multi-frame tracing             |
 | 3.0     | Fine-grained symbol tracing     |
 | 4.0     | Async & multi-threading support |
