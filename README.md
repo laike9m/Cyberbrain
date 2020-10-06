@@ -23,7 +23,8 @@ code --install-extension laike9m.cyberbrain
 
 Or if you prefer, install from [PyPI](https://pypi.org/project/cyberbrain/) and [VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=laike9m.cyberbrain).
 
-**Or, you can try Cyberbrain directly from your browser:** [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#snapshot/6f13290b-f979-4592-b1bf-98dd45759158)
+**Or, you can try Cyberbrain directly from your browser:** [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#snapshot/adaaffeb-7844-46df-83f1-d20d58988a2c)
+
 
 ## How to Use
 
