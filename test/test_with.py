@@ -48,46 +48,46 @@ def test_with(tracer, rpc_stub):
         InitialValue(
             lineno=21,
             target=Symbol("ContextManagerNoReturn"),
-            value=ContextManagerNoReturn,
+            value='{"py/type": "test_with.test_with.<locals>.ContextManagerNoReturn"}',
         ),
-        Binding(lineno=22, target=Symbol("a"), value=1, sources=set()),
+        Binding(lineno=22, target=Symbol("a"), value="1", sources=set()),
         InitialValue(
             lineno=24,
             target=Symbol("ContextManagerWithReturn"),
-            value=ContextManagerWithReturn,
+            value='{"py/type": "test_with.test_with.<locals>.ContextManagerWithReturn"}',
         ),
         Binding(
             lineno=24,
             target=Symbol("b"),
-            value=2,
+            value="2",
             sources={Symbol("ContextManagerWithReturn")},
         ),
         Binding(
             lineno=27,
             target=Symbol("c"),
-            value=2,
+            value="2",
             sources={Symbol("ContextManagerWithReturn")},
         ),
         Binding(
             lineno=27,
             target=Symbol("d"),
-            value=None,
+            value="null",
             sources={Symbol("ContextManagerNoReturn")},
         ),
         Binding(
             lineno=30,
             target=Symbol("e"),
-            value=2,
+            value="2",
             sources={Symbol("ContextManagerWithReturn")},
         ),
         Binding(
             lineno=31,
             target=Symbol("f"),
-            value=2,
+            value="2",
             sources={Symbol("ContextManagerWithReturn")},
         ),
-        Binding(lineno=36, target=Symbol("g"), value=1, sources=set()),
-        Binding(lineno=41, target=Symbol("i"), value=0, sources=set()),
+        Binding(lineno=36, target=Symbol("g"), value="1", sources=set()),
+        Binding(lineno=41, target=Symbol("i"), value="0", sources=set()),
     ]
 
     from utils import python_version

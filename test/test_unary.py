@@ -15,11 +15,11 @@ def test_unary_operations(tracer, rpc_stub):
     tracer.stop()
 
     assert tracer.events == [
-        InitialValue(target=Symbol("a"), value=1, lineno=10),
-        Binding(target=Symbol("b"), value=1, sources={Symbol("a")}, lineno=10),
-        Binding(target=Symbol("b"), value=-1, sources={Symbol("a")}, lineno=11),
-        Binding(target=Symbol("b"), value=False, sources={Symbol("a")}, lineno=12),
-        Binding(target=Symbol("b"), value=-2, sources={Symbol("a")}, lineno=13),
+        InitialValue(target=Symbol("a"), value="1", lineno=10),
+        Binding(target=Symbol("b"), value="1", sources={Symbol("a")}, lineno=10),
+        Binding(target=Symbol("b"), value="-1", sources={Symbol("a")}, lineno=11),
+        Binding(target=Symbol("b"), value="false", sources={Symbol("a")}, lineno=12),
+        Binding(target=Symbol("b"), value="-2", sources={Symbol("a")}, lineno=13),
     ]
 
     assert_GetFrame(rpc_stub, "test_unary_operations")

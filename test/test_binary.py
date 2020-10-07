@@ -24,47 +24,53 @@ def test_binary_operation(tracer, rpc_stub):
     tracer.stop()
 
     assert tracer.events == [
-        InitialValue(target=Symbol("a"), value=1, lineno=10),
-        InitialValue(target=Symbol("b"), value=1, lineno=10),
+        InitialValue(target=Symbol("a"), value="1", lineno=10),
+        InitialValue(target=Symbol("b"), value="1", lineno=10),
         Binding(
-            target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=10
+            target=Symbol("c"), value="1", sources={Symbol("a"), Symbol("b")}, lineno=10
         ),
         Binding(
-            target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=11
+            target=Symbol("c"), value="1", sources={Symbol("a"), Symbol("b")}, lineno=11
         ),
         Binding(
-            target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=12
+            target=Symbol("c"), value="1", sources={Symbol("a"), Symbol("b")}, lineno=12
         ),
         Binding(
-            target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=13
+            target=Symbol("c"),
+            value="1.0",
+            sources={Symbol("a"), Symbol("b")},
+            lineno=13,
         ),
         Binding(
-            target=Symbol("c"), value=0, sources={Symbol("a"), Symbol("b")}, lineno=14
+            target=Symbol("c"), value="0", sources={Symbol("a"), Symbol("b")}, lineno=14
         ),
         Binding(
-            target=Symbol("c"), value=2, sources={Symbol("a"), Symbol("b")}, lineno=15
+            target=Symbol("c"), value="2", sources={Symbol("a"), Symbol("b")}, lineno=15
         ),
         Binding(
-            target=Symbol("c"), value=0, sources={Symbol("a"), Symbol("b")}, lineno=16
+            target=Symbol("c"), value="0", sources={Symbol("a"), Symbol("b")}, lineno=16
         ),
-        InitialValue(target=Symbol("lst"), value=[0, 1], lineno=17),
+        InitialValue(target=Symbol("lst"), value="[0, 1]", lineno=17),
         Binding(
-            target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("lst")}, lineno=17
-        ),
-        Binding(
-            target=Symbol("c"), value=2, sources={Symbol("a"), Symbol("b")}, lineno=18
-        ),
-        Binding(
-            target=Symbol("c"), value=0, sources={Symbol("a"), Symbol("b")}, lineno=19
+            target=Symbol("c"),
+            value="1",
+            sources={Symbol("a"), Symbol("lst")},
+            lineno=17,
         ),
         Binding(
-            target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=20
+            target=Symbol("c"), value="2", sources={Symbol("a"), Symbol("b")}, lineno=18
         ),
         Binding(
-            target=Symbol("c"), value=0, sources={Symbol("a"), Symbol("b")}, lineno=21
+            target=Symbol("c"), value="0", sources={Symbol("a"), Symbol("b")}, lineno=19
         ),
         Binding(
-            target=Symbol("c"), value=1, sources={Symbol("a"), Symbol("b")}, lineno=22
+            target=Symbol("c"), value="1", sources={Symbol("a"), Symbol("b")}, lineno=20
+        ),
+        Binding(
+            target=Symbol("c"), value="0", sources={Symbol("a"), Symbol("b")}, lineno=21
+        ),
+        Binding(
+            target=Symbol("c"), value="1", sources={Symbol("a"), Symbol("b")}, lineno=22
         ),
     ]
 

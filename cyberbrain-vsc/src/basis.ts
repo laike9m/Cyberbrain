@@ -91,7 +91,6 @@ export class Mutation extends Event {
   target: string;
   value: any;
   repr: string;
-  delta: string;
   sources: string[];
 
   constructor(mutation: MutationProto) {
@@ -106,7 +105,6 @@ export class Mutation extends Event {
     this.target = mutation.getTarget()!;
     this.value = decodeJson(mutation.getValue()!);
     this.repr = mutation.getRepr()!;
-    this.delta = mutation.getDelta()!;
     this.sources = mutation.getSourcesList();
   }
 }

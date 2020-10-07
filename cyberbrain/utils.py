@@ -9,7 +9,6 @@ import re
 import subprocess
 import sys
 import sysconfig
-from copy import deepcopy
 from functools import lru_cache
 from pathlib import Path
 from pprint import pformat
@@ -162,28 +161,6 @@ def pprint(*args):
                 highlight(pformat(arg), PythonLexer(), Terminal256Formatter()) + "\n"
             )
     print(output)
-
-
-def deepcopy_value_from_frame(name: str, frame: FrameType) -> Tuple[any, str]:
-    """Given a frame and a name(identifier) saw in this frame, returns its value.
-
-    The value has to be deep copied to avoid being changed by code coming later.
-
-    I'm not 100% sure if this will always return the correct value. If we find a
-    case where it returns the wrong value due to name collisions, we can modify
-    code and store names with their scopes, like (a, local), (b, global).
-
-    Once we have a frame class, we might move this method there.
-
-    Returns the copy and its repr string.
-    """
-    value = get_value_from_frame(name, frame)
-
-    # There are certain things you can't copy, like module.
-    try:
-        return deepcopy(value), get_repr(value)
-    except TypeError:
-        return get_repr(value), get_repr(value)
 
 
 def get_value_from_frame(name: str, frame: FrameType):

@@ -9,7 +9,6 @@ from typing import Any, TYPE_CHECKING, Optional
 
 import attr
 import shortuuid
-from deepdiff import Delta
 
 from . import utils
 
@@ -129,7 +128,6 @@ class Binding(Event):
         )
 
 
-# For now, we don't want to compare delta, so disable auto-generated __eq__.
 @attr.s(auto_attribs=True, eq=False)
 class Mutation(Event):
     """An identifier is mutated.
@@ -144,14 +142,7 @@ class Mutation(Event):
     """
 
     target: Symbol = attr.ib(kw_only=True)
-
-    # Represents the diffs from before and after the mutation.
-    delta: Delta = Delta({})
-
     sources: set[Symbol] = set()  # Source can be empty, like a = 1
-
-    # Value is optional. It is set on demand during testing. Other code MUSTN'T rely
-    # on it.
     value: Any = _dummy
     repr: str = ""
 

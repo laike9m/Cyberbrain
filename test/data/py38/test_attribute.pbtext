@@ -8,7 +8,7 @@ events {
   initial_value {
     id: "test_attribute:0"
     filename: "test_attribute.py"
-    lineno: 16
+    lineno: 14
     target: "a2"
     value: "{\"y\": 1}"
     index: 0
@@ -20,7 +20,7 @@ events {
   initial_value {
     id: "test_attribute:1"
     filename: "test_attribute.py"
-    lineno: 16
+    lineno: 14
     target: "a1"
     value: "{}"
     index: 1
@@ -32,10 +32,9 @@ events {
   mutation {
     id: "test_attribute:2"
     filename: "test_attribute.py"
-    lineno: 16
+    lineno: 14
     target: "a1"
     value: "{\"x\": {\"y\": 1}}"
-    delta: "{\"attribute_added\": {\"root.x\": {\"y\": 1}}}"
     sources: "a1"
     sources: "a2"
     index: 2
@@ -47,10 +46,9 @@ events {
   mutation {
     id: "test_attribute:3"
     filename: "test_attribute.py"
-    lineno: 17
+    lineno: 15
     target: "a1"
     value: "{\"x\": {\"y\": 2}}"
-    delta: "{\"values_changed\": {\"root.x.y\": {\"new_value\": 2}}}"
     sources: "a1"
     index: 3
     offset: 52
@@ -61,10 +59,9 @@ events {
   mutation {
     id: "test_attribute:4"
     filename: "test_attribute.py"
-    lineno: 18
+    lineno: 16
     target: "a1"
     value: "{}"
-    delta: "{\"attribute_removed\": {\"root.x\": {\"y\": 2}}}"
     sources: "a1"
     index: 4
     offset: 56

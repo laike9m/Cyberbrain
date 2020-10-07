@@ -44,28 +44,28 @@ def test_while_loop(tracer, rpc_stub):
     tracer.stop()
 
     assert tracer.events == [
-        Binding(lineno=8, target=Symbol("i"), value=0),
-        Binding(lineno=10, target=Symbol("a"), value=0, sources={Symbol("i")}),
-        Binding(lineno=11, target=Symbol("i"), value=1, sources={Symbol("i")}),
+        Binding(lineno=8, target=Symbol("i"), value="0"),
+        Binding(lineno=10, target=Symbol("a"), value="0", sources={Symbol("i")}),
+        Binding(lineno=11, target=Symbol("i"), value="1", sources={Symbol("i")}),
         JumpBackToLoopStart(lineno=11, jump_target=get_value({"py38": 12, "py37": 14})),
-        Binding(lineno=10, target=Symbol("a"), value=1, sources={Symbol("i")}),
-        Binding(lineno=11, target=Symbol("i"), value=2, sources={Symbol("i")}),
+        Binding(lineno=10, target=Symbol("a"), value="1", sources={Symbol("i")}),
+        Binding(lineno=11, target=Symbol("i"), value="2", sources={Symbol("i")}),
         JumpBackToLoopStart(lineno=11, jump_target=get_value({"py38": 12, "py37": 14})),
         ##
-        Binding(lineno=13, target=Symbol("i"), value=0),
-        Binding(lineno=17, target=Symbol("i"), value=0),
-        Binding(lineno=19, target=Symbol("i"), value=1, sources={Symbol("i")}),
+        Binding(lineno=13, target=Symbol("i"), value="0"),
+        Binding(lineno=17, target=Symbol("i"), value="0"),
+        Binding(lineno=19, target=Symbol("i"), value="1", sources={Symbol("i")}),
         JumpBackToLoopStart(lineno=20, jump_target=get_value({"py38": 54, "py37": 64})),
         ##
-        Binding(lineno=22, target=Symbol("i"), value=0),
-        Binding(lineno=24, target=Symbol("i"), value=1, sources={Symbol("i")}),
+        Binding(lineno=22, target=Symbol("i"), value="0"),
+        Binding(lineno=24, target=Symbol("i"), value="1", sources={Symbol("i")}),
         JumpBackToLoopStart(lineno=26, jump_target=get_value({"py38": 78, "py37": 92})),
-        Binding(lineno=24, target=Symbol("i"), value=2, sources={Symbol("i")}),
+        Binding(lineno=24, target=Symbol("i"), value="2", sources={Symbol("i")}),
         JumpBackToLoopStart(lineno=25, jump_target=get_value({"py38": 78, "py37": 92})),
         ##
-        Binding(lineno=28, target=Symbol("i"), value=0),
-        Binding(lineno=30, target=Symbol("i"), value=1, sources={Symbol("i")}),
-        Binding(lineno=42, target=Symbol("a"), value=1),
+        Binding(lineno=28, target=Symbol("i"), value="0"),
+        Binding(lineno=30, target=Symbol("i"), value="1", sources={Symbol("i")}),
+        Binding(lineno=42, target=Symbol("a"), value="1"),
     ]
     assert tracer.loops == [
         Loop(

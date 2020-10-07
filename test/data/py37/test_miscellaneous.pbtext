@@ -101,7 +101,6 @@ events {
     lineno: 18
     target: "e"
     value: "[1, 2]"
-    delta: "{\"iterable_item_removed\": {\"root[2]\": 3}}"
     sources: "e"
     index: 7
     offset: 100
@@ -115,7 +114,6 @@ events {
     lineno: 18
     target: "e"
     value: "[4, 2]"
-    delta: "{\"values_changed\": {\"root[0]\": {\"new_value\": 4}}}"
     sources: "e"
     index: 8
     offset: 106

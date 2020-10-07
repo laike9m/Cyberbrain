@@ -15,8 +15,8 @@ const examples = [
     args: ["-m", "examples.word_count.wc", "examples/word_count/inputs/*.txt"]
   },
   {
-    file: "examples/telephone/main.py",
-    args: ["-m", "examples.telephone.main"]
+    file: "examples/telephone/telephone.py",
+    args: ["-m", "examples.telephone.telephone"]
   },
   {
     file: "examples/bottles_of_beer/bottle.py",
@@ -29,6 +29,10 @@ const examples = [
   {
     file: "examples/rhymer/rhymer.py",
     args: ["-m", "examples.rhymer.rhymer"]
+  },
+  {
+    file: "examples/mad_libs/mad_libs.py",
+    args: ["-m", "examples.mad_libs.mad_libs"]
   }
 ];
 

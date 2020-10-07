@@ -16,7 +16,6 @@ include = [
 python = "^3.7.0"
 pygments = "^2.6.1"
 crayons = "^0.3.0"
-deepdiff = "^5.0.0"
 grpcio = "^1.30.0"
 protobuf = "^3.12.2"
 shortuuid = "^1.0.1"
