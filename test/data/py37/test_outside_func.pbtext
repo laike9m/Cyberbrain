@@ -45,7 +45,6 @@ events {
     lineno: 11
     target: "__annotations__"
     value: "{\"y\": {\"py/type\": \"builtins.int\"}}"
-    delta: "{\"dictionary_item_added\": {\"root[\'y\']\": {\"py/type\": \"builtins.int\"}}}"
     sources: "__annotations__"
     index: 3
     offset: 66

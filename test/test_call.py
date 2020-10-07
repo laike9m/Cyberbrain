@@ -21,40 +21,45 @@ def test_call(tracer, rpc_stub):
     tracer.stop()
 
     assert tracer.events == [
-        InitialValue(lineno=10, target=Symbol("counter"), value=0),
-        Binding(lineno=10, target=Symbol("f"), value=f, sources={Symbol("counter")}),
-        InitialValue(lineno=15, target=Symbol("a"), value=1),
-        InitialValue(lineno=15, target=Symbol("b"), value=1),
+        InitialValue(lineno=10, target=Symbol("counter"), value="0"),
+        Binding(
+            lineno=10,
+            target=Symbol("f"),
+            value='{"repr": "<function test_call.<locals>.f>"}',
+            sources={Symbol("counter")},
+        ),
+        InitialValue(lineno=15, target=Symbol("a"), value="1"),
+        InitialValue(lineno=15, target=Symbol("b"), value="1"),
         Binding(
             lineno=15,
             target=Symbol("x"),
-            value=1,
+            value="1",
             sources={Symbol("a"), Symbol("b"), Symbol("f")},
         ),
         Binding(
             lineno=16,
             target=Symbol("x"),
-            value=2,
+            value="2",
             sources={Symbol("a"), Symbol("b"), Symbol("f")},
         ),
-        InitialValue(lineno=17, target=Symbol("c"), value=1),
-        InitialValue(lineno=17, target=Symbol("d"), value=1),
+        InitialValue(lineno=17, target=Symbol("c"), value="1"),
+        InitialValue(lineno=17, target=Symbol("d"), value="1"),
         Binding(
             lineno=17,
             target=Symbol("x"),
-            value=3,
+            value="3",
             sources={Symbol("d"), Symbol("f"), Symbol("a"), Symbol("c"), Symbol("b")},
         ),
         Binding(
             lineno=18,
             target=Symbol("x"),
-            value=4,
+            value="4",
             sources={Symbol("d"), Symbol("f"), Symbol("a"), Symbol("c"), Symbol("b")},
         ),
         Binding(
             lineno=19,
             target=Symbol("x"),
-            value=5,
+            value="5",
             sources={Symbol("a"), Symbol("c"), Symbol("b"), Symbol("f")},
         ),
     ]

@@ -394,11 +394,6 @@ export class Mutation extends jspb.Message {
   getRepr(): string | undefined;
   setRepr(value: string): void;
 
-  hasDelta(): boolean;
-  clearDelta(): void;
-  getDelta(): string | undefined;
-  setDelta(value: string): void;
-
   clearSourcesList(): void;
   getSourcesList(): Array<string>;
   setSourcesList(value: Array<string>): void;
@@ -432,7 +427,6 @@ export namespace Mutation {
     target?: string;
     value?: string;
     repr?: string;
-    delta?: string;
     sourcesList: Array<string>;
   };
 }

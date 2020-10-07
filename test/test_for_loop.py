@@ -41,30 +41,30 @@ def test_for_loop(tracer, rpc_stub):
     pprint(tracer.events)
 
     expected_events = [
-        Binding(target=Symbol("i"), value=0, lineno=8),
-        Binding(target=Symbol("a"), value=0, lineno=9, sources={Symbol("i")}),
+        Binding(target=Symbol("i"), value="0", lineno=8),
+        Binding(target=Symbol("a"), value="0", lineno=9, sources={Symbol("i")}),
         JumpBackToLoopStart(jump_target=get_value({"py38": 16, "py37": 18}), lineno=9),
-        Binding(target=Symbol("i"), value=1, lineno=8),
-        Binding(target=Symbol("a"), value=1, lineno=9, sources={Symbol("i")}),
+        Binding(target=Symbol("i"), value="1", lineno=8),
+        Binding(target=Symbol("a"), value="1", lineno=9, sources={Symbol("i")}),
         JumpBackToLoopStart(jump_target=get_value({"py38": 16, "py37": 18}), lineno=9),
-        Binding(target=Symbol("i"), value=0, lineno=11),
-        Binding(target=Symbol("i"), value=0, lineno=15),
+        Binding(target=Symbol("i"), value="0", lineno=11),
+        Binding(target=Symbol("i"), value="0", lineno=15),
         JumpBackToLoopStart(jump_target=get_value({"py38": 56, "py37": 64}), lineno=16),
-        Binding(target=Symbol("i"), value=0, lineno=19),
+        Binding(target=Symbol("i"), value="0", lineno=19),
         JumpBackToLoopStart(jump_target=get_value({"py38": 76, "py37": 88}), lineno=21),
-        Binding(target=Symbol("i"), value=1, lineno=19),
+        Binding(target=Symbol("i"), value="1", lineno=19),
         JumpBackToLoopStart(jump_target=get_value({"py38": 76, "py37": 88}), lineno=20),
-        Binding(target=Symbol("i"), value=0, lineno=23),
+        Binding(target=Symbol("i"), value="0", lineno=23),
         JumpBackToLoopStart(
             jump_target=get_value({"py38": 100, "py37": 116}), lineno=24
         ),
-        Binding(target=Symbol("i"), value=1, lineno=23),
-        Binding(target=Symbol("i"), value=0, lineno=27),
-        Binding(target=Symbol("i"), value=0, lineno=32),
+        Binding(target=Symbol("i"), value="1", lineno=23),
+        Binding(target=Symbol("i"), value="0", lineno=27),
+        Binding(target=Symbol("i"), value="0", lineno=32),
         JumpBackToLoopStart(
             jump_target=get_value({"py38": 148, "py37": 168}), lineno=33
         ),
-        Binding(target=Symbol("a"), value=1, lineno=35),
+        Binding(target=Symbol("a"), value="1", lineno=35),
     ]
     for index, event in enumerate(tracer.events):
         assert event == expected_events[index], f"{event} {expected_events[index]}"

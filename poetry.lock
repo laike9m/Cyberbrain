@@ -125,20 +125,6 @@ python-versions = "*"
 colorama = "*"
 
 [[package]]
-name = "deepdiff"
-version = "5.0.2"
-description = "Deep Difference and Search of any Python object/data."
-category = "main"
-optional = false
-python-versions = ">=3.5"
-
-[package.dependencies]
-ordered-set = ">=4.0.1"
-
-[package.extras]
-murmur = ["mmh3"]
-
-[[package]]
 name = "dephell"
 version = "0.8.3"
 description = "Dependency resolution for Python"
@@ -531,14 +517,6 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
-name = "ordered-set"
-version = "4.0.2"
-description = "A set that remembers its order, and allows looking up its items by their index in that order."
-category = "main"
-optional = false
-python-versions = ">=3.5"
-
-[[package]]
 name = "packaging"
 version = "20.4"
 description = "Core utilities for Python packages"
@@ -877,7 +855,7 @@ testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.0"
-content-hash = "6b2efe4cb7b01bec2e3ecfaa522ec50c5b5c9a3de93757aed0ae27f7e4590e51"
+content-hash = "37883e78136642a9a663f9e65c8891cae8343271538c44322fddb49859020b34"
 
 [metadata.files]
 aiohttp = [
@@ -939,10 +917,6 @@ colorama = [
 crayons = [
     {file = "crayons-0.3.1-py2.py3-none-any.whl", hash = "sha256:4066ec91fecd6b86755d3f083943815e5958688aecdfae54b24443f190ba6950"},
     {file = "crayons-0.3.1.tar.gz", hash = "sha256:dcb85b87aa03bb65bd3a073d012796b024cabeb086033e616759e2abb769440b"},
-]
-deepdiff = [
-    {file = "deepdiff-5.0.2-py3-none-any.whl", hash = "sha256:273b18d32bb9b956548290b2e3ddf79c515def2dd5738965f4348ae813e710c5"},
-    {file = "deepdiff-5.0.2.tar.gz", hash = "sha256:e2b74af4da0ef9cd338bb6e8c97242c1ec9d81fcb28298d7bb24acdc19ea79d7"},
 ]
 dephell = [
     {file = "dephell-0.8.3-py3-none-any.whl", hash = "sha256:3ca3661e2a353b5c67c77034b69b379e360d4c70ce562e8161db32d39064be5a"},
@@ -1191,9 +1165,6 @@ multidict = [
     {file = "multidict-4.7.6-cp38-cp38-win32.whl", hash = "sha256:5cf311a0f5ef80fe73e4f4c0f0998ec08f954a6ec72b746f3c179e37de1d210d"},
     {file = "multidict-4.7.6-cp38-cp38-win_amd64.whl", hash = "sha256:7388d2ef3c55a8ba80da62ecfafa06a1c097c18032a501ffd4cabbc52d7f2b19"},
     {file = "multidict-4.7.6.tar.gz", hash = "sha256:fbb77a75e529021e7c4a8d4e823d88ef4d23674a202be4f5addffc72cbb91430"},
-]
-ordered-set = [
-    {file = "ordered-set-4.0.2.tar.gz", hash = "sha256:ba93b2df055bca202116ec44b9bead3df33ea63a7d5827ff8e16738b97f33a95"},
 ]
 packaging = [
     {file = "packaging-20.4-py2.py3-none-any.whl", hash = "sha256:998416ba6962ae7fbd6596850b80e17859a5753ba17c32284f67bfff33784181"},

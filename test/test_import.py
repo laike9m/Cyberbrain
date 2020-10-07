@@ -12,7 +12,7 @@ def test_import(tracer):
 
     tracer.stop()
 
-    print(os, path)  # Prevent PyCharm from removing unused imports.
+    print(os, path, settrace)  # Prevent PyCharm from removing unused imports.
 
     assert_that(
         tracer.events,
@@ -22,7 +22,7 @@ def test_import(tracer):
                 has_properties(
                     {
                         "target": Symbol("os"),
-                        "value": starts_with("<module 'os'"),
+                        "value": contains_string("<module 'os'"),
                         "sources": set(),
                         "lineno": 9,
                     }
@@ -34,7 +34,7 @@ def test_import(tracer):
                     {
                         "target": Symbol("path"),
                         "value": all_of(
-                            starts_with("<module"), contains_string("path")
+                            contains_string("<module"), contains_string("path")
                         ),
                         "sources": set(),
                         "lineno": 10,
@@ -46,7 +46,7 @@ def test_import(tracer):
                 has_properties(
                     {
                         "target": Symbol("settrace"),
-                        "value": settrace,
+                        "value": '{"repr": "<built-in function settrace>"}',
                         "sources": set(),
                         "lineno": 11,
                     }

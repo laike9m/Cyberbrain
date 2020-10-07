@@ -117,7 +117,6 @@ events {
     lineno: 17
     target: "d"
     value: "{\"1\": 2, \"2\": 1}"
-    delta: "{\"values_changed\": {\"root[1]\": {\"new_value\": 2}}}"
     sources: "a"
     sources: "c"
     sources: "d"
@@ -133,7 +132,6 @@ events {
     lineno: 18
     target: "d"
     value: "{\"2\": 1}"
-    delta: "{\"dictionary_item_removed\": {\"root[1]\": 2}}"
     sources: "a"
     sources: "d"
     index: 9

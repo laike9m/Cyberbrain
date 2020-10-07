@@ -7,7 +7,7 @@ def test_api_tracer(tracer, rpc_stub):
     tracer.stop()
 
     assert tracer.events == [
-        Binding(lineno=6, target=Symbol("a"), value=1, sources=set())
+        Binding(lineno=6, target=Symbol("a"), value="1", sources=set())
     ]
 
     from utils import assert_GetFrame

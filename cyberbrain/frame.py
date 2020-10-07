@@ -5,8 +5,6 @@ from dis import Instruction
 from types import FrameType
 from typing import Any
 
-from deepdiff import DeepDiff, Delta
-
 from . import value_stack, utils
 from .basis import (
     Event,
@@ -89,7 +87,7 @@ class Frame:
         returned_obj = self.value_stack._pop()
         self.events.append(
             Return(
-                value=value,  # TODO: deepcopy
+                value=utils.to_json(value),
                 repr=utils.get_repr(value),
                 lineno=self.offset_to_lineno[frame.f_lasti],
                 filename=self.filename,
@@ -116,12 +114,12 @@ class Frame:
 
         # Logs InitialValue event if it hasn't been recorded yet.
         if utils.name_exist_in_frame(target, frame) and not self._knows(target):
-            value, value_repr = utils.deepcopy_value_from_frame(target, frame)
+            value = utils.get_value_from_frame(target, frame)
             self._add_new_event(
                 InitialValue(
                     target=Symbol(target),
-                    repr=value_repr,
-                    value=value,
+                    value=utils.to_json(value),
+                    repr=utils.get_repr(value),
                     lineno=self.offset_to_lineno[instr.offset],
                     filename=self.filename,
                     offset=instr.offset,
@@ -141,30 +139,30 @@ class Frame:
         if target and target == Symbol("random"):
             print(event_info)
 
-        # TODO: For mutation, add the mutated object as a source.
         if event_info.type is EventType.Mutation:
             value = utils.get_value_from_frame(target.name, frame)
-            diff = DeepDiff(self._latest_value_of(target), value)
-            if diff != {}:
-                # noinspection PyArgumentList
-                self._add_new_event(
-                    Mutation(
-                        target=target,
-                        repr=utils.get_repr(value),
-                        filename=self.filename,
-                        lineno=self.offset_to_lineno[instr.offset],
-                        delta=Delta(diff=diff),
-                        sources=event_info.sources,
-                        offset=instr.offset,
-                    )
+            json = utils.to_json(value)
+            if self._latest_value_of(target.name) == json:
+                return
+
+            self._add_new_event(
+                Mutation(
+                    target=target,
+                    value=json,
+                    repr=utils.get_repr(value),
+                    filename=self.filename,
+                    lineno=self.offset_to_lineno[instr.offset],
+                    sources=event_info.sources,
+                    offset=instr.offset,
                 )
+            )
         elif event_info.type is EventType.Binding:
-            value, value_repr = utils.deepcopy_value_from_frame(target.name, frame)
+            value = utils.get_value_from_frame(target.name, frame)
             self._add_new_event(
                 Binding(
                     target=target,
-                    value=value,
-                    repr=value_repr,
+                    value=utils.to_json(value),
+                    repr=utils.get_repr(value),
                     sources=event_info.sources,
                     filename=self.filename,
                     lineno=self.offset_to_lineno[instr.offset],
@@ -225,30 +223,16 @@ class Frame:
     def _knows(self, name: str) -> bool:
         return name in self.identifier_to_events
 
-    def _latest_value_of(self, symbol: Symbol) -> Any:
+    def _latest_value_of(self, name: str) -> Any:
         """Returns the latest value of an identifier.
 
         This method is *only* used during the logging process.
+        TODO: What if the last event is a Deletion?
         """
-        name = symbol.name
-        if name not in self.identifier_to_events:
+        if not self._knows(name):
             raise AttributeError(f"'{name}' does not exist in frame.")
 
-        relevant_events = self.identifier_to_events[name]
-        assert type(relevant_events[0]) in {InitialValue, Binding}
-
-        if isinstance(relevant_events[-1], Binding):
-            return relevant_events[-1].value
-
-        value = relevant_events[0].value  # initial value
-        for event in relevant_events[1:]:
-            assert type(event) in {Binding, Mutation}, repr(event)
-            if isinstance(event, Binding):
-                value = event.value
-            elif isinstance(event, Mutation):
-                value += event.delta
-
-        return value
+        return self.identifier_to_events[name][-1].value
 
     @property
     def accumulated_events(self) -> list[Event]:
@@ -267,15 +251,8 @@ class Frame:
         Returned accumulated events:
             Binding(value=[]), Mutation(delta="append 1", value=[1])
 
-        TODO: If this method was called before, return self.events directly.
+        TODO: Remove this method
         """
-        latest_events: dict[Identifier, Event] = {}
-        for event in self.events:
-            if not hasattr(event, "target"):
-                continue
-            if isinstance(event, Mutation):
-                event.value = latest_events[event.target.name].value + event.delta
-            latest_events[event.target.name] = event
 
         return self.events
 

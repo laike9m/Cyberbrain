@@ -13,9 +13,9 @@ def test_ref_outside(trace, rpc_stub):
     test_ref_outside_inner()
 
     assert trace.events == [
-        InitialValue(lineno=11, target=Symbol("f"), value=f),
-        Binding(lineno=11, target=Symbol("a"), value=1, sources={Symbol("f")}),
-        Return(lineno=11, value=None, sources=set()),
+        InitialValue(lineno=11, target=Symbol("f"), value='{"repr": "<function f>"}'),
+        Binding(lineno=11, target=Symbol("a"), value="1", sources={Symbol("f")}),
+        Return(lineno=11, value="null", sources=set()),
     ]
 
     from utils import assert_GetFrame

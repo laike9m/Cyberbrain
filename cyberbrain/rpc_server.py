@@ -10,7 +10,6 @@ from datetime import datetime
 
 import grpc
 
-from . import utils
 from .basis import (
     Event,
     InitialValue,
@@ -36,7 +35,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 index=event.index,
                 offset=event.offset,
                 target=event.target.name,
-                value=utils.to_json(event.value),
+                value=event.value,
                 repr=event.repr,
             )
         )
@@ -49,7 +48,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 index=event.index,
                 offset=event.offset,
                 target=event.target.name,
-                value=utils.to_json(event.value),
+                value=event.value,
                 repr=event.repr,
                 # Sorted to make result deterministic.
                 sources=sorted(source.name for source in event.sources),
@@ -64,9 +63,8 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 index=event.index,
                 offset=event.offset,
                 target=event.target.name,
-                value=utils.to_json(event.value),
+                value=event.value,
                 repr=event.repr,
-                delta=utils.to_json(event.delta.to_dict()),
                 sources=sorted(source.name for source in event.sources),
             )
         )
@@ -89,7 +87,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
                 lineno=event.lineno,
                 index=event.index,
                 offset=event.offset,
-                value=utils.to_json(event.value),
+                value=event.value,
                 repr=event.repr,
                 sources=sorted(source.name for source in event.sources),
             )

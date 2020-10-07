@@ -1,5 +1,3 @@
-from hamcrest import *
-
 from cyberbrain import InitialValue, Mutation, Symbol
 
 
@@ -19,64 +17,41 @@ def test_attribute(tracer, rpc_stub):
 
     tracer.stop()
 
-    assert_that(
-        tracer.events,
-        contains_exactly(
-            all_of(
-                instance_of(InitialValue),
-                has_properties(
-                    {
-                        "target": Symbol("a2"),
-                        "value": all_of(instance_of(A), has_property("y")),
-                        "lineno": 16,
-                    }
-                ),
-            ),
-            all_of(
-                instance_of(InitialValue),
-                has_properties(
-                    {
-                        "target": Symbol("a1"),
-                        "value": all_of(instance_of(A), not_(has_property("x"))),
-                        "lineno": 16,
-                    }
-                ),
-            ),
-            all_of(
-                instance_of(Mutation),
-                has_properties(
-                    {
-                        "target": Symbol("a1"),
-                        "value": has_property("x", has_property("y", 1)),
-                        "sources": {Symbol("a1"), Symbol("a2")},
-                        "lineno": 16,
-                    }
-                ),
-            ),
-            all_of(
-                instance_of(Mutation),
-                has_properties(
-                    {
-                        "target": Symbol("a1"),
-                        "value": has_property("x", has_property("y", 2)),
-                        "sources": {Symbol("a1")},
-                        "lineno": 17,
-                    }
-                ),
-            ),
-            all_of(
-                instance_of(Mutation),
-                has_properties(
-                    {
-                        "target": Symbol("a1"),
-                        "value": not_(has_property("x")),
-                        "sources": {Symbol("a1")},
-                        "lineno": 18,
-                    }
-                ),
-            ),
+    assert tracer.events == [
+        InitialValue(
+            lineno=14,
+            target=Symbol("a2"),
+            value='{"y": 1}',
+            repr="<test_attribute.test_attribute.<locals>.A object>",
         ),
-    )
+        InitialValue(
+            lineno=14,
+            target=Symbol("a1"),
+            value="{}",
+            repr="<test_attribute.test_attribute.<locals>.A object>",
+        ),
+        Mutation(
+            lineno=14,
+            target=Symbol("a1"),
+            sources={Symbol("a2"), Symbol("a1")},
+            value='{"x": {"y": 1}}',
+            repr="<test_attribute.test_attribute.<locals>.A object>",
+        ),
+        Mutation(
+            lineno=15,
+            target=Symbol("a1"),
+            sources={Symbol("a1")},
+            value='{"x": {"y": 2}}',
+            repr="<test_attribute.test_attribute.<locals>.A object>",
+        ),
+        Mutation(
+            lineno=16,
+            target=Symbol("a1"),
+            sources={Symbol("a1")},
+            value="{}",
+            repr="<test_attribute.test_attribute.<locals>.A object>",
+        ),
+    ]
 
     from utils import assert_GetFrame
 
