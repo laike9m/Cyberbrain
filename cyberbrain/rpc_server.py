@@ -220,7 +220,7 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
                 for loop in frame.loops.values()
             ]
         )
-        for event in frame.accumulated_events:
+        for event in frame.events:
             frame_proto.events.append(_transform_event_to_proto(event))
             event_ids = _get_event_sources_uids(event, frame)
             if event_ids:

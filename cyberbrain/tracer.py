@@ -203,7 +203,7 @@ class Tracer:
 
     @property
     def events(self):
-        return self.frame_logger.frame.accumulated_events
+        return self.frame_logger.frame.events
 
     @property
     def loops(self):
