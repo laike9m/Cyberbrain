@@ -35,14 +35,6 @@ export function displayValueInConsole(node) {
   }
   const obj = node.runtimeValue;
 
-  // When there's only one property "repr", it means we currently can't rely
-  // on JSON pickle for serialization. As a fallback, log the repr text.
-  const keys = Object.keys(obj);
-  if (keys.length === 1 && keys[0] === "repr") {
-    cl(obj.repr);
-    return;
-  }
-
   switch (getType(obj)) {
     case Types.NULL:
       cl("None");
@@ -51,6 +43,13 @@ export function displayValueInConsole(node) {
       cl('"' + `%c${obj}` + '%c"', "color: #b43024", "");
       break;
     default:
+      // When there's only one property "repr", it means we currently can't rely
+      // on JSON pickle for serialization. As a fallback, log the repr text.
+      const keys = Object.keys(obj);
+      if (keys.length === 1 && keys[0] === "repr") {
+        cl(obj.repr);
+        return;
+      }
       cl(obj);
   }
 }
