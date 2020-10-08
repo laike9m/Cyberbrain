@@ -33,12 +33,13 @@ window.addEventListener("message", event => {
   }
   traceGraph = new TraceGraph(event.data);
   traceGraph.initialize();
-  setTimeout(() => {
-    console.clear();
-    if (isDevMode) {
-      cl(event.data);
-    }
-  }, 1000);
+  if (isDevMode) {
+    cl(event.data);
+  } else {
+    setTimeout(() => {
+      console.clear();
+    }, 1000);
+  }
 });
 
 const lineHeight = 40;
@@ -144,6 +145,7 @@ class TraceGraph {
       this.loops
     );
     this.linenoMapping = linenoMapping;
+    // cl(this.loops);
 
     // Add loop counter nodes.
     for (let i = 0; i < this.loops.length; i++) {

@@ -33,7 +33,7 @@ export class RpcClient {
   async waitForReady() {
     console.log("Waiting for connection ready...");
     const deadline = new Date();
-    deadline.setSeconds(deadline.getSeconds() + 20);
+    deadline.setSeconds(deadline.getSeconds() + 200);
     return new Promise((resolve, reject) => {
       grpc.waitForClientReady(this.innerClient, deadline, function(error) {
         if (error === undefined) {
