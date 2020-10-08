@@ -6,6 +6,7 @@ let cl = console.log;
 
 const cbRoot = path.resolve(__dirname, "../../../..");
 
+// TODO: Allow setting different timeout for each test.
 const examples = [
   { file: "examples/hello.py", args: ["-m", "examples.hello"] },
   { file: "examples/nonlocal.py", args: ["-m", "examples.nonlocal"] },
