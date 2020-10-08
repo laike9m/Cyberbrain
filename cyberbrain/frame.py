@@ -234,28 +234,6 @@ class Frame:
 
         return self.identifier_to_events[name][-1].value
 
-    @property
-    def accumulated_events(self) -> list[Event]:
-        """
-        It modifies the original events, but should be fine.
-
-        Now that FrameState only stores delta for Mutation event, if we need to know
-        the value after a certain Mutation event (like in tests), the value has to be
-        re-calculated. This method serves this purpose. Other events are kept unchanged.
-
-        e.g.
-
-        raw events:
-            Binding(value=[]), Mutation(delta="append 1")
-
-        Returned accumulated events:
-            Binding(value=[]), Mutation(delta="append 1", value=[1])
-
-        TODO: Remove this method
-        """
-
-        return self.events
-
 
 class Snapshot:
     """Represents a frame's state at a certain moment.
