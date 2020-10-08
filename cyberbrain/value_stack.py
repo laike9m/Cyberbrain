@@ -573,14 +573,12 @@ class GeneralValueStack:
     @emit_event
     def _POP_JUMP_IF_TRUE_handler(self, instr, jumped):
         self._pop()
-        print(f"jumped: {jumped}")
         if jumped:
             return self._return_jump_back_event_if_exists(instr)
 
     @emit_event
     def _POP_JUMP_IF_FALSE_handler(self, instr, jumped):
         self._pop()
-        print(f"jumped: {jumped}")
         if jumped:
             return self._return_jump_back_event_if_exists(instr)
 

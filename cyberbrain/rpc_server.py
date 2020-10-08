@@ -232,7 +232,10 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
 
 class Server:
     def __init__(self):
-        self._server = grpc.server(futures.ThreadPoolExecutor(max_workers=5))
+        self._server = grpc.server(
+            futures.ThreadPoolExecutor(max_workers=5),
+            compression=grpc.Compression.Gzip,
+        )
         self._state_queue = queue.Queue()
         communication_pb2_grpc.add_CommunicationServicer_to_server(
             CyberbrainCommunicationServicer(state_queue=self._state_queue), self._server
