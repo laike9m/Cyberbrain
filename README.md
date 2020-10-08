@@ -2,13 +2,11 @@
 
 [![support-version](https://img.shields.io/pypi/pyversions/cyberbrain)](https://img.shields.io/pypi/pyversions/cyberbrain) [![PyPI implementation](https://img.shields.io/pypi/implementation/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/) [![PyPI version shields.io](https://img.shields.io/pypi/v/cyberbrain.svg)](https://pypi.python.org/pypi/cyberbrain/)
 
-
-
 Cyberbrain is a Python debugging solution aiming to **free programmers**. It visualizes **program execution** and **how each variable changes**.
 
 Never spend hours stepping through a program, let Cyberbrain tell you.
 
-![](docs/images/p1.png)
+![](https://user-images.githubusercontent.com/2592205/95418789-1820b480-08ed-11eb-9b3e-61c8cdbf187a.png)
 
 ## Install
 
@@ -24,7 +22,6 @@ code --install-extension laike9m.cyberbrain
 Or if you prefer, install from [PyPI](https://pypi.org/project/cyberbrain/) and [VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=laike9m.cyberbrain).
 
 **Or, you can try Cyberbrain directly from your browser:** [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#snapshot/adaaffeb-7844-46df-83f1-d20d58988a2c)
-
 
 ## How to Use
 
@@ -42,13 +39,15 @@ Cyberbrain keeps your workflow unchanged. You run a program (from vscode or comm
 
 The following gif demonstrates the  workflow:
 
-![](https://github.com/laike9m/images/raw/master/usage.gif)
+![usage](https://user-images.githubusercontent.com/2592205/95430485-ac484700-0900-11eb-814f-41ca84c022f9.gif)
 
 Features provided:
 - Dataflow analysis
 - Variable tracing (try hover on any variable, it only highlights **relevant** variables)
 - Object inspection (value is logged in the opened devtools console)
 - Expect more to come 🤟
+
+Read our [documentation](docs/Features.md) to learn more about Cyberbrain's features.
 
 Note: Cyberbrain may conflict with other debuggers. If you set breakpoints and use VSC's debugger, Cyberbrain may not function normally. Generally speaking, **prefer "Run Without Debugging"** (like shown in the gif).
 
