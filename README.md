@@ -80,6 +80,10 @@ Note that v1.0 means Cyberbrain is stable in the features it supports, it does *
 
 Visit the project's [kanban](https://github.com/laike9m/Cyberbrain/projects/1) to learn more about the current development schedule.
 
+## How does it compare to PySnooper?
+
+Cyberbrain and PySnooper share the same goal of reducing programmers' work while debugging. However they are fundamentally different: Cyberbrain traces and shows the sources of each variable change, while PySnooper only logs them. The differences should be pretty obvious after you tried both.
+
 ## Community
 
 Join the [Cyberbrain community Discord](https://discord.gg/2TFYtBh) 💬 and follow us on Twitter [@PyCyberbrain](https://twitter.com/PyCyberbrain) 🐦.
