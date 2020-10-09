@@ -35,4 +35,4 @@ Install [Protocol Buffer Editor](https://plugins.jetbrains.com/plugin/14004-prot
     
 - `make proto_compile`
 
-   Run it after you've changed any `.proto` file generate language specific code for proto. Only 
+   Run it after you've changed any `.proto` file to generate language specific code for protos.
