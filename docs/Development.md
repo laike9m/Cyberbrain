@@ -7,7 +7,7 @@
 Make sure you have Python 3.7+ and the latest version of VS Code installed.
 
 ## Protocol Buffer
-- [Install protoc](https://google.github.io/proto-lens/installing-protoc.html)
+- [Protocol Buffer Compiler Installation](https://grpc.io/docs/protoc-installation/)
 
 ## Python
 We'll use [Poetry](https://python-poetry.org/) to manage dependencies. Make sure you have set it up correctly.
@@ -20,14 +20,14 @@ This will install dev dependencies as well.
 
 Make sure you have **Node.js 12** and npm installed. There's no guarantee that other versions will work.
 
-On Mac, you can `brew install node@12 && brew link --force --overwrite node@12` and add `/usr/local/opt/node@12/bin` to your $PATH.
+On Mac, you can `brew install node@12 && brew link --force --overwrite node@12` and add `/usr/local/opt/node@12/bin` (or whatever the binary path is) to your $PATH.
 
 Then `npm install` inside the `cyberbrain-vsc` folder.
 
 ### If you're using PyCharm
 Install [Protocol Buffer Editor](https://plugins.jetbrains.com/plugin/14004-protocol-buffer-editor).
 
-# Start making changes
+## Others
 
 - `make gen_setup`
    
@@ -35,4 +35,4 @@ Install [Protocol Buffer Editor](https://plugins.jetbrains.com/plugin/14004-prot
     
 - `make proto_compile`
 
-   Generate language specific code for proto. Run it after you've changed any `.proto` file.
+   Run it after you've changed any `.proto` file generate language specific code for proto. Only 
