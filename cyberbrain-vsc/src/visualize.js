@@ -160,9 +160,6 @@ class TraceGraph {
           background: "white"
         }
       });
-      if (i < this.loops.length - 1) {
-        edgesToShow.push(this.createHiddenEdge(loop.id, this.loops[i + 1].id));
-      }
     }
 
     for (let event of initialEvents) {
@@ -232,6 +229,22 @@ class TraceGraph {
         }
         this.moved = true;
         this.network.fit();
+      }
+
+      // Align loop nodes vertically.
+      let minLoopNodeX = Number.MAX_SAFE_INTEGER;
+      for (let loop of this.loops) {
+        minLoopNodeX = Math.min(
+          minLoopNodeX,
+          this.network.getPosition(loop.id).x
+        );
+      }
+      for (let loop of this.loops) {
+        this.network.moveNode(
+          loop.id,
+          minLoopNodeX,
+          this.network.getPosition(loop.id).y
+        );
       }
 
       if (this.hoveredNodeId === undefined) {
