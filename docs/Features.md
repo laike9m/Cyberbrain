@@ -40,3 +40,6 @@ This feature has some [known bugs](https://github.com/laike9m/Cyberbrain/issues?
 
 The UI is inspired by [birdseye](https://github.com/alexmojaki/birdseye), thanks Alex for making such a innovative tool.
 
+## Know Issues
+
+- As of now, Cyberbrain only traces the first call, no matter how many times the decorated function is called. This will be changed in the future.

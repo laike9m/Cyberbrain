@@ -6,17 +6,19 @@
 
 Make sure you have Python 3.7+ and the latest version of VS Code installed.
 
-## Protocol Buffer
-- [Protocol Buffer Compiler Installation](https://grpc.io/docs/protoc-installation/)
+## Install Dependencies
 
-## Python
+### Protocol Buffer
+[Protocol Buffer Compiler Installation](https://grpc.io/docs/protoc-installation/)
+
+### Python
 We'll use [Poetry](https://python-poetry.org/) to manage dependencies. Make sure you have set it up correctly.
 ```
 poetry install
 ```
 This will install dev dependencies as well.
 
-## VS Code
+### VS Code
 
 Make sure you have **Node.js 12** and npm installed. There's no guarantee that other versions will work.
 
@@ -26,6 +28,31 @@ Then `npm install` inside the `cyberbrain-vsc` folder.
 
 ### If you're using PyCharm
 Install [Protocol Buffer Editor](https://plugins.jetbrains.com/plugin/14004-protocol-buffer-editor).
+
+## Tests
+
+```
+# Run Python unit tests.
+pytest --assert=plain
+
+# Run end-to-end tests. This will open a new VS Code window.
+# Also you need to close the process manully at the end.
+cd cyberbrain-vsc && npm run test
+```
+
+TODO: complete this part.
+
+## Packaging
+
+```
+# Build the Python package.
+poetry build
+
+# Build the VS Code package.
+cd cyberbrain-vsc && vsce package --no-yarn
+```
+
+You can't publish them, but can use them for testing.
 
 ## Others
 
