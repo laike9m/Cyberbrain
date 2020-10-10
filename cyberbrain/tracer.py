@@ -74,6 +74,7 @@ class Tracer:
     def _initialize_frame_and_logger(
         self, raw_frame: FrameType, initial_instr_pointer: int
     ):
+        self.tracer_state = TracerFSM.next_state(self.tracer_state, TracerFSM.START)
         frame_name = (
             # Use filename as frame name if code is run at module level.
             os.path.basename(raw_frame.f_code.co_filename).rstrip(".py")
@@ -103,10 +104,9 @@ class Tracer:
 
         # For now, we only allow triggering tracing once. This might change in the
         # future.
-        if disabled or self.tracer_state == TracerFSM.CALLED:
+        if disabled or self.tracer_state != TracerFSM.INITIAL:
             return
 
-        self.tracer_state = TracerFSM.next_state(self.tracer_state, TracerFSM.START)
         self.raw_frame = sys._getframe(1)
         # tracer.init() contains the following instructions:
         #               0 LOAD_FAST                0 (tracer)
@@ -181,12 +181,16 @@ class Tracer:
         def decorator(f, disabled_by_user=False):
             @functools.wraps(f)
             def wrapper(*args, **kwargs):
-                if disabled_by_user or self.tracer_state == TracerFSM.CALLED:
+                # TracerFSM.ACTIVE: appeared in recursive call. The tracer has been
+                #   activated in the outer call frame.
+                # TracerFSM.CALLED: call the function multiple times.
+                # In both cases, don't enable tracing.
+                if disabled_by_user or self.tracer_state in {
+                    TracerFSM.ACTIVE,
+                    TracerFSM.CALLED,
+                }:
                     return f(*args, **kwargs)
 
-                self.tracer_state = TracerFSM.next_state(
-                    self.tracer_state, TracerFSM.START
-                )
                 self.decorated_function_code_id = id(f.__code__)
                 sys.settrace(self.global_tracer)
                 result = f(*args, **kwargs)
@@ -216,9 +220,13 @@ class Tracer:
             # Later when we need to trace more functions, we should identify those
             # functions or at least use utils.should_exclude(frame) to avoid tracing
             # unnecessary frames.
+            #
+            # self.tracer_state == TracerFSM.INITIAL is for preventing stepping into
+            # recursive calls, since their f_code are the same.
             if (
                 event == "call"
                 and id(raw_frame.f_code) == self.decorated_function_code_id
+                and self.tracer_state == TracerFSM.INITIAL
             ):
                 raw_frame.f_trace_opcodes = True
                 self._initialize_frame_and_logger(raw_frame, initial_instr_pointer=0)
@@ -234,7 +242,7 @@ class Tracer:
             if event == "opcode":
                 self.frame_logger.update(raw_frame)
             if event == "return":
-                # print(raw_frame, event, arg)
+                # print(raw_frame, event, arg, raw_frame.f_lasti)
                 self.frame.log_return_event(raw_frame, value=arg)
 
         return _local_tracer
