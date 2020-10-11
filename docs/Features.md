@@ -40,6 +40,10 @@ This feature has some [known bugs](https://github.com/laike9m/Cyberbrain/issues?
 
 The UI is inspired by [birdseye](https://github.com/alexmojaki/birdseye), thanks Alex for making such a innovative tool.
 
-## Know Issues
+## Know limitations
 
-- As of now, Cyberbrain only traces the first call, no matter how many times the decorated function is called. This will be changed in the future.
+- Cyberbrain only traces the first call, no matter how many times the decorated function is called.
+
+- `async` and multi-threading are not supported.
+
+We will improve them in [future versions](https://github.com/laike9m/Cyberbrain#status-quo-and-milestones).
