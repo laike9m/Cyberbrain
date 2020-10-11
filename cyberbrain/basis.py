@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import enum
 import os
 from collections import defaultdict
 from typing import Any, TYPE_CHECKING, Optional
@@ -38,14 +37,6 @@ class UUIDGenerator:
             return f"{test_name}:{count}"
         else:
             return shortuuid.uuid()[:8]
-
-
-class EventType(enum.Enum):
-    JumpBackToLoopStart = 0
-    InitialValue = 1
-    Binding = 2
-    Mutation = 3
-    Deletion = 4
 
 
 @attr.s(auto_attribs=True)

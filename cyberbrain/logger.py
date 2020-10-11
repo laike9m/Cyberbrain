@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import functools
 from dis import Instruction
-from types import FrameType
+from types import FrameType, FunctionType
 from typing import Optional
 
 from crayons import yellow, cyan
@@ -29,6 +30,9 @@ PREDICT_MAP = {
 
 COMPUTED_GOTOS_ENABLED = computed_gotos_enabled()
 
+# Will be initialized in FrameLogger's ctor, before it's used.
+log: FunctionType
+
 
 class FrameLogger:
     """Logger for a frame."""
@@ -43,10 +47,11 @@ class FrameLogger:
         self.instructions = instructions
         self.frame = frame
         self.instr_pointer = initial_instr_pointer
-        self.jump_detector = JumpDetector(
-            instructions=self.instructions, debug_mode=debug_mode
-        )
+        self.jump_detector = JumpDetector(instructions=self.instructions)
         self.debug_mode = debug_mode
+
+        global log
+        log = functools.partial(_debug_log, debug_mode)
 
     def update(self, frame: FrameType):
         """Prints names whose values changed since this function is called last time.
@@ -83,16 +88,15 @@ class FrameLogger:
         #
         # It is important to know that, due to the PREDICT(op) optimization, sometimes
         # last_i is not updated in time. So if last_i is p when this function is called,
-        # next time it could be i+4 instead of i+2. However, this situation won't
+        # next time it could be p+4 instead of p+2. However, this situation won't
         # happen:
+        #
         #   p:      jump instruction    <---- last_i
         #   p + 2:  other instruction
         #   p + 4:                      <---- new last_i
+        #
         # Because we know if a jump occurred, last_i will be updated in time, and this
-        # function will be called. This can happen:
-        #   p:      other instruction   <---- last_i
-        #   p + 2:  jump instruction
-        #   p + 4:                      <---- new last_i
+        # function will be called.
         #
         # Now back the the solution. We still iterate from instr_pointer to last_i,
         # but we also check whether the scanned instruction is a jump that *happened*.
@@ -120,20 +124,13 @@ class FrameLogger:
             instr = self.instructions[self.instr_pointer]
             jumped, jump_location = self.jump_detector.detects_jump(instr, last_i)
             self.instr_pointer = jump_location if jumped else self.instr_pointer + 2
-            _debug_log(
-                self.debug_mode,
-                (
-                    f"{cyan('Executed instruction')} at line "
-                    f"{self.frame.offset_to_lineno[instr.offset]}"
-                ),
+            log(
+                f"{cyan('Executed instruction')} at line "
+                + f"{self.frame.offset_to_lineno[instr.offset]}",
                 instr,
             )
             self.frame.log_events(frame, instr, jumped)
-            _debug_log(
-                self.debug_mode,
-                f"{yellow('Current stack:')}",
-                self.frame.value_stack.stack,
-            )
+            log(f"{yellow('Current stack:')}", self.frame.value_stack.stack)
 
             # Taking the following code as an example.
             #     for i in range(2):
@@ -183,9 +180,8 @@ class FrameLogger:
 class JumpDetector:
     """Detects jump behavior."""
 
-    def __init__(self, instructions: dict[int, Instruction], debug_mode):
+    def __init__(self, instructions: dict[int, Instruction]):
         self.instructions = instructions
-        self.debug_mode = debug_mode
 
     def detects_jump(self, instr: Instruction, last_i) -> (bool, Optional[int]):
         """
@@ -224,28 +220,19 @@ class JumpDetector:
             # so last_i is 26.
             opname_next = self.instructions[explicit_jump_target].opname
             if opname_next in PREDICT_MAP.get(instr.opname, {}):
-                _debug_log(
-                    self.debug_mode,
-                    f"Found PREDICT!! {instr.opname} -> {opname_next}",
-                )
+                log(f"Found PREDICT!! {instr.opname} -> {opname_next}")
                 computed_last_i += 2
 
         if computed_last_i == last_i:
-            _debug_log(
-                self.debug_mode,
-                f"Jumped to instruction at offset: {explicit_jump_target}",
-            )
+            log(f"Jumped to instruction at offset: {explicit_jump_target}")
             return True, explicit_jump_target
         elif implicit_jump_target:
-            _debug_log(
-                self.debug_mode,
-                f"Jumped to instruction at offset: {implicit_jump_target}",
-            )
+            log(f"Jumped to instruction at offset: {implicit_jump_target}")
             return True, implicit_jump_target
 
         return False, None
 
 
-def _debug_log(debug_mode, *msg, condition=True):
-    if debug_mode and condition:
+def _debug_log(debug_mode, *msg):
+    if debug_mode:
         pprint(*msg)

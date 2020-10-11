@@ -18,7 +18,7 @@ except ImportError:
     from typing_extensions import Literal
 
 from . import utils
-from .basis import EventType, Symbol
+from .basis import Symbol, Binding, Mutation, Deletion, JumpBackToLoopStart
 from .block_stack import BlockStack, BlockType, Block
 
 if TYPE_CHECKING:
@@ -66,15 +66,9 @@ def emit_event(f):
     return inner
 
 
-MutationType = EventType.Mutation
-DeletionType = EventType.Deletion
-BindingType = EventType.Binding
-JumpBackToLoopStartType = EventType.JumpBackToLoopStart
-
-
 @dataclasses.dataclass
 class EventInfo:
-    type: Literal[EventType.Binding, EventType.Mutation, EventType.Deletion]
+    type: Literal[Binding, Mutation, Deletion, JumpBackToLoopStart]
     target: Symbol = None
     sources: set[Symbol] = dataclasses.field(default_factory=set)
     jump_target: int = None
@@ -282,16 +276,14 @@ class GeneralValueStack:
     def _STORE_SUBSCR_handler(self):
         tos, tos1, tos2 = self._pop(3)
         assert len(tos1) == 1
-        return EventInfo(
-            type=MutationType, target=tos1[0], sources=set(tos + tos1 + tos2)
-        )
+        return EventInfo(type=Mutation, target=tos1[0], sources=set(tos + tos1 + tos2))
 
     # noinspection DuplicatedCode
     @emit_event
     def _DELETE_SUBSCR_handler(self):
         tos, tos1 = self._pop(2)
         assert len(tos1) == 1
-        return EventInfo(type=MutationType, target=tos1[0], sources=set(tos + tos1))
+        return EventInfo(type=Mutation, target=tos1[0], sources=set(tos + tos1))
 
     def _SETUP_ANNOTATIONS_handler(self):
         pass
@@ -303,14 +295,14 @@ class GeneralValueStack:
     @emit_event
     def _STORE_NAME_handler(self, instr):
         binding = EventInfo(
-            type=BindingType, target=Symbol(instr.argval), sources=set(self.tos)
+            type=Binding, target=Symbol(instr.argval), sources=set(self.tos)
         )
         self._pop()
         return binding
 
     @emit_event
     def _DELETE_NAME_handler(self, instr):
-        return EventInfo(type=DeletionType, target=Symbol(instr.argrepr))
+        return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
 
     def _UNPACK_SEQUENCE_handler(self, instr):
         self._pop_one_push_n(instr.arg)
@@ -326,13 +318,13 @@ class GeneralValueStack:
     def _STORE_ATTR_handler(self):
         tos, tos1 = self._pop(2)
         assert len(tos) == 1
-        return EventInfo(type=MutationType, target=tos[0], sources=set(tos + tos1))
+        return EventInfo(type=Mutation, target=tos[0], sources=set(tos + tos1))
 
     @emit_event
     def _DELETE_ATTR_handler(self):
         tos = self._pop()
         assert len(tos) == 1
-        return EventInfo(type=MutationType, target=tos[0], sources=set(tos))
+        return EventInfo(type=Mutation, target=tos[0], sources=set(tos))
 
     @emit_event
     def _STORE_GLOBAL_handler(self, instr):
@@ -340,7 +332,7 @@ class GeneralValueStack:
 
     @emit_event
     def _DELETE_GLOBAL_handler(self, instr):
-        return EventInfo(type=DeletionType, target=Symbol(instr.argrepr))
+        return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
 
     def _BUILD_TUPLE_handler(self, instr):
         self._pop_n_push_one(instr.arg)
@@ -471,11 +463,11 @@ class GeneralValueStack:
 
     @emit_event
     def _DELETE_DEREF_handler(self, instr):
-        return EventInfo(type=DeletionType, target=Symbol(instr.argrepr))
+        return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
 
     @emit_event
     def _DELETE_FAST_handler(self, instr):
-        return EventInfo(type=DeletionType, target=Symbol(instr.argrepr))
+        return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
 
     def _LOAD_METHOD_handler(self):
         # NULL should be pushed if method lookup failed, but this would lead to an
@@ -528,7 +520,7 @@ class GeneralValueStack:
         # now we'll assume there's just one, and improve it as part of fine-grained
         # symbol tracing (main feature of version 3).
         return EventInfo(
-            type=MutationType,
+            type=Mutation,
             target=inst_or_callable[0],
             sources=set(utils.flatten(args, inst_or_callable)),
         )
@@ -630,7 +622,7 @@ class GeneralValueStack:
     def _return_jump_back_event_if_exists(self, instr):
         jump_target = utils.get_jump_target_or_none(instr)
         if jump_target is not None and jump_target < instr.offset:
-            return EventInfo(type=JumpBackToLoopStartType, jump_target=jump_target)
+            return EventInfo(type=JumpBackToLoopStart, jump_target=jump_target)
 
     def _unwind_except_handler(self, b: Block):
         assert self.stack_level >= b.b_level + 3

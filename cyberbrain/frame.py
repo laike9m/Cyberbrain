@@ -13,7 +13,6 @@ from .basis import (
     Mutation,
     Deletion,
     Return,
-    EventType,
     Symbol,
     Loop,
     JumpBackToLoopStart,
@@ -139,7 +138,7 @@ class Frame:
         if target and target == Symbol("random"):
             print(event_info)
 
-        if event_info.type is EventType.Mutation:
+        if event_info.type is Mutation:
             value = utils.get_value_from_frame(target.name, frame)
             json = utils.to_json(value)
             if self._latest_value_of(target.name) == json:
@@ -156,7 +155,7 @@ class Frame:
                     offset=instr.offset,
                 )
             )
-        elif event_info.type is EventType.Binding:
+        elif event_info.type is Binding:
             value = utils.get_value_from_frame(target.name, frame)
             self._add_new_event(
                 Binding(
@@ -169,7 +168,7 @@ class Frame:
                     offset=instr.offset,
                 )
             )
-        elif event_info.type is EventType.Deletion:
+        elif event_info.type is Deletion:
             self._add_new_event(
                 Deletion(
                     target=target,
@@ -178,7 +177,7 @@ class Frame:
                     offset=instr.offset,
                 )
             )
-        elif event_info.type is EventType.JumpBackToLoopStart:
+        elif event_info.type is JumpBackToLoopStart:
             loop_start = event_info.jump_target
             self.events.append(
                 JumpBackToLoopStart(
