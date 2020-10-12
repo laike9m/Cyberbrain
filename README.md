@@ -97,6 +97,6 @@ Get started [here](https://github.com/laike9m/Cyberbrain/blob/master/docs/Develo
 
 ## Support
 
-Cyberbrain is a **long-term** project, your support is critical to sustain it. Let's make it the best Python debugging tool 🤟!
+I'm almost working full time (besides my regular job) on Cyberbrain. This project is huge, complicated and will last for years, however it will reshape how people think and do debugging. That's why I need **your** support. Let's make it the best Python debugging tool 🤟!
 
-[![](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-1.svg)](https://www.buymeacoffee.com/cyberbrain)
+[![sponsors](https://user-images.githubusercontent.com/2592205/95780566-f888e380-0c80-11eb-95ed-07addcd161d4.png)](https://github.com/sponsors/laike9m) [![](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-1.svg)](https://www.buymeacoffee.com/cyberbrain)
