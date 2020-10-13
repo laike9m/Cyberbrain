@@ -51,7 +51,11 @@ Features provided:
 
 Read our [documentation](docs/Features.md) to learn more about Cyberbrain's features.
 
-Note: Cyberbrain may conflict with other debuggers. If you set breakpoints and use VSC's debugger, Cyberbrain may not function normally. Generally speaking, **prefer "Run Without Debugging"** (like shown in the gif).
+❗Note on use❗
+- Cyberbrain may conflict with other debuggers. If you set breakpoints and use VSC's debugger, Cyberbrain may not function normally. Generally speaking, **prefer "Run Without Debugging"** (like shown in the gif).
+- To run Cyberbrain multiple times with different programs, you need to:     
+    1. **Kill the program by Ctrl+C** (Cyberbrain will halt your program from exiting).
+    2. **Run "Initialize Cyberbrain" again.**
 
 ## Status Quo and Milestones
 
@@ -82,9 +86,15 @@ Note that v1.0 means Cyberbrain is stable in the features it supports, it does *
 
 Visit the project's [kanban](https://github.com/laike9m/Cyberbrain/projects/1) to learn more about the current development schedule.
 
-## How does it compare to PySnooper?
+## How does it compare to other tools?
 
-Cyberbrain and PySnooper share the same goal of reducing programmers' work while debugging. However they are fundamentally different: Cyberbrain traces and shows the sources of each variable change, while PySnooper only logs them. The differences should be pretty obvious after you tried both.
+- [PySnooper](https://github.com/cool-RR/PySnooper)
+
+    Cyberbrain and PySnooper share the same goal of reducing programmers' work while debugging. However they are fundamentally different: Cyberbrain traces and shows the sources of each variable change, while PySnooper only logs them. The differences should be pretty obvious after you tried both.
+    
+- [Debug Visualizer](https://marketplace.visualstudio.com/items?itemName=hediet.debug-visualizer)
+
+   Debug visualizer and Cyberbrain have different goals. Debug visualizes data structures, while Cyberbrain visualizes your program execution (but also let you inspect values)
 
 ## Community
 
