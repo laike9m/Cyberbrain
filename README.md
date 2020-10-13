@@ -49,7 +49,7 @@ Features provided:
 - Object inspection (value is logged in the opened devtools console)
 - Expect more to come 🤟
 
-Read our [documentation](docs/Features.md) to learn more about Cyberbrain's features.
+Read our **[documentation](docs/Features.md)** to learn more about Cyberbrain's features.
 
 ❗Note on use❗
 - Cyberbrain may conflict with other debuggers. If you set breakpoints and use VSC's debugger, Cyberbrain may not function normally. Generally speaking, **prefer "Run Without Debugging"** (like shown in the gif).
@@ -94,7 +94,7 @@ Visit the project's [kanban](https://github.com/laike9m/Cyberbrain/projects/1) t
     
 - [Debug Visualizer](https://marketplace.visualstudio.com/items?itemName=hediet.debug-visualizer)
 
-   Debug visualizer and Cyberbrain have different goals. Debug visualizes data structures, while Cyberbrain visualizes your program execution (but also let you inspect values)
+   Debug visualizer and Cyberbrain have different goals. Debug visualizes data structures, while Cyberbrain visualizes your program execution (but also lets you inspect values)
 
 ## Community
 
