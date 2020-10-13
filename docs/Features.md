@@ -44,7 +44,7 @@ The UI is inspired by [birdseye](https://github.com/alexmojaki/birdseye), thanks
 
 - Cyberbrain only traces the first call, no matter how many times the decorated function is called.
 
-- `yield` statements are not not supported.
+- `yield` statements are not supported.
 
 - `async` and multi-threading are not supported.
 
