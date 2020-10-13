@@ -59,7 +59,7 @@ Read our **[documentation](docs/Features.md)** to learn more about Cyberbrain's 
 
 ## Status Quo and Milestones
 
-*Updated 2020.9*
+*Updated 2020.10*
 
 Cyberbrain is new and under active development, bugs are expected. If you met any, I appreciate if you can [create an issue](https://github.com/laike9m/Cyberbrain/issues/new). At this point, you should **NOT** use Cyberbrain in production.
 
@@ -78,9 +78,10 @@ Note that v1.0 means Cyberbrain is stable in the features it supports, it does *
 | Version | Features                        |
 |:-------:|---------------------------------|
 | 1.0     | Code & trace interaction ([#7][m1]), remote debugging, trace dump
-| 2.0     | Multi-frame tracing             |
-| 3.0     | Fine-grained symbol tracing     |
-| 4.0     | Async & multi-threading support |
+| 2.0     | `async` support, including generators |
+| 3.0     | Multi-frame tracing             |
+| 4.0     | Fine-grained symbol tracing     |
+| 5.0     | Multi-threading support |
 
 [m1]: https://github.com/laike9m/Cyberbrain/issues/7
 
