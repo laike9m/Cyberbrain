@@ -12,7 +12,7 @@ Never spend hours stepping through a program, let Cyberbrain tell you.
 
 ## Install
 
-Cyberbrain consists of a Python library and various editor/IDE integrations. Currently VS Code is the only supported editor, but we have **[plans](https://github.com/laike9m/Cyberbrain/issues/24)** to expand the support.
+Cyberbrain consists of a Python library and various editor/IDE integrations. Currently it supports **[VS Code](https://code.visualstudio.com/)** and **[Gitpod](https://www.gitpod.io/)**. See our [plan](https://github.com/laike9m/Cyberbrain/issues/24) on expanding the support.
 
 To install Cyberbrain:
 
@@ -21,9 +21,10 @@ pip install cyberbrain
 code --install-extension laike9m.cyberbrain
 ```
 
-Or if you prefer, install from [PyPI](https://pypi.org/project/cyberbrain/) and [VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=laike9m.cyberbrain).
+You can also install from [PyPI](https://pypi.org/project/cyberbrain/) , [VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=laike9m.cyberbrain) or [Open VSX](https://open-vsx.org/extension/laike9m/cyberbrain) .
 
-**Or, you can try Cyberbrain directly from your browser:** [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#snapshot/a473ffc1-a764-4062-953c-5a95e13404c1)
+**Or, you can try Cyberbrain online:** [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#snapshot/0a28685c-8711-4e42-89fe-ba3d7a00bc2f)
+
 
 ## How to Use
 
@@ -55,7 +56,8 @@ Read our **[documentation](docs/Features.md)** to learn more about Cyberbrain's 
 - Cyberbrain may conflict with other debuggers. If you set breakpoints and use VSC's debugger, Cyberbrain may not function normally. Generally speaking, **prefer "Run Without Debugging"** (like shown in the gif).
 - To run Cyberbrain multiple times with different programs, you need to:     
     1. **Kill the program by Ctrl+C** (Cyberbrain will halt your program from exiting).
-    2. **Run "Initialize Cyberbrain" again.**
+    2. **Run another program.**
+    3. **Run "Initialize Cyberbrain" again.**
 
 ## Status Quo and Milestones
 
