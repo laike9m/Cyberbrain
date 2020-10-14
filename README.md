@@ -3,6 +3,8 @@
 [![support-version](https://img.shields.io/pypi/pyversions/cyberbrain)](https://img.shields.io/pypi/pyversions/cyberbrain)
 [![PyPI implementation](https://img.shields.io/pypi/implementation/cyberbrain.svg)](https://pypi.org/project/cyberbrain/)
 [![PyPI version shields.io](https://img.shields.io/pypi/v/cyberbrain.svg)](https://pypi.org/project/cyberbrain/)
+[![Discord](https://img.shields.io/discord/751695524628922449.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/zxSwN8)
+
 
 Cyberbrain is a Python debugging solution aiming to **free programmers**. It visualizes **program execution** and **how each variable changes**.
 
@@ -50,7 +52,7 @@ Features provided:
 - Object inspection (value is logged in the opened devtools console)
 - Expect more to come 🤟
 
-Read our **[documentation](docs/Features.md)** to learn more about Cyberbrain's features.
+Read our **[documentation](docs/Features.md)** to learn more about Cyberbrain's features and limitations.
 
 ❗Note on use❗
 - Cyberbrain may conflict with other debuggers. If you set breakpoints and use VSC's debugger, Cyberbrain may not function normally. Generally speaking, **prefer "Run Without Debugging"** (like shown in the gif).
