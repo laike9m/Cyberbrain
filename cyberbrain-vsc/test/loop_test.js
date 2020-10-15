@@ -11,7 +11,7 @@ global.isDevMode = false;
 import hamjest from "hamjest";
 
 import { Loop } from "../src/loop.js";
-import { getInitialState } from "../src/initialize.js";
+import { getInitialState } from "../src/trace_data.js";
 
 const { assertThat, contains, hasProperty, hasProperties } = hamjest;
 

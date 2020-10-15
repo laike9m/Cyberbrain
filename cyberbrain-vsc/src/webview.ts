@@ -72,10 +72,10 @@ export function setWebViewContent(
   const randomColorJsURL = createWebviewUri(
     "node_modules/randomcolor/randomColor.js"
   );
-  const visualizationJsURL = createWebviewUri(`${jsDir}/visualize.js`);
+  const traceGraphJsURL = createWebviewUri(`${jsDir}/trace_graph.js`);
   const loopJsURL = createWebviewUri(`${jsDir}/loop.js`);
   const valueJsURL = createWebviewUri(`${jsDir}/value.js`);
-  const initializeJsURL = createWebviewUri(`${jsDir}/initialize.js`);
+  const traceDataJsURL = createWebviewUri(`${jsDir}/trace_data.js`);
 
   let isDevMode = false;
   if (underDevMode(context)) {
@@ -91,10 +91,10 @@ export function setWebViewContent(
     <script>const isDevMode = ${isDevMode};</script>
     <script type="text/javascript" src="${randomColorJsURL}"></script>
     <script type="module" src="${valueJsURL}"></script>
-    <script type="module" src="${initializeJsURL}"></script>
+    <script type="module" src="${traceDataJsURL}"></script>
     <script type="module" src="${loopJsURL}"></script>
     <script type="module" src="${visNetworkJsURL}"></script>
-    <script type="module" src="${visualizationJsURL}"></script>
+    <script type="module" src="${traceGraphJsURL}"></script>
     <link rel="stylesheet" type="text/css" href="${visNetworkCssURL}" />
     <style type="text/css">
       #vis{

@@ -20,7 +20,7 @@ is poor, see: https://github.com/visjs/vis-network/issues/930
 
 // The .js suffix is needed to make import work in vsc webview.
 import { Loop } from "./loop.js";
-import { getInitialState } from "./initialize.js";
+import { TraceData } from "./trace_data.js";
 import { displayValueInConsole } from "./value.js";
 
 let cl = console.log;
@@ -114,6 +114,7 @@ CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
 
 class TraceGraph {
   constructor(data) {
+    this.traceData = new TraceData();
     this.lines = new Set();
     this.frameMetadata = data.metadata;
     this.events = data.events;
@@ -140,7 +141,7 @@ class TraceGraph {
   initialize() {
     let nodesToShow = [];
     let edgesToShow = [];
-    let [initialEvents, _, linenoMapping] = getInitialState(
+    let [initialEvents, _, linenoMapping] = this.traceData.initialize(
       this.events,
       this.loops
     );
