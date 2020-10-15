@@ -133,6 +133,7 @@ export class TraceData {
       loop => new Loop(loop.startOffset, loop.endOffset, loop.startLineno)
     );
     this.tracingResult = new Map(Object.entries(data.tracingResult));
+    this.linenoMapping = new Map();
   }
 
   /* Initialize the trace graph.
@@ -237,13 +238,12 @@ export class TraceData {
     //
     // Another idea is to recalculate distance and make them smaller.
     // for example, distance [1, 2] becomes 1, [3, 5] becomes 2, > 5 becomes 3.
-    let linenoMapping = new Map();
     Array.from(appearedLineNumbers)
       .sort((a, b) => a - b)
       .forEach((lineno, ranking) => {
-        linenoMapping.set(lineno, ranking + 1); // Level starts with 1, leaving level 0 to InitialValue nodes
+        this.linenoMapping.set(lineno, ranking + 1); // Level starts with 1, leaving level 0 to InitialValue nodes
       });
 
-    return [visibleEvents, this.loops, linenoMapping];
+    return visibleEvents;
   }
 }

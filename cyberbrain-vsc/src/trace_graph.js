@@ -31,7 +31,7 @@ window.addEventListener("message", event => {
     return; // Server ready message.
   }
   traceGraph = new TraceGraph(event.data);
-  traceGraph.initialize();
+  traceGraph.render();
   if (isDevMode) {
     cl(event.data);
   } else {
@@ -114,6 +114,7 @@ CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
 class TraceGraph {
   constructor(data) {
     this.traceData = new TraceData(data);
+    this.visibleEvents = this.traceData.initialize();
     this.colorGenerator = new ColorGenerator(data.identifiers);
     this.nodes = new vis.DataSet([]);
     this.edges = new vis.DataSet([]);
@@ -127,14 +128,15 @@ class TraceGraph {
       },
       options
     );
-    this.linenoMapping = null;
   }
 
-  initialize() {
+  get linenoMapping() {
+    return this.traceData.linenoMapping;
+  }
+
+  render() {
     let nodesToShow = [];
     let edgesToShow = [];
-    let [initialEvents, _, linenoMapping] = this.traceData.initialize();
-    this.linenoMapping = linenoMapping;
 
     // Add loop counter nodes.
     for (let i = 0; i < this.traceData.loops.length; i++) {
@@ -142,7 +144,7 @@ class TraceGraph {
       nodesToShow.push({
         title: "Loop counter",
         id: loop.id,
-        level: linenoMapping.get(loop.startLineno),
+        level: this.linenoMapping.get(loop.startLineno),
         label: "0",
         loop: loop,
         color: {
@@ -151,7 +153,7 @@ class TraceGraph {
       });
     }
 
-    for (let event of initialEvents) {
+    for (let event of this.visibleEvents) {
       nodesToShow.push(this.createNode(event));
 
       // Add edges.
@@ -210,7 +212,7 @@ class TraceGraph {
       // See https://github.com/laike9m/Cyberbrain/issues/29
       // Moving any node would work actually.
       if (!this.moved) {
-        const ids = initialEvents.map(event => event.id);
+        const ids = this.visibleEvents.map(event => event.id);
         const x_positions = Array.from(this.network.getPositions(ids)).map(
           ([_, pos]) => pos.x
         );
@@ -309,7 +311,7 @@ class TraceGraph {
       }, 0);
     });
   }
-  // end initialize
+  // end render
 
   // Get the left boundary in canvas of the leftmost node.
   getTraceGraphLeftBoundary() {

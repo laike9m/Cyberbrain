@@ -60,11 +60,11 @@ describe("Test nested loops", function() {
       loops: loops,
       tracingResult: {}
     });
-    return [events].concat(traceData.initialize());
+    return [/* visible events */ traceData.initialize(), traceData.loops];
   }
 
   it("Test getVisibleEventsAndUpdateLoops", function() {
-    let [_, visibleEvents, loops] = prepareInitialState();
+    let [visibleEvents, loops] = prepareInitialState();
     assertThat(
       visibleEvents,
       contains(
@@ -106,11 +106,11 @@ describe("Test nested loops", function() {
   });
 
   describe("Test increase counter", function() {
-    let [events, visibleEvents, loops] = prepareInitialState();
+    let [visibleEvents, loops] = prepareInitialState();
 
     loops[0].counter = 1;
     const [eventsToHide0, eventsToShow0] = loops[0].generateNodeUpdate(
-      events,
+      traceData.events,
       visibleEvents
     );
     visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
@@ -137,7 +137,7 @@ describe("Test nested loops", function() {
 
     loops[1].counter = 1;
     const [eventsToHide1, eventsToShow1] = loops[1].generateNodeUpdate(
-      events,
+      traceData.events,
       visibleEvents
     );
 
@@ -165,10 +165,10 @@ describe("Test nested loops", function() {
   });
 
   describe("Test increase counter", function() {
-    let [events, visibleEvents, loops] = prepareInitialState();
+    let [visibleEvents, loops] = prepareInitialState();
     loops[1].counter = 1;
     const [eventsToHide0, eventsToShow0] = loops[1].generateNodeUpdate(
-      events,
+      traceData.events,
       visibleEvents
     );
     visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
@@ -197,7 +197,7 @@ describe("Test nested loops", function() {
 
     loops[0].counter = 1;
     const [eventsToHide1, eventsToShow1] = loops[0].generateNodeUpdate(
-      events,
+      traceData.events,
       visibleEvents
     );
 
@@ -229,26 +229,26 @@ describe("Test nested loops", function() {
   });
 
   describe("Test decrease counter", function() {
-    let [events, visibleEvents, loops] = prepareInitialState();
+    let [visibleEvents, loops] = prepareInitialState();
 
     // Increase then decrease.
     loops[0].counter = 1;
     let [eventsToHide, eventsToShow] = loops[0].generateNodeUpdate(
-      events,
+      traceData.events,
       visibleEvents
     );
     visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
 
     loops[1].counter = 1;
     [eventsToHide, eventsToShow] = loops[1].generateNodeUpdate(
-      events,
+      traceData.events,
       visibleEvents
     );
     visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
 
     loops[0].counter = 0;
     let [eventsToHide0, eventsToShow0] = loops[0].generateNodeUpdate(
-      events,
+      traceData.events,
       visibleEvents
     );
 
@@ -281,7 +281,7 @@ describe("Test nested loops", function() {
     visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
     loops[1].counter = 0;
     let [eventsToHide1, eventsToShow1] = loops[1].generateNodeUpdate(
-      events,
+      traceData.events,
       visibleEvents
     );
 
@@ -309,26 +309,26 @@ describe("Test nested loops", function() {
   });
 
   describe("Test decrease counter", function() {
-    let [events, visibleEvents, loops] = prepareInitialState();
+    let [visibleEvents, loops] = prepareInitialState();
 
     // Increase then decrease.
     loops[0].counter = 1;
     let [eventsToHide, eventsToShow] = loops[0].generateNodeUpdate(
-      events,
+      traceData.events,
       visibleEvents
     );
     visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
 
     loops[1].counter = 1;
     [eventsToHide, eventsToShow] = loops[1].generateNodeUpdate(
-      events,
+      traceData.events,
       visibleEvents
     );
     visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
 
     loops[1].counter = 0;
     let [eventsToHide0, eventsToShow0] = loops[1].generateNodeUpdate(
-      events,
+      traceData.events,
       visibleEvents
     );
 
@@ -357,7 +357,7 @@ describe("Test nested loops", function() {
     visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
     loops[0].counter = 0;
     let [eventsToHide1, eventsToShow1] = loops[0].generateNodeUpdate(
-      events,
+      traceData.events,
       visibleEvents
     );
 
@@ -418,11 +418,12 @@ describe("Test adjacent JumpBackToLoopStart", function() {
       loops: loops,
       tracingResult: {}
     });
-    return [events].concat(traceData.initialize());
+
+    return [/* visible events */ traceData.initialize(), traceData.loops];
   }
 
   it("Test initial state", function() {
-    let [_, visibleEvents, loops] = prepareInitialState();
+    let [visibleEvents, loops] = prepareInitialState();
     assertThat(
       visibleEvents,
       contains(
@@ -480,11 +481,11 @@ describe("Test loop with empty first iteration.", function() {
       loops: loops,
       tracingResult: {}
     });
-    return [events].concat(traceData.initialize());
+    return [/* visible events */ traceData.initialize(), traceData.loops];
   }
 
   it("Test getVisibleEventsAndUpdateLoops", function() {
-    let [_, visibleEvents, loops] = prepareInitialState();
+    let [visibleEvents, loops] = prepareInitialState();
     assertThat(
       visibleEvents,
       contains({ type: "Binding", index: 0, offset: 0 })
@@ -508,9 +509,12 @@ describe("Test loop with empty first iteration.", function() {
   });
 
   it("0 -> 1", function() {
-    let [events, visibleEvents, loops] = prepareInitialState();
+    let [visibleEvents, loops] = prepareInitialState();
     loops[0].counter = 1;
-    let [_, eventsToShow] = loops[0].generateNodeUpdate(events, visibleEvents);
+    let [_, eventsToShow] = loops[0].generateNodeUpdate(
+      traceData.events,
+      visibleEvents
+    );
     assertThat(
       Array.from(eventsToShow.values()),
       contains(
