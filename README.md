@@ -31,7 +31,7 @@ You can also install from [PyPI](https://pypi.org/project/cyberbrain/) , [VS Cod
 
 ## How to Use
 
-Suppose you want to trace a function called `foo`, just decorate it with `@trace`:
+Suppose you want to trace a function `foo`, just decorate it with `@trace`:
 
 ```python
 from cyberbrain import trace
@@ -41,7 +41,7 @@ def foo():
     ...
 ```
 
-Cyberbrain keeps your workflow unchanged. You run a program (from vscode or command line, both work), call **"Initialize Cyberbrain"** from the [command palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette), and a new panel will be opened to visualize how your program execution.
+Cyberbrain keeps your workflow unchanged. You run a program (from vscode or command line, both work), call **"Initialize Cyberbrain"** from the [command palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette), and a new panel will be opened to visualize how your program executed.
 
 The following gif demonstrates the workflow (click to view the full size image):
 

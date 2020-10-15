@@ -214,35 +214,27 @@ class Tracer:
         """Test only. Provides access to logged events."""
         return list(self.frame_logger.frame.loops.values())
 
-    @property
-    def global_tracer(self):
-        def _global_tracer(raw_frame, event, arg):
-            # Later when we need to trace more functions, we should identify those
-            # functions or at least use utils.should_exclude(frame) to avoid tracing
-            # unnecessary frames.
-            #
-            # self.tracer_state == TracerFSM.INITIAL is for preventing stepping into
-            # recursive calls, since their f_code are the same.
-            if (
-                event == "call"
-                and id(raw_frame.f_code) == self.decorated_function_code_id
-                and self.tracer_state == TracerFSM.INITIAL
-            ):
-                raw_frame.f_trace_opcodes = True
-                self._initialize_frame_and_logger(raw_frame, initial_instr_pointer=0)
-                return self.local_tracer
+    def global_tracer(self, raw_frame, event, arg):
+        # Later when we need to trace more functions, we should identify those
+        # functions or at least use utils.should_exclude(frame) to avoid tracing
+        # unnecessary frames.
+        #
+        # self.tracer_state == TracerFSM.INITIAL is for preventing stepping into
+        # recursive calls, since their f_code are the same.
+        if (
+            event == "call"
+            and id(raw_frame.f_code) == self.decorated_function_code_id
+            and self.tracer_state == TracerFSM.INITIAL
+        ):
+            raw_frame.f_trace_opcodes = True
+            self._initialize_frame_and_logger(raw_frame, initial_instr_pointer=0)
+            return self.local_tracer
 
-        return _global_tracer
-
-    @property
-    def local_tracer(self):
-        def _local_tracer(raw_frame, event, arg):
-            if utils.should_exclude(raw_frame):
-                return
-            if event == "opcode":
-                self.frame_logger.update(raw_frame)
-            if event == "return":
-                # print(raw_frame, event, arg, raw_frame.f_lasti)
-                self.frame.log_return_event(raw_frame, value=arg)
-
-        return _local_tracer
+    def local_tracer(self, raw_frame, event, arg):
+        if utils.should_exclude(raw_frame):
+            return
+        if event == "opcode":
+            self.frame_logger.update(raw_frame)
+        if event == "return":
+            # print(raw_frame, event, arg, raw_frame.f_lasti)
+            self.frame.log_return_event(raw_frame, value=arg)
