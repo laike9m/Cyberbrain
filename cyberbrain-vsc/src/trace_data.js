@@ -126,6 +126,15 @@ Class that
 
  */
 export class TraceData {
+  constructor(data) {
+    this.frameMetadata = data.metadata;
+    this.events = data.events;
+    this.loops = data.loops.map(
+      loop => new Loop(loop.startOffset, loop.endOffset, loop.startLineno)
+    );
+    this.tracingResult = new Map(Object.entries(data.tracingResult));
+  }
+
   /* Initialize the trace graph.
 
   Parameters:
@@ -143,14 +152,14 @@ export class TraceData {
     The passed in loops, whose iterations are detected and recorded.
 
    */
-  initialize(events, loops) {
+  initialize() {
     let loopStack = [];
     let maxReachedOffset = -1;
     let visibleEvents = [];
     let previousEventOffset = -2;
     let appearedLineNumbers = new Set();
 
-    for (let event of events) {
+    for (let event of this.events) {
       let offset = event.offset;
       appearedLineNumbers.add(event.lineno);
 
@@ -187,8 +196,8 @@ export class TraceData {
 
       if (
         event.type === "JumpBackToLoopStart" &&
-        event.index < events.length - 1 &&
-        events[nextEventIndex].offset < offset
+        event.index < this.events.length - 1 &&
+        this.events[nextEventIndex].offset < offset
       ) {
         currentLoop.incrementCounter();
         currentLoop.addIterationStart(
@@ -198,7 +207,7 @@ export class TraceData {
       }
 
       // Pushes loop onto the stack.
-      for (let loop of loops) {
+      for (let loop of this.loops) {
         if (
           previousEventOffset < loop.startOffset &&
           loop.startOffset <= offset
@@ -218,7 +227,7 @@ export class TraceData {
     }
 
     // Restores to the initial state.
-    for (let loop of loops) {
+    for (let loop of this.loops) {
       loop.counter = 0;
     }
 
@@ -235,6 +244,6 @@ export class TraceData {
         linenoMapping.set(lineno, ranking + 1); // Level starts with 1, leaving level 0 to InitialValue nodes
       });
 
-    return [visibleEvents, loops, linenoMapping];
+    return [visibleEvents, this.loops, linenoMapping];
   }
 }

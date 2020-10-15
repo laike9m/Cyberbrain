@@ -16,8 +16,6 @@ const { assertThat, contains, hasProperty, hasProperties } = hamjest;
 
 let cl = console.log;
 
-let traceData = new TraceData();
-
 function getUpdatedVisibleEvents(oldVisibleEvents, eventsToShow) {
   let offsetToEvent = new Map();
   for (let event of oldVisibleEvents) {
@@ -32,6 +30,8 @@ function getUpdatedVisibleEvents(oldVisibleEvents, eventsToShow) {
 }
 
 describe("Test nested loops", function() {
+  let traceData;
+
   function prepareInitialState() {
     let events = [
       { type: "Binding", index: 0, offset: 0 },
@@ -55,7 +55,12 @@ describe("Test nested loops", function() {
       { type: "Binding", index: 18, offset: 12 }
     ];
     let loops = [new Loop(0, 10), new Loop(2, 6)];
-    return [events].concat(traceData.initialize(events, loops));
+    traceData = new TraceData({
+      events: events,
+      loops: loops,
+      tracingResult: {}
+    });
+    return [events].concat(traceData.initialize());
   }
 
   it("Test getVisibleEventsAndUpdateLoops", function() {
@@ -385,6 +390,8 @@ describe("Test nested loops", function() {
 });
 
 describe("Test adjacent JumpBackToLoopStart", function() {
+  let traceData;
+
   function prepareInitialState() {
     let events = [
       { type: "Binding", index: 0, offset: 0 },
@@ -406,7 +413,12 @@ describe("Test adjacent JumpBackToLoopStart", function() {
       { type: "Binding", index: 16, offset: 10 }
     ];
     let loops = [new Loop(0, 8), new Loop(2, 6)];
-    return [events].concat(traceData.initialize(events, loops));
+    traceData = new TraceData({
+      events: events,
+      loops: loops,
+      tracingResult: {}
+    });
+    return [events].concat(traceData.initialize());
   }
 
   it("Test initial state", function() {
@@ -452,6 +464,8 @@ describe("Test adjacent JumpBackToLoopStart", function() {
 });
 
 describe("Test loop with empty first iteration.", function() {
+  let traceData;
+
   function prepareInitialState() {
     let events = [
       { type: "Binding", index: 0, offset: 0 },
@@ -461,7 +475,12 @@ describe("Test loop with empty first iteration.", function() {
       { type: "JumpBackToLoopStart", index: 4, offset: 4 }
     ];
     let loops = [new Loop(0, 4)];
-    return [events].concat(traceData.initialize(events, loops));
+    traceData = new TraceData({
+      events: events,
+      loops: loops,
+      tracingResult: {}
+    });
+    return [events].concat(traceData.initialize());
   }
 
   it("Test getVisibleEventsAndUpdateLoops", function() {

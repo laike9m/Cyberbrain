@@ -19,7 +19,7 @@ is poor, see: https://github.com/visjs/vis-network/issues/930
 */
 
 // The .js suffix is needed to make import work in vsc webview.
-import { Loop, TraceData } from "./trace_data.js";
+import { TraceData } from "./trace_data.js";
 import { displayValueInConsole } from "./value.js";
 
 let cl = console.log;
@@ -113,14 +113,7 @@ CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
 
 class TraceGraph {
   constructor(data) {
-    this.traceData = new TraceData();
-    this.lines = new Set();
-    this.frameMetadata = data.metadata;
-    this.events = data.events;
-    this.loops = data.loops.map(
-      loop => new Loop(loop.startOffset, loop.endOffset, loop.startLineno)
-    );
-    this.tracingResult = new Map(Object.entries(data.tracingResult));
+    this.traceData = new TraceData(data);
     this.colorGenerator = new ColorGenerator(data.identifiers);
     this.nodes = new vis.DataSet([]);
     this.edges = new vis.DataSet([]);
@@ -140,16 +133,12 @@ class TraceGraph {
   initialize() {
     let nodesToShow = [];
     let edgesToShow = [];
-    let [initialEvents, _, linenoMapping] = this.traceData.initialize(
-      this.events,
-      this.loops
-    );
+    let [initialEvents, _, linenoMapping] = this.traceData.initialize();
     this.linenoMapping = linenoMapping;
-    // cl(this.loops);
 
     // Add loop counter nodes.
-    for (let i = 0; i < this.loops.length; i++) {
-      let loop = this.loops[i];
+    for (let i = 0; i < this.traceData.loops.length; i++) {
+      let loop = this.traceData.loops[i];
       nodesToShow.push({
         title: "Loop counter",
         id: loop.id,
@@ -166,8 +155,10 @@ class TraceGraph {
       nodesToShow.push(this.createNode(event));
 
       // Add edges.
-      if (this.tracingResult.has(event.id)) {
-        for (let source_event_id of this.tracingResult.get(event.id)) {
+      if (this.traceData.tracingResult.has(event.id)) {
+        for (let source_event_id of this.traceData.tracingResult.get(
+          event.id
+        )) {
           edgesToShow.push({
             from: source_event_id,
             to: event.id,
@@ -200,7 +191,7 @@ class TraceGraph {
       ctx.textAlign = "center";
       ctx.fillStyle = "#cfa138";
       ctx.fillText(
-        `${this.frameMetadata.filename} ${this.frameMetadata.frame_name}`,
+        `${this.traceData.frameMetadata.filename} ${this.traceData.frameMetadata.frame_name}`,
         0,
         topNodePos.y - 30
       );
@@ -233,13 +224,13 @@ class TraceGraph {
 
       // Align loop nodes vertically.
       let minLoopNodeX = Number.MAX_SAFE_INTEGER;
-      for (let loop of this.loops) {
+      for (let loop of this.traceData.loops) {
         minLoopNodeX = Math.min(
           minLoopNodeX,
           this.network.getPosition(loop.id).x
         );
       }
-      for (let loop of this.loops) {
+      for (let loop of this.traceData.loops) {
         this.network.moveNode(
           loop.id,
           minLoopNodeX,
