@@ -24,23 +24,6 @@ import { displayValueInConsole } from "./value.js";
 
 let cl = console.log;
 
-let traceGraph;
-
-window.addEventListener("message", event => {
-  if (!event.data.hasOwnProperty("events")) {
-    return; // Server ready message.
-  }
-  traceGraph = new TraceGraph(event.data);
-  traceGraph.render();
-  if (isDevMode) {
-    cl(event.data);
-  } else {
-    setTimeout(() => {
-      console.clear();
-    }, 1000);
-  }
-});
-
 const lineHeight = 40;
 
 const options = {
@@ -111,6 +94,23 @@ CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
   return this;
 };
 
+let traceGraph;
+
+window.addEventListener("message", event => {
+  if (!event.data.hasOwnProperty("events")) {
+    return; // Server ready message.
+  }
+  traceGraph = new TraceGraph(event.data);
+  traceGraph.render();
+  if (isDevMode) {
+    cl(event.data);
+  } else {
+    setTimeout(() => {
+      console.clear();
+    }, 1000);
+  }
+});
+
 class TraceGraph {
   constructor(data) {
     this.traceData = new TraceData(data);
@@ -130,10 +130,6 @@ class TraceGraph {
     );
   }
 
-  get linenoMapping() {
-    return this.traceData.linenoMapping;
-  }
-
   render() {
     let nodesToShow = [];
     let edgesToShow = [];
@@ -144,7 +140,7 @@ class TraceGraph {
       nodesToShow.push({
         title: "Loop counter",
         id: loop.id,
-        level: this.linenoMapping.get(loop.startLineno),
+        level: this.traceData.linenoMapping.get(loop.startLineno),
         label: "0",
         loop: loop,
         color: {
@@ -199,7 +195,7 @@ class TraceGraph {
       );
 
       // Draw lineno nodes.
-      for (let [lineno, ranking] of this.linenoMapping) {
+      for (let [lineno, ranking] of this.traceData.linenoMapping) {
         const centerX = Math.min(-150, leftBoundary - 10);
         const centerY = topNodePos.y + lineHeight * (ranking - topNodeLevel);
         ctx.fillStyle = "#95ACB9";
@@ -342,7 +338,7 @@ class TraceGraph {
   createNode(event) {
     let node = {
       id: event.id,
-      level: this.linenoMapping.get(event.lineno),
+      level: this.traceData.linenoMapping.get(event.lineno),
       label: buildLabelText(event),
       target: event.target,
       // "value" is a reserved property, use "runtimeValue" instead.
@@ -435,7 +431,7 @@ function saveNodeData(node, callback) {
   traceGraph.nodes.update({ id: node.loop.id, label: userSetCounterText });
 
   let [nodesToHide, nodesToShow] = node.loop.generateNodeUpdate(
-    traceGraph.events,
+    traceGraph.traceData.events,
     /* visibleEvents= */ traceGraph.nodes.get({
       filter: node => {
         return node.hasOwnProperty("offset");
@@ -449,8 +445,10 @@ function saveNodeData(node, callback) {
   }
   for (let event of nodesToShow.values()) {
     traceGraph.nodes.update(traceGraph.createNode(event));
-    if (traceGraph.tracingResult.has(event.id)) {
-      for (let source_event_id of traceGraph.tracingResult.get(event.id)) {
+    if (traceGraph.traceData.tracingResult.has(event.id)) {
+      for (let source_event_id of traceGraph.traceData.tracingResult.get(
+        event.id
+      )) {
         traceGraph.edges.update({
           from: source_event_id,
           to: event.id,
