@@ -73,7 +73,6 @@ export function setWebViewContent(
     "node_modules/randomcolor/randomColor.js"
   );
   const traceGraphJsURL = createWebviewUri(`${jsDir}/trace_graph.js`);
-  const loopJsURL = createWebviewUri(`${jsDir}/loop.js`);
   const valueJsURL = createWebviewUri(`${jsDir}/value.js`);
   const traceDataJsURL = createWebviewUri(`${jsDir}/trace_data.js`);
 
@@ -92,7 +91,6 @@ export function setWebViewContent(
     <script type="text/javascript" src="${randomColorJsURL}"></script>
     <script type="module" src="${valueJsURL}"></script>
     <script type="module" src="${traceDataJsURL}"></script>
-    <script type="module" src="${loopJsURL}"></script>
     <script type="module" src="${visNetworkJsURL}"></script>
     <script type="module" src="${traceGraphJsURL}"></script>
     <link rel="stylesheet" type="text/css" href="${visNetworkCssURL}" />

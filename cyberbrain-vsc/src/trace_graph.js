@@ -19,8 +19,7 @@ is poor, see: https://github.com/visjs/vis-network/issues/930
 */
 
 // The .js suffix is needed to make import work in vsc webview.
-import { Loop } from "./loop.js";
-import { TraceData } from "./trace_data.js";
+import { Loop, TraceData } from "./trace_data.js";
 import { displayValueInConsole } from "./value.js";
 
 let cl = console.log;

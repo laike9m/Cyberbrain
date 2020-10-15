@@ -193,7 +193,7 @@ class JumpBackToLoopStart(Event):
 
     Not like other types of events, JumpBackToLoopStart is irrelevant to any identifier,
     nor is it showed on the trace graph. We need it to help track iterations of loops.
-    See loop.js for more information.
+    See trace_graph.js for more information.
     """
 
     # The jump target's offset, which is guaranteed to be a loop start.

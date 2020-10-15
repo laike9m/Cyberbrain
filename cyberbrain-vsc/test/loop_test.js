@@ -10,12 +10,13 @@ global.isDevMode = false;
 
 import hamjest from "hamjest";
 
-import { Loop } from "../src/loop.js";
-import { getInitialState } from "../src/trace_data.js";
+import { Loop, TraceData } from "../src/trace_data.js";
 
 const { assertThat, contains, hasProperty, hasProperties } = hamjest;
 
 let cl = console.log;
+
+let traceData = new TraceData();
 
 function getUpdatedVisibleEvents(oldVisibleEvents, eventsToShow) {
   let offsetToEvent = new Map();
@@ -54,7 +55,7 @@ describe("Test nested loops", function() {
       { type: "Binding", index: 18, offset: 12 }
     ];
     let loops = [new Loop(0, 10), new Loop(2, 6)];
-    return [events].concat(getInitialState(events, loops));
+    return [events].concat(traceData.initialize(events, loops));
   }
 
   it("Test getVisibleEventsAndUpdateLoops", function() {
@@ -405,7 +406,7 @@ describe("Test adjacent JumpBackToLoopStart", function() {
       { type: "Binding", index: 16, offset: 10 }
     ];
     let loops = [new Loop(0, 8), new Loop(2, 6)];
-    return [events].concat(getInitialState(events, loops));
+    return [events].concat(traceData.initialize(events, loops));
   }
 
   it("Test initial state", function() {
@@ -460,7 +461,7 @@ describe("Test loop with empty first iteration.", function() {
       { type: "JumpBackToLoopStart", index: 4, offset: 4 }
     ];
     let loops = [new Loop(0, 4)];
-    return [events].concat(getInitialState(events, loops));
+    return [events].concat(traceData.initialize(events, loops));
   }
 
   it("Test getVisibleEventsAndUpdateLoops", function() {
