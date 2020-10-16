@@ -114,12 +114,18 @@ window.addEventListener("message", event => {
 class TraceGraph {
   constructor(data) {
     this.traceData = new TraceData(data);
-    this.visibleEvents = this.traceData.initialize();
     this.colorGenerator = new ColorGenerator(data.identifiers);
     this.nodes = new vis.DataSet([]);
     this.edges = new vis.DataSet([]);
     this.container = document.getElementById("vis");
     this.hoveredNodeId = undefined;
+    this.network = null;
+  }
+
+  render() {
+    this.nodes.clear();
+    this.edges.clear();
+    this.traceData.updateVisibleEvents();
     this.network = new vis.Network(
       this.container,
       {
@@ -128,20 +134,17 @@ class TraceGraph {
       },
       options
     );
-  }
 
-  render() {
     let nodesToShow = [];
     let edgesToShow = [];
 
     // Add loop counter nodes.
-    for (let i = 0; i < this.traceData.loops.length; i++) {
-      let loop = this.traceData.loops[i];
+    for (const loop of this.traceData.loops) {
       nodesToShow.push({
         title: "Loop counter",
         id: loop.id,
         level: this.traceData.linenoMapping.get(loop.startLineno),
-        label: "0",
+        label: loop.counter.toString(),
         loop: loop,
         color: {
           background: "white"
@@ -149,7 +152,7 @@ class TraceGraph {
       });
     }
 
-    for (let event of this.visibleEvents) {
+    for (let event of this.traceData.visibleEventsArray) {
       nodesToShow.push(this.createNode(event));
 
       // Add edges.
@@ -208,7 +211,7 @@ class TraceGraph {
       // See https://github.com/laike9m/Cyberbrain/issues/29
       // Moving any node would work actually.
       if (!this.moved) {
-        const ids = this.visibleEvents.map(event => event.id);
+        const ids = this.traceData.visibleEventsArray.map(event => event.id);
         const x_positions = Array.from(this.network.getPositions(ids)).map(
           ([_, pos]) => pos.x
         );
@@ -323,18 +326,6 @@ class TraceGraph {
     return this.network.getBoundingBox(leftMostNodeId).left;
   }
 
-  createHiddenEdge(fromNode, toNode) {
-    return {
-      from: fromNode,
-      to: toNode,
-      color: {
-        color: "rgba(0, 0, 0, 0)",
-        hover: "rgba(0, 0, 0, 0)",
-        highlight: "rgba(0, 0, 0, 0)"
-      }
-    };
-  }
-
   createNode(event) {
     let node = {
       id: event.id,
@@ -411,6 +402,7 @@ function cancelNodeEdit(callback) {
   callback(null);
 }
 
+// TODO: Move node related functions into TraceGraph.
 function saveNodeData(node, callback) {
   let userSetCounterText = document.getElementById("node-label").value;
   let userSetCounterValue = parseInt(userSetCounterText);
@@ -425,41 +417,10 @@ function saveNodeData(node, callback) {
     }
     return;
   }
-
-  node.label = userSetCounterText;
   node.loop.counter = userSetCounterValue;
-  traceGraph.nodes.update({ id: node.loop.id, label: userSetCounterText });
-
-  let [nodesToHide, nodesToShow] = node.loop.generateNodeUpdate(
-    traceGraph.traceData.events,
-    /* visibleEvents= */ traceGraph.nodes.get({
-      filter: node => {
-        return node.hasOwnProperty("offset");
-      }
-    })
-  );
-
-  // TODO: move the nodes update logic to TraceGraph.
-  for (let event of nodesToHide.values()) {
-    traceGraph.nodes.remove(event);
-  }
-  for (let event of nodesToShow.values()) {
-    traceGraph.nodes.update(traceGraph.createNode(event));
-    if (traceGraph.traceData.tracingResult.has(event.id)) {
-      for (let source_event_id of traceGraph.traceData.tracingResult.get(
-        event.id
-      )) {
-        traceGraph.edges.update({
-          from: source_event_id,
-          to: event.id,
-          id: source_event_id + event.id
-        });
-      }
-    }
-  }
-
   clearNodePopUp();
   callback(node);
+  traceGraph.render();
 }
 
 function clearNodePopUp() {

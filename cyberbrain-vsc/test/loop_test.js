@@ -16,57 +16,39 @@ const { assertThat, contains, hasProperty, hasProperties } = hamjest;
 
 let cl = console.log;
 
-function getUpdatedVisibleEvents(oldVisibleEvents, eventsToShow) {
-  let offsetToEvent = new Map();
-  for (let event of oldVisibleEvents) {
-    offsetToEvent.set(event.offset, event);
-  }
-  for (let [offset, event] of eventsToShow.entries()) {
-    offsetToEvent.set(offset, event);
-  }
-  let newEvents = Array.from(offsetToEvent.values());
-  newEvents.sort((e1, e2) => e1.offset - e2.offset);
-  return newEvents;
-}
-
 describe("Test nested loops", function() {
-  let traceData;
-
-  function prepareInitialState() {
-    let events = [
-      { type: "Binding", index: 0, offset: 0 },
-      { type: "Binding", index: 1, offset: 2 },
-      { type: "Binding", index: 2, offset: 4 },
-      { type: "JumpBackToLoopStart", index: 3, offset: 6 },
-      { type: "Binding", index: 4, offset: 2 },
-      { type: "Binding", index: 5, offset: 4 },
-      { type: "JumpBackToLoopStart", index: 6, offset: 6 },
-      { type: "Binding", index: 7, offset: 8 },
-      { type: "JumpBackToLoopStart", index: 8, offset: 10 },
-      { type: "Binding", index: 9, offset: 0 },
-      { type: "Binding", index: 10, offset: 2 },
-      { type: "Binding", index: 11, offset: 4 },
-      { type: "JumpBackToLoopStart", index: 12, offset: 6 },
-      { type: "Binding", index: 13, offset: 2 },
-      { type: "Binding", index: 14, offset: 4 },
-      { type: "JumpBackToLoopStart", index: 15, offset: 6 },
-      { type: "Binding", index: 16, offset: 8 },
-      { type: "JumpBackToLoopStart", index: 17, offset: 10 },
-      { type: "Binding", index: 18, offset: 12 }
-    ];
-    let loops = [new Loop(0, 10), new Loop(2, 6)];
-    traceData = new TraceData({
-      events: events,
-      loops: loops,
+  function createTraceData() {
+    return new TraceData({
+      events: [
+        { type: "Binding", index: 0, offset: 0 },
+        { type: "Binding", index: 1, offset: 2 },
+        { type: "Binding", index: 2, offset: 4 },
+        { type: "JumpBackToLoopStart", index: 3, offset: 6 },
+        { type: "Binding", index: 4, offset: 2 },
+        { type: "Binding", index: 5, offset: 4 },
+        { type: "JumpBackToLoopStart", index: 6, offset: 6 },
+        { type: "Binding", index: 7, offset: 8 },
+        { type: "JumpBackToLoopStart", index: 8, offset: 10 },
+        { type: "Binding", index: 9, offset: 0 },
+        { type: "Binding", index: 10, offset: 2 },
+        { type: "Binding", index: 11, offset: 4 },
+        { type: "JumpBackToLoopStart", index: 12, offset: 6 },
+        { type: "Binding", index: 13, offset: 2 },
+        { type: "Binding", index: 14, offset: 4 },
+        { type: "JumpBackToLoopStart", index: 15, offset: 6 },
+        { type: "Binding", index: 16, offset: 8 },
+        { type: "JumpBackToLoopStart", index: 17, offset: 10 },
+        { type: "Binding", index: 18, offset: 12 }
+      ],
+      loops: [new Loop(0, 10), new Loop(2, 6)],
       tracingResult: {}
     });
-    return [/* visible events */ traceData.initialize(), traceData.loops];
   }
 
-  it("Test getVisibleEventsAndUpdateLoops", function() {
-    let [visibleEvents, loops] = prepareInitialState();
+  it("Test loop initialization", function() {
+    const traceData = createTraceData();
     assertThat(
-      visibleEvents,
+      traceData.visibleEventsArray,
       contains(
         { type: "Binding", index: 0, offset: 0 },
         { type: "Binding", index: 1, offset: 2 },
@@ -77,7 +59,7 @@ describe("Test nested loops", function() {
     );
 
     assertThat(
-      loops,
+      traceData.loops,
       contains(
         hasProperties({
           startOffset: 0,
@@ -87,6 +69,10 @@ describe("Test nested loops", function() {
           _iterationStarts: new Map([
             ["0", 0],
             ["1", 9]
+          ]),
+          _iterationEnds: new Map([
+            ["0", 8],
+            ["1", 17]
           ])
         }),
         hasProperties({
@@ -99,6 +85,12 @@ describe("Test nested loops", function() {
             ["0,1", 4],
             ["1,0", 10],
             ["1,1", 13]
+          ]),
+          _iterationEnds: new Map([
+            ["0,0", 3],
+            ["0,1", 6],
+            ["1,0", 12],
+            ["1,1", 15]
           ])
         })
       )
@@ -106,326 +98,155 @@ describe("Test nested loops", function() {
   });
 
   describe("Test increase counter", function() {
-    let [visibleEvents, loops] = prepareInitialState();
+    let traceData = createTraceData();
 
-    loops[0].counter = 1;
-    const [eventsToHide0, eventsToShow0] = loops[0].generateNodeUpdate(
-      traceData.events,
-      visibleEvents
-    );
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
-
-    describe("(0, 0) -> (1, 0)", function() {
-      it("Test eventsToHide is correct", function() {
-        assertThat(Array.from(eventsToHide0.values()), [
-          { type: "Binding", index: 0, offset: 0 },
-          { type: "Binding", index: 1, offset: 2 },
-          { type: "Binding", index: 2, offset: 4 },
-          { type: "Binding", index: 7, offset: 8 }
-        ]);
-      });
-
-      it("Test eventsToShow is correct", function() {
-        assertThat(Array.from(eventsToShow0.values()), [
-          { type: "Binding", index: 9, offset: 0 },
-          { type: "Binding", index: 10, offset: 2 },
-          { type: "Binding", index: 11, offset: 4 },
-          { type: "Binding", index: 16, offset: 8 }
-        ]);
-      });
+    it("(0, 0) -> (1, 0)", function() {
+      traceData.loops[0].counter = 1;
+      traceData.updateVisibleEvents();
+      assertThat(traceData.visibleEventsArray, [
+        { type: "Binding", index: 9, offset: 0 },
+        { type: "Binding", index: 10, offset: 2 },
+        { type: "Binding", index: 11, offset: 4 },
+        { type: "Binding", index: 16, offset: 8 },
+        { type: "Binding", index: 18, offset: 12 }
+      ]);
     });
 
-    loops[1].counter = 1;
-    const [eventsToHide1, eventsToShow1] = loops[1].generateNodeUpdate(
-      traceData.events,
-      visibleEvents
-    );
-
-    describe("(1, 0) -> (1, 1)", function() {
-      it("Test eventsToHide is correct", function() {
-        assertThat(
-          Array.from(eventsToHide1.values()),
-          contains(
-            { type: "Binding", index: 10, offset: 2 },
-            { type: "Binding", index: 11, offset: 4 }
-          )
-        );
-      });
-
-      it("Test eventsToShow is correct", function() {
-        assertThat(
-          Array.from(eventsToShow1.values()),
-          contains(
-            { type: "Binding", index: 13, offset: 2 },
-            { type: "Binding", index: 14, offset: 4 }
-          )
-        );
-      });
+    it("(1, 0) -> (1, 1)", function() {
+      traceData.loops[1].counter = 1;
+      traceData.updateVisibleEvents();
+      assertThat(traceData.visibleEventsArray, [
+        { type: "Binding", index: 9, offset: 0 },
+        { type: "Binding", index: 13, offset: 2 },
+        { type: "Binding", index: 14, offset: 4 },
+        { type: "Binding", index: 16, offset: 8 },
+        { type: "Binding", index: 18, offset: 12 }
+      ]);
     });
   });
 
   describe("Test increase counter", function() {
-    let [visibleEvents, loops] = prepareInitialState();
-    loops[1].counter = 1;
-    const [eventsToHide0, eventsToShow0] = loops[1].generateNodeUpdate(
-      traceData.events,
-      visibleEvents
-    );
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
+    let traceData = createTraceData();
 
-    describe("(0, 0) -> (0, 1)", function() {
-      it("Test eventsToHide is correct", function() {
-        assertThat(
-          Array.from(eventsToHide0.values()),
-          contains(
-            { type: "Binding", index: 1, offset: 2 },
-            { type: "Binding", index: 2, offset: 4 }
-          )
-        );
-      });
-
-      it("Test eventsToShow is correct", function() {
-        assertThat(
-          Array.from(eventsToShow0.values()),
-          contains(
-            { type: "Binding", index: 4, offset: 2 },
-            { type: "Binding", index: 5, offset: 4 }
-          )
-        );
-      });
+    it("(0, 0) -> (0, 1)", function() {
+      traceData.loops[1].counter = 1;
+      traceData.updateVisibleEvents();
+      assertThat(traceData.visibleEventsArray, [
+        { type: "Binding", index: 0, offset: 0 },
+        { type: "Binding", index: 4, offset: 2 },
+        { type: "Binding", index: 5, offset: 4 },
+        { type: "Binding", index: 7, offset: 8 },
+        { type: "Binding", index: 18, offset: 12 }
+      ]);
     });
 
-    loops[0].counter = 1;
-    const [eventsToHide1, eventsToShow1] = loops[0].generateNodeUpdate(
-      traceData.events,
-      visibleEvents
-    );
-
-    describe("(0, 1) -> (1, 1)", function() {
-      it("Test eventsToHide is correct", function() {
-        assertThat(
-          Array.from(eventsToHide1.values()),
-          contains(
-            { type: "Binding", index: 0, offset: 0 },
-            { type: "Binding", index: 4, offset: 2 },
-            { type: "Binding", index: 5, offset: 4 },
-            { type: "Binding", index: 7, offset: 8 }
-          )
-        );
-      });
-
-      it("Test eventsToShow is correct", function() {
-        assertThat(
-          Array.from(eventsToShow1.values()),
-          contains(
-            { type: "Binding", index: 9, offset: 0 },
-            { type: "Binding", index: 13, offset: 2 },
-            { type: "Binding", index: 14, offset: 4 },
-            { type: "Binding", index: 16, offset: 8 }
-          )
-        );
-      });
+    it("(0, 0) -> (0, 1)", function() {
+      traceData.loops[0].counter = 1;
+      traceData.updateVisibleEvents();
+      assertThat(traceData.visibleEventsArray, [
+        { type: "Binding", index: 9, offset: 0 },
+        { type: "Binding", index: 13, offset: 2 },
+        { type: "Binding", index: 14, offset: 4 },
+        { type: "Binding", index: 16, offset: 8 },
+        { type: "Binding", index: 18, offset: 12 }
+      ]);
     });
   });
 
   describe("Test decrease counter", function() {
-    let [visibleEvents, loops] = prepareInitialState();
+    let traceData = createTraceData();
+    traceData.loops[0].counter = 1;
+    traceData.loops[1].counter = 1;
+    traceData.updateVisibleEvents();
 
-    // Increase then decrease.
-    loops[0].counter = 1;
-    let [eventsToHide, eventsToShow] = loops[0].generateNodeUpdate(
-      traceData.events,
-      visibleEvents
-    );
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
-
-    loops[1].counter = 1;
-    [eventsToHide, eventsToShow] = loops[1].generateNodeUpdate(
-      traceData.events,
-      visibleEvents
-    );
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
-
-    loops[0].counter = 0;
-    let [eventsToHide0, eventsToShow0] = loops[0].generateNodeUpdate(
-      traceData.events,
-      visibleEvents
-    );
-
-    describe("(1, 1) -> (0, 1)", function() {
-      it("Test eventsHide is correct", function() {
-        assertThat(
-          Array.from(eventsToHide0.values()),
-          contains(
-            { type: "Binding", index: 9, offset: 0 },
-            { type: "Binding", index: 13, offset: 2 },
-            { type: "Binding", index: 14, offset: 4 },
-            { type: "Binding", index: 16, offset: 8 }
-          )
-        );
-      });
-
-      it("Test eventsToShow is correct", function() {
-        assertThat(
-          Array.from(eventsToShow0.values()),
-          contains(
-            { type: "Binding", index: 0, offset: 0 },
-            { type: "Binding", index: 4, offset: 2 },
-            { type: "Binding", index: 5, offset: 4 },
-            { type: "Binding", index: 7, offset: 8 }
-          )
-        );
-      });
+    it("(1, 1) -> (0, 1)", function() {
+      traceData.loops[0].counter = 0;
+      traceData.updateVisibleEvents();
+      assertThat(traceData.visibleEventsArray, [
+        { type: "Binding", index: 0, offset: 0 },
+        { type: "Binding", index: 4, offset: 2 },
+        { type: "Binding", index: 5, offset: 4 },
+        { type: "Binding", index: 7, offset: 8 },
+        { type: "Binding", index: 18, offset: 12 }
+      ]);
     });
 
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
-    loops[1].counter = 0;
-    let [eventsToHide1, eventsToShow1] = loops[1].generateNodeUpdate(
-      traceData.events,
-      visibleEvents
-    );
-
-    describe("(0, 1) -> (0, 0)", function() {
-      it("Test eventsToHide is correct", function() {
-        assertThat(
-          Array.from(eventsToHide1.values()),
-          contains(
-            { type: "Binding", index: 4, offset: 2 },
-            { type: "Binding", index: 5, offset: 4 }
-          )
-        );
-      });
-
-      it("Test eventsToShow is correct", function() {
-        assertThat(
-          Array.from(eventsToShow1.values()),
-          contains(
-            { type: "Binding", index: 1, offset: 2 },
-            { type: "Binding", index: 2, offset: 4 }
-          )
-        );
-      });
+    it("(0, 1) -> (0, 0)", function() {
+      traceData.loops[1].counter = 0;
+      traceData.updateVisibleEvents();
+      assertThat(traceData.visibleEventsArray, [
+        { type: "Binding", index: 0, offset: 0 },
+        { type: "Binding", index: 1, offset: 2 },
+        { type: "Binding", index: 2, offset: 4 },
+        { type: "Binding", index: 7, offset: 8 },
+        { type: "Binding", index: 18, offset: 12 }
+      ]);
     });
   });
 
   describe("Test decrease counter", function() {
-    let [visibleEvents, loops] = prepareInitialState();
+    let traceData = createTraceData();
+    traceData.loops[0].counter = 1;
+    traceData.loops[1].counter = 1;
+    traceData.updateVisibleEvents();
 
-    // Increase then decrease.
-    loops[0].counter = 1;
-    let [eventsToHide, eventsToShow] = loops[0].generateNodeUpdate(
-      traceData.events,
-      visibleEvents
-    );
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
-
-    loops[1].counter = 1;
-    [eventsToHide, eventsToShow] = loops[1].generateNodeUpdate(
-      traceData.events,
-      visibleEvents
-    );
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow);
-
-    loops[1].counter = 0;
-    let [eventsToHide0, eventsToShow0] = loops[1].generateNodeUpdate(
-      traceData.events,
-      visibleEvents
-    );
-
-    describe("(1, 1) -> (1, 0)", function() {
-      it("Test eventsToHide is correct", function() {
-        assertThat(
-          Array.from(eventsToHide0.values()),
-          contains(
-            { type: "Binding", index: 13, offset: 2 },
-            { type: "Binding", index: 14, offset: 4 }
-          )
-        );
-      });
-
-      it("Test eventsToShow is correct", function() {
-        assertThat(
-          Array.from(eventsToShow0.values()),
-          contains(
-            { type: "Binding", index: 10, offset: 2 },
-            { type: "Binding", index: 11, offset: 4 }
-          )
-        );
-      });
+    it("(1, 1) -> (1, 0)", function() {
+      traceData.loops[1].counter = 0;
+      traceData.updateVisibleEvents();
+      assertThat(traceData.visibleEventsArray, [
+        { type: "Binding", index: 9, offset: 0 },
+        { type: "Binding", index: 10, offset: 2 },
+        { type: "Binding", index: 11, offset: 4 },
+        { type: "Binding", index: 16, offset: 8 },
+        { type: "Binding", index: 18, offset: 12 }
+      ]);
     });
 
-    visibleEvents = getUpdatedVisibleEvents(visibleEvents, eventsToShow0);
-    loops[0].counter = 0;
-    let [eventsToHide1, eventsToShow1] = loops[0].generateNodeUpdate(
-      traceData.events,
-      visibleEvents
-    );
-
-    describe("(1, 0) -> (0, 0)", function() {
-      it("Test eventsHide is correct", function() {
-        assertThat(
-          Array.from(eventsToHide1.values()),
-          contains(
-            { type: "Binding", index: 9, offset: 0 },
-            { type: "Binding", index: 10, offset: 2 },
-            { type: "Binding", index: 11, offset: 4 },
-            { type: "Binding", index: 16, offset: 8 }
-          )
-        );
-      });
-
-      it("Test eventsToShow is correct", function() {
-        assertThat(
-          Array.from(eventsToShow1.values()),
-          contains(
-            { type: "Binding", index: 0, offset: 0 },
-            { type: "Binding", index: 1, offset: 2 },
-            { type: "Binding", index: 2, offset: 4 },
-            { type: "Binding", index: 7, offset: 8 }
-          )
-        );
-      });
+    it("(1, 0) -> (0, 0)", function() {
+      traceData.loops[0].counter = 0;
+      traceData.updateVisibleEvents();
+      assertThat(traceData.visibleEventsArray, [
+        { type: "Binding", index: 0, offset: 0 },
+        { type: "Binding", index: 1, offset: 2 },
+        { type: "Binding", index: 2, offset: 4 },
+        { type: "Binding", index: 7, offset: 8 },
+        { type: "Binding", index: 18, offset: 12 }
+      ]);
     });
   });
 });
 
 describe("Test adjacent JumpBackToLoopStart", function() {
-  let traceData;
-
-  function prepareInitialState() {
-    let events = [
-      { type: "Binding", index: 0, offset: 0 },
-      { type: "Binding", index: 1, offset: 2 },
-      { type: "Binding", index: 2, offset: 4 },
-      { type: "JumpBackToLoopStart", index: 3, offset: 6 },
-      { type: "Binding", index: 4, offset: 2 },
-      { type: "Binding", index: 5, offset: 4 },
-      { type: "JumpBackToLoopStart", index: 6, offset: 6 },
-      { type: "JumpBackToLoopStart", index: 7, offset: 8 },
-      { type: "Binding", index: 8, offset: 0 },
-      { type: "Binding", index: 9, offset: 2 },
-      { type: "Binding", index: 10, offset: 4 },
-      { type: "JumpBackToLoopStart", index: 11, offset: 6 },
-      { type: "Binding", index: 12, offset: 2 },
-      { type: "Binding", index: 13, offset: 4 },
-      { type: "JumpBackToLoopStart", index: 14, offset: 6 },
-      { type: "JumpBackToLoopStart", index: 15, offset: 8 },
-      { type: "Binding", index: 16, offset: 10 }
-    ];
-    let loops = [new Loop(0, 8), new Loop(2, 6)];
-    traceData = new TraceData({
-      events: events,
-      loops: loops,
+  function createTraceData() {
+    return new TraceData({
+      events: [
+        { type: "Binding", index: 0, offset: 0 },
+        { type: "Binding", index: 1, offset: 2 },
+        { type: "Binding", index: 2, offset: 4 },
+        { type: "JumpBackToLoopStart", index: 3, offset: 6 },
+        { type: "Binding", index: 4, offset: 2 },
+        { type: "Binding", index: 5, offset: 4 },
+        { type: "JumpBackToLoopStart", index: 6, offset: 6 },
+        { type: "JumpBackToLoopStart", index: 7, offset: 8 },
+        { type: "Binding", index: 8, offset: 0 },
+        { type: "Binding", index: 9, offset: 2 },
+        { type: "Binding", index: 10, offset: 4 },
+        { type: "JumpBackToLoopStart", index: 11, offset: 6 },
+        { type: "Binding", index: 12, offset: 2 },
+        { type: "Binding", index: 13, offset: 4 },
+        { type: "JumpBackToLoopStart", index: 14, offset: 6 },
+        { type: "JumpBackToLoopStart", index: 15, offset: 8 },
+        { type: "Binding", index: 16, offset: 10 }
+      ],
+      loops: [new Loop(0, 8), new Loop(2, 6)],
       tracingResult: {}
     });
-
-    return [/* visible events */ traceData.initialize(), traceData.loops];
   }
 
   it("Test initial state", function() {
-    let [visibleEvents, loops] = prepareInitialState();
+    const traceData = createTraceData();
     assertThat(
-      visibleEvents,
+      traceData.visibleEventsArray,
       contains(
         { type: "Binding", index: 0, offset: 0 },
         { type: "Binding", index: 1, offset: 2 },
@@ -435,7 +256,7 @@ describe("Test adjacent JumpBackToLoopStart", function() {
     );
 
     assertThat(
-      loops,
+      traceData.loops,
       contains(
         hasProperties({
           startOffset: 0,
@@ -445,6 +266,10 @@ describe("Test adjacent JumpBackToLoopStart", function() {
           _iterationStarts: new Map([
             ["0", 0],
             ["1", 8]
+          ]),
+          _iterationEnds: new Map([
+            ["0", 7],
+            ["1", 15]
           ])
         }),
         hasProperties({
@@ -457,6 +282,12 @@ describe("Test adjacent JumpBackToLoopStart", function() {
             ["0,1", 4],
             ["1,0", 9],
             ["1,1", 12]
+          ]),
+          _iterationEnds: new Map([
+            ["0,0", 3],
+            ["0,1", 6],
+            ["1,0", 11],
+            ["1,1", 14]
           ])
         })
       )
@@ -465,34 +296,29 @@ describe("Test adjacent JumpBackToLoopStart", function() {
 });
 
 describe("Test loop with empty first iteration.", function() {
-  let traceData;
-
-  function prepareInitialState() {
-    let events = [
-      { type: "Binding", index: 0, offset: 0 },
-      { type: "JumpBackToLoopStart", index: 1, offset: 4 },
-      { type: "Binding", index: 2, offset: 0 },
-      { type: "Binding", index: 3, offset: 2 },
-      { type: "JumpBackToLoopStart", index: 4, offset: 4 }
-    ];
-    let loops = [new Loop(0, 4)];
-    traceData = new TraceData({
-      events: events,
-      loops: loops,
+  function createTraceData() {
+    return new TraceData({
+      events: [
+        { type: "Binding", index: 0, offset: 0 },
+        { type: "JumpBackToLoopStart", index: 1, offset: 4 },
+        { type: "Binding", index: 2, offset: 0 },
+        { type: "Binding", index: 3, offset: 2 },
+        { type: "JumpBackToLoopStart", index: 4, offset: 4 }
+      ],
+      loops: [new Loop(0, 4)],
       tracingResult: {}
     });
-    return [/* visible events */ traceData.initialize(), traceData.loops];
   }
 
   it("Test getVisibleEventsAndUpdateLoops", function() {
-    let [visibleEvents, loops] = prepareInitialState();
+    const traceData = createTraceData();
     assertThat(
-      visibleEvents,
+      traceData.visibleEventsArray,
       contains({ type: "Binding", index: 0, offset: 0 })
     );
 
     assertThat(
-      loops,
+      traceData.loops,
       contains(
         hasProperties({
           startOffset: 0,
@@ -502,6 +328,10 @@ describe("Test loop with empty first iteration.", function() {
           _iterationStarts: new Map([
             ["0", 0],
             ["1", 2]
+          ]),
+          _iterationEnds: new Map([
+            ["0", 1],
+            ["1", 4]
           ])
         })
       )
@@ -509,18 +339,12 @@ describe("Test loop with empty first iteration.", function() {
   });
 
   it("0 -> 1", function() {
-    let [visibleEvents, loops] = prepareInitialState();
-    loops[0].counter = 1;
-    let [_, eventsToShow] = loops[0].generateNodeUpdate(
-      traceData.events,
-      visibleEvents
-    );
-    assertThat(
-      Array.from(eventsToShow.values()),
-      contains(
-        { type: "Binding", index: 2, offset: 0 },
-        { type: "Binding", index: 3, offset: 2 }
-      )
-    );
+    let traceData = createTraceData();
+    traceData.loops[0].counter = 1;
+    traceData.updateVisibleEvents();
+    assertThat(traceData.visibleEventsArray, [
+      { type: "Binding", index: 2, offset: 0 },
+      { type: "Binding", index: 3, offset: 2 }
+    ]);
   });
 });
