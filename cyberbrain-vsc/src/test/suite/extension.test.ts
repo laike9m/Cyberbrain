@@ -6,39 +6,60 @@ let cl = console.log;
 
 const cbRoot = path.resolve(__dirname, "../../../..");
 
-// TODO: Allow setting different timeout for each test.
-// TODO: Add password.py
+// Timeout is in seconds.
 const examples = [
-  { file: "examples/hello.py", args: ["-m", "examples.hello"] },
-  { file: "examples/nonlocal.py", args: ["-m", "examples.nonlocal"] },
-  { file: "examples/loop.py", args: ["-m", "examples.loop"] },
+  { file: "examples/hello.py", args: ["-m", "examples.hello"], timeout: 3 },
+  {
+    file: "examples/nonlocal.py",
+    args: ["-m", "examples.nonlocal"],
+    timeout: 4
+  },
+  { file: "examples/loop.py", args: ["-m", "examples.loop"], timeout: 5 },
   {
     file: "examples/word_count/wc.py",
-    args: ["-m", "examples.word_count.wc", "examples/word_count/inputs/*.txt"]
+    args: ["-m", "examples.word_count.wc", "examples/word_count/inputs/*.txt"],
+    timeout: 7
   },
   {
     file: "examples/telephone/telephone.py",
-    args: ["-m", "examples.telephone.telephone"]
+    args: ["-m", "examples.telephone.telephone"],
+    timeout: 7
   },
   {
     file: "examples/bottles_of_beer/bottle.py",
-    args: ["-m", "examples.bottles_of_beer.bottle"]
+    args: ["-m", "examples.bottles_of_beer.bottle"],
+    timeout: 7
   },
   {
     file: "examples/twelve_days/twelve.py",
-    args: ["-m", "examples.twelve_days.twelve"]
+    args: ["-m", "examples.twelve_days.twelve"],
+    timeout: 7
   },
   {
     file: "examples/rhymer/rhymer.py",
-    args: ["-m", "examples.rhymer.rhymer"]
+    args: ["-m", "examples.rhymer.rhymer"],
+    timeout: 7
   },
   {
     file: "examples/mad_libs/mad_libs.py",
-    args: ["-m", "examples.mad_libs.mad_libs"]
+    args: ["-m", "examples.mad_libs.mad_libs"],
+    timeout: 7
   },
   {
     file: "examples/issue47.py",
-    args: ["-m", "examples.issue47"]
+    args: ["-m", "examples.issue47"],
+    timeout: 3
+  },
+  {
+    file: "examples/password/password.py",
+    args: [
+      "-m",
+      "examples.password.password",
+      "examples/password/sonnets/*",
+      "-s 1",
+      "--l33t"
+    ],
+    timeout: 10
   }
 ];
 
@@ -79,13 +100,13 @@ suite("Extension Test Suite", function() {
     // Opens webview to show the trace graph.
     vscode.commands.executeCommand("cyberbrain.init");
 
-    // Waits for 5 seconds so we have time to inspect the trace graph.
+    // Waits for enough time so we can review the trace graph.
     // TODO: Find a way to detect trace graph rendering ready, and make wait time flexible.
     return new Promise(resolve => {
       setTimeout(() => {
         serverProcess.kill();
         resolve();
-      }, 7000);
+      }, 1000 * example.timeout);
     });
   }
 });
