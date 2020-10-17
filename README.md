@@ -6,7 +6,7 @@
 [!["GitHub Discussions"](https://img.shields.io/badge/%20GitHub-%20Discussions-gray.svg?longCache=true&logo=github&colorB=purple)](https://github.com/laike9m/Cyberbrain/discussions)
 [![Discord](https://img.shields.io/discord/751695524628922449.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/5zGS5V5)
 
-Cyberbrain aims to ***free programmers*** from debugging. It is the **only** debugger that:
+Cyberbrain aims to free programmers from debugging. It is the **only** debugger that:
 
 - Lets you **backtrace variable changes**.
 
@@ -54,12 +54,6 @@ Cyberbrain keeps your workflow unchanged. You run a program (from vscode or comm
 The following gif demonstrates the workflow (click to view the full size image):
 
 ![usage](https://user-images.githubusercontent.com/2592205/95430485-ac484700-0900-11eb-814f-41ca84c022f9.gif)
-
-Features provided:
-- Dataflow analysis
-- Variable tracing (try hover on any variable, it only highlights **relevant** variables)
-- Object inspection (value is logged in the opened devtools console)
-- Expect more to come 🤟
 
 Read our **[documentation](docs/Features.md)** to learn more about Cyberbrain's features and limitations.
 
