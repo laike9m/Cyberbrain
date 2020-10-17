@@ -8,13 +8,13 @@
 
 Cyberbrain aims to free programmers from debugging. It is the **only** debugger that:
 
-- Lets you **backtrace variable changes**.
+- **Backtraces variable changes**.
 
-- Lets you **debug loops** with confidence.
+- **Persists every state** of program execution.
 
 - **Preserves variables' values** without truncating them.
 
-- **Persists every state** of program execution.
+- Lets you **debug loops** with confidence.
 
 [Read more about these features](docs/Features.md).
 
@@ -95,13 +95,15 @@ Visit the project's [kanban](https://github.com/laike9m/Cyberbrain/projects/1) t
 
 ## How does it compare to other tools?
 
-- [PySnooper](https://github.com/cool-RR/PySnooper)
+<details>
+<summary>PySnooper</summary>
+<a href="https://github.com/cool-RR/PySnooper">PySnooper</a> and Cyberbrain share the same goal of reducing programmers' work while debugging, with a fundamental difference: Cyberbrain traces and shows the sources of each variable change, while PySnooper only logs them. The differences should be pretty obvious after you tried both.
+</details>
 
-    Cyberbrain and PySnooper share the same goal of reducing programmers' work while debugging, with a fundamental difference: Cyberbrain traces and shows the sources of each variable change, while PySnooper only logs them. The differences should be pretty obvious after you tried both.
-    
-- [Debug Visualizer](https://marketplace.visualstudio.com/items?itemName=hediet.debug-visualizer)
-
-   Debug visualizer and Cyberbrain have different goals. Debug visualizer visualizes data structures, while Cyberbrain visualizes program execution (but also lets you inspect values).
+<details>
+<summary>Debug Visualizer</summary>
+<a href="https://marketplace.visualstudio.com/items?itemName=hediet.debug-visualizer">Debug visualizer</a> and Cyberbrain have different goals. Debug visualizer visualizes data structures, while Cyberbrain visualizes program execution (but also lets you inspect values).
+</details>
 
 ## Community
 
