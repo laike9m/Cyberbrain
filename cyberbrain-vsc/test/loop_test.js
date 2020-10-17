@@ -235,8 +235,7 @@ describe("Test adjacent JumpBackToLoopStart", function() {
         { type: "Binding", index: 12, offset: 2 },
         { type: "Binding", index: 13, offset: 4 },
         { type: "JumpBackToLoopStart", index: 14, offset: 6 },
-        { type: "JumpBackToLoopStart", index: 15, offset: 8 },
-        { type: "Binding", index: 16, offset: 10 }
+        { type: "JumpBackToLoopStart", index: 15, offset: 8 }
       ],
       loops: [new Loop(0, 8), new Loop(2, 6)],
       tracingResult: {}
@@ -250,8 +249,7 @@ describe("Test adjacent JumpBackToLoopStart", function() {
       contains(
         { type: "Binding", index: 0, offset: 0 },
         { type: "Binding", index: 1, offset: 2 },
-        { type: "Binding", index: 2, offset: 4 },
-        { type: "Binding", index: 16, offset: 10 }
+        { type: "Binding", index: 2, offset: 4 }
       )
     );
 
@@ -346,5 +344,50 @@ describe("Test loop with empty first iteration.", function() {
       { type: "Binding", index: 2, offset: 0 },
       { type: "Binding", index: 3, offset: 2 }
     ]);
+  });
+});
+
+describe("Test empty inner loop.", function() {
+  function createTraceData() {
+    return new TraceData({
+      events: [
+        { type: "Binding", index: 0, offset: 0 },
+        { type: "Binding", index: 1, offset: 2 },
+        { type: "JumpBackToLoopStart", index: 2, offset: 4 },
+        { type: "JumpBackToLoopStart", index: 3, offset: 6 },
+        { type: "Binding", index: 4, offset: 0 }, // Skipped the inner loop.
+        { type: "JumpBackToLoopStart", index: 6, offset: 6 }
+      ],
+      loops: [new Loop(0, 6), new Loop(2, 4)],
+      tracingResult: {}
+    });
+  }
+
+  it("Test initialize loops", function() {
+    const traceData = createTraceData();
+    cl(traceData.loops);
+    assertThat(
+      traceData.loops,
+      contains(
+        hasProperties({
+          startOffset: 0,
+          endOffset: 6,
+          _iterationStarts: new Map([
+            ["0", 0],
+            ["1", 4]
+          ]),
+          _iterationEnds: new Map([
+            ["0", 3],
+            ["1", 6]
+          ])
+        }),
+        hasProperties({
+          startOffset: 2,
+          endOffset: 4,
+          _iterationStarts: new Map([["0,0", 1]]),
+          _iterationEnds: new Map([["0,0", 2]])
+        })
+      )
+    );
   });
 });

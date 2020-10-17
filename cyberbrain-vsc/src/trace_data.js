@@ -65,74 +65,6 @@ export class Loop {
     }
     return counters;
   }
-
-  /*
-
-  Parameters:
-    events: a sequence of events in one frame, sorted by the order they occurred.
-    visibleEvents: currently visible events, does it need to be sorted?
-    loop: a loop whose counter is modified.
-
-  Returns:
-    item 1: nodes to hide
-    item 2: nodes to show
-
-    TODO:
-     step 1: Keep this method inside Loop, make it "getVisibleEvents". Modify tests
-             This method should only receive a parameter "events"
-     step 2: Move this method to the TraceData class, remove the "events" parameter.
-
-   */
-
-  generateNodeUpdate(events, visibleEvents) {
-    // Maps offset to events.
-    // TODO: We only need one map, which is visibleEvents.
-    let eventsToHide = new Map();
-    let eventsToShow = new Map();
-
-    // Calculates events that should be hidden.
-    for (let visibleEvent of visibleEvents) {
-      if (visibleEvent.offset < this.startOffset) {
-        continue;
-      }
-      if (visibleEvent.offset > this.endOffset) {
-        break;
-      }
-      eventsToHide.set(visibleEvent.offset, visibleEvent);
-    }
-
-    // Calculates events that should be made visible, in this loop.
-    let maxReachedOffset = -1;
-    for (let i = this.currentIterationStart; i < events.length; i++) {
-      let event = events[i];
-      let offset = event.offset;
-      if (offset > this.endOffset) {
-        break;
-      }
-      if (offset > maxReachedOffset) {
-        maxReachedOffset = offset;
-        if (
-          !eventsToShow.has(event.offset) &&
-          event.type !== "JumpBackToLoopStart"
-        ) {
-          // Only set once (target iteration), don't let later iterations override the result.
-          eventsToShow.set(event.offset, event);
-        }
-      }
-    }
-
-    // Calculates events that should be made visible in inner loops if any.
-    for (let innerLoop of this.children) {
-      const [_, eventsToShowFromInner] = innerLoop.generateNodeUpdate(
-        events,
-        visibleEvents
-      );
-      // Merge and let results from inner loops override outer loops
-      eventsToShow = new Map([...eventsToShow, ...eventsToShowFromInner]);
-    }
-
-    return [eventsToHide, eventsToShow];
-  }
 }
 
 /*
@@ -151,6 +83,7 @@ export class TraceData {
     this.tracingResult = new Map(Object.entries(data.tracingResult));
     this.linenoMapping = new Map();
     this.visibleEvents = this.initialize();
+    // cl(this.loops);
   }
 
   get visibleEventsArray() {
@@ -170,11 +103,12 @@ export class TraceData {
     let visibleEvents = new Map();
     let loopStack = [];
     let maxReachedOffset = -1;
-    let previousEventOffset = -2;
+    let previousOffset = -2;
     let appearedLineNumbers = new Set();
 
     for (let event of this.events) {
-      let offset = event.offset;
+      const nextEventIndex = event.index + 1;
+      const offset = event.offset;
       appearedLineNumbers.add(event.lineno);
 
       // For initial state, all loop counters are 0, thus visible events should form a
@@ -197,21 +131,6 @@ export class TraceData {
         }
       }
 
-      // We need to take all cases into consideration when adding iteration ends.
-      // It's fine if an iteration end is added multiple times, because we use a map to
-      // store it.
-      //
-      // This deals with the case when a loop end is the last event in a frame.
-      if (
-        loopStack.length > 0 &&
-        loopStack[loopStack.length - 1].endOffset === offset
-      ) {
-        loopStack[loopStack.length - 1].addIterationEnd(
-          loopStack.map(loop => loop.counter),
-          event.index
-        );
-      }
-
       // Pops loop out of the stack.
       if (
         loopStack.length > 0 &&
@@ -224,14 +143,30 @@ export class TraceData {
         loopStack.pop().counter = 0;
       }
 
-      let currentLoop = loopStack[loopStack.length - 1];
-      let nextEventIndex = event.index + 1;
+      // We need to take all cases into consideration when adding iteration ends.
+      // It's fine if an iteration end is added multiple times, because we use a map to
+      // store it.
+      //
+      // This deals with the case when a loop end is the last event in a frame.
+      // It needs to be put after popping loops, so that we can set iteration end
+      // for the loop left on loopStack (if any).
+      if (
+        loopStack.length > 0 &&
+        loopStack[loopStack.length - 1].endOffset === offset
+      ) {
+        loopStack[loopStack.length - 1].addIterationEnd(
+          loopStack.map(loop => loop.counter),
+          event.index
+        );
+      }
 
       if (
+        loopStack.length > 0 &&
         event.type === "JumpBackToLoopStart" &&
         event.index < this.events.length - 1 &&
         this.events[nextEventIndex].offset < offset
       ) {
+        let currentLoop = loopStack[loopStack.length - 1];
         currentLoop.addIterationEnd(
           loopStack.map(loop => loop.counter),
           event.index
@@ -246,12 +181,14 @@ export class TraceData {
       // Pushes loop onto the stack.
       for (let loop of this.loops) {
         if (
-          previousEventOffset < loop.startOffset &&
-          loop.startOffset <= offset
+          previousOffset < loop.startOffset &&
+          loop.startOffset <= offset &&
+          offset <= loop.endOffset
         ) {
           if (loopStack.length > 0 && loop.parent === undefined) {
-            currentLoop.children.add(loop);
-            loop.parent = currentLoop;
+            let innerMostLoop = loopStack[loopStack.length - 1];
+            innerMostLoop.children.add(loop);
+            loop.parent = innerMostLoop;
           }
           loopStack.push(loop);
           loop.addIterationStart(
@@ -260,7 +197,7 @@ export class TraceData {
           );
         }
       }
-      previousEventOffset = offset;
+      previousOffset = offset;
     }
 
     // Restores to the initial state.

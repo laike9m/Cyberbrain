@@ -25,6 +25,9 @@ export function displayValueInConsole(node) {
   if (node.type === "Return") {
     cl("Return value is:\n");
   } else {
+    if (isDevMode) {
+      cl(node.id);
+    }
     cl(
       `Value of %c${node.target} %cat line %c${node.level}%c:`,
       "color: #b43024",

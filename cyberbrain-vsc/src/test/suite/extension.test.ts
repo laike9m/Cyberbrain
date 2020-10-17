@@ -35,6 +35,10 @@ const examples = [
   {
     file: "examples/mad_libs/mad_libs.py",
     args: ["-m", "examples.mad_libs.mad_libs"]
+  },
+  {
+    file: "examples/issue47.py",
+    args: ["-m", "examples.issue47"]
   }
 ];
 
