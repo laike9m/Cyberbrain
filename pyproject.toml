@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cyberbrain"
-version = "0.0.8"
+version = "0.0.8.post1"
 authors = ["laike9m <laike9m@gmail.com>"]
 homepage = "https://github.com/laike9m/Cyberbrain"
 repository = "https://github.com/laike9m/Cyberbrain"
@@ -11,6 +11,10 @@ keywords = ["debugging", "debugger", "visualization"]
 include = [
     "LICENSE",
 ]
+
+[tool.poetry.urls]
+"Funding" = "https://github.com/sponsors/laike9m"
+"Bug Tracker" = "https://github.com/laike9m/Cyberbrain/issues"
 
 [tool.poetry.dependencies]
 python = ">=3.7.0, <3.9.0"

@@ -95,11 +95,11 @@ Visit the project's [kanban](https://github.com/laike9m/Cyberbrain/projects/1) t
 
 - [PySnooper](https://github.com/cool-RR/PySnooper)
 
-    Cyberbrain and PySnooper share the same goal of reducing programmers' work while debugging. However they are fundamentally different: Cyberbrain traces and shows the sources of each variable change, while PySnooper only logs them. The differences should be pretty obvious after you tried both.
+    Cyberbrain and PySnooper share the same goal of reducing programmers' work while debugging, with a fundamental difference: Cyberbrain traces and shows the sources of each variable change, while PySnooper only logs them. The differences should be pretty obvious after you tried both.
     
 - [Debug Visualizer](https://marketplace.visualstudio.com/items?itemName=hediet.debug-visualizer)
 
-   Debug visualizer and Cyberbrain have different goals. Debug visualizes data structures, while Cyberbrain visualizes your program execution (but also lets you inspect values)
+   Debug visualizer and Cyberbrain have different goals. Debug visualizer visualizes data structures, while Cyberbrain visualizes program execution (but also lets you inspect values).
 
 ## Community
 
