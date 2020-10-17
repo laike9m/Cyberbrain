@@ -6,8 +6,17 @@
 [!["GitHub Discussions"](https://img.shields.io/badge/%20GitHub-%20Discussions-gray.svg?longCache=true&logo=github&colorB=purple)](https://github.com/laike9m/Cyberbrain/discussions)
 [![Discord](https://img.shields.io/discord/751695524628922449.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/5zGS5V5)
 
+Cyberbrain aims to ***free programmers*** from debugging. It is the **only** debugger that:
 
-Cyberbrain is a Python debugging solution aiming to **free programmers**. It visualizes **program execution** and **how each variable changes**.
+- Lets you **backtrace variable changes**.
+
+- Lets you **debug loops** with confidence.
+
+- **Preserves variables' values** without truncating them.
+
+- **Persists every state** of program execution.
+
+[Read more about these features](docs/Features.md).
 
 Never spend hours stepping through a program, let Cyberbrain tell you.
 
@@ -72,8 +81,7 @@ Milestones for the project are listed below, which may change over time. General
 | Milestone        | Description                                                           | Status |
 |------------------|-----------------------------------------------------------------------|--------|
 | Examples ready   | Cyberbrain works on examples (in the `examples/` folder)      | ✔️ |
-| Live demo ready  | Cyberbrain can work with code you write in a live demo, in most cases | WIP    |
-| Scripts ready     | Cyberbrain can work with most "scripting" programs                      | Not started    |
+| Scripts ready     | Cyberbrain can work with most "scripting" programs                      | WIP |
 | Announcement ready | Cyberbrain is ready to be shared on Hacker News and Reddit. **Please don't broadcast Cyberbrain before it reaches this milestone.**                  | Not started    |
 | Production ready | Cyberbrain can work with most programs in production                  | Not started    |
 
