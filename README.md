@@ -71,8 +71,8 @@ Milestones for the project are listed below, which may change over time. General
 
 | Milestone        | Description                                                           | Status |
 |------------------|-----------------------------------------------------------------------|--------|
-| Examples ready   | Cyberbrain works on examples (in the `examples/` folder)      | WIP    |
-| Live demo ready  | Cyberbrain can work with code you write in a live demo, in most cases | Not started    |
+| Examples ready   | Cyberbrain works on examples (in the `examples/` folder)      | ✔️ |
+| Live demo ready  | Cyberbrain can work with code you write in a live demo, in most cases | WIP    |
 | Scripts ready     | Cyberbrain can work with most "scripting" programs                      | Not started    |
 | Announcement ready | Cyberbrain is ready to be shared on Hacker News and Reddit. **Please don't broadcast Cyberbrain before it reaches this milestone.**                  | Not started    |
 | Production ready | Cyberbrain can work with most programs in production                  | Not started    |
