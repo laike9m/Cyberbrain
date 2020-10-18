@@ -3,6 +3,9 @@ from __future__ import annotations
 import os
 import sys
 
+from functools import lru_cache
+
+import detect
 from google.protobuf import text_format
 
 from cyberbrain.generated import communication_pb2, communication_pb2_grpc
@@ -10,12 +13,28 @@ from cyberbrain.generated import communication_pb2, communication_pb2_grpc
 python_version = {(3, 7): "py37", (3, 8): "py38"}[sys.version_info[:2]]
 
 
-def get_value(value_dict: dict[str, any]):
-    """Accept an argument like {'py37': 1, 'py38': 2}.
+@lru_cache(maxsize=1)
+def get_os_type() -> str:
+    if detect.linux:
+        return "linux"
+    if detect.windows:
+        return "windows"
+    if detect.mac:
+        return "mac"
+    return "other"
 
-    Used for version-dependent tests.
+
+def get_value(value_dict: dict[str, any]):
     """
-    return value_dict[python_version]
+    Accept an argument like {'py37': 1, 'py38': 2}, 
+    or {"windows": 1, "linux": 2, "mac": 3}
+
+    Used for version-dependent and OS tests.
+    """
+    try:
+        return value_dict[python_version]
+    except KeyError:
+        return value_dict[get_os_type()]
 
 
 def return_GetFrame(

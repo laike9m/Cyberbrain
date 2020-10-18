@@ -317,6 +317,14 @@ python-versions = ">=3.6"
 packaging = "*"
 
 [[package]]
+name = "detect"
+version = "2020.7.1"
+description = "detect OS and Python versions"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "distlib"
 version = "0.3.1"
 description = "Distribution utilities"
@@ -898,7 +906,7 @@ testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7.0, <3.9.0"
-content-hash = "df3adbad5e78ba576ad6b80c0ca54b6b8f1d5220a5132e59728fa5dea1613863"
+content-hash = "a2f0d57f87c4193e400c6e570bb9bbb7d57e8e0371f3ffe447752a928959f8c4"
 
 [metadata.files]
 aiohttp = [
@@ -1016,6 +1024,9 @@ dephell-venvs = [
 dephell-versioning = [
     {file = "dephell_versioning-0.1.2-py3-none-any.whl", hash = "sha256:28f611bd3ec1644e3d6972f901b9aa67a1fe2ed3fe57566f82afd9c43f5a335a"},
     {file = "dephell_versioning-0.1.2.tar.gz", hash = "sha256:9ba7636704af7bd64af5a64ab8efb482c8b0bf4868699722f5e2647763edf8e5"},
+]
+detect = [
+    {file = "detect-2020.7.1.tar.gz", hash = "sha256:d586c385fff618f79c8385e38c9e26e0ec70071a6fe6af46ab7c93b0d76bdfb1"},
 ]
 distlib = [
     {file = "distlib-0.3.1-py2.py3-none-any.whl", hash = "sha256:8c09de2c67b3e7deef7184574fc060ab8a793e7adbb183d942c389c8b13c52fb"},
