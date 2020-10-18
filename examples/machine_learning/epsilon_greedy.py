@@ -26,7 +26,7 @@ class BanditArm:
         self.p_estimate = ((self.N - 1) * self.p_estimate + x) / self.N
 
 
-@trace(disabled=True)
+@trace
 def experiment():
     bandits = [BanditArm(p) for p in BANDIT_PROBABILITIES]
 

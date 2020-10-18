@@ -97,7 +97,7 @@ export function setWebViewContent(
     <style type="text/css">
       #vis{
         width: 100%;
-        height: 600px;  /* If use 100%, height would be very small */
+        height: 100%;
         border: 1px solid lightgray;
         position: absolute;
         top: 0px;
