@@ -18,7 +18,7 @@ Cyberbrain aims to free programmers from debugging. It is the **only** debugger 
 
 [Read more about these features](docs/Features.md).
 
-Never spend hours stepping through a program, let Cyberbrain tell you.
+Never spend hours stepping through a program, let Cyberbrain tell you what happened.
 
 ![](https://user-images.githubusercontent.com/2592205/95418789-1820b480-08ed-11eb-9b3e-61c8cdbf187a.png)
 
@@ -84,7 +84,7 @@ Note that v1.0 means Cyberbrain is stable in the features it supports, it does *
 | Version | Features                        |
 |:-------:|---------------------------------|
 | 1.0     | Code & trace interaction ([#7][m1]), remote debugging, trace dump
-| 2.0     | `async` support, including generators |
+| 2.0     | `async` support (including generators), improve performance |
 | 3.0     | Multi-frame tracing             |
 | 4.0     | Fine-grained symbol tracing     |
 | 5.0     | Multi-threading support |

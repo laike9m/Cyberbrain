@@ -1,0 +1,42 @@
+import pandas as pd
+
+from cyberbrain import Binding, Symbol  # noqa
+
+
+def test_pandas(tracer, rpc_stub):
+    tracer.start()
+    baby_data_set = [
+        ("Bob", 968),
+        ("Jessica", 155),
+        ("Mary", 77),
+        ("John", 578),
+        ("Mel", 973),
+    ]
+    df = pd.DataFrame(data=baby_data_set, columns=["Names", "Births"])
+    tracer.stop()
+
+    from utils import get_value
+
+    assert tracer.events == [
+        Binding(
+            lineno=get_value({"py37": 13, "py38": 8}),
+            target=Symbol("baby_data_set"),
+            value='[["Bob", 968], ["Jessica", 155], ["Mary", 77], ["John", 578], ["Mel", 973]]',
+            repr="[('Bob', 968), ('Jessica', 155), ('Mary', 77), ('John', 578), ('Mel', 973)]",
+            sources=set(),
+        ),
+        Binding(
+            lineno=15,
+            target=Symbol("df"),
+            value='{"values": "Names,Births\\nBob,968\\nJessica,155\\nMary,77\\nJohn,578\\nMel,973\\n", "txt": true, "meta": {"dtypes": {"Names": "object", "Births": "int64"}, "index": "{\\"py/object\\": \\"pandas.core.indexes.range.RangeIndex\\", \\"values\\": \\"[0, 1, 2, 3, 4]\\", \\"txt\\": true, \\"meta\\": {\\"dtype\\": \\"int64\\", \\"name\\": null}}"}}',
+            repr="     Names  Births\n0      Bob     968\n1  Jessica     155\n2     Mary      77\n3     John     578\n4      Mel     973",
+            sources={Symbol("baby_data_set")},
+        ),
+    ]
+
+    from utils import assert_GetFrame
+
+    assert_GetFrame(rpc_stub, "test_pandas")
+
+
+# Follow https://bitbucket.org/hrojas/learn-pandas/src/master/ to add more tests.

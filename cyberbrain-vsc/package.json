@@ -56,6 +56,7 @@
 		"google-auth-library": "^6.1.1",
 		"google-protobuf": "^3.13.0",
 		"grpc-tools": "^1.9.1",
+		"log4js": "^6.3.0",
 		"randomcolor": "^0.6.2",
 		"vis-network": "^8.3.3"
 	},

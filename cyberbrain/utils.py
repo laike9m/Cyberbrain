@@ -16,6 +16,8 @@ from types import FrameType
 from typing import Any, Optional
 
 import jsonpickle
+import jsonpickle.ext.numpy as jsonpickle_numpy
+import jsonpickle.ext.pandas as jsonpickle_pandas
 import more_itertools
 from cheap_repr import cheap_repr
 from pygments import highlight
@@ -24,6 +26,11 @@ from pygments.lexers import PythonLexer
 
 _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
 _PYTHON_EXECUTABLE_PATH = sys.executable
+
+# Make sure Numpy and Pandas objects can be correctly encoded.
+# https://github.com/jsonpickle/jsonpickle#numpy-support
+jsonpickle_numpy.register_handlers()
+jsonpickle_pandas.register_handlers()
 
 
 def should_ignore_event(

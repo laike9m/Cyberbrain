@@ -1,0 +1,39 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+metadata {
+  frame_name: "test_pandas"
+}
+events {
+  binding {
+    id: "test_pandas:0"
+    filename: "test_pandas.py"
+    lineno: 8
+    target: "baby_data_set"
+    value: "[[\"Bob\", 968], [\"Jessica\", 155], [\"Mary\", 77], [\"John\", 578], [\"Mel\", 973]]"
+    index: 0
+    offset: 20
+    repr: "[(\'Bob\', 968), (\'Jessica\', 155), (\'Mary\', 77), (\'John\', 578), (\'Mel\', 973)]"
+  }
+}
+events {
+  binding {
+    id: "test_pandas:1"
+    filename: "test_pandas.py"
+    lineno: 15
+    target: "df"
+    value: "{\"values\": \"Names,Births\\nBob,968\\nJessica,155\\nMary,77\\nJohn,578\\nMel,973\\n\", \"txt\": true, \"meta\": {\"dtypes\": {\"Names\": \"object\", \"Births\": \"int64\"}, \"index\": \"{\\\"py/object\\\": \\\"pandas.core.indexes.range.RangeIndex\\\", \\\"values\\\": \\\"[0, 1, 2, 3, 4]\\\", \\\"txt\\\": true, \\\"meta\\\": {\\\"dtype\\\": \\\"int64\\\", \\\"name\\\": null}}\"}}"
+    sources: "baby_data_set"
+    index: 1
+    offset: 38
+    repr: "     Names  Births\n0      Bob     968\n1  Jessica     155\n2     Mary      77\n3     John     578\n4      Mel     973"
+  }
+}
+tracing_result {
+  key: "test_pandas:1"
+  value {
+    event_ids: "test_pandas:0"
+  }
+}
+identifiers: "baby_data_set"
+identifiers: "df"

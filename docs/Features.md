@@ -44,6 +44,8 @@ The UI is inspired by [birdseye](https://github.com/alexmojaki/birdseye), thanks
 
 - Cyberbrain only traces the first call, no matter how many times the decorated function is called.
 
+- Some objects cannot be converted to JSON. In this case, Cyberbrain will show the repr string of that object. We're actively working on this issue.
+
 - `yield` statements are not supported.
 
 - `async` and multi-threading are not supported.
