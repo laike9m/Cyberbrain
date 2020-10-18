@@ -83,8 +83,8 @@ Note that v1.0 means Cyberbrain is stable in the features it supports, it does *
 
 | Version | Features                        |
 |:-------:|---------------------------------|
-| 1.0     | Code & trace interaction ([#7][m1]), remote debugging, trace dump
-| 2.0     | `async` support (including generators), improve performance |
+| 1.0     | Code & trace interaction ([#7][m1]), API spec |
+| 2.0     | `async` support (including generators), remote debugging |
 | 3.0     | Multi-frame tracing             |
 | 4.0     | Fine-grained symbol tracing     |
 | 5.0     | Multi-threading support |
