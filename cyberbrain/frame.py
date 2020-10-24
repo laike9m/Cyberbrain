@@ -90,8 +90,9 @@ class Frame:
     def log_return_event(self, frame: FrameType, value: Any):
         instr = self.instructions[frame.f_lasti]
 
-        # YIELD_VALUE also emits an return event. Ignore it for now.
-        if instr.opname == "YIELD_VALUE":
+        # Generator related instructions (e.g. YIELD_VALUE) can also trigger a return
+        # event. Ignore them for now.
+        if instr.opname != "RETURN_VALUE":
             return
 
         # There should be one and only one item left on the stack before return.

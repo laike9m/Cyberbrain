@@ -1,35 +1,19 @@
 from cyberbrain import Symbol, Binding, InitialValue, JumpBackToLoopStart, Return
+from utils import assert_GetFrame, get_value  # noqa
 
 
 def test_generator_function(trace, rpc_stub):
     @trace
     def generator_function(count):
-        a, b = 1, 1
         while count > 0:
-            yield a
-            a, b = b, a + b
+            x = yield count  # YIELD_VALUE, POP_TOP, triggers a return event.
             count -= 1
 
-    for x in generator_function(2):
-        print(f"get {x} from fib_gen")
-
-    from utils import assert_GetFrame, get_value
+    gen = generator_function(2)
+    for _ in gen:
+        gen.send("foo")  # Remember that .send will yield the next value.
 
     assert trace.events == [
-        Binding(
-            lineno=7,
-            target=Symbol("a"),
-            value="1",
-            repr="1",
-            sources=set(),
-        ),
-        Binding(
-            lineno=7,
-            target=Symbol("b"),
-            value="1",
-            repr="1",
-            sources=set(),
-        ),
         InitialValue(
             lineno=8,
             target=Symbol("count"),
@@ -37,51 +21,37 @@ def test_generator_function(trace, rpc_stub):
             repr="2",
         ),
         Binding(
-            lineno=10,
-            target=Symbol("a"),
-            value="1",
-            repr="1",
-            sources={Symbol("b")},
+            lineno=9,
+            target=Symbol("x"),
+            value='"foo"',
+            repr='"foo"',
+            sources=set(),
         ),
         Binding(
             lineno=10,
-            target=Symbol("b"),
-            value="2",
-            repr="2",
-            sources={Symbol("a"), Symbol("b")},
-        ),
-        Binding(
-            lineno=11,
             target=Symbol("count"),
             value="1",
             repr="1",
             sources={Symbol("count")},
         ),
-        JumpBackToLoopStart(lineno=11, jump_target=get_value({"py37": 10, "py38": 8})),
+        JumpBackToLoopStart(lineno=10, jump_target=get_value({"py37": 2, "py38": 0})),
         Binding(
-            lineno=10,
-            target=Symbol("a"),
-            value="2",
-            repr="2",
-            sources={Symbol("b")},
+            lineno=9,
+            target=Symbol("x"),
+            value="null",
+            repr="None",
+            sources=set(),
         ),
         Binding(
             lineno=10,
-            target=Symbol("b"),
-            value="3",
-            repr="3",
-            sources={Symbol("a"), Symbol("b")},
-        ),
-        Binding(
-            lineno=11,
             target=Symbol("count"),
             value="0",
             repr="0",
             sources={Symbol("count")},
         ),
-        JumpBackToLoopStart(lineno=11, jump_target=get_value({"py37": 10, "py38": 8})),
+        JumpBackToLoopStart(lineno=10, jump_target=get_value({"py37": 2, "py38": 0})),
         Return(
-            lineno=11,
+            lineno=10,
             value="null",
             repr="None",
             sources=set(),
@@ -89,3 +59,34 @@ def test_generator_function(trace, rpc_stub):
     ]
 
     assert_GetFrame(rpc_stub, "generator_function")
+
+
+def test_yield_from(trace, rpc_stub):
+    def inner():
+        for i in range(2):
+            yield i
+
+    @trace
+    def yield_from_function():
+        yield from inner()  # CALL_FUNCTION, GET_YIELD_FROM_ITER, LOAD_CONST
+        # The above line triggers two return events for sys.settrace
+
+    for output in yield_from_function():
+        print(output)
+
+    assert trace.events == [
+        InitialValue(
+            lineno=71,
+            target=Symbol("inner"),
+            value='{"repr": "<function test_yield_from.<locals>.inner>"}',
+            repr="<function test_yield_from.<locals>.inner>",
+        ),
+        Return(
+            lineno=71,
+            value="null",
+            repr="None",
+            sources=set(),
+        ),
+    ]
+
+    assert_GetFrame(rpc_stub, "yield_from_function")

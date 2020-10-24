@@ -300,6 +300,10 @@ class GeneralValueStack:
         # and https://www.cnblogs.com/coder2012/p/4990834.html for a code walk through.
         self._push(_placeholder)
 
+    def _YIELD_FROM_handler(self):
+        self._pop()
+        # self._push(_placeholder)
+
     def _SETUP_ANNOTATIONS_handler(self):
         pass
 
@@ -609,6 +613,10 @@ class GeneralValueStack:
 
     @emit_event
     def _GET_ITER_handler(self, instr):
+        return self._return_jump_back_event_if_exists(instr)
+
+    @emit_event
+    def _GET_YIELD_FROM_ITER_handler(self, instr):
         return self._return_jump_back_event_if_exists(instr)
 
     @emit_event

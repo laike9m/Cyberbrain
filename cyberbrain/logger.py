@@ -126,6 +126,13 @@ class FrameLogger:
 
         while True:
             instr = self.instructions[self.instr_pointer]
+
+            # A YIELD_FROM instruction will repeat for N times, where N is the number
+            # of items generated from the subgenerator. In this case, we shouldn't
+            # advance the instr_pointer but let it stay still.
+            if instr.opname == "YIELD_FROM" and self.instr_pointer == last_i:
+                return
+
             jumped, jump_location = self.jump_detector.detects_jump(instr, last_i)
             self.instr_pointer = jump_location if jumped else self.instr_pointer + 2
             log(
@@ -203,7 +210,7 @@ class JumpDetector:
         explicit_jump_target = utils.get_jump_target_or_none(instr)
         implicit_jump_target = last_i if instr.opname in _implicit_jump_ops else None
 
-        if not any([implicit_jump_target, explicit_jump_target]):
+        if utils.all_none(implicit_jump_target, explicit_jump_target):
             return False, None
 
         computed_last_i = explicit_jump_target

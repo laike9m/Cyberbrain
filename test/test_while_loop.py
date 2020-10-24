@@ -109,7 +109,7 @@ def test_while_jump_to_zero(trace):
             repr="1",
             sources={Symbol("count")},
         ),
-        JumpBackToLoopStart(lineno=94, jump_target=0),
+        JumpBackToLoopStart(lineno=94, jump_target=get_value({"py37": 2, "py38": 0})),
         Binding(
             lineno=94,
             target=Symbol("count"),
@@ -117,7 +117,7 @@ def test_while_jump_to_zero(trace):
             repr="0",
             sources={Symbol("count")},
         ),
-        JumpBackToLoopStart(lineno=94, jump_target=0),
+        JumpBackToLoopStart(lineno=94, jump_target=get_value({"py37": 2, "py38": 0})),
         Return(
             lineno=94,
             value="null",

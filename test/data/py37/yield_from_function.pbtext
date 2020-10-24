@@ -1,0 +1,30 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+metadata {
+  frame_name: "yield_from_function"
+}
+events {
+  initial_value {
+    id: "test_yield_from:0"
+    filename: "test_generator.py"
+    lineno: 71
+    target: "inner"
+    value: "{\"repr\": \"<function test_yield_from.<locals>.inner>\"}"
+    index: 0
+    offset: 0
+    repr: "<function test_yield_from.<locals>.inner>"
+  }
+}
+events {
+  return {
+    id: "test_yield_from:1"
+    filename: "test_generator.py"
+    lineno: 71
+    index: 1
+    offset: 14
+    value: "null"
+    repr: "None"
+  }
+}
+identifiers: "inner"

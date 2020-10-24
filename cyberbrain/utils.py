@@ -220,6 +220,13 @@ def shorten_path(file_path, length):
     return str(Path(*Path(file_path).parts[-length:]))
 
 
+def all_none(*args):
+    for arg in args:
+        if arg is not None:
+            return False
+    return True
+
+
 if __name__ == "__main__":
     # For development.
     print(computed_gotos_enabled())

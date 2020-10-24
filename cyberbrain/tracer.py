@@ -239,5 +239,5 @@ class Tracer:
             # print(raw_frame, event, arg, raw_frame.f_lasti)
             self.frame_logger.update(raw_frame)
         if event == "return":
-            print(raw_frame, event, arg, raw_frame.f_lasti)
+            # print(raw_frame, event, arg, raw_frame.f_lasti)
             self.frame.log_return_event(raw_frame, value=arg)
