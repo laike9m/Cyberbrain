@@ -285,6 +285,21 @@ class GeneralValueStack:
         assert len(tos1) == 1
         return EventInfo(type=Mutation, target=tos1[0], sources=set(tos + tos1))
 
+    def _YIELD_VALUE_handler(self):
+        """
+        As of now, YIELD_VALUE is not handled specially. In the future, we may add a
+        Yield event and treat it specially in the trace graph.
+        """
+        self._pop()
+
+        # When the __next__ method is called on a generator, and the execution resumes
+        # from where yield left off, None or the argument of gen.send() is put onto
+        # the value stack. YIELD_VALUE is always followed by a POP_TOP, which then pops
+        # this value.
+        # See https://github.com/python/cpython/blob/master/Objects/genobject.c#L197
+        # and https://www.cnblogs.com/coder2012/p/4990834.html for a code walk through.
+        self._push(_placeholder)
+
     def _SETUP_ANNOTATIONS_handler(self):
         pass
 

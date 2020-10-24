@@ -49,12 +49,19 @@ class Frame:
     Whether we still need identifier_to_events is yet to be decided.
     """
 
-    def __init__(self, filename, frame_name, offset_to_lineno):
+    def __init__(
+        self,
+        filename: str,
+        frame_name: str,
+        instructions: dict[int, Instruction],
+        offset_to_lineno: dict[int, int],
+    ):
         # ################### Frame attribute ####################
         self.filename = filename
         self.frame_name = frame_name
         # For now, use frame name as frame id. Eventually this should be a unique uuid.
         self.frame_id = frame_name
+        self.instructions = instructions
         self.offset_to_lineno = offset_to_lineno
 
         self.value_stack = value_stack.create_value_stack()
@@ -81,9 +88,15 @@ class Frame:
         return self._latest_snapshot
 
     def log_return_event(self, frame: FrameType, value: Any):
+        instr = self.instructions[frame.f_lasti]
+
+        # YIELD_VALUE also emits an return event. Ignore it for now.
+        if instr.opname == "YIELD_VALUE":
+            return
+
         # There should be one and only one item left on the stack before return.
         assert self.value_stack.stack_level == 1
-        returned_obj = self.value_stack._pop()
+
         self.events.append(
             Return(
                 value=utils.to_json(value),
@@ -91,7 +104,7 @@ class Frame:
                 lineno=self.offset_to_lineno[frame.f_lasti],
                 filename=self.filename,
                 offset=frame.f_lasti,
-                sources=set(utils.flatten(returned_obj)),
+                sources=set(utils.flatten(self.value_stack._pop())),
                 index=len(self.events),
             )
         )

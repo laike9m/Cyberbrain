@@ -42,6 +42,8 @@ The UI is inspired by [birdseye](https://github.com/alexmojaki/birdseye), thanks
 
 ## Know limitations
 
+- Performance. See [Improve Cyberbrain's performance](https://github.com/laike9m/Cyberbrain/issues/58).
+
 - Cyberbrain only traces the first call, no matter how many times the decorated function is called.
 
 - Some objects cannot be converted to JSON. In this case, Cyberbrain will show the repr string of that object. We're actively working on this issue.

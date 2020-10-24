@@ -81,19 +81,21 @@ class Tracer:
             if raw_frame.f_code.co_name == "<module>"
             else raw_frame.f_code.co_name
         )
+        instructions = {
+            instr.offset: instr for instr in dis.get_instructions(raw_frame.f_code)
+        }
         self.frame = Frame(
             # For testing, only stores the basename so it's separator agnostic.
             filename=utils.shorten_path(
                 raw_frame.f_code.co_filename, 1 if utils.run_in_test() else 3
             ),
             frame_name=frame_name,
+            instructions=instructions,
             offset_to_lineno=utils.map_bytecode_offset_to_lineno(raw_frame),
         )
         FrameTree.add_frame(self.frame.frame_id, self.frame)
         self.frame_logger = logger.FrameLogger(
-            instructions={
-                instr.offset: instr for instr in dis.get_instructions(raw_frame.f_code)
-            },
+            instructions=instructions,
             initial_instr_pointer=initial_instr_pointer,
             frame=self.frame,
             debug_mode=self.debug_mode,
@@ -234,7 +236,8 @@ class Tracer:
         if utils.should_exclude(raw_frame):
             return
         if event == "opcode":
+            # print(raw_frame, event, arg, raw_frame.f_lasti)
             self.frame_logger.update(raw_frame)
         if event == "return":
-            # print(raw_frame, event, arg, raw_frame.f_lasti)
+            print(raw_frame, event, arg, raw_frame.f_lasti)
             self.frame.log_return_event(raw_frame, value=arg)
