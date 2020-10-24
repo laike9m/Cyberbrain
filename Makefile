@@ -40,4 +40,4 @@ proto_compile:
 publish:
 	poetry build && poetry publish
 	cd ./cyberbrain-vsc && vsce package --no-yarn && vsce publish --no-yarn
-	cd ./cyberbrain-vsc && npx ovsx publish -p $ovsx_token
+	cd ./cyberbrain-vsc && npx ovsx publish -p ${ovsx_token}
