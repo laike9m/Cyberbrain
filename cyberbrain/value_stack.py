@@ -302,7 +302,6 @@ class GeneralValueStack:
 
     def _YIELD_FROM_handler(self):
         self._pop()
-        # self._push(_placeholder)
 
     def _SETUP_ANNOTATIONS_handler(self):
         pass
@@ -715,6 +714,14 @@ class Py37ValueStack(GeneralValueStack):
         self.return_value = self._pop()
         self.why = Why.RETURN
         self._fast_block_end()
+
+    def _YIELD_VALUE_handler(self):
+        super()._YIELD_VALUE_handler()
+        self.why = Why.YIELD
+
+    def _YIELD_FROM_handler(self):
+        super()._YIELD_FROM_handler()
+        self.why = Why.YIELD
 
     def _SETUP_LOOP_handler(self):
         self._push_block(BlockType.SETUP_LOOP)
