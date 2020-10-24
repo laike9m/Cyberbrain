@@ -62,7 +62,11 @@ class FrameLogger:
         like "STORE_NAME" and "STORE_ATTR", and prints them.
         """
         last_i = frame.f_lasti
-        if last_i == 0:  # Skips when no instruction has been executed.
+
+        # Skips when no instruction has been executed. Note that we should not skip
+        # if this is not the first call to update, e.g. the program could jump back to
+        # offset 0. See test_while_jump_to_zero.
+        if last_i == 0 and len(self.frame.events) == 0:
             # Tracks possible initial value events of symbols in the first instruction.
             self.frame.log_initial_value_events(frame, self.instructions[last_i])
             return

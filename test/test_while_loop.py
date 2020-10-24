@@ -1,4 +1,4 @@
-from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop
+from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop, InitialValue, Return
 from utils import get_value, assert_GetFrame
 
 
@@ -85,3 +85,43 @@ def test_while_loop(tracer, rpc_stub):
         ),
     ]
     assert_GetFrame(rpc_stub, "test_while_loop")
+
+
+def test_while_jump_to_zero(trace):
+    @trace
+    def while_jump_to_zero(count):
+        while count > 0:
+            count -= 1
+
+    while_jump_to_zero(2)
+
+    assert trace.events == [
+        InitialValue(
+            lineno=93,
+            target=Symbol("count"),
+            value="2",
+            repr="2",
+        ),
+        Binding(
+            lineno=94,
+            target=Symbol("count"),
+            value="1",
+            repr="1",
+            sources={Symbol("count")},
+        ),
+        JumpBackToLoopStart(lineno=94, jump_target=0),
+        Binding(
+            lineno=94,
+            target=Symbol("count"),
+            value="0",
+            repr="0",
+            sources={Symbol("count")},
+        ),
+        JumpBackToLoopStart(lineno=94, jump_target=0),
+        Return(
+            lineno=94,
+            value="null",
+            repr="None",
+            sources=set(),
+        ),
+    ]
