@@ -145,7 +145,7 @@ events {
   binding {
     id: "test_call:10"
     filename: "test_call.py"
-    lineno: 19
+    lineno: 21
     target: "x"
     value: "5"
     sources: "a"

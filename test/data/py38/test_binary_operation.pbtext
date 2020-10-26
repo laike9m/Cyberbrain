@@ -222,6 +222,34 @@ events {
     repr: "1"
   }
 }
+events {
+  binding {
+    id: "test_binary_operation:16"
+    filename: "test_binary.py"
+    lineno: 23
+    target: "c"
+    value: "true"
+    sources: "a"
+    sources: "b"
+    index: 16
+    offset: 134
+    repr: "True"
+  }
+}
+events {
+  binding {
+    id: "test_binary_operation:17"
+    filename: "test_binary.py"
+    lineno: 24
+    target: "c"
+    value: "true"
+    sources: "a"
+    sources: "lst"
+    index: 17
+    offset: 142
+    repr: "True"
+  }
+}
 tracing_result {
   key: "test_binary_operation:10"
   value {
@@ -262,6 +290,20 @@ tracing_result {
   value {
     event_ids: "test_binary_operation:0"
     event_ids: "test_binary_operation:1"
+  }
+}
+tracing_result {
+  key: "test_binary_operation:16"
+  value {
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:1"
+  }
+}
+tracing_result {
+  key: "test_binary_operation:17"
+  value {
+    event_ids: "test_binary_operation:0"
+    event_ids: "test_binary_operation:9"
   }
 }
 tracing_result {

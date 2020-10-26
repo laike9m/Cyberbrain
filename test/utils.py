@@ -10,7 +10,7 @@ from google.protobuf import text_format
 from cyberbrain.generated import communication_pb2, communication_pb2_grpc
 
 # TODO: Add a "default" case
-python_version = {(3, 7): "py37", (3, 8): "py38", (3, 9): "py38"}[sys.version_info[:2]]
+python_version = {(3, 7): "py37", (3, 8): "py38", (3, 9): "py39"}[sys.version_info[:2]]
 
 
 @lru_cache(maxsize=1)

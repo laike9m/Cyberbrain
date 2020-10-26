@@ -16,7 +16,9 @@ def test_call(tracer, rpc_stub):
     x = f(a, bar=b)  # CALL_FUNCTION_KW
     x = f(a, b, *(c, d))  # BUILD_TUPLE_UNPACK_WITH_CALL, CALL_FUNCTION_EX(arg=0)
     x = f(a, *(b, c), **{"key": d})  # CALL_FUNCTION_EX(arg=1)
-    x = f(foo=a, **{"bar": b, "key": c})  # BUILD_MAP_UNPACK_WITH_CALL, CALL_FUNCTION_EX
+
+    # CALL_FUNCTION_EX, <3.9: BUILD_MAP_UNPACK_WITH_CALL, >=3.9: DICT_MERGE
+    x = f(foo=a, **{"bar": b, "key": c})
 
     tracer.stop()
 
@@ -57,7 +59,7 @@ def test_call(tracer, rpc_stub):
             sources={Symbol("d"), Symbol("f"), Symbol("a"), Symbol("c"), Symbol("b")},
         ),
         Binding(
-            lineno=19,
+            lineno=21,
             target=Symbol("x"),
             value="5",
             sources={Symbol("a"), Symbol("c"), Symbol("b"), Symbol("f")},

@@ -20,6 +20,8 @@ def test_binary_operation(tracer, rpc_stub):
     c = a & b  # BINARY_AND
     c = a ^ b  # BINARY_XOR
     c = a | b  # BINARY_OR
+    c = a is b  # <3.9: COMPARE_OP, >=3.9: IS_OP
+    c = a in lst  # <3.9: COMPARE_OP, >=3.9: CONTAINS_OP
 
     tracer.stop()
 
@@ -71,6 +73,18 @@ def test_binary_operation(tracer, rpc_stub):
         ),
         Binding(
             target=Symbol("c"), value="1", sources={Symbol("a"), Symbol("b")}, lineno=22
+        ),
+        Binding(
+            target=Symbol("c"),
+            value="true",
+            sources={Symbol("a"), Symbol("b")},
+            lineno=23,
+        ),
+        Binding(
+            target=Symbol("c"),
+            value="true",
+            sources={Symbol("a"), Symbol("lst")},
+            lineno=24,
         ),
     ]
 
