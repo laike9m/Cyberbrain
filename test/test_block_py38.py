@@ -9,7 +9,7 @@ import sys
 import pytest
 
 from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop
-from utils import assert_GetFrame
+from utils import assert_GetFrame, get_value
 
 
 @pytest.mark.skipif(
@@ -23,7 +23,7 @@ def test_continue_in_finally(tracer, rpc_stub):
         try:
             pass
         finally:
-            continue  # BREAK_LOOP (3.7) POP_FINALLY (3.8)
+            continue  # 3.8: POP_FINALLY, >= 3.9: POP_EXCEPT, RERAISE
 
     tracer.stop()
 
@@ -33,7 +33,13 @@ def test_continue_in_finally(tracer, rpc_stub):
         Binding(target=Symbol("x"), value="1", lineno=22),
         JumpBackToLoopStart(lineno=26, jump_target=16),
     ]
-    assert tracer.loops == [Loop(start_offset=16, end_offset=32, start_lineno=22)]
+    assert tracer.loops == [
+        Loop(
+            start_offset=16,
+            end_offset=get_value({"py38": 32, "default": 24}),
+            start_lineno=22,
+        )
+    ]
 
     assert_GetFrame(rpc_stub, "test_continue_in_finally")
 
@@ -58,11 +64,17 @@ def test_continue_in_finally_with_exception(tracer, rpc_stub):
     tracer.stop()
 
     assert tracer.events == [
-        Binding(target=Symbol("x"), value="0", lineno=52),
-        JumpBackToLoopStart(lineno=56, jump_target=16),
-        Binding(target=Symbol("x"), value="1", lineno=52),
-        JumpBackToLoopStart(lineno=56, jump_target=16),
+        Binding(target=Symbol("x"), value="0", lineno=58),
+        JumpBackToLoopStart(lineno=62, jump_target=16),
+        Binding(target=Symbol("x"), value="1", lineno=58),
+        JumpBackToLoopStart(lineno=62, jump_target=16),
     ]
-    assert tracer.loops == [Loop(start_offset=16, end_offset=36, start_lineno=52)]
+    assert tracer.loops == [
+        Loop(
+            start_offset=16,
+            end_offset=get_value({"py38": 36, "default": 40}),
+            start_lineno=58,
+        )
+    ]
 
     assert_GetFrame(rpc_stub, "test_continue_in_finally_with_exception")

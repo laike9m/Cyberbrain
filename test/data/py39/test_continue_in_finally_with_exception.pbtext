@@ -22,7 +22,7 @@ events {
     filename: "test_block_py38.py"
     lineno: 62
     index: 1
-    offset: 36
+    offset: 40
     jump_target: 16
   }
 }
@@ -44,13 +44,13 @@ events {
     filename: "test_block_py38.py"
     lineno: 62
     index: 3
-    offset: 36
+    offset: 40
     jump_target: 16
   }
 }
 loops {
   start_offset: 16
-  end_offset: 36
+  end_offset: 40
   start_lineno: 58
 }
 identifiers: "x"

@@ -36,33 +36,39 @@ def test_for_loop(tracer, rpc_stub):
 
     tracer.stop()
 
-    from cyberbrain import pprint
-
-    pprint(tracer.events)
-
     expected_events = [
         Binding(target=Symbol("i"), value="0", lineno=8),
         Binding(target=Symbol("a"), value="0", lineno=9, sources={Symbol("i")}),
-        JumpBackToLoopStart(jump_target=get_value({"py38": 16, "py37": 18}), lineno=9),
+        JumpBackToLoopStart(
+            jump_target=get_value({"default": 16, "py37": 18}), lineno=9
+        ),
         Binding(target=Symbol("i"), value="1", lineno=8),
         Binding(target=Symbol("a"), value="1", lineno=9, sources={Symbol("i")}),
-        JumpBackToLoopStart(jump_target=get_value({"py38": 16, "py37": 18}), lineno=9),
+        JumpBackToLoopStart(
+            jump_target=get_value({"default": 16, "py37": 18}), lineno=9
+        ),
         Binding(target=Symbol("i"), value="0", lineno=11),
         Binding(target=Symbol("i"), value="0", lineno=15),
-        JumpBackToLoopStart(jump_target=get_value({"py38": 56, "py37": 64}), lineno=16),
+        JumpBackToLoopStart(
+            jump_target=get_value({"default": 56, "py37": 64}), lineno=16
+        ),
         Binding(target=Symbol("i"), value="0", lineno=19),
-        JumpBackToLoopStart(jump_target=get_value({"py38": 76, "py37": 88}), lineno=21),
+        JumpBackToLoopStart(
+            jump_target=get_value({"default": 76, "py37": 88}), lineno=21
+        ),
         Binding(target=Symbol("i"), value="1", lineno=19),
-        JumpBackToLoopStart(jump_target=get_value({"py38": 76, "py37": 88}), lineno=20),
+        JumpBackToLoopStart(
+            jump_target=get_value({"default": 76, "py37": 88}), lineno=20
+        ),
         Binding(target=Symbol("i"), value="0", lineno=23),
         JumpBackToLoopStart(
-            jump_target=get_value({"py38": 100, "py37": 116}), lineno=24
+            jump_target=get_value({"default": 100, "py37": 116}), lineno=24
         ),
         Binding(target=Symbol("i"), value="1", lineno=23),
         Binding(target=Symbol("i"), value="0", lineno=27),
         Binding(target=Symbol("i"), value="0", lineno=32),
         JumpBackToLoopStart(
-            jump_target=get_value({"py38": 148, "py37": 168}), lineno=33
+            jump_target=get_value({"default": 148, "py37": 168}), lineno=33
         ),
         Binding(target=Symbol("a"), value="1", lineno=35),
     ]
@@ -71,28 +77,28 @@ def test_for_loop(tracer, rpc_stub):
     print(tracer.loops)
     assert tracer.loops == [
         Loop(
-            start_offset=get_value({"py38": 16, "py37": 18}),
-            end_offset=get_value({"py38": 24, "py37": 26}),
+            start_offset=get_value({"default": 16, "py37": 18}),
+            end_offset=get_value({"default": 24, "py37": 26}),
             start_lineno=8,
         ),
         Loop(
-            start_offset=get_value({"py38": 56, "py37": 64}),
-            end_offset=get_value({"py38": 60, "py37": 68}),
+            start_offset=get_value({"default": 56, "py37": 64}),
+            end_offset=get_value({"default": 60, "py37": 68}),
             start_lineno=15,
         ),
         Loop(
-            start_offset=get_value({"py38": 76, "py37": 88}),
-            end_offset=get_value({"py38": 88, "py37": 100}),
+            start_offset=get_value({"default": 76, "py37": 88}),
+            end_offset=get_value({"default": 88, "py37": 100}),
             start_lineno=19,
         ),
         Loop(
-            start_offset=get_value({"py38": 100, "py37": 116}),
-            end_offset=get_value({"py38": 110, "py37": 126}),
+            start_offset=get_value({"default": 100, "py37": 116}),
+            end_offset=get_value({"default": 110, "py37": 126}),
             start_lineno=23,
         ),
         Loop(
-            start_offset=get_value({"py38": 148, "py37": 168}),
-            end_offset=get_value({"py38": 152, "py37": 172}),
+            start_offset=get_value({"default": 148, "py37": 168}),
+            end_offset=get_value({"default": 152, "py37": 172}),
             start_lineno=32,
         ),
     ]

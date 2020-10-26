@@ -1,0 +1,118 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+metadata {
+  frame_name: "generator_function"
+}
+events {
+  initial_value {
+    id: "test_generator_function:0"
+    filename: "test_generator.py"
+    lineno: 8
+    target: "count"
+    value: "2"
+    index: 0
+    offset: 0
+    repr: "2"
+  }
+}
+events {
+  binding {
+    id: "test_generator_function:1"
+    filename: "test_generator.py"
+    lineno: 9
+    target: "x"
+    value: "\"foo\""
+    index: 1
+    offset: 12
+    repr: "\"foo\""
+  }
+}
+events {
+  binding {
+    id: "test_generator_function:2"
+    filename: "test_generator.py"
+    lineno: 10
+    target: "count"
+    value: "1"
+    sources: "count"
+    index: 2
+    offset: 20
+    repr: "1"
+  }
+}
+events {
+  jump_back_to_loop_start {
+    id: "test_generator_function:3"
+    filename: "test_generator.py"
+    lineno: 10
+    index: 3
+    offset: 22
+    jump_target: 0
+  }
+}
+events {
+  binding {
+    id: "test_generator_function:4"
+    filename: "test_generator.py"
+    lineno: 9
+    target: "x"
+    value: "null"
+    index: 4
+    offset: 12
+    repr: "None"
+  }
+}
+events {
+  binding {
+    id: "test_generator_function:5"
+    filename: "test_generator.py"
+    lineno: 10
+    target: "count"
+    value: "0"
+    sources: "count"
+    index: 5
+    offset: 20
+    repr: "0"
+  }
+}
+events {
+  jump_back_to_loop_start {
+    id: "test_generator_function:6"
+    filename: "test_generator.py"
+    lineno: 10
+    index: 6
+    offset: 22
+    jump_target: 0
+  }
+}
+events {
+  return {
+    id: "test_generator_function:7"
+    filename: "test_generator.py"
+    lineno: 10
+    index: 7
+    offset: 26
+    value: "null"
+    repr: "None"
+  }
+}
+loops {
+  start_offset: 0
+  end_offset: 22
+  start_lineno: 8
+}
+tracing_result {
+  key: "test_generator_function:2"
+  value {
+    event_ids: "test_generator_function:0"
+  }
+}
+tracing_result {
+  key: "test_generator_function:5"
+  value {
+    event_ids: "test_generator_function:2"
+  }
+}
+identifiers: "count"
+identifiers: "x"

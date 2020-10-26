@@ -1,0 +1,19 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+metadata {
+  frame_name: "test_api_tracer"
+}
+events {
+  binding {
+    id: "test_api_tracer:0"
+    filename: "test_api_tracer.py"
+    lineno: 6
+    target: "a"
+    value: "1"
+    index: 0
+    offset: 10
+    repr: "1"
+  }
+}
+identifiers: "a"

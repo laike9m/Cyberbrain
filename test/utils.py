@@ -9,9 +9,6 @@ from google.protobuf import text_format
 
 from cyberbrain.generated import communication_pb2, communication_pb2_grpc
 
-# TODO: Add a "default" case
-python_version = {(3, 7): "py37", (3, 8): "py38", (3, 9): "py39"}[sys.version_info[:2]]
-
 
 @lru_cache(maxsize=1)
 def get_os_type() -> str:
@@ -24,6 +21,10 @@ def get_os_type() -> str:
     return "other"
 
 
+python_version = {(3, 7): "py37", (3, 8): "py38", (3, 9): "py39"}[sys.version_info[:2]]
+os_type = get_os_type()
+
+
 def get_value(value_dict: dict[str, any]):
     """
     Accept an argument like {'py37': 1, 'py38': 2},
@@ -31,10 +32,12 @@ def get_value(value_dict: dict[str, any]):
 
     Used for version-dependent and OS tests.
     """
-    try:
+    if python_version in value_dict:
         return value_dict[python_version]
-    except KeyError:
-        return value_dict[get_os_type()]
+    elif os_type in value_dict:
+        return value_dict[os_type]
+    else:
+        return value_dict["default"]
 
 
 def return_GetFrame(

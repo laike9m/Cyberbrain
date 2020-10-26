@@ -16,7 +16,7 @@ _implicit_jump_ops = {
     "CONTINUE_LOOP",
     "RAISE_VARARGS",
     "END_FINALLY",
-    # "RERAISE",
+    "RERAISE",
 }
 
 PREDICT_MAP = {

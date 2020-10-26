@@ -2,13 +2,13 @@
 # proto-message: Frame
 
 metadata {
-  frame_name: "test_continue_in_finally_with_exception"
+  frame_name: "test_continue_in_finally"
 }
 events {
   binding {
-    id: "test_continue_in_finally_with_exception:0"
+    id: "test_continue_in_finally:0"
     filename: "test_block_py38.py"
-    lineno: 58
+    lineno: 22
     target: "x"
     value: "0"
     index: 0
@@ -18,19 +18,19 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    id: "test_continue_in_finally_with_exception:1"
+    id: "test_continue_in_finally:1"
     filename: "test_block_py38.py"
-    lineno: 62
+    lineno: 26
     index: 1
-    offset: 36
+    offset: 24
     jump_target: 16
   }
 }
 events {
   binding {
-    id: "test_continue_in_finally_with_exception:2"
+    id: "test_continue_in_finally:2"
     filename: "test_block_py38.py"
-    lineno: 58
+    lineno: 22
     target: "x"
     value: "1"
     index: 2
@@ -40,17 +40,17 @@ events {
 }
 events {
   jump_back_to_loop_start {
-    id: "test_continue_in_finally_with_exception:3"
+    id: "test_continue_in_finally:3"
     filename: "test_block_py38.py"
-    lineno: 62
+    lineno: 26
     index: 3
-    offset: 36
+    offset: 24
     jump_target: 16
   }
 }
 loops {
   start_offset: 16
-  end_offset: 36
-  start_lineno: 58
+  end_offset: 24
+  start_lineno: 22
 }
 identifiers: "x"

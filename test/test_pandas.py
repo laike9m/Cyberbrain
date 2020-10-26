@@ -21,7 +21,7 @@ def test_pandas(tracer, rpc_stub):
 
     assert tracer.events == [
         Binding(
-            lineno=get_value({"py37": 13, "py38": 8}),
+            lineno=get_value({"py37": 13, "default": 8}),
             target=Symbol("baby_data_set"),
             value='[["Bob", 968], ["Jessica", 155], ["Mary", 77], ["John", 578], ["Mel", 973]]',
             repr="[('Bob', 968), ('Jessica', 155), ('Mary', 77), ('John', 578), ('Mel', 973)]",

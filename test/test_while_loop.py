@@ -47,21 +47,31 @@ def test_while_loop(tracer, rpc_stub):
         Binding(lineno=8, target=Symbol("i"), value="0"),
         Binding(lineno=10, target=Symbol("a"), value="0", sources={Symbol("i")}),
         Binding(lineno=11, target=Symbol("i"), value="1", sources={Symbol("i")}),
-        JumpBackToLoopStart(lineno=11, jump_target=get_value({"py38": 12, "py37": 14})),
+        JumpBackToLoopStart(
+            lineno=11, jump_target=get_value({"default": 12, "py37": 14})
+        ),
         Binding(lineno=10, target=Symbol("a"), value="1", sources={Symbol("i")}),
         Binding(lineno=11, target=Symbol("i"), value="2", sources={Symbol("i")}),
-        JumpBackToLoopStart(lineno=11, jump_target=get_value({"py38": 12, "py37": 14})),
+        JumpBackToLoopStart(
+            lineno=11, jump_target=get_value({"default": 12, "py37": 14})
+        ),
         ##
         Binding(lineno=13, target=Symbol("i"), value="0"),
         Binding(lineno=17, target=Symbol("i"), value="0"),
         Binding(lineno=19, target=Symbol("i"), value="1", sources={Symbol("i")}),
-        JumpBackToLoopStart(lineno=20, jump_target=get_value({"py38": 54, "py37": 64})),
+        JumpBackToLoopStart(
+            lineno=20, jump_target=get_value({"default": 54, "py37": 64})
+        ),
         ##
         Binding(lineno=22, target=Symbol("i"), value="0"),
         Binding(lineno=24, target=Symbol("i"), value="1", sources={Symbol("i")}),
-        JumpBackToLoopStart(lineno=26, jump_target=get_value({"py38": 78, "py37": 92})),
+        JumpBackToLoopStart(
+            lineno=26, jump_target=get_value({"default": 78, "py37": 92})
+        ),
         Binding(lineno=24, target=Symbol("i"), value="2", sources={Symbol("i")}),
-        JumpBackToLoopStart(lineno=25, jump_target=get_value({"py38": 78, "py37": 92})),
+        JumpBackToLoopStart(
+            lineno=25, jump_target=get_value({"default": 78, "py37": 92})
+        ),
         ##
         Binding(lineno=28, target=Symbol("i"), value="0"),
         Binding(lineno=30, target=Symbol("i"), value="1", sources={Symbol("i")}),
@@ -69,18 +79,18 @@ def test_while_loop(tracer, rpc_stub):
     ]
     assert tracer.loops == [
         Loop(
-            start_offset=get_value({"py38": 12, "py37": 14}),
-            end_offset=get_value({"py38": 32, "py37": 34}),
+            start_offset=get_value({"default": 12, "py37": 14}),
+            end_offset=get_value({"default": 32, "py37": 34}),
             start_lineno=9,
         ),
         Loop(
-            start_offset=get_value({"py38": 54, "py37": 64}),
-            end_offset=get_value({"py38": 70, "py37": 80}),
+            start_offset=get_value({"default": 54, "py37": 64}),
+            end_offset=get_value({"default": 70, "py37": 80}),
             start_lineno=18,
         ),
         Loop(
-            start_offset=get_value({"py38": 78, "py37": 92}),
-            end_offset=get_value({"py38": 102, "py37": 116}),
+            start_offset=get_value({"default": 78, "py37": 92}),
+            end_offset=get_value({"default": 102, "py37": 116}),
             start_lineno=23,
         ),
     ]
@@ -97,29 +107,33 @@ def test_while_jump_to_zero(trace):
 
     assert trace.events == [
         InitialValue(
-            lineno=93,
+            lineno=103,
             target=Symbol("count"),
             value="2",
             repr="2",
         ),
         Binding(
-            lineno=94,
+            lineno=104,
             target=Symbol("count"),
             value="1",
             repr="1",
             sources={Symbol("count")},
         ),
-        JumpBackToLoopStart(lineno=94, jump_target=get_value({"py37": 2, "py38": 0})),
+        JumpBackToLoopStart(
+            lineno=104, jump_target=get_value({"py37": 2, "default": 0})
+        ),
         Binding(
-            lineno=94,
+            lineno=104,
             target=Symbol("count"),
             value="0",
             repr="0",
             sources={Symbol("count")},
         ),
-        JumpBackToLoopStart(lineno=94, jump_target=get_value({"py37": 2, "py38": 0})),
+        JumpBackToLoopStart(
+            lineno=104, jump_target=get_value({"py37": 2, "default": 0})
+        ),
         Return(
-            lineno=94,
+            lineno=104,
             value="null",
             repr="None",
             sources=set(),

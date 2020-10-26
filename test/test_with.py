@@ -90,10 +90,14 @@ def test_with(tracer, rpc_stub):
         Binding(lineno=41, target=Symbol("i"), value="0", sources=set()),
     ]
 
-    from utils import python_version
+    from utils import python_version, get_value
 
-    if python_version == "py38":
-        expected_events.append(JumpBackToLoopStart(lineno=43, jump_target=208))
+    if python_version >= "py38":
+        expected_events.append(
+            JumpBackToLoopStart(
+                lineno=43, jump_target=get_value({"py38": 208, "default": 352})
+            )
+        )
 
     assert tracer.events == expected_events
 

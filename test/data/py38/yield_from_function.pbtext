@@ -8,7 +8,7 @@ events {
   initial_value {
     id: "test_yield_from:0"
     filename: "test_generator.py"
-    lineno: 71
+    lineno: 75
     target: "inner"
     value: "{\"repr\": \"<function test_yield_from.<locals>.inner>\"}"
     index: 0
@@ -20,7 +20,7 @@ events {
   return {
     id: "test_yield_from:1"
     filename: "test_generator.py"
-    lineno: 71
+    lineno: 75
     index: 1
     offset: 14
     value: "null"

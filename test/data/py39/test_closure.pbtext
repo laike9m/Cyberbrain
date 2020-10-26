@@ -1,0 +1,39 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+metadata {
+  frame_name: "test_closure"
+}
+events {
+  binding {
+    id: "test_closure:0"
+    filename: "test_cellvar.py"
+    lineno: 31
+    target: "a"
+    value: "1"
+    index: 0
+    offset: 10
+    repr: "1"
+  }
+}
+events {
+  binding {
+    id: "test_closure:1"
+    filename: "test_cellvar.py"
+    lineno: 33
+    target: "Foo"
+    value: "{\"py/type\": \"test_cellvar.test_closure.<locals>.Foo\"}"
+    sources: "a"
+    index: 1
+    offset: 28
+    repr: "<class \'test_cellvar.test_closure.<locals>.Foo\'>"
+  }
+}
+tracing_result {
+  key: "test_closure:1"
+  value {
+    event_ids: "test_closure:0"
+  }
+}
+identifiers: "a"
+identifiers: "Foo"

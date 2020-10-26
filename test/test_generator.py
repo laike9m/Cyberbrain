@@ -34,7 +34,9 @@ def test_generator_function(trace, rpc_stub):
             repr="1",
             sources={Symbol("count")},
         ),
-        JumpBackToLoopStart(lineno=10, jump_target=get_value({"py37": 2, "py38": 0})),
+        JumpBackToLoopStart(
+            lineno=10, jump_target=get_value({"py37": 2, "default": 0})
+        ),
         Binding(
             lineno=9,
             target=Symbol("x"),
@@ -49,7 +51,9 @@ def test_generator_function(trace, rpc_stub):
             repr="0",
             sources={Symbol("count")},
         ),
-        JumpBackToLoopStart(lineno=10, jump_target=get_value({"py37": 2, "py38": 0})),
+        JumpBackToLoopStart(
+            lineno=10, jump_target=get_value({"py37": 2, "default": 0})
+        ),
         Return(
             lineno=10,
             value="null",
@@ -76,13 +80,13 @@ def test_yield_from(trace, rpc_stub):
 
     assert trace.events == [
         InitialValue(
-            lineno=71,
+            lineno=75,
             target=Symbol("inner"),
             value='{"repr": "<function test_yield_from.<locals>.inner>"}',
             repr="<function test_yield_from.<locals>.inner>",
         ),
         Return(
-            lineno=71,
+            lineno=75,
             value="null",
             repr="None",
             sources=set(),

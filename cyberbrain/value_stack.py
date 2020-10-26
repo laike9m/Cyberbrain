@@ -858,8 +858,12 @@ class Py37ValueStack(GeneralValueStack):
                 break
 
 
-class Py38ValueStack(GeneralValueStack):
-    """Value stack for Python 3.8."""
+class Py38ValueStack(Py37ValueStack):
+    """Value stack for Python 3.8.
+
+    Note that the this class inherits from Py37ValueStack, and not GeneralValueStack.
+    This allows us to only override the methods that have changed in 3.8
+    """
 
     def _RETURN_VALUE_handler(self):
         self.return_value = self._pop()
@@ -969,10 +973,57 @@ class Py38ValueStack(GeneralValueStack):
                 break  # goto main_loop.
 
 
+class Py39ValueStack(Py38ValueStack):
+    def _JUMP_IF_NOT_EXC_MATCH_handler(self):
+        self._pop(2)
+
+    def _CONTAINS_OP_handler(self):
+        self._BINARY_operation_handler()
+
+    def _IS_OP_handler(self):
+        self._BINARY_operation_handler()
+
+    def _LOAD_ASSERTION_ERROR_handler(self):
+        self._push(AssertionError())
+
+    def _LIST_TO_TUPLE_handler(self, instr):
+        pass
+
+    def _LIST_EXTEND_handler(self):
+        # list.extend(TOS1[-i], TOS), which essentially merges tos and tos1.
+        self._pop_n_push_one(2)
+
+    def _SET_UPDATE_handler(self):
+        # list.extend(TOS1[-i], TOS), which essentially merges tos and tos1.
+        self._pop_n_push_one(2)
+
+    def _DICT_UPDATE_handler(self):
+        # dict.extend(TOS1[-i], TOS), which essentially merges tos and tos1.
+        self._pop_n_push_one(2)
+
+    def _DICT_MERGE_handler(self):
+        self._pop_n_push_one(2)
+
+    def _RERAISE_handler(self, instr):
+        exc_type = self._pop()
+        value = self._pop()
+        tb = self._pop()
+        assert utils.is_exception_class(exc_type)
+        self.last_exception = ExceptionInfo(type=exc_type, value=value, traceback=tb)
+        self._exception_unwind(instr)
+
+    def _WITH_EXCEPT_START_handler(self, instr):
+        exit_func = self.stack[-7]
+        self._push(exit_func)
+
+
 def create_value_stack():
-    if sys.version_info[:2] == (3, 7):
+    version_info = sys.version_info[:2]
+    if version_info == (3, 7):
         return Py37ValueStack()
-    elif sys.version_info[:2] == (3, 8):
+    elif version_info == (3, 8):
         return Py38ValueStack()
+    elif version_info == (3, 9):
+        return Py39ValueStack()
     else:
         raise Exception(f"Unsupported Python version: {sys.version}")

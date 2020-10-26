@@ -1,0 +1,235 @@
+# proto-file: communication.proto
+# proto-message: Frame
+
+metadata {
+  frame_name: "test_nested_loop"
+}
+events {
+  binding {
+    id: "test_nested_loop:0"
+    filename: "test_nested_loop.py"
+    lineno: 8
+    target: "i"
+    value: "0"
+    index: 0
+    offset: 18
+    repr: "0"
+  }
+}
+events {
+  binding {
+    id: "test_nested_loop:1"
+    filename: "test_nested_loop.py"
+    lineno: 9
+    target: "j"
+    value: "0"
+    index: 1
+    offset: 30
+    repr: "0"
+  }
+}
+events {
+  binding {
+    id: "test_nested_loop:2"
+    filename: "test_nested_loop.py"
+    lineno: 10
+    target: "a"
+    value: "0"
+    sources: "i"
+    sources: "j"
+    index: 2
+    offset: 38
+    repr: "0"
+  }
+}
+events {
+  jump_back_to_loop_start {
+    id: "test_nested_loop:3"
+    filename: "test_nested_loop.py"
+    lineno: 10
+    index: 3
+    offset: 40
+    jump_target: 28
+  }
+}
+events {
+  binding {
+    id: "test_nested_loop:4"
+    filename: "test_nested_loop.py"
+    lineno: 9
+    target: "j"
+    value: "1"
+    index: 4
+    offset: 30
+    repr: "1"
+  }
+}
+events {
+  binding {
+    id: "test_nested_loop:5"
+    filename: "test_nested_loop.py"
+    lineno: 10
+    target: "a"
+    value: "1"
+    sources: "i"
+    sources: "j"
+    index: 5
+    offset: 38
+    repr: "1"
+  }
+}
+events {
+  jump_back_to_loop_start {
+    id: "test_nested_loop:6"
+    filename: "test_nested_loop.py"
+    lineno: 10
+    index: 6
+    offset: 40
+    jump_target: 28
+  }
+}
+events {
+  jump_back_to_loop_start {
+    id: "test_nested_loop:7"
+    filename: "test_nested_loop.py"
+    lineno: 10
+    index: 7
+    offset: 42
+    jump_target: 16
+  }
+}
+events {
+  binding {
+    id: "test_nested_loop:8"
+    filename: "test_nested_loop.py"
+    lineno: 8
+    target: "i"
+    value: "1"
+    index: 8
+    offset: 18
+    repr: "1"
+  }
+}
+events {
+  binding {
+    id: "test_nested_loop:9"
+    filename: "test_nested_loop.py"
+    lineno: 9
+    target: "j"
+    value: "0"
+    index: 9
+    offset: 30
+    repr: "0"
+  }
+}
+events {
+  binding {
+    id: "test_nested_loop:10"
+    filename: "test_nested_loop.py"
+    lineno: 10
+    target: "a"
+    value: "1"
+    sources: "i"
+    sources: "j"
+    index: 10
+    offset: 38
+    repr: "1"
+  }
+}
+events {
+  jump_back_to_loop_start {
+    id: "test_nested_loop:11"
+    filename: "test_nested_loop.py"
+    lineno: 10
+    index: 11
+    offset: 40
+    jump_target: 28
+  }
+}
+events {
+  binding {
+    id: "test_nested_loop:12"
+    filename: "test_nested_loop.py"
+    lineno: 9
+    target: "j"
+    value: "1"
+    index: 12
+    offset: 30
+    repr: "1"
+  }
+}
+events {
+  binding {
+    id: "test_nested_loop:13"
+    filename: "test_nested_loop.py"
+    lineno: 10
+    target: "a"
+    value: "2"
+    sources: "i"
+    sources: "j"
+    index: 13
+    offset: 38
+    repr: "2"
+  }
+}
+events {
+  jump_back_to_loop_start {
+    id: "test_nested_loop:14"
+    filename: "test_nested_loop.py"
+    lineno: 10
+    index: 14
+    offset: 40
+    jump_target: 28
+  }
+}
+events {
+  jump_back_to_loop_start {
+    id: "test_nested_loop:15"
+    filename: "test_nested_loop.py"
+    lineno: 10
+    index: 15
+    offset: 42
+    jump_target: 16
+  }
+}
+loops {
+  start_offset: 28
+  end_offset: 40
+  start_lineno: 9
+}
+loops {
+  start_offset: 16
+  end_offset: 42
+  start_lineno: 8
+}
+tracing_result {
+  key: "test_nested_loop:10"
+  value {
+    event_ids: "test_nested_loop:8"
+    event_ids: "test_nested_loop:9"
+  }
+}
+tracing_result {
+  key: "test_nested_loop:13"
+  value {
+    event_ids: "test_nested_loop:8"
+    event_ids: "test_nested_loop:12"
+  }
+}
+tracing_result {
+  key: "test_nested_loop:2"
+  value {
+    event_ids: "test_nested_loop:0"
+    event_ids: "test_nested_loop:1"
+  }
+}
+tracing_result {
+  key: "test_nested_loop:5"
+  value {
+    event_ids: "test_nested_loop:0"
+    event_ids: "test_nested_loop:4"
+  }
+}
+identifiers: "i"
+identifiers: "j"
+identifiers: "a"
