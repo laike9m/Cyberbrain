@@ -11,7 +11,13 @@ from . import utils
 from .frame import Frame
 from .utils import pprint, computed_gotos_enabled
 
-_implicit_jump_ops = {"BREAK_LOOP", "CONTINUE_LOOP", "RAISE_VARARGS", "END_FINALLY"}
+_implicit_jump_ops = {
+    "BREAK_LOOP",
+    "CONTINUE_LOOP",
+    "RAISE_VARARGS",
+    "END_FINALLY",
+    # "RERAISE",
+}
 
 PREDICT_MAP = {
     "LIST_APPEND": {"JUMP_ABSOLUTE"},
@@ -20,12 +26,15 @@ PREDICT_MAP = {
     "GET_AWAITABLE": {"LOAD_CONST"},
     "MAP_ADD": {"JUMP_ABSOLUTE"},
     "COMPARE_OP": {"POP_JUMP_IF_FALSE", "POP_JUMP_IF_TRUE"},
+    "IS_OP": {"POP_JUMP_IF_FALSE", "POP_JUMP_IF_TRUE"},
+    "CONTAINS_OP": {"POP_JUMP_IF_FALSE", "POP_JUMP_IF_TRUE"},
     "GET_ITER": {"FOR_ITER", "CALL_FUNCTION"},
     "GET_YIELD_FROM_ITER": {"LOAD_CONST"},
     "FOR_ITER": {"STORE_FAST", "UNPACK_SEQUENCE", "POP_BLOCK"},
     "BEFORE_ASYNC_WITH": {"GET_AWAITABLE"},
     "WITH_CLEANUP_START": {"WITH_CLEANUP_FINISH"},
     "WITH_CLEANUP_FINISH": {"END_FINALLY"},
+    "DICT_MERGE": {"CALL_FUNCTION_EX"},
 }
 
 COMPUTED_GOTOS_ENABLED = computed_gotos_enabled()
@@ -133,14 +142,20 @@ class FrameLogger:
             if instr.opname == "YIELD_FROM" and self.instr_pointer == last_i:
                 return
 
+            if instr.opname == "EXTENDED_ARG":
+                self.instr_pointer += 2
+                continue
+
             jumped, jump_location = self.jump_detector.detects_jump(instr, last_i)
             self.instr_pointer = jump_location if jumped else self.instr_pointer + 2
+            self.frame.log_events(frame, instr, jumped)
+
+            # Debug log
             log(
                 f"{cyan('Executed instruction')} at line "
                 + f"{self.frame.offset_to_lineno[instr.offset]}",
                 instr,
             )
-            self.frame.log_events(frame, instr, jumped)
             log(f"{yellow('Current stack:')}", self.frame.value_stack.stack)
 
             # Taking the following code as an example.
