@@ -33,3 +33,5 @@ jobs:
         image: [linux, windows, macOs]
       py38:
         image: [linux, windows, macOs]
+      py39:
+        image: [linux, macOs]
