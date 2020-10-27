@@ -5,6 +5,8 @@ test:
 	python3.7 -m pytest test/test_outside_func.py --assert=plain -s -vv
 	python3.8 -m pytest test --assert=plain -s -vv
 	python3.8 -m pytest test/test_outside_func.py --assert=plain -s -vv
+	python3.9 -m pytest test --assert=plain -s -vv
+	python3.9 -m pytest test/test_outside_func.py --assert=plain -s -vv
 
 	# The follow versions are compiled with `--without-computed-gotos` using command:
 	# PYTHON_CONFIGURE_OPTS="--without-computed-gotos" pyenv install 3.8.3
