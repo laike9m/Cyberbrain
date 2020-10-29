@@ -5,6 +5,7 @@ import dis
 import functools
 import os
 import sys
+from threading import Thread
 from types import MethodType, FunctionType, FrameType
 from typing import Optional, Union
 
@@ -154,8 +155,6 @@ class Tracer:
         RPC server should keep running until explicitly terminated, but it should not
         block the execution of user code. Thus we let it wait in a separate thread.
         """
-        from threading import Thread
-
         Thread(target=self.server.wait_for_termination).start()
 
     def __call__(self, disabled: Union[Union[FunctionType, MethodType], bool] = False):
