@@ -115,7 +115,7 @@ Visit the project's [kanban](https://github.com/laike9m/Cyberbrain/projects/1) t
 See the [development guide](https://github.com/laike9m/Cyberbrain/blob/master/docs/Development.md). This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. **Contributions of ANY kind welcome!**
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Thanks goes to these wonderful contributors ✨
@@ -126,6 +126,7 @@ Thanks goes to these wonderful contributors ✨
 <table>
   <tr>
     <td align="center"><a href="https://www.kawabangga.com"><img src="https://avatars0.githubusercontent.com/u/9675939?v=4" width="30px;" alt=""/><br /><sub><b>laixintao</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/commits?author=laixintao" title="Documentation">📖</a> <a href="#financial-laixintao" title="Financial">💵</a></td>
+    <td align="center"><a href="http://yihong.run"><img src="https://avatars1.githubusercontent.com/u/15976103?v=4" width="30px;" alt=""/><br /><sub><b>yihong</b></sub></a><br /><a href="#financial-yihong0618" title="Financial">💵</a></td>
   </tr>
 </table>
 
