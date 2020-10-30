@@ -112,23 +112,13 @@ Visit the project's [kanban](https://github.com/laike9m/Cyberbrain/projects/1) t
 - 🐦 **Twitter [@PyCyberbrain](https://twitter.com/PyCyberbrain)** (for announcement)
 
 ## Interested in Contributing?
-Get started [here](https://github.com/laike9m/Cyberbrain/blob/master/docs/Development.md).
-
-## Support
-
-I'm almost working full time (besides my regular job) on Cyberbrain. This project is huge, complicated and will last for years, however it will reshape how people think and do debugging. That's why I need **your** support. Let's make it the best Python debugging tool 🤟!
-
-[:heart: Sponsor on GitHub](https://github.com/sponsors/laike9m)
-
-[![](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-1.svg)](https://www.buymeacoffee.com/cyberbrain)
-
-## Contributors ✨
+See the [development guide](https://github.com/laike9m/Cyberbrain/blob/master/docs/Development.md). This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. **Contributions of ANY kind welcome!**
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Thanks goes to these wonderful contributors ✨
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -143,4 +133,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+## Support
+
+I'm almost working full time (besides my regular job) on Cyberbrain. This project is huge, complicated and will last for years, however it will reshape how people think and do debugging. That's why I need **your** support. Let's make it the best Python debugging tool 🤟!
+
+[:heart: Sponsor on GitHub](https://github.com/sponsors/laike9m)
+
+[![](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-1.svg)](https://www.buymeacoffee.com/cyberbrain)
