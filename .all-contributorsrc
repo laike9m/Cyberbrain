@@ -32,6 +32,16 @@
       "contributions": [
         "financial"
       ]
+    },
+    {
+      "login": "frostming",
+      "name": "Frost Ming",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/16336606?v=4",
+      "profile": "https://frostming.com",
+      "contributions": [
+        "bug",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 10,
