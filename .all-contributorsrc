@@ -61,6 +61,15 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "inkuang",
+      "name": "inkuang",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/38498747?v=4",
+      "profile": "https://github.com/inkuang",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 10,
