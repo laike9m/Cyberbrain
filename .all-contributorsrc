@@ -52,6 +52,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "alexmojaki",
+      "name": "Alex Hall",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/3627481?v=4",
+      "profile": "https://www.linkedin.com/in/alex-hall-8532079a/",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 10,

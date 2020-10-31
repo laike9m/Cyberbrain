@@ -115,7 +115,7 @@ Visit the project's [kanban](https://github.com/laike9m/Cyberbrain/projects/1) t
 See the [development guide](https://github.com/laike9m/Cyberbrain/blob/master/docs/Development.md). This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. **Contributions of ANY kind welcome!**
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Thanks goes to these wonderful contributors ✨
@@ -130,6 +130,7 @@ Thanks goes to these wonderful contributors ✨
     <td align="center"><a href="https://github.com/dingge2016"><img src="https://avatars1.githubusercontent.com/u/20748513?v=4" width="30px;" alt=""/><br /><sub><b>dingge2016</b></sub></a><br /><a href="#financial-dingge2016" title="Financial">💵</a></td>
     <td align="center"><a href="https://frostming.com"><img src="https://avatars3.githubusercontent.com/u/16336606?v=4" width="30px;" alt=""/><br /><sub><b>Frost Ming</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/issues?q=author%3Afrostming" title="Bug reports">🐛</a> <a href="https://github.com/laike9m/Cyberbrain/commits?author=frostming" title="Documentation">📖</a></td>
     <td align="center"><a href="https://linw1995.com/"><img src="https://avatars0.githubusercontent.com/u/13523027?v=4" width="30px;" alt=""/><br /><sub><b>林玮 (Jade Lin)</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/issues?q=author%3Alinw1995" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/alex-hall-8532079a/"><img src="https://avatars0.githubusercontent.com/u/3627481?v=4" width="30px;" alt=""/><br /><sub><b>Alex Hall</b></sub></a><br /><a href="#ideas-alexmojaki" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
