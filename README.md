@@ -115,7 +115,7 @@ Visit the project's [kanban](https://github.com/laike9m/Cyberbrain/projects/1) t
 See the [development guide](https://github.com/laike9m/Cyberbrain/blob/master/docs/Development.md). This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. **Contributions of ANY kind welcome!**
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Thanks goes to these wonderful contributors ✨
@@ -133,6 +133,7 @@ Thanks goes to these wonderful contributors ✨
     <td align="center"><a href="https://www.linkedin.com/in/alex-hall-8532079a/"><img src="https://avatars0.githubusercontent.com/u/3627481?v=4" width="30px;" alt=""/><br /><sub><b>Alex Hall</b></sub></a><br /><a href="#ideas-alexmojaki" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/inkuang"><img src="https://avatars1.githubusercontent.com/u/38498747?v=4" width="30px;" alt=""/><br /><sub><b>inkuang</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/issues?q=author%3Ainkuang" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/no1xsyzy"><img src="https://avatars0.githubusercontent.com/u/7346170?v=4" width="30px;" alt=""/><br /><sub><b>Siyuan Xu</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/issues?q=author%3Ano1xsyzy" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://ram.rachum.com"><img src="https://avatars1.githubusercontent.com/u/56778?v=4" width="30px;" alt=""/><br /><sub><b>Ram Rachum</b></sub></a><br /><a href="#ideas-cool-RR" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
