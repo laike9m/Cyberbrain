@@ -14,11 +14,21 @@ trigger:
   branches:
     include:
     - master
+  paths:
+    include:
+      - cyberbrain/*
+      - test/*
+      - protos/*
 
 pr:
   branches:
     include:
     - master
+  paths:
+    include:
+    - cyberbrain/*
+    - test/*
+    - protos/*
 
 variables:
   PYTEST_ADDOPTS: "-v -v -ra --showlocals"
