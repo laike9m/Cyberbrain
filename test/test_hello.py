@@ -1,7 +1,7 @@
 from cyberbrain import Binding, Symbol
 
 
-def test_hello(tracer, rpc_stub):
+def test_hello(tracer, test_server):
     tracer.start()
     x = "hello world"  # LOAD_CONST, STORE_FAST
     y = x  # LOAD_FAST, STORE_FAST
@@ -21,6 +21,4 @@ def test_hello(tracer, rpc_stub):
         ),
     ], tracer.events
 
-    from utils import assert_GetFrame
-
-    assert_GetFrame(rpc_stub, "test_hello")
+    test_server.assert_frame_sent("test_hello")

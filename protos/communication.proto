@@ -1,34 +1,15 @@
 syntax = "proto2";
 
+import "google/protobuf/empty.proto";
+
 // Interface exported by the server.
+// See https://github.com/laike9m/Cyberbrain/issues/55 for details.
 service Communication {
 
-  // Sync state between client and server.
-  rpc SyncState(State) returns (stream State) {}
+  rpc SendFrame(Frame) returns (google.protobuf.Empty) {}
 
-  rpc FindFrames(CursorPosition) returns (FrameLocaterList) {}
-
-  rpc GetFrame(FrameLocater) returns (Frame) {}
-}
-
-message State {
-  enum Status {
-    CLIENT_READY = 1;
-    SERVER_READY = 2;
-    EXECUTION_COMPLETE = 3;
-  }
-  optional Status status = 1;
-
-  // Arbitrary optional message.
-  optional string message = 2;
-}
-
-// Current cursor position in VSC editor.
-// See https://code.visualstudio.com/api/references/vscode-api#Position
-message CursorPosition {
-  optional string filename = 1;
-  optional int32 lineno = 2;
-  optional int32 character = 3;
+  // This API will be implemented in V2.
+  // rpc GetTargetFrame(FrameLocaterList) returns (FrameLocater) {}
 }
 
 // Information to help locate a frame.

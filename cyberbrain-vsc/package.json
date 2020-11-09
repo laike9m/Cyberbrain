@@ -16,14 +16,6 @@
 		"*"
 	],
 	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "cyberbrain.init",
-				"title": "Initialize Cyberbrain"
-			}
-		]
-	},
 	"scripts": {
 		"unittest": "mocha",
 		"copy": "$(npm bin)/rimraf ./out/*.js && $(npm bin)/copyfiles -u 1 ./src/*.js ./out/",

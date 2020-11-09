@@ -3,6 +3,7 @@
 
 metadata {
   frame_name: "test_hello"
+  filename: "test_hello.py"
 }
 events {
   binding {

@@ -40,4 +40,4 @@ def test_decorator_multiple_times(trace, rpc_stub):
         Return(lineno=22, value="1", sources={Symbol("a")}),
     ]
 
-    trace.server.stop()
+    trace.rpc_client.stop()

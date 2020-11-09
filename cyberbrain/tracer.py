@@ -5,13 +5,10 @@ import dis
 import functools
 import os
 import sys
-from threading import Thread
 from types import MethodType, FunctionType, FrameType
 from typing import Optional, Union
 
-from get_port import get_port
-
-from . import logger, utils, rpc_server
+from . import logger, utils, rpc_client
 from .frame import Frame
 from .frame_tree import FrameTree
 
@@ -62,15 +59,7 @@ class Tracer:
             self.debug_mode = debug_mode
 
         self.tracer_state = TracerFSM.INITIAL
-
-        # For now server is put inside Tracer. Later when we need to trace multiple
-        # frames it should be moved to somewhere else.
-        self.server = rpc_server.Server()
-        if utils.run_in_test():
-            # Picks a random port for testing to allow concurrent test execution.
-            self.server.serve(port=get_port())
-        else:
-            self.server.serve()
+        self.rpc_client = rpc_client.RpcClient()
 
     def _initialize_frame_and_logger(
         self, raw_frame: FrameType, initial_instr_pointer: int
@@ -146,16 +135,7 @@ class Tracer:
         else:
             assert len(self.frame_logger.frame.value_stack.stack) == 0
 
-        # If run in production, let the server wait for termination.
-        if not utils.run_in_test():
-            self._wait_for_termination()
-
-    def _wait_for_termination(self):
-        """
-        RPC server should keep running until explicitly terminated, but it should not
-        block the execution of user code. Thus we let it wait in a separate thread.
-        """
-        Thread(target=self.server.wait_for_termination).start()
+        self.rpc_client.send_frame(self.frame)
 
     def __call__(self, disabled: Union[Union[FunctionType, MethodType], bool] = False):
         """Enables the tracer object to be used as a decorator.

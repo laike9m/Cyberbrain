@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from .frame import Frame
-from .generated.communication_pb2 import CursorPosition
 
 
 class FrameTree:
@@ -25,14 +24,6 @@ class FrameTree:
     def add_frame(cls, frame_id, frame: Frame):
         cls.frames[frame_id] = frame
         print(frame_id, frame)
-
-    @classmethod
-    def find_frames(cls, position: CursorPosition) -> list[Frame]:
-        """
-        Right now it's a fake implementation, where we return the only existing frame.
-        """
-        assert cls.frames
-        return [next(iter(cls.frames.values()))]
 
     @classmethod
     def get_frame(cls, frame_id) -> Frame:

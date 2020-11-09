@@ -4,10 +4,6 @@ Server that serves requests from UI (VSC as of now).
 
 from __future__ import annotations
 
-import queue
-from concurrent import futures
-from datetime import datetime
-
 import grpc
 
 from .basis import (
@@ -19,7 +15,7 @@ from .basis import (
     Return,
     JumpBackToLoopStart,
 )
-from .frame_tree import FrameTree
+from .frame import Frame
 from .generated import communication_pb2
 from .generated import communication_pb2_grpc
 
@@ -168,57 +164,28 @@ def _get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
     return sources_uids
 
 
-class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServicer):
-    def __init__(self, state_queue: queue.Queue):
-        # Queue that stores state to be published to VSC extension.
-        self.state_queue = state_queue
+class RpcClient:
+    def __init__(self):
+        self.port = 1989
+        self.channel = grpc.insecure_channel(f"localhost:{self.port}")
+        self.stub = communication_pb2_grpc.CommunicationStub(self.channel)
 
-    def SyncState(self, request: communication_pb2.State, context: grpc.RpcContext):
-        print(f"{datetime.now().time()} Received SyncState: {type(request)} {request}")
-
-        # Detects RPC termination, sets a sentinel and allows SyncState to return.
-        context.add_callback(lambda: self.state_queue.put(-1))
-
-        yield communication_pb2.State(status=communication_pb2.State.SERVER_READY)
-        while True:
-            state = self.state_queue.get()  # block forever.
-            if state == -1:
-                print("Client disconnected")
-                return
-            print(f"Return state: {state}")
-            yield state
-
-    def FindFrames(self, request: communication_pb2.CursorPosition, context):
-        print(f"{datetime.now().time()} Received FindFrames: {type(request)} {request}")
-
-        return communication_pb2.FrameLocaterList(
-            frame_locaters=[
-                communication_pb2.FrameLocater(
-                    frame_id=frame.frame_id,
-                    frame_name=frame.frame_name,
-                    filename=frame.filename,
-                )
-                for frame in FrameTree.find_frames(request)
-            ]
-        )
-
-    def GetFrame(
-        self, frame_locator: communication_pb2.FrameLocater, context
-    ) -> communication_pb2.Frame:
-        print(f"Received request GetFrame: {type(frame_locator)} {frame_locator}")
-        # TODO: Use frame ID for non-test.
-        frame = FrameTree.get_frame(frame_locator.frame_name)
-        frame_proto = communication_pb2.Frame(metadata=frame_locator)
-        frame_proto.identifiers.extend(list(frame.identifier_to_events.keys()))
-        frame_proto.loops.extend(
-            [
+    def send_frame(self, frame: Frame):
+        frame_proto = communication_pb2.Frame(
+            metadata=communication_pb2.FrameLocater(
+                frame_id=frame.frame_id,
+                frame_name=frame.frame_name,
+                filename=frame.filename,
+            ),
+            identifiers=list(frame.identifier_to_events.keys()),
+            loops=[
                 communication_pb2.Loop(
                     start_offset=loop.start_offset,
                     end_offset=loop.end_offset,
                     start_lineno=loop.start_lineno,
                 )
                 for loop in frame.loops.values()
-            ]
+            ],
         )
         for event in frame.events:
             frame_proto.events.append(_transform_event_to_proto(event))
@@ -227,44 +194,4 @@ class CyberbrainCommunicationServicer(communication_pb2_grpc.CommunicationServic
                 frame_proto.tracing_result[event.uid].CopyFrom(
                     communication_pb2.EventIDList(event_ids=event_ids)
                 )
-        return frame_proto
-
-
-class Server:
-    def __init__(self):
-        self._server = grpc.server(
-            futures.ThreadPoolExecutor(max_workers=5),
-            compression=grpc.Compression.Gzip,
-        )
-        self._state_queue = queue.Queue()
-        communication_pb2_grpc.add_CommunicationServicer_to_server(
-            CyberbrainCommunicationServicer(state_queue=self._state_queue), self._server
-        )
-        self._port = None
-
-    def serve(self, port: int = 50051):
-        print(f"Starting grpc server on {port}...")
-        self._port = port
-        self._server.add_insecure_port(f"[::]:{port}")
-        self._server.start()
-
-    def wait_for_termination(self):
-        self._state_queue.put(
-            communication_pb2.State(status=communication_pb2.State.EXECUTION_COMPLETE)
-        )
-        print("Waiting for termination...")
-        self._server.wait_for_termination()
-
-    def stop(self):
-        self._server.stop(grace=None)  # Abort all active RPCs immediately.
-
-    @property
-    def port(self):
-        """Test only. In production the port will is a fixed number 50051."""
-        return self._port
-
-
-if __name__ == "__main__":
-    server = Server()
-    server.serve()
-    server.wait_for_termination()
+        self.stub.SendFrame(frame_proto)
