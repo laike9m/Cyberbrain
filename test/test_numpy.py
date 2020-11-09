@@ -3,7 +3,7 @@ import numpy as np
 from cyberbrain import Binding, Symbol  # noqa
 
 
-def test_numpy(tracer, rpc_stub):
+def test_numpy(tracer, test_server):
     tracer.start()
     x = np.array([6, 7, 8])
     tracer.stop()
@@ -22,10 +22,8 @@ def test_numpy(tracer, rpc_stub):
         )
     ]
 
-    from utils import assert_GetFrame
-
     if get_os_type() != "windows":
-        assert_GetFrame(rpc_stub, "test_numpy")
+        test_server.assert_frame_sent("test_numpy")
 
 
 # Add more tests

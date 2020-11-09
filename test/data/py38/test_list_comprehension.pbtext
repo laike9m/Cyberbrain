@@ -2,13 +2,15 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_list_comprehension"
   frame_name: "test_list_comprehension"
+  filename: "test_list_comp.py"
 }
 events {
   binding {
     id: "test_list_comprehension:0"
     filename: "test_list_comp.py"
-    lineno: 8
+    lineno: 7
     target: "n"
     value: "2"
     index: 0
@@ -20,7 +22,7 @@ events {
   binding {
     id: "test_list_comprehension:1"
     filename: "test_list_comp.py"
-    lineno: 9
+    lineno: 8
     target: "x"
     value: "[0, 1]"
     sources: "n"
@@ -33,7 +35,7 @@ events {
   binding {
     id: "test_list_comprehension:2"
     filename: "test_list_comp.py"
-    lineno: 10
+    lineno: 9
     target: "lst"
     value: "[\"foo\", \"bar\"]"
     index: 2
@@ -45,7 +47,7 @@ events {
   binding {
     id: "test_list_comprehension:3"
     filename: "test_list_comp.py"
-    lineno: 11
+    lineno: 10
     target: "x"
     value: "[\"foo\", \"bar\"]"
     sources: "lst"

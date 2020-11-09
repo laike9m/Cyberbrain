@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol, JumpBackToLoopStart
 
 
-def test_with(tracer, rpc_stub):
+def test_with(tracer, test_server):
     class ContextManagerNoReturn:
         def __enter__(self):
             pass
@@ -101,6 +101,4 @@ def test_with(tracer, rpc_stub):
 
     assert tracer.events == expected_events
 
-    from utils import assert_GetFrame
-
-    assert_GetFrame(rpc_stub, "test_with")
+    test_server.assert_frame_sent("test_with")

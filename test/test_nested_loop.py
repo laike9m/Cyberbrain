@@ -1,8 +1,8 @@
 from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop
-from utils import get_value, assert_GetFrame
+from utils import get_value
 
 
-def test_nested_loop(tracer, rpc_stub):
+def test_nested_loop(tracer, test_server):
     tracer.start()
 
     for i in range(2):
@@ -61,4 +61,4 @@ def test_nested_loop(tracer, rpc_stub):
             start_lineno=8,
         ),
     ]
-    assert_GetFrame(rpc_stub, "test_nested_loop")
+    test_server.assert_frame_sent("test_nested_loop")

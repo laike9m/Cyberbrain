@@ -2,13 +2,15 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_closure"
   frame_name: "test_closure"
+  filename: "test_cellvar.py"
 }
 events {
   binding {
     id: "test_closure:0"
     filename: "test_cellvar.py"
-    lineno: 31
+    lineno: 30
     target: "a"
     value: "1"
     index: 0
@@ -20,7 +22,7 @@ events {
   binding {
     id: "test_closure:1"
     filename: "test_cellvar.py"
-    lineno: 33
+    lineno: 32
     target: "Foo"
     value: "{\"py/type\": \"test_cellvar.test_closure.<locals>.Foo\"}"
     sources: "a"

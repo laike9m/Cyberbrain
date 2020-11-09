@@ -1,8 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol
-from utils import assert_GetFrame
 
 
-def test_unary_operations(tracer, rpc_stub):
+def test_unary_operations(tracer, test_server):
     a = 1
 
     tracer.start()
@@ -15,11 +14,11 @@ def test_unary_operations(tracer, rpc_stub):
     tracer.stop()
 
     assert tracer.events == [
-        InitialValue(target=Symbol("a"), value="1", lineno=10),
-        Binding(target=Symbol("b"), value="1", sources={Symbol("a")}, lineno=10),
-        Binding(target=Symbol("b"), value="-1", sources={Symbol("a")}, lineno=11),
-        Binding(target=Symbol("b"), value="false", sources={Symbol("a")}, lineno=12),
-        Binding(target=Symbol("b"), value="-2", sources={Symbol("a")}, lineno=13),
+        InitialValue(target=Symbol("a"), value="1", lineno=9),
+        Binding(target=Symbol("b"), value="1", sources={Symbol("a")}, lineno=9),
+        Binding(target=Symbol("b"), value="-1", sources={Symbol("a")}, lineno=10),
+        Binding(target=Symbol("b"), value="false", sources={Symbol("a")}, lineno=11),
+        Binding(target=Symbol("b"), value="-2", sources={Symbol("a")}, lineno=12),
     ]
 
-    assert_GetFrame(rpc_stub, "test_unary_operations")
+    test_server.assert_frame_sent("test_unary_operations")

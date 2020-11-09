@@ -2,13 +2,15 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_unpack"
   frame_name: "test_unpack"
+  filename: "test_unpack.py"
 }
 events {
   binding {
     id: "test_unpack:0"
     filename: "test_unpack.py"
-    lineno: 12
+    lineno: 11
     target: "a"
     value: "\"h\""
     index: 0
@@ -20,7 +22,7 @@ events {
   binding {
     id: "test_unpack:1"
     filename: "test_unpack.py"
-    lineno: 12
+    lineno: 11
     target: "b"
     value: "\"i\""
     index: 1
@@ -32,7 +34,7 @@ events {
   initial_value {
     id: "test_unpack:2"
     filename: "test_unpack.py"
-    lineno: 13
+    lineno: 12
     target: "l1"
     value: "[1, 2]"
     index: 2
@@ -44,7 +46,7 @@ events {
   binding {
     id: "test_unpack:3"
     filename: "test_unpack.py"
-    lineno: 13
+    lineno: 12
     target: "a"
     value: "1"
     sources: "l1"
@@ -57,7 +59,7 @@ events {
   binding {
     id: "test_unpack:4"
     filename: "test_unpack.py"
-    lineno: 13
+    lineno: 12
     target: "b"
     value: "2"
     sources: "l1"
@@ -70,7 +72,7 @@ events {
   initial_value {
     id: "test_unpack:5"
     filename: "test_unpack.py"
-    lineno: 14
+    lineno: 13
     target: "numbers"
     value: "[1, 2, 3, 4]"
     index: 5
@@ -82,7 +84,7 @@ events {
   binding {
     id: "test_unpack:6"
     filename: "test_unpack.py"
-    lineno: 14
+    lineno: 13
     target: "first"
     value: "1"
     sources: "numbers"
@@ -95,7 +97,7 @@ events {
   binding {
     id: "test_unpack:7"
     filename: "test_unpack.py"
-    lineno: 14
+    lineno: 13
     target: "rest"
     value: "[2, 3, 4]"
     sources: "numbers"
@@ -108,7 +110,7 @@ events {
   binding {
     id: "test_unpack:8"
     filename: "test_unpack.py"
-    lineno: 15
+    lineno: 14
     target: "beginning"
     value: "[1, 2, 3]"
     sources: "numbers"
@@ -121,7 +123,7 @@ events {
   binding {
     id: "test_unpack:9"
     filename: "test_unpack.py"
-    lineno: 15
+    lineno: 14
     target: "last"
     value: "4"
     sources: "numbers"
@@ -134,7 +136,7 @@ events {
   binding {
     id: "test_unpack:10"
     filename: "test_unpack.py"
-    lineno: 16
+    lineno: 15
     target: "head"
     value: "1"
     sources: "numbers"
@@ -147,7 +149,7 @@ events {
   binding {
     id: "test_unpack:11"
     filename: "test_unpack.py"
-    lineno: 16
+    lineno: 15
     target: "middle"
     value: "[2, 3]"
     sources: "numbers"
@@ -160,7 +162,7 @@ events {
   binding {
     id: "test_unpack:12"
     filename: "test_unpack.py"
-    lineno: 16
+    lineno: 15
     target: "tail"
     value: "4"
     sources: "numbers"
@@ -173,7 +175,7 @@ events {
   binding {
     id: "test_unpack:13"
     filename: "test_unpack.py"
-    lineno: 17
+    lineno: 16
     target: "a"
     value: "[1, 2, 1, 2, 3, 4]"
     sources: "l1"
@@ -187,7 +189,7 @@ events {
   binding {
     id: "test_unpack:14"
     filename: "test_unpack.py"
-    lineno: 18
+    lineno: 17
     target: "a"
     value: "[1, 2, 1, 2, 3, 4]"
     sources: "l1"
@@ -201,7 +203,7 @@ events {
   binding {
     id: "test_unpack:15"
     filename: "test_unpack.py"
-    lineno: 19
+    lineno: 18
     target: "a"
     value: "[1, 2, 3, 4]"
     sources: "l1"
@@ -215,7 +217,7 @@ events {
   initial_value {
     id: "test_unpack:16"
     filename: "test_unpack.py"
-    lineno: 20
+    lineno: 19
     target: "m1"
     value: "{\"1\": 2}"
     index: 16
@@ -227,7 +229,7 @@ events {
   initial_value {
     id: "test_unpack:17"
     filename: "test_unpack.py"
-    lineno: 20
+    lineno: 19
     target: "m2"
     value: "{\"1\": 2}"
     index: 17
@@ -239,7 +241,7 @@ events {
   binding {
     id: "test_unpack:18"
     filename: "test_unpack.py"
-    lineno: 20
+    lineno: 19
     target: "a"
     value: "{\"1\": 2}"
     sources: "m1"

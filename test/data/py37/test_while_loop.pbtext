@@ -2,7 +2,9 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_while_loop"
   frame_name: "test_while_loop"
+  filename: "test_while_loop.py"
 }
 events {
   binding {

@@ -2,6 +2,7 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_hello"
   frame_name: "test_hello"
   filename: "test_hello.py"
 }

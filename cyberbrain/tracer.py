@@ -8,6 +8,8 @@ import sys
 from types import MethodType, FunctionType, FrameType
 from typing import Optional, Union
 
+import grpc
+
 from . import logger, utils, rpc_client
 from .frame import Frame
 from .frame_tree import FrameTree
@@ -90,6 +92,7 @@ class Tracer:
             frame=self.frame,
             debug_mode=self.debug_mode,
         )
+        # print(f"Logger initialized {self.frame_logger}")
 
     def start(self, *, disabled=False):
         """Initializes tracing."""
@@ -117,6 +120,7 @@ class Tracer:
         sys.settrace(self.global_tracer)
 
     def stop(self):
+        # print(self.frame_logger, self.tracer_state)
         if not self.frame_logger or self.tracer_state == TracerFSM.CALLED:
             # No frame_logger means start() did not run.
             return
@@ -135,7 +139,11 @@ class Tracer:
         else:
             assert len(self.frame_logger.frame.value_stack.stack) == 0
 
-        self.rpc_client.send_frame(self.frame)
+        try:
+            # print("call send")
+            self.rpc_client.send_frame(self.frame)
+        except grpc._channel._InactiveRpcError:
+            print("Can't connect to RPC server")
 
     def __call__(self, disabled: Union[Union[FunctionType, MethodType], bool] = False):
         """Enables the tracer object to be used as a decorator.
@@ -175,6 +183,7 @@ class Tracer:
                 self.decorated_function_code_id = id(f.__code__)
                 sys.settrace(self.global_tracer)
                 result = f(*args, **kwargs)
+                # print("call stop")
                 self.stop()
                 return result
 
@@ -202,11 +211,17 @@ class Tracer:
         #
         # self.tracer_state == TracerFSM.INITIAL is for preventing stepping into
         # recursive calls, since their f_code are the same.
+
+        # TODO: Currently this doesn't work with generator functions, because the call
+        #   event is triggered by first __next__(), not when calling the function.
+        #   Previously this works because stop is essentially a no op, and then start
+        #   is called.
         if (
             event == "call"
             and id(raw_frame.f_code) == self.decorated_function_code_id
             and self.tracer_state == TracerFSM.INITIAL
         ):
+            # print(raw_frame, event)
             raw_frame.f_trace_opcodes = True
             self._initialize_frame_and_logger(raw_frame, initial_instr_pointer=0)
             return self.local_tracer

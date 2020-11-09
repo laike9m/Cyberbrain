@@ -2,7 +2,9 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_pandas"
   frame_name: "test_pandas"
+  filename: "test_pandas.py"
 }
 events {
   binding {

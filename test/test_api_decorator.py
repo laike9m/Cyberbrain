@@ -1,4 +1,4 @@
-def test_decorator_api(trace, rpc_stub):
+def test_decorator_api(trace, test_server):
     def f(foo):
         return foo
 
@@ -10,6 +10,4 @@ def test_decorator_api(trace, rpc_stub):
 
     assert decorated_func() == 2
 
-    from utils import assert_GetFrame
-
-    assert_GetFrame(rpc_stub, "decorated_func")
+    test_server.assert_frame_sent("decorated_func")

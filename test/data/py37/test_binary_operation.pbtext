@@ -2,7 +2,9 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_binary_operation"
   frame_name: "test_binary_operation"
+  filename: "test_binary.py"
 }
 events {
   initial_value {

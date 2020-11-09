@@ -2,7 +2,9 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_ref_outside_inner"
   frame_name: "test_ref_outside_inner"
+  filename: "test_ref_outside.py"
 }
 events {
   initial_value {

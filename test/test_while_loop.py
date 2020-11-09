@@ -1,8 +1,8 @@
 from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop, InitialValue, Return
-from utils import get_value, assert_GetFrame
+from utils import get_value
 
 
-def test_while_loop(tracer, rpc_stub):
+def test_while_loop(tracer, test_server):
     tracer.start()
 
     i = 0
@@ -94,7 +94,7 @@ def test_while_loop(tracer, rpc_stub):
             start_lineno=23,
         ),
     ]
-    assert_GetFrame(rpc_stub, "test_while_loop")
+    test_server.assert_frame_sent("test_while_loop")
 
 
 def test_while_jump_to_zero(trace):

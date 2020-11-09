@@ -2,13 +2,15 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_jump"
   frame_name: "test_jump"
+  filename: "test_jump.py"
 }
 events {
   initial_value {
     id: "test_jump:0"
     filename: "test_jump.py"
-    lineno: 12
+    lineno: 11
     target: "a"
     value: "[]"
     index: 0
@@ -20,7 +22,7 @@ events {
   binding {
     id: "test_jump:1"
     filename: "test_jump.py"
-    lineno: 15
+    lineno: 14
     target: "x"
     value: "1"
     index: 1
@@ -32,7 +34,7 @@ events {
   binding {
     id: "test_jump:2"
     filename: "test_jump.py"
-    lineno: 18
+    lineno: 17
     target: "x"
     value: "2"
     index: 2
@@ -44,7 +46,7 @@ events {
   initial_value {
     id: "test_jump:3"
     filename: "test_jump.py"
-    lineno: 20
+    lineno: 19
     target: "b"
     value: "\"b\""
     index: 3
@@ -56,7 +58,7 @@ events {
   initial_value {
     id: "test_jump:4"
     filename: "test_jump.py"
-    lineno: 20
+    lineno: 19
     target: "c"
     value: "\"c\""
     index: 4
@@ -68,7 +70,7 @@ events {
   binding {
     id: "test_jump:5"
     filename: "test_jump.py"
-    lineno: 20
+    lineno: 19
     target: "x"
     value: "true"
     sources: "b"
@@ -82,7 +84,7 @@ events {
   binding {
     id: "test_jump:6"
     filename: "test_jump.py"
-    lineno: 21
+    lineno: 20
     target: "x"
     value: "\"c\""
     sources: "c"

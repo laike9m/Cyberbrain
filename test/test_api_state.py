@@ -15,7 +15,7 @@ def test_call_tracer_multiple_times(tracer):
     ]
 
 
-def test_decorator_multiple_times(trace, rpc_stub):
+def test_decorator_multiple_times(trace, test_server):
     @trace
     def func(b):
         a = b
@@ -23,13 +23,7 @@ def test_decorator_multiple_times(trace, rpc_stub):
 
     func(1)
 
-    # Test that server wait does not block user code execution.
-    trace._wait_for_termination()
-
     assert func(2) == 2
-    from cyberbrain import pprint
-
-    pprint(trace.events)
     assert trace.events == [
         InitialValue(
             lineno=21,
@@ -39,5 +33,3 @@ def test_decorator_multiple_times(trace, rpc_stub):
         Binding(lineno=21, target=Symbol("a"), value="1", sources={Symbol("b")}),
         Return(lineno=22, value="1", sources={Symbol("a")}),
     ]
-
-    trace.rpc_client.stop()

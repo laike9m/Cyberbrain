@@ -1,15 +1,17 @@
 from cyberbrain import Symbol, Binding, InitialValue, JumpBackToLoopStart, Return
-from utils import assert_GetFrame, get_value  # noqa
+from utils import get_value  # noqa
 
 
-def test_generator_function(trace, rpc_stub):
+def test_generator_function(trace, test_server):
     @trace
     def generator_function(count):
         while count > 0:
             x = yield count  # YIELD_VALUE, POP_TOP, triggers a return event.
             count -= 1
 
+    print("before call generator_function")
     gen = generator_function(2)
+    print("after call generator_function")
     for _ in gen:
         gen.send("foo")  # Remember that .send will yield the next value.
 
@@ -62,10 +64,10 @@ def test_generator_function(trace, rpc_stub):
         ),
     ]
 
-    assert_GetFrame(rpc_stub, "generator_function")
+    test_server.assert_frame_sent("generator_function")
 
 
-def test_yield_from(trace, rpc_stub):
+def test_yield_from(trace, test_server):
     def inner():
         for i in range(2):
             yield i
@@ -93,4 +95,4 @@ def test_yield_from(trace, rpc_stub):
         ),
     ]
 
-    assert_GetFrame(rpc_stub, "yield_from_function")
+    test_server.assert_frame_sent("yield_from_function")

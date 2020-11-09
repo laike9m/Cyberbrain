@@ -14,36 +14,36 @@ const examples = [
     args: ["-m", "examples.nonlocal"],
     timeout: 4
   },
-  { file: "examples/loop.py", args: ["-m", "examples.loop"], timeout: 5 },
+  { file: "examples/loop.py", args: ["-m", "examples.loop"], timeout: 4 },
   {
     file: "examples/word_count/wc.py",
     args: ["-m", "examples.word_count.wc", "examples/word_count/inputs/*.txt"],
-    timeout: 7
+    timeout: 5
   },
   {
     file: "examples/telephone/telephone.py",
     args: ["-m", "examples.telephone.telephone"],
-    timeout: 7
+    timeout: 5
   },
   {
     file: "examples/bottles_of_beer/bottle.py",
     args: ["-m", "examples.bottles_of_beer.bottle"],
-    timeout: 7
+    timeout: 5
   },
   {
     file: "examples/twelve_days/twelve.py",
     args: ["-m", "examples.twelve_days.twelve"],
-    timeout: 7
+    timeout: 5
   },
   {
     file: "examples/rhymer/rhymer.py",
     args: ["-m", "examples.rhymer.rhymer"],
-    timeout: 7
+    timeout: 5
   },
   {
     file: "examples/mad_libs/mad_libs.py",
     args: ["-m", "examples.mad_libs.mad_libs"],
-    timeout: 7
+    timeout: 5
   },
   {
     file: "examples/issue47.py",
@@ -59,7 +59,7 @@ const examples = [
       "-s 1",
       "--l33t"
     ],
-    timeout: 10
+    timeout: 17
   }
 ];
 

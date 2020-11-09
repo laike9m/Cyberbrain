@@ -2,7 +2,9 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_nested_try_except"
   frame_name: "test_nested_try_except"
+  filename: "test_block.py"
 }
 events {
   binding {

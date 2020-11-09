@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol
 
 
-def test_binary_operation(tracer, rpc_stub):
+def test_binary_operation(tracer, test_server):
     a = b = 1
     lst = [0, 1]
 
@@ -88,6 +88,4 @@ def test_binary_operation(tracer, rpc_stub):
         ),
     ]
 
-    from utils import assert_GetFrame
-
-    assert_GetFrame(rpc_stub, "test_binary_operation")
+    test_server.assert_frame_sent("test_binary_operation")

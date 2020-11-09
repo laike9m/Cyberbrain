@@ -1,12 +1,12 @@
 """Test instructions that create blocks."""
 
 from cyberbrain import Binding, Symbol
-from utils import assert_GetFrame
+
 
 # Loops can generate blocks too, they are tested in test_loop.py
 
 
-def test_basic_try_except(tracer, rpc_stub):
+def test_basic_try_except(tracer, test_server):
     tracer.start()
 
     try:  # SETUP_EXCEPT (3.7), SETUP_FINALLY (3.8)
@@ -19,10 +19,10 @@ def test_basic_try_except(tracer, rpc_stub):
 
     assert tracer.events == []
 
-    assert_GetFrame(rpc_stub, "test_basic_try_except")
+    test_server.assert_frame_sent("test_basic_try_except")
 
 
-def test_nested_try_except(tracer, rpc_stub):
+def test_nested_try_except(tracer, test_server):
     tracer.start()
 
     try:
@@ -36,10 +36,10 @@ def test_nested_try_except(tracer, rpc_stub):
     tracer.stop()
     assert tracer.events == [Binding(target=Symbol("a"), value="1", lineno=32)]
 
-    assert_GetFrame(rpc_stub, "test_nested_try_except")
+    test_server.assert_frame_sent("test_nested_try_except")
 
 
-def test_try_except_finally(tracer, rpc_stub):
+def test_try_except_finally(tracer, test_server):
     tracer.start()
 
     try:  # SETUP_EXCEPT + SETUP_FINALLY (3.7), SETUP_FINALLY (3.8)
@@ -53,10 +53,10 @@ def test_try_except_finally(tracer, rpc_stub):
 
     assert tracer.events == [Binding(target=Symbol("b"), value="1", lineno=50)]
 
-    assert_GetFrame(rpc_stub, "test_try_except_finally")
+    test_server.assert_frame_sent("test_try_except_finally")
 
 
-def test_break_in_finally(tracer, rpc_stub):
+def test_break_in_finally(tracer, test_server):
     tracer.start()
 
     for x in range(2):
@@ -69,10 +69,10 @@ def test_break_in_finally(tracer, rpc_stub):
 
     assert tracer.events == [Binding(target=Symbol("x"), value="0", lineno=62)]
 
-    assert_GetFrame(rpc_stub, "test_break_in_finally")
+    test_server.assert_frame_sent("test_break_in_finally")
 
 
-def test_break_in_finally_with_exception(tracer, rpc_stub):
+def test_break_in_finally_with_exception(tracer, test_server):
     """Tests POP_FINALLY when tos is an exception."""
 
     tracer.start()
@@ -89,4 +89,4 @@ def test_break_in_finally_with_exception(tracer, rpc_stub):
 
     assert tracer.events == [Binding(target=Symbol("x"), value="0", lineno=82)]
 
-    assert_GetFrame(rpc_stub, "test_break_in_finally_with_exception")
+    test_server.assert_frame_sent("test_break_in_finally_with_exception")

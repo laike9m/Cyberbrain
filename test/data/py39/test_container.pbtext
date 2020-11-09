@@ -2,13 +2,15 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_container"
   frame_name: "test_container"
+  filename: "test_container.py"
 }
 events {
   initial_value {
     id: "test_container:0"
     filename: "test_container.py"
-    lineno: 12
+    lineno: 11
     target: "a"
     value: "1"
     index: 0
@@ -20,7 +22,7 @@ events {
   initial_value {
     id: "test_container:1"
     filename: "test_container.py"
-    lineno: 12
+    lineno: 11
     target: "b"
     value: "1"
     index: 1
@@ -32,7 +34,7 @@ events {
   binding {
     id: "test_container:2"
     filename: "test_container.py"
-    lineno: 12
+    lineno: 11
     target: "d"
     value: "[1, 1]"
     sources: "a"
@@ -46,7 +48,7 @@ events {
   binding {
     id: "test_container:3"
     filename: "test_container.py"
-    lineno: 13
+    lineno: 12
     target: "d"
     value: "[1, 1]"
     sources: "a"
@@ -60,7 +62,7 @@ events {
   binding {
     id: "test_container:4"
     filename: "test_container.py"
-    lineno: 14
+    lineno: 13
     target: "d"
     value: "[1]"
     sources: "a"
@@ -74,7 +76,7 @@ events {
   binding {
     id: "test_container:5"
     filename: "test_container.py"
-    lineno: 15
+    lineno: 14
     target: "d"
     value: "{\"1\": 1}"
     sources: "a"
@@ -88,7 +90,7 @@ events {
   binding {
     id: "test_container:6"
     filename: "test_container.py"
-    lineno: 16
+    lineno: 15
     target: "d"
     value: "{\"1\": 1, \"2\": 1}"
     sources: "a"
@@ -102,7 +104,7 @@ events {
   initial_value {
     id: "test_container:7"
     filename: "test_container.py"
-    lineno: 17
+    lineno: 16
     target: "c"
     value: "2"
     index: 7
@@ -114,7 +116,7 @@ events {
   mutation {
     id: "test_container:8"
     filename: "test_container.py"
-    lineno: 17
+    lineno: 16
     target: "d"
     value: "{\"1\": 2, \"2\": 1}"
     sources: "a"
@@ -129,7 +131,7 @@ events {
   mutation {
     id: "test_container:9"
     filename: "test_container.py"
-    lineno: 18
+    lineno: 17
     target: "d"
     value: "{\"2\": 1}"
     sources: "a"
@@ -143,7 +145,7 @@ events {
   initial_value {
     id: "test_container:10"
     filename: "test_container.py"
-    lineno: 19
+    lineno: 18
     target: "e"
     value: "0"
     index: 10
@@ -155,7 +157,7 @@ events {
   binding {
     id: "test_container:11"
     filename: "test_container.py"
-    lineno: 19
+    lineno: 18
     target: "d"
     value: "[1, 1]"
     sources: "a"
@@ -171,7 +173,7 @@ events {
   binding {
     id: "test_container:12"
     filename: "test_container.py"
-    lineno: 20
+    lineno: 19
     target: "d"
     value: "[1, 1]"
     sources: "a"

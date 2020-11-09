@@ -2,13 +2,15 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_miscellaneous"
   frame_name: "test_miscellaneous"
+  filename: "test_miscellaneous.py"
 }
 events {
   initial_value {
     id: "test_miscellaneous:0"
     filename: "test_miscellaneous.py"
-    lineno: 16
+    lineno: 15
     target: "a"
     value: "\"a\""
     index: 0
@@ -20,7 +22,7 @@ events {
   initial_value {
     id: "test_miscellaneous:1"
     filename: "test_miscellaneous.py"
-    lineno: 16
+    lineno: 15
     target: "b"
     value: "\"b\""
     index: 1
@@ -32,7 +34,7 @@ events {
   initial_value {
     id: "test_miscellaneous:2"
     filename: "test_miscellaneous.py"
-    lineno: 16
+    lineno: 15
     target: "c"
     value: "\"c\""
     index: 2
@@ -44,7 +46,7 @@ events {
   initial_value {
     id: "test_miscellaneous:3"
     filename: "test_miscellaneous.py"
-    lineno: 16
+    lineno: 15
     target: "d"
     value: "\"d\""
     index: 3
@@ -56,7 +58,7 @@ events {
   binding {
     id: "test_miscellaneous:4"
     filename: "test_miscellaneous.py"
-    lineno: 16
+    lineno: 15
     target: "x"
     value: "\"a b    \'c\' \'d\' \""
     sources: "a"
@@ -72,7 +74,7 @@ events {
   binding {
     id: "test_miscellaneous:5"
     filename: "test_miscellaneous.py"
-    lineno: 17
+    lineno: 16
     target: "x"
     value: "false"
     sources: "a"
@@ -86,7 +88,7 @@ events {
   initial_value {
     id: "test_miscellaneous:6"
     filename: "test_miscellaneous.py"
-    lineno: 18
+    lineno: 17
     target: "e"
     value: "[1, 2, 3]"
     index: 6
@@ -98,7 +100,7 @@ events {
   mutation {
     id: "test_miscellaneous:7"
     filename: "test_miscellaneous.py"
-    lineno: 18
+    lineno: 17
     target: "e"
     value: "[1, 2]"
     sources: "e"
@@ -111,7 +113,7 @@ events {
   mutation {
     id: "test_miscellaneous:8"
     filename: "test_miscellaneous.py"
-    lineno: 18
+    lineno: 17
     target: "e"
     value: "[4, 2]"
     sources: "e"
@@ -124,7 +126,7 @@ events {
   deletion {
     id: "test_miscellaneous:9"
     filename: "test_miscellaneous.py"
-    lineno: 19
+    lineno: 18
     target: "e"
     index: 9
     offset: 106
@@ -134,7 +136,7 @@ events {
   initial_value {
     id: "test_miscellaneous:10"
     filename: "test_miscellaneous.py"
-    lineno: 21
+    lineno: 20
     target: "g"
     value: "0"
     index: 10
@@ -146,7 +148,7 @@ events {
   binding {
     id: "test_miscellaneous:11"
     filename: "test_miscellaneous.py"
-    lineno: 21
+    lineno: 20
     target: "x"
     value: "0"
     sources: "g"
@@ -159,7 +161,7 @@ events {
   binding {
     id: "test_miscellaneous:12"
     filename: "test_miscellaneous.py"
-    lineno: 22
+    lineno: 21
     target: "g"
     value: "1"
     index: 12
@@ -171,7 +173,7 @@ events {
   deletion {
     id: "test_miscellaneous:13"
     filename: "test_miscellaneous.py"
-    lineno: 23
+    lineno: 22
     target: "g"
     index: 13
     offset: 116

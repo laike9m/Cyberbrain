@@ -2,7 +2,9 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_with"
   frame_name: "test_with"
+  filename: "test_with.py"
 }
 events {
   initial_value {

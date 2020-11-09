@@ -9,14 +9,14 @@ import sys
 import pytest
 
 from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop
-from utils import assert_GetFrame, get_value
+from utils import get_value
 
 
 @pytest.mark.skipif(
     sys.version_info < (3, 8),
     reason="Python version 3.7 does not support 'continue' inside 'finally' clause .",
 )
-def test_continue_in_finally(tracer, rpc_stub):
+def test_continue_in_finally(tracer, test_server):
     tracer.start()
 
     for x in range(2):
@@ -41,14 +41,14 @@ def test_continue_in_finally(tracer, rpc_stub):
         )
     ]
 
-    assert_GetFrame(rpc_stub, "test_continue_in_finally")
+    test_server.assert_frame_sent("test_continue_in_finally")
 
 
 @pytest.mark.skipif(
     sys.version_info < (3, 8),
     reason="Python version 3.7 does not support 'continue' inside 'finally' clause .",
 )
-def test_continue_in_finally_with_exception(tracer, rpc_stub):
+def test_continue_in_finally_with_exception(tracer, test_server):
     """Tests POP_FINALLY when tos is an exception."""
 
     tracer.start()
@@ -77,4 +77,4 @@ def test_continue_in_finally_with_exception(tracer, rpc_stub):
         )
     ]
 
-    assert_GetFrame(rpc_stub, "test_continue_in_finally_with_exception")
+    test_server.assert_frame_sent("test_continue_in_finally_with_exception")

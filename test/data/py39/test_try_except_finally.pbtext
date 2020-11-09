@@ -2,7 +2,9 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_try_except_finally"
   frame_name: "test_try_except_finally"
+  filename: "test_block.py"
 }
 events {
   binding {

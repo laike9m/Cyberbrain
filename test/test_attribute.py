@@ -1,7 +1,7 @@
 from cyberbrain import InitialValue, Mutation, Symbol
 
 
-def test_attribute(tracer, rpc_stub):
+def test_attribute(tracer, test_server):
     class A:
         pass
 
@@ -53,6 +53,4 @@ def test_attribute(tracer, rpc_stub):
         ),
     ]
 
-    from utils import assert_GetFrame
-
-    assert_GetFrame(rpc_stub, "test_attribute")
+    test_server.assert_frame_sent("test_attribute")

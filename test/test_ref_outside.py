@@ -5,7 +5,7 @@ def f():
     return 1
 
 
-def test_ref_outside(trace, rpc_stub):
+def test_ref_outside(trace, test_server):
     @trace
     def test_ref_outside_inner():
         a = f()
@@ -18,6 +18,4 @@ def test_ref_outside(trace, rpc_stub):
         Return(lineno=11, value="null", sources=set()),
     ]
 
-    from utils import assert_GetFrame
-
-    assert_GetFrame(rpc_stub, "test_ref_outside_inner")
+    test_server.assert_frame_sent("test_ref_outside_inner")

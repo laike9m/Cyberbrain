@@ -1,7 +1,7 @@
 import re
 
 
-def test_repr(tracer, rpc_stub):
+def test_repr(tracer, test_server):
     class A:
         pass
 
@@ -10,9 +10,8 @@ def test_repr(tracer, rpc_stub):
     a = A()
     tracer.stop()
 
-    from utils import return_GetFrame
-
-    frame_proto = return_GetFrame(rpc_stub, "test_repr")
+    test_server.assert_frame_sent("test_repr")
+    frame_proto = test_server.received_frames["test_repr"]
     binding_match_event = frame_proto.events[0]
 
     assert (

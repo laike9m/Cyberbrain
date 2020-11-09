@@ -2,7 +2,9 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "test_api_tracer"
   frame_name: "test_api_tracer"
+  filename: "test_api_tracer.py"
 }
 events {
   binding {

@@ -1,8 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol, Deletion
-from utils import assert_GetFrame
 
 
-def test_deref(tracer, rpc_stub):
+def test_deref(tracer, test_server):
 
     a = 1
 
@@ -17,15 +16,15 @@ def test_deref(tracer, rpc_stub):
     test_deref_func()
 
     assert tracer.events == [
-        InitialValue(lineno=12, target=Symbol("a"), value="1"),
-        Binding(lineno=13, target=Symbol("a"), value="2", sources=set()),
-        Deletion(lineno=14, target=Symbol("a")),
+        InitialValue(lineno=11, target=Symbol("a"), value="1"),
+        Binding(lineno=12, target=Symbol("a"), value="2", sources=set()),
+        Deletion(lineno=13, target=Symbol("a")),
     ]
 
-    assert_GetFrame(rpc_stub, "test_deref_func")
+    test_server.assert_frame_sent("test_deref_func")
 
 
-def test_closure(tracer, rpc_stub):
+def test_closure(tracer, test_server):
     tracer.start()
 
     a = 1  # LOAD_CLASSDEREF
@@ -36,13 +35,13 @@ def test_closure(tracer, rpc_stub):
     tracer.stop()
 
     assert tracer.events == [
-        Binding(lineno=31, target=Symbol("a"), value="1"),
+        Binding(lineno=30, target=Symbol("a"), value="1"),
         Binding(
-            lineno=33,
+            lineno=32,
             target=Symbol("Foo"),
             value='{"py/type": "test_cellvar.test_closure.<locals>.Foo"}',
             sources={Symbol("a")},
         ),
     ]
 
-    assert_GetFrame(rpc_stub, "test_closure")
+    test_server.assert_frame_sent("test_closure")

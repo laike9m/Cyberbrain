@@ -2,7 +2,9 @@
 # proto-message: Frame
 
 metadata {
+  frame_id: "decorated_func_enabled"
   frame_name: "decorated_func_enabled"
+  filename: "test_api_disabled.py"
 }
 events {
   binding {

@@ -3,7 +3,7 @@ import pandas as pd
 from cyberbrain import Binding, Symbol  # noqa
 
 
-def test_pandas(tracer, rpc_stub):
+def test_pandas(tracer, test_server):
     tracer.start()
     baby_data_set = [
         ("Bob", 968),
@@ -37,10 +37,8 @@ def test_pandas(tracer, rpc_stub):
         ),
     ]
 
-    from utils import assert_GetFrame
-
     if get_os_type() != "windows":
-        assert_GetFrame(rpc_stub, "test_pandas")
+        test_server.assert_frame_sent("test_pandas")
 
 
 # Follow https://bitbucket.org/hrojas/learn-pandas/src/master/ to add more tests.

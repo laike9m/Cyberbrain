@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol  # noqa
 
 
-def test_call(tracer, rpc_stub):
+def test_call(tracer, test_server):
     a = b = c = d = 1
     counter = 0
 
@@ -66,6 +66,4 @@ def test_call(tracer, rpc_stub):
         ),
     ]
 
-    from utils import assert_GetFrame
-
-    assert_GetFrame(rpc_stub, "test_call")
+    test_server.assert_frame_sent("test_call")
