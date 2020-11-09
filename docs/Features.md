@@ -44,10 +44,12 @@ The UI is inspired by [birdseye](https://github.com/alexmojaki/birdseye), thanks
 
 - Performance. See [Improve Cyberbrain's performance](https://github.com/laike9m/Cyberbrain/issues/58).
 
-- Cyberbrain only traces the first call, no matter how many times the decorated function is called.
+- Cyberbrain only traces the first call, no matter how many times the decorated function is called. Support planned for 2.0.
 
 - Some objects cannot be converted to JSON. In this case, Cyberbrain will show the repr string of that object. We're actively working on this issue.
 
-- `async` and multi-threading are not supported.
+- For generator functions, you need to manually call `trace.stop()`. see [test_generator.py](https://github.com/laike9m/Cyberbrain/blob/master/test/test_generator.py). We will fix it in future versions.
+
+- `async` and multi-threading are not supported. Support planned for 3.0.
 
 We will improve them in [future versions](https://github.com/laike9m/Cyberbrain#status-quo-and-milestones).

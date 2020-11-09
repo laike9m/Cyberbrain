@@ -9,11 +9,11 @@ def test_generator_function(trace, test_server):
             x = yield count  # YIELD_VALUE, POP_TOP, triggers a return event.
             count -= 1
 
-    print("before call generator_function")
     gen = generator_function(2)
-    print("after call generator_function")
     for _ in gen:
         gen.send("foo")  # Remember that .send will yield the next value.
+
+    trace.stop()
 
     assert trace.events == [
         InitialValue(
@@ -80,15 +80,17 @@ def test_yield_from(trace, test_server):
     for output in yield_from_function():
         print(output)
 
+    trace.stop()
+
     assert trace.events == [
         InitialValue(
-            lineno=75,
+            lineno=77,
             target=Symbol("inner"),
             value='{"repr": "<function test_yield_from.<locals>.inner>"}',
             repr="<function test_yield_from.<locals>.inner>",
         ),
         Return(
-            lineno=75,
+            lineno=77,
             value="null",
             repr="None",
             sources=set(),

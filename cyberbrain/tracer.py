@@ -1,8 +1,8 @@
 """Cyberbrain public API and tracer setup."""
-
 import argparse
 import dis
 import functools
+import inspect
 import os
 import sys
 from types import MethodType, FunctionType, FrameType
@@ -55,6 +55,7 @@ class Tracer:
     def __init__(self, debug_mode=None):
         self.frame = None
         self.raw_frame = None
+        self.is_generator_function = False
         self.decorated_function_code_id = None
         self.frame_logger: Optional[logger.FrameLogger] = None
         if debug_mode is not None:
@@ -183,8 +184,16 @@ class Tracer:
                 self.decorated_function_code_id = id(f.__code__)
                 sys.settrace(self.global_tracer)
                 result = f(*args, **kwargs)
-                # print("call stop")
-                self.stop()
+
+                # Generator function is special, because the 'call' event is not
+                # triggered when creating the function, but when each `yield` is called.
+                # So we can't call .stop() here, but have to rely on users to manually
+                # call it. This is not ideal, and we will fix it in future versions.
+                if inspect.isgeneratorfunction(f):
+                    self.is_generator_function = True
+                else:
+                    self.stop()
+
                 return result
 
             return wrapper
@@ -211,11 +220,6 @@ class Tracer:
         #
         # self.tracer_state == TracerFSM.INITIAL is for preventing stepping into
         # recursive calls, since their f_code are the same.
-
-        # TODO: Currently this doesn't work with generator functions, because the call
-        #   event is triggered by first __next__(), not when calling the function.
-        #   Previously this works because stop is essentially a no op, and then start
-        #   is called.
         if (
             event == "call"
             and id(raw_frame.f_code) == self.decorated_function_code_id

@@ -32,7 +32,6 @@ export class RpcServer {
         let webviewPanel = openTraceGraph(this.context);
         webviewPanel.webview.onDidReceiveMessage(
           (message: string) => {
-            cl(message); // webview ready.
             if (message == "Webview ready") {
               webviewPanel.webview.postMessage(new Frame(call.request));
 

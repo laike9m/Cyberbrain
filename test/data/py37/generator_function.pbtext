@@ -14,7 +14,7 @@ events {
     target: "count"
     value: "2"
     index: 0
-    offset: 0
+    offset: 2
     repr: "2"
   }
 }
@@ -26,7 +26,7 @@ events {
     target: "x"
     value: "\"foo\""
     index: 1
-    offset: 12
+    offset: 14
     repr: "\"foo\""
   }
 }
@@ -39,7 +39,7 @@ events {
     value: "1"
     sources: "count"
     index: 2
-    offset: 20
+    offset: 22
     repr: "1"
   }
 }
@@ -49,8 +49,8 @@ events {
     filename: "test_generator.py"
     lineno: 10
     index: 3
-    offset: 22
-    jump_target: 0
+    offset: 24
+    jump_target: 2
   }
 }
 events {
@@ -61,7 +61,7 @@ events {
     target: "x"
     value: "null"
     index: 4
-    offset: 12
+    offset: 14
     repr: "None"
   }
 }
@@ -74,7 +74,7 @@ events {
     value: "0"
     sources: "count"
     index: 5
-    offset: 20
+    offset: 22
     repr: "0"
   }
 }
@@ -84,8 +84,8 @@ events {
     filename: "test_generator.py"
     lineno: 10
     index: 6
-    offset: 22
-    jump_target: 0
+    offset: 24
+    jump_target: 2
   }
 }
 events {
@@ -94,14 +94,14 @@ events {
     filename: "test_generator.py"
     lineno: 10
     index: 7
-    offset: 26
+    offset: 30
     value: "null"
     repr: "None"
   }
 }
 loops {
-  start_offset: 0
-  end_offset: 22
+  start_offset: 2
+  end_offset: 24
   start_lineno: 8
 }
 tracing_result {
