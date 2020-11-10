@@ -27,6 +27,8 @@ export class RpcServer {
       ) => {
         // Responds with an empty proto.
         callback(null, new Empty());
+        // Hides the debug console on the bottom.
+        vscode.commands.executeCommand("workbench.action.closePanel");
 
         // Sends data to the trace graph in webview.
         let webviewPanel = openTraceGraph(this.context);

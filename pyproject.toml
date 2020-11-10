@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cyberbrain"
-version = "0.0.9.post1"
+version = "0.0.10"
 authors = ["laike9m <laike9m@gmail.com>"]
 homepage = "https://github.com/laike9m/Cyberbrain"
 repository = "https://github.com/laike9m/Cyberbrain"

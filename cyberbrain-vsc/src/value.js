@@ -29,7 +29,7 @@ export function displayValueInConsole(node) {
       cl(node.id);
     }
     cl(
-      `Value of %c${node.target} %cat line %c${node.level}%c:`,
+      `Value of %c${node.target} %cat line %c${node.lineno}%c:`,
       "color: #b43024",
       "",
       "color: #b43024",

@@ -49,20 +49,17 @@ def foo():
     ...
 ```
 
-Cyberbrain keeps your workflow unchanged. You run a program (from vscode or command line, both work), call **"Initialize Cyberbrain"** from the [command palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette), and a new panel will be opened to visualize how your program executed.
+Cyberbrain keeps your workflow unchanged. You run a program (from vscode or command line, both work), and a new panel will be opened to visualize how your program executed.
 
 The following gif demonstrates the workflow (click to view the full size image):
 
-![usage](https://user-images.githubusercontent.com/2592205/95430485-ac484700-0900-11eb-814f-41ca84c022f9.gif)
+![usage](https://user-images.githubusercontent.com/2592205/98645630-1d579180-22e7-11eb-8860-3a844f58a252.gif)
 
 Read our **[documentation](docs/Features.md)** to learn more about Cyberbrain's features and limitations.
 
 ❗Note on use❗
 - Cyberbrain may conflict with other debuggers. If you set breakpoints and use VSC's debugger, Cyberbrain may not function normally. Generally speaking, **prefer "Run Without Debugging"** (like shown in the gif).
-- To run Cyberbrain multiple times with different programs, you need to:     
-    1. **Kill the program by Ctrl+C** (Cyberbrain will halt your program from exiting).
-    2. **Run another program.**
-    3. **Run "Initialize Cyberbrain" again.**
+- If you have multiple VS Code window opened, the trace graph will always be created in the first one. #72 is tracking this issue.
 
 ## Status Quo and Milestones
 

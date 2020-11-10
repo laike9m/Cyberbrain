@@ -283,6 +283,10 @@ class TraceGraph {
     });
 
     this.network.on("hoverNode", event => {
+      // If user is already hovering on a node, do nothing.
+      if (this.hoveredNodeId !== undefined) {
+        return;
+      }
       let node = this.nodes.get(event.node);
       if (!node.hasOwnProperty("target")) {
         return;
@@ -330,6 +334,7 @@ class TraceGraph {
     let node = {
       id: event.id,
       level: this.traceData.linenoMapping.get(event.lineno),
+      lineno: event.lineno,
       label: buildLabelText(event),
       target: event.target,
       // "value" is a reserved property, use "runtimeValue" instead.
