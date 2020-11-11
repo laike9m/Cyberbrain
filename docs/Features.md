@@ -42,7 +42,7 @@ The UI is inspired by [birdseye](https://github.com/alexmojaki/birdseye), thanks
 
 ## Know limitations
 
-- Performance. See [Improve Cyberbrain's performance](https://github.com/laike9m/Cyberbrain/issues/58).
+- Overhead. See [Lowering the overhead brought by Cyberbrain](https://github.com/laike9m/Cyberbrain/issues/58).
 
 - Cyberbrain only traces the first call, no matter how many times the decorated function is called. Support planned for 2.0.
 
