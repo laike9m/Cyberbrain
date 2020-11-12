@@ -85,6 +85,7 @@ class GeneralValueStack:
         self.block_stack = BlockStack()
         self.last_exception: Optional[ExceptionInfo] = None
         self.return_value = _placeholder
+        self.handler_signature_cache: dict[str, set[str]] = {}  # keyed by opname.
         self.snapshot = None
 
     def update_snapshot(self, mutated_identifier: str, new_snapshot: Snapshot):
@@ -115,28 +116,36 @@ class GeneralValueStack:
             snapshot: frame state snapshot.
         """
         self.snapshot = snapshot
+        opname = instr.opname
 
-        if instr.opname.startswith("BINARY") or instr.opname.startswith("INPLACE"):
+        if opname.startswith("BINARY") or opname.startswith("INPLACE"):
             # Binary operations are all the same.
             handler = self._BINARY_operation_handler
         else:
             try:
-                handler = getattr(self, f"_{instr.opname}_handler")
+                handler = getattr(self, f"_{opname}_handler")
             except AttributeError:
-                raise AttributeError(
-                    f"Please add\ndef _{instr.opname}_handler(self, instr):"
-                )
+                raise AttributeError(f"Please add\ndef _{opname}_handler(self, instr):")
 
         # Pass arguments on demand.
-        parameters = inspect.signature(handler).parameters
-        args = []
-        if "instr" in parameters:
-            args.append(instr)
-        if "jumped" in parameters:
-            args.append(jumped)
-        if "frame" in parameters:
-            args.append(frame)
-        return handler(*args)
+        try:
+            parameters = self.handler_signature_cache[opname]
+        except KeyError:
+            parameters = set(inspect.signature(handler).parameters)
+            self.handler_signature_cache[opname] = parameters
+
+        # noinspection PyArgumentList
+        return handler(
+            *[
+                arg
+                for param_name, arg in {
+                    "instr": instr,
+                    "jumped": jumped,
+                    "frame": frame,
+                }.items()
+                if param_name in parameters
+            ]
+        )
 
     @property
     def stack_level(self):
@@ -430,8 +439,6 @@ class GeneralValueStack:
 
     def _IMPORT_FROM_handler(self):
         self._push(_placeholder)
-
-    ############################ LOAD instructions ############################
 
     def _LOAD_CONST_handler(self):
         self._push(_placeholder)
@@ -782,7 +789,7 @@ class Py37ValueStack(GeneralValueStack):
         self._push(_placeholder)  # exc, set to None
         self._push(exit_func)
 
-    def _END_FINALLY_handler(self):
+    def _END_FINALLY_handler(self, instr):
         status = self._pop()
         if isinstance(status, Why):
             self.why = status
@@ -885,7 +892,7 @@ class Py38ValueStack(Py37ValueStack):
         # out of the switch clause, then jumps to label "error", which is above
         # _exception_unwind. So _exception_unwind will be executed anyway.
         self._do_raise(exc, cause)
-        self._exception_unwind(instr)
+        self._exception_unwind()
 
     def _POP_EXCEPT_handler(self):
         block = self._pop_block()
@@ -902,7 +909,7 @@ class Py38ValueStack(Py37ValueStack):
             res = self._pop()
 
         if self.tos is NULL or isinstance(self.tos, int):
-            exc = self._pop()
+            _ = self._pop()
         else:
             _, _, _ = self._pop(3)
             block = self._pop_block()
@@ -932,7 +939,7 @@ class Py38ValueStack(Py37ValueStack):
             self.last_exception = ExceptionInfo(
                 type=exc_type, value=value, traceback=tb
             )
-            self._exception_unwind(instr)
+            self._exception_unwind()
         else:
             raise ValueStackException(f"TOS has wrong value: {self.tos}")
 
@@ -950,7 +957,7 @@ class Py38ValueStack(Py37ValueStack):
             # unhandled exceptions.
             pass
 
-    def _exception_unwind(self, instr):
+    def _exception_unwind(self):
         print("inside _exception_unwind")
         while self.block_stack.is_not_empty():
             block = self.block_stack.pop()
@@ -1004,15 +1011,15 @@ class Py39ValueStack(Py38ValueStack):
     def _DICT_MERGE_handler(self):
         self._pop_n_push_one(2)
 
-    def _RERAISE_handler(self, instr):
+    def _RERAISE_handler(self):
         exc_type = self._pop()
         value = self._pop()
         tb = self._pop()
         assert utils.is_exception_class(exc_type)
         self.last_exception = ExceptionInfo(type=exc_type, value=value, traceback=tb)
-        self._exception_unwind(instr)
+        self._exception_unwind()
 
-    def _WITH_EXCEPT_START_handler(self, instr):
+    def _WITH_EXCEPT_START_handler(self):
         exit_func = self.stack[-7]
         self._push(exit_func)
 
