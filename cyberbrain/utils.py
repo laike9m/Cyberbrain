@@ -22,6 +22,8 @@ from pygments import highlight
 from pygments.formatters import Terminal256Formatter
 from pygments.lexers import PythonLexer
 
+from . import tracer
+
 # These pickle handlers rely on Numpy and Pandas, so it only makes sense to register
 # them if Numpy or Pandas are installed.
 try:
@@ -48,10 +50,9 @@ def should_ignore_event(
     *, target: str, value: Any, frame: Optional[FrameType] = None
 ) -> bool:
     """Determines whether we should ignore this event."""
-    from .tracer import Tracer
 
     # Excludes events from tracer.
-    if isinstance(value, Tracer):
+    if isinstance(value, tracer.Tracer):
         return True
 
     # Excludes events from modules.

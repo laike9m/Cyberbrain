@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-import functools
 from dis import Instruction
-from types import FrameType, FunctionType
+from types import FrameType
 from typing import Optional
 
 from crayons import yellow, cyan
@@ -39,9 +38,6 @@ PREDICT_MAP = {
 
 COMPUTED_GOTOS_ENABLED = computed_gotos_enabled()
 
-# Will be initialized in FrameLogger's ctor, before it's used.
-log: FunctionType
-
 
 class FrameLogger:
     """Logger for a frame."""
@@ -56,11 +52,10 @@ class FrameLogger:
         self.instructions = instructions
         self.frame = frame
         self.instr_pointer = initial_instr_pointer
-        self.jump_detector = JumpDetector(instructions=self.instructions)
+        self.jump_detector = JumpDetector(
+            instructions=self.instructions, debug_mode=debug_mode
+        )
         self.debug_mode = debug_mode
-
-        global log
-        log = functools.partial(_debug_log, debug_mode)
 
     def update(self, frame: FrameType):
         """Prints names whose values changed since this function is called last time.
@@ -150,13 +145,13 @@ class FrameLogger:
             self.instr_pointer = jump_location if jumped else self.instr_pointer + 2
             self.frame.log_events(frame, instr, jumped)
 
-            # Debug log
-            log(
-                f"{cyan('Executed instruction')} at line "
-                + f"{self.frame.offset_to_lineno[instr.offset]}",
-                instr,
-            )
-            log(f"{yellow('Current stack:')}", self.frame.value_stack.stack)
+            if self.debug_mode:
+                _log(
+                    f"{cyan('Executed instruction')} at line "
+                    + f"{self.frame.offset_to_lineno[instr.offset]}",
+                    instr,
+                )
+                _log(f"{yellow('Current stack:')}", self.frame.value_stack.stack)
 
             # Taking the following code as an example.
             #     for i in range(2):
@@ -206,8 +201,9 @@ class FrameLogger:
 class JumpDetector:
     """Detects jump behavior."""
 
-    def __init__(self, instructions: dict[int, Instruction]):
+    def __init__(self, instructions: dict[int, Instruction], debug_mode):
         self.instructions = instructions
+        self.debug_mode = debug_mode
 
     def detects_jump(self, instr: Instruction, last_i) -> (bool, Optional[int]):
         """
@@ -246,19 +242,21 @@ class JumpDetector:
             # so last_i is 26.
             opname_next = self.instructions[explicit_jump_target].opname
             if opname_next in PREDICT_MAP.get(instr.opname, {}):
-                log(f"Found PREDICT!! {instr.opname} -> {opname_next}")
+                if self.debug_mode:
+                    _log(f"Found PREDICT!! {instr.opname} -> {opname_next}")
                 computed_last_i += 2
 
         if computed_last_i == last_i:
-            log(f"Jumped to instruction at offset: {explicit_jump_target}")
+            if self.debug_mode:
+                _log(f"Jumped to instruction at offset: {explicit_jump_target}")
             return True, explicit_jump_target
         elif implicit_jump_target:
-            log(f"Jumped to instruction at offset: {implicit_jump_target}")
+            if self.debug_mode:
+                _log(f"Jumped to instruction at offset: {implicit_jump_target}")
             return True, implicit_jump_target
 
         return False, None
 
 
-def _debug_log(debug_mode, *msg):
-    if debug_mode:
-        pprint(*msg)
+def _log(*msg):
+    pprint(*msg)
