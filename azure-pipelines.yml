@@ -44,5 +44,4 @@ jobs:
       py38:
         image: [linux, windows, macOs]
       py39:
-        # gRPC does not support Python 3.9 on Windows (grpc/grpc#24344)
-        image: [linux, macOs]
+        image: [linux, windows, macOs]
