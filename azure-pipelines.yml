@@ -19,6 +19,7 @@ trigger:
       - cyberbrain/*
       - test/*
       - protos/*
+      - azure-pipelines.yml
 
 pr:
   branches:
