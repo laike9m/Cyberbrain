@@ -187,11 +187,11 @@ class RpcClient:
                 for loop in frame.loops.values()
             ],
         )
+
         for event in frame.events:
             frame_proto.events.append(_transform_event_to_proto(event))
             event_ids = _get_event_sources_uids(event, frame)
             if event_ids:
-                frame_proto.tracing_result[event.uid].CopyFrom(
-                    communication_pb2.EventIDList(event_ids=event_ids)
-                )
+                frame_proto.tracing_result[event.uid].event_ids[:] = event_ids
+
         self.stub.SendFrame(frame_proto)

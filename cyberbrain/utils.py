@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import dis
 import inspect
 import os
@@ -15,9 +16,9 @@ from pprint import pformat
 from types import FrameType
 from typing import Any, Optional
 
+import cheap_repr
 import jsonpickle
 import more_itertools
-from cheap_repr import cheap_repr
 from pygments import highlight
 from pygments.formatters import Terminal256Formatter
 from pygments.lexers import PythonLexer
@@ -44,6 +45,12 @@ except ImportError:
 
 _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
 _PYTHON_EXECUTABLE_PATH = sys.executable
+
+
+# To not let it show warnings
+@cheap_repr.register_repr(argparse.Namespace)
+def repr_for_namespace(_, __):
+    return "argparse.Namespace"
 
 
 def should_ignore_event(
@@ -214,7 +221,7 @@ def get_repr(obj: Any) -> str:
     if type(obj) == str:
         return f'"{obj}"'
 
-    repr_text = cheap_repr(obj)
+    repr_text = cheap_repr.cheap_repr(obj)
     match = re.search("at 0x", repr_text)
     if not match:
         return repr_text
