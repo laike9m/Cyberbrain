@@ -28,12 +28,12 @@
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.3",
-		"@types/google-protobuf": "^3.7.3",
+		"@types/google-protobuf": "^3.7.4",
 		"@types/mocha": "^7.0.2",
-		"@types/node": "^13.13.25",
-		"@types/vscode": "^1.50.0",
-		"@typescript-eslint/eslint-plugin": "^4.4.1",
-		"@typescript-eslint/parser": "^4.4.1",
+		"@types/node": "^13.13.31",
+		"@types/vscode": "^1.51.0",
+		"@typescript-eslint/eslint-plugin": "^4.8.1",
+		"@typescript-eslint/parser": "^4.8.1",
 		"copyfiles": "^2.4.0",
 		"glob": "^7.1.6",
 		"hamjest": "^3.7.1",
@@ -41,16 +41,16 @@
 		"prettier-eslint-cli": "^5.0.0",
 		"ts-protoc-gen": "^0.12.0",
 		"typescript": "^3.9.7",
-		"vscode-test": "^1.3.0"
+		"vscode-test": "^1.4.1"
 	},
 	"dependencies": {
-		"@grpc/grpc-js": "^1.1.7",
-		"google-auth-library": "^6.1.1",
-		"google-protobuf": "^3.13.0",
+		"@grpc/grpc-js": "^1.2.0",
+		"google-auth-library": "^6.1.3",
+		"google-protobuf": "^3.14.0",
 		"grpc-tools": "^1.9.1",
 		"log4js": "^6.3.0",
 		"randomcolor": "^0.6.2",
-		"vis-network": "^8.3.3"
+		"vis-network": "^8.5.3"
 	},
 	"type": "module"
 }
