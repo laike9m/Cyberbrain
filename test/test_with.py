@@ -48,13 +48,13 @@ def test_with(tracer, test_server):
         InitialValue(
             lineno=21,
             target=Symbol("ContextManagerNoReturn"),
-            value='{"py/type": "test_with.test_with.<locals>.ContextManagerNoReturn"}',
+            value='{"py/type":"test_with.test_with.<locals>.ContextManagerNoReturn"}',
         ),
         Binding(lineno=22, target=Symbol("a"), value="1", sources=set()),
         InitialValue(
             lineno=24,
             target=Symbol("ContextManagerWithReturn"),
-            value='{"py/type": "test_with.test_with.<locals>.ContextManagerWithReturn"}',
+            value='{"py/type":"test_with.test_with.<locals>.ContextManagerWithReturn"}',
         ),
         Binding(
             lineno=24,

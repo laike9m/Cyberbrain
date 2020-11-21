@@ -39,7 +39,7 @@ def test_closure(tracer, test_server):
         Binding(
             lineno=32,
             target=Symbol("Foo"),
-            value='{"py/type": "test_cellvar.test_closure.<locals>.Foo"}',
+            value='{"py/type":"test_cellvar.test_closure.<locals>.Foo"}',
             sources={Symbol("a")},
         ),
     ]

@@ -12,7 +12,7 @@ events {
     filename: "test_attribute.py"
     lineno: 14
     target: "a2"
-    value: "{\"y\": 1}"
+    value: "{\"y\":1}"
     index: 0
     offset: 40
     repr: "<test_attribute.test_attribute.<locals>.A object>"
@@ -36,7 +36,7 @@ events {
     filename: "test_attribute.py"
     lineno: 14
     target: "a1"
-    value: "{\"x\": {\"y\": 1}}"
+    value: "{\"x\":{\"y\":1}}"
     sources: "a1"
     sources: "a2"
     index: 2
@@ -50,7 +50,7 @@ events {
     filename: "test_attribute.py"
     lineno: 15
     target: "a1"
-    value: "{\"x\": {\"y\": 2}}"
+    value: "{\"x\":{\"y\":2}}"
     sources: "a1"
     index: 3
     offset: 52

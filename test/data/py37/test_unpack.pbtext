@@ -36,7 +36,7 @@ events {
     filename: "test_unpack.py"
     lineno: 12
     target: "l1"
-    value: "[1, 2]"
+    value: "[1,2]"
     index: 2
     offset: 48
     repr: "[1, 2]"
@@ -74,7 +74,7 @@ events {
     filename: "test_unpack.py"
     lineno: 13
     target: "numbers"
-    value: "[1, 2, 3, 4]"
+    value: "[1,2,3,4]"
     index: 5
     offset: 56
     repr: "[1, 2, 3, 4]"
@@ -99,7 +99,7 @@ events {
     filename: "test_unpack.py"
     lineno: 13
     target: "rest"
-    value: "[2, 3, 4]"
+    value: "[2,3,4]"
     sources: "numbers"
     index: 7
     offset: 62
@@ -112,7 +112,7 @@ events {
     filename: "test_unpack.py"
     lineno: 14
     target: "beginning"
-    value: "[1, 2, 3]"
+    value: "[1,2,3]"
     sources: "numbers"
     index: 8
     offset: 70
@@ -151,7 +151,7 @@ events {
     filename: "test_unpack.py"
     lineno: 15
     target: "middle"
-    value: "[2, 3]"
+    value: "[2,3]"
     sources: "numbers"
     index: 11
     offset: 82
@@ -177,7 +177,7 @@ events {
     filename: "test_unpack.py"
     lineno: 16
     target: "a"
-    value: "[1, 2, 1, 2, 3, 4]"
+    value: "[1,2,1,2,3,4]"
     sources: "l1"
     sources: "numbers"
     index: 13
@@ -191,7 +191,7 @@ events {
     filename: "test_unpack.py"
     lineno: 17
     target: "a"
-    value: "[1, 2, 1, 2, 3, 4]"
+    value: "[1,2,1,2,3,4]"
     sources: "l1"
     sources: "numbers"
     index: 14
@@ -205,7 +205,7 @@ events {
     filename: "test_unpack.py"
     lineno: 18
     target: "a"
-    value: "[1, 2, 3, 4]"
+    value: "[1,2,3,4]"
     sources: "l1"
     sources: "numbers"
     index: 15
@@ -219,7 +219,7 @@ events {
     filename: "test_unpack.py"
     lineno: 19
     target: "m1"
-    value: "{\"1\": 2}"
+    value: "{\"1\":2}"
     index: 16
     offset: 110
     repr: "{1: 2}"
@@ -231,7 +231,7 @@ events {
     filename: "test_unpack.py"
     lineno: 19
     target: "m2"
-    value: "{\"1\": 2}"
+    value: "{\"1\":2}"
     index: 17
     offset: 112
     repr: "{1: 2}"
@@ -243,7 +243,7 @@ events {
     filename: "test_unpack.py"
     lineno: 19
     target: "a"
-    value: "{\"1\": 2}"
+    value: "{\"1\":2}"
     sources: "m1"
     sources: "m2"
     index: 18

@@ -12,7 +12,7 @@ events {
     filename: "test_with.py"
     lineno: 21
     target: "ContextManagerNoReturn"
-    value: "{\"py/type\": \"test_with.test_with.<locals>.ContextManagerNoReturn\"}"
+    value: "{\"py/type\":\"test_with.test_with.<locals>.ContextManagerNoReturn\"}"
     index: 0
     offset: 36
     repr: "<class \'test_with.test_with....als>.ContextManagerNoReturn\'>"
@@ -36,7 +36,7 @@ events {
     filename: "test_with.py"
     lineno: 24
     target: "ContextManagerWithReturn"
-    value: "{\"py/type\": \"test_with.test_with.<locals>.ContextManagerWithReturn\"}"
+    value: "{\"py/type\":\"test_with.test_with.<locals>.ContextManagerWithReturn\"}"
     index: 2
     offset: 58
     repr: "<class \'test_with.test_with....s>.ContextManagerWithReturn\'>"

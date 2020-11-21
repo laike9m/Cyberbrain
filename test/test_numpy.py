@@ -16,8 +16,8 @@ def test_numpy(tracer, test_server):
         Binding(
             lineno=8,
             target=Symbol("x"),
-            value=f'{{"dtype": "{int_type}", "values": [6, 7, 8]}}',
-            repr="array([6, 7, 8])",
+            value=f'{{"dtype":"{int_type}","values":[6,7,8]}}',
+            repr="array([6,7,8])",
             sources=set(),
         )
     ]

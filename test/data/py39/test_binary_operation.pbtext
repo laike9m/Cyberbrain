@@ -134,7 +134,7 @@ events {
     filename: "test_binary.py"
     lineno: 17
     target: "lst"
-    value: "[0, 1]"
+    value: "[0,1]"
     index: 9
     offset: 80
     repr: "[0, 1]"

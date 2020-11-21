@@ -46,6 +46,7 @@ except ImportError:
 _INSTALLATION_PATHS = list(sysconfig.get_paths().values())
 _PYTHON_EXECUTABLE_PATH = sys.executable
 
+jsonpickle.set_preferred_backend("ujson")
 
 # To not let it show warnings
 @cheap_repr.register_repr(argparse.Namespace)

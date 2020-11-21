@@ -12,8 +12,8 @@ def test_miscellaneous(tracer, test_server):
 
     tracer.start()
 
-    x = f"{a} {b:4} {c!r} {d!r:4}"  # FORMAT_VALUE, BUILD_STRING
-    x = a == b == c  # ROT_THREE, _COMPARE_OP
+    x = f"{a} {b:4} {c!r} {d!r:4}"  # FORMAT_VALUE,BUILD_STRING
+    x = a == b == c  # ROT_THREE,_COMPARE_OP
     e[0] += e.pop()  # DUP_TOP_TWO
     del e  # DELETE_FAST
     global g
@@ -40,9 +40,9 @@ def test_miscellaneous(tracer, test_server):
             sources={Symbol("a"), Symbol("b")},
             lineno=16,
         ),
-        InitialValue(target=Symbol("e"), value="[1, 2, 3]", lineno=17),
-        Mutation(target=Symbol("e"), value="[1, 2]", sources={Symbol("e")}, lineno=17),
-        Mutation(target=Symbol("e"), value="[4, 2]", sources={Symbol("e")}, lineno=17),
+        InitialValue(target=Symbol("e"), value="[1,2,3]", lineno=17),
+        Mutation(target=Symbol("e"), value="[1,2]", sources={Symbol("e")}, lineno=17),
+        Mutation(target=Symbol("e"), value="[4,2]", sources={Symbol("e")}, lineno=17),
         Deletion(target=Symbol("e"), lineno=18),
         InitialValue(target=Symbol("g"), value="0", lineno=20),
         Binding(target=Symbol("x"), value="0", sources={Symbol("g")}, lineno=20),

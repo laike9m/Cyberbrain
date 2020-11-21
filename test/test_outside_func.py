@@ -17,7 +17,7 @@ def test_module(test_server):
         InitialValue(target=Symbol("__annotations__"), value="{}", lineno=9),
         Mutation(
             target=Symbol("__annotations__"),
-            value='{"y": {"py/type": "builtins.int"}}',
+            value='{"y":{"py/type":"builtins.int"}}',
             sources={
                 Symbol("__annotations__")
             },  # `int` is a built-in so is excluded from sources.

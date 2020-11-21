@@ -24,7 +24,7 @@ events {
     filename: "test_list_comp.py"
     lineno: 8
     target: "x"
-    value: "[0, 1]"
+    value: "[0,1]"
     sources: "n"
     index: 1
     offset: 28
@@ -37,7 +37,7 @@ events {
     filename: "test_list_comp.py"
     lineno: 9
     target: "lst"
-    value: "[\"foo\", \"bar\"]"
+    value: "[\"foo\",\"bar\"]"
     index: 2
     offset: 36
     repr: "[\'foo\', \'bar\']"
@@ -49,7 +49,7 @@ events {
     filename: "test_list_comp.py"
     lineno: 10
     target: "x"
-    value: "[\"foo\", \"bar\"]"
+    value: "[\"foo\",\"bar\"]"
     sources: "lst"
     index: 3
     offset: 50

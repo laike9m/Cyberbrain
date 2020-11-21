@@ -21,7 +21,7 @@ def test_attribute(tracer, test_server):
         InitialValue(
             lineno=14,
             target=Symbol("a2"),
-            value='{"y": 1}',
+            value='{"y":1}',
             repr="<test_attribute.test_attribute.<locals>.A object>",
         ),
         InitialValue(
@@ -34,14 +34,14 @@ def test_attribute(tracer, test_server):
             lineno=14,
             target=Symbol("a1"),
             sources={Symbol("a2"), Symbol("a1")},
-            value='{"x": {"y": 1}}',
+            value='{"x":{"y":1}}',
             repr="<test_attribute.test_attribute.<locals>.A object>",
         ),
         Mutation(
             lineno=15,
             target=Symbol("a1"),
             sources={Symbol("a1")},
-            value='{"x": {"y": 2}}',
+            value='{"x":{"y":2}}',
             repr="<test_attribute.test_attribute.<locals>.A object>",
         ),
         Mutation(

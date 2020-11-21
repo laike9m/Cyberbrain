@@ -24,7 +24,7 @@ events {
     filename: "test_cellvar.py"
     lineno: 32
     target: "Foo"
-    value: "{\"py/type\": \"test_cellvar.test_closure.<locals>.Foo\"}"
+    value: "{\"py/type\":\"test_cellvar.test_closure.<locals>.Foo\"}"
     sources: "a"
     index: 1
     offset: 28

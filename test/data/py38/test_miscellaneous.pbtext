@@ -90,7 +90,7 @@ events {
     filename: "test_miscellaneous.py"
     lineno: 17
     target: "e"
-    value: "[1, 2, 3]"
+    value: "[1,2,3]"
     index: 6
     offset: 88
     repr: "[1, 2, 3]"
@@ -102,7 +102,7 @@ events {
     filename: "test_miscellaneous.py"
     lineno: 17
     target: "e"
-    value: "[1, 2]"
+    value: "[1,2]"
     sources: "e"
     index: 7
     offset: 100
@@ -115,7 +115,7 @@ events {
     filename: "test_miscellaneous.py"
     lineno: 17
     target: "e"
-    value: "[4, 2]"
+    value: "[4,2]"
     sources: "e"
     index: 8
     offset: 106

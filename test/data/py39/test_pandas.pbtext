@@ -12,7 +12,7 @@ events {
     filename: "test_pandas.py"
     lineno: 8
     target: "baby_data_set"
-    value: "[[\"Bob\", 968], [\"Jessica\", 155], [\"Mary\", 77], [\"John\", 578], [\"Mel\", 973]]"
+    value: "[[\"Bob\",968],[\"Jessica\",155],[\"Mary\",77],[\"John\",578],[\"Mel\",973]]"
     index: 0
     offset: 14
     repr: "[(\'Bob\', 968), (\'Jessica\', 155), (\'Mary\', 77), (\'John\', 578), (\'Mel\', 973)]"
@@ -24,7 +24,7 @@ events {
     filename: "test_pandas.py"
     lineno: 15
     target: "df"
-    value: "{\"values\": \"Names,Births\\nBob,968\\nJessica,155\\nMary,77\\nJohn,578\\nMel,973\\n\", \"txt\": true, \"meta\": {\"dtypes\": {\"Names\": \"object\", \"Births\": \"int64\"}, \"index\": \"{\\\"py/object\\\": \\\"pandas.core.indexes.range.RangeIndex\\\", \\\"values\\\": \\\"[0, 1, 2, 3, 4]\\\", \\\"txt\\\": true, \\\"meta\\\": {\\\"dtype\\\": \\\"int64\\\", \\\"name\\\": null}}\"}}"
+    value: "{\"values\":\"Names,Births\\nBob,968\\nJessica,155\\nMary,77\\nJohn,578\\nMel,973\\n\",\"txt\":true,\"meta\":{\"dtypes\":{\"Names\":\"object\",\"Births\":\"int64\"},\"index\":\"{\\\"py/object\\\":\\\"pandas.core.indexes.range.RangeIndex\\\",\\\"values\\\":\\\"[0,1,2,3,4]\\\",\\\"txt\\\":true,\\\"meta\\\":{\\\"dtype\\\":\\\"int64\\\",\\\"name\\\":null}}\"}}"
     sources: "baby_data_set"
     index: 1
     offset: 32

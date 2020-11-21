@@ -36,7 +36,7 @@ events {
     filename: "test_container.py"
     lineno: 11
     target: "d"
-    value: "[1, 1]"
+    value: "[1,1]"
     sources: "a"
     sources: "b"
     index: 2
@@ -50,7 +50,7 @@ events {
     filename: "test_container.py"
     lineno: 12
     target: "d"
-    value: "[1, 1]"
+    value: "[1,1]"
     sources: "a"
     sources: "b"
     index: 3
@@ -78,7 +78,7 @@ events {
     filename: "test_container.py"
     lineno: 14
     target: "d"
-    value: "{\"1\": 1}"
+    value: "{\"1\":1}"
     sources: "a"
     sources: "b"
     index: 5
@@ -92,7 +92,7 @@ events {
     filename: "test_container.py"
     lineno: 15
     target: "d"
-    value: "{\"1\": 1, \"2\": 1}"
+    value: "{\"1\":1,\"2\":1}"
     sources: "a"
     sources: "b"
     index: 6
@@ -118,7 +118,7 @@ events {
     filename: "test_container.py"
     lineno: 16
     target: "d"
-    value: "{\"1\": 2, \"2\": 1}"
+    value: "{\"1\":2,\"2\":1}"
     sources: "a"
     sources: "c"
     sources: "d"
@@ -133,7 +133,7 @@ events {
     filename: "test_container.py"
     lineno: 17
     target: "d"
-    value: "{\"2\": 1}"
+    value: "{\"2\":1}"
     sources: "a"
     sources: "d"
     index: 9
@@ -159,7 +159,7 @@ events {
     filename: "test_container.py"
     lineno: 18
     target: "d"
-    value: "[1, 1]"
+    value: "[1,1]"
     sources: "a"
     sources: "b"
     sources: "c"
@@ -175,7 +175,7 @@ events {
     filename: "test_container.py"
     lineno: 19
     target: "d"
-    value: "[1, 1]"
+    value: "[1,1]"
     sources: "a"
     sources: "b"
     sources: "c"
