@@ -74,10 +74,10 @@ class EventInfo:
     jump_target: int = None
 
 
-class GeneralValueStack:
+class BaseValueStack:
     """Class that simulates the a frame's value stack.
 
-    This class handles instructions that don't require special processing.
+    This class contains instr handlers that are the same across different versions.
     """
 
     def __init__(self):
@@ -721,7 +721,7 @@ class Why(enum.Enum):
     SILENCED = 8  # Exception silenced by 'with'
 
 
-class Py37ValueStack(GeneralValueStack):
+class Py37ValueStack(BaseValueStack):
     """Value stack for Python 3.7."""
 
     def __init__(self):
