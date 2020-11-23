@@ -4,8 +4,6 @@ import sys
 # executed if not ignored.
 collect_ignore = [
     "test/test_outside_func.py",
-    "test/test_assert_raise.py",
-    "test/test_exception.py",
 ]
 
 if sys.version_info[:2] < (3, 8):

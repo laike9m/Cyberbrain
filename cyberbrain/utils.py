@@ -48,6 +48,7 @@ _PYTHON_EXECUTABLE_PATH = sys.executable
 
 jsonpickle.set_preferred_backend("ujson")
 
+
 # To not let it show warnings
 @cheap_repr.register_repr(argparse.Namespace)
 def repr_for_namespace(_, __):

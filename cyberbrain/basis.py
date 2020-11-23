@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import dataclasses
 import os
 from collections import defaultdict
-from typing import Any, TYPE_CHECKING, Optional
+from types import TracebackType
+from typing import Any, TYPE_CHECKING, Optional, Type, Tuple
 
 import attr
 import shortuuid
@@ -15,6 +17,17 @@ if TYPE_CHECKING:
     from .frame import Snapshot
 
 _dummy = object()
+
+ExcInfoType = Tuple[Type[BaseException], Exception, TracebackType]
+
+
+@dataclasses.dataclass
+class ExceptionInfo:
+    """The concrete type of ExcInfoType."""
+
+    type: Type[BaseException]
+    value: Exception
+    traceback: any
 
 
 class UUIDGenerator:

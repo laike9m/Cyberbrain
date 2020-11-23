@@ -15,6 +15,7 @@ from .basis import (
     Return,
     Symbol,
     Loop,
+    ExceptionInfo,
     JumpBackToLoopStart,
 )
 
@@ -139,10 +140,20 @@ class Frame:
                 )
             )
 
-    def log_events(self, frame: FrameType, instr: Instruction, jumped: bool = False):
+    def log_events(
+        self,
+        frame: FrameType,
+        instr: Instruction,
+        jumped: bool,
+        exc_info: ExceptionInfo,
+    ):
         """Logs changed values by the given instruction, if any."""
         event_info = self.value_stack.emit_event_and_update_stack(
-            instr=instr, frame=frame, jumped=jumped, snapshot=self.latest_snapshot
+            instr=instr,
+            frame=frame,
+            jumped=jumped,
+            exc_info=exc_info,
+            snapshot=self.latest_snapshot,
         )
         if not event_info:
             return

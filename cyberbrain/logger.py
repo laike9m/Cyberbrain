@@ -7,13 +7,14 @@ from typing import Optional
 from crayons import yellow, cyan
 
 from . import utils
+from .basis import ExcInfoType, ExceptionInfo
 from .frame import Frame
 from .utils import pprint, computed_gotos_enabled
 
 _implicit_jump_ops = {
     "BREAK_LOOP",
     "CONTINUE_LOOP",
-    "RAISE_VARARGS",
+    "RAISE_VARARGS",  # maybe we can remove RERAISE and RAISE_VARARGS
     "END_FINALLY",
     "RERAISE",
 }
@@ -55,16 +56,22 @@ class FrameLogger:
         self.jump_detector = JumpDetector(
             instructions=self.instructions, debug_mode=debug_mode
         )
+        # Maybe we can just store to value_stack.last_exception.
+        self.last_exception = None
         self.debug_mode = debug_mode
 
-    def update(self, frame: FrameType):
-        """Prints names whose values changed since this function is called last time.
+    def handle_exception(self, exc_info: ExcInfoType):
+        # We don't need to care about explicitly raise exceptions because the
+        # corresponding instruction handlers do all the job.
+        if self.instructions[self.instr_pointer].opname in {"RAISE_VARARGS", "RERAISE"}:
+            return
 
-        This function scans through instructions in the frame the logger belongs to,
-        starting from the last_i recorded last time, and stops before the current
-        last_i. It looks for instructions that are intended to mutate a variable,
-        like "STORE_NAME" and "STORE_ATTR", and prints them.
-        """
+        self.last_exception = ExceptionInfo(
+            type=exc_info[0], value=exc_info[1], traceback=exc_info[2]
+        )
+
+    def handle_instructions(self, frame: FrameType):
+        """Handles recently executed instructions."""
         last_i = frame.f_lasti
 
         # Skips when no instruction has been executed. Note that we should not skip
@@ -141,16 +148,22 @@ class FrameLogger:
                 self.instr_pointer += 2
                 continue
 
-            jumped, jump_location = self.jump_detector.detects_jump(instr, last_i)
-            self.instr_pointer = jump_location if jumped else self.instr_pointer + 2
-            self.frame.log_events(frame, instr, jumped)
-
             if self.debug_mode:
                 _log(
                     f"{cyan('Executed instruction')} at line "
                     + f"{self.frame.offset_to_lineno[instr.offset]}",
                     instr,
                 )
+
+            if self.last_exception:
+                jumped = True
+                jump_location = last_i
+            else:
+                jumped, jump_location = self.jump_detector.detects_jump(instr, last_i)
+            self.instr_pointer = jump_location if jumped else self.instr_pointer + 2
+            self.frame.log_events(frame, instr, jumped, self.last_exception)
+
+            if self.debug_mode:
                 _log(f"{yellow('Current stack:')}", self.frame.value_stack.stack)
 
             # Taking the following code as an example.
@@ -196,6 +209,7 @@ class FrameLogger:
         # Log InitialValue events that's relevant to the line that's about to be
         # executed, this way we record the value before it's (potentially) modified.
         self.frame.log_initial_value_events(frame, self.instructions[last_i])
+        self.last_exception = None
 
 
 class JumpDetector:
@@ -217,7 +231,6 @@ class JumpDetector:
 
         Returns: (whether jump occurred, jumped-to location)
         """
-
         explicit_jump_target = utils.get_jump_target_or_none(instr)
         implicit_jump_target = last_i if instr.opname in _implicit_jump_ops else None
 

@@ -18,7 +18,14 @@ except ImportError:
     from typing_extensions import Literal
 
 from . import utils
-from .basis import Symbol, Binding, Mutation, Deletion, JumpBackToLoopStart
+from .basis import (
+    Symbol,
+    Binding,
+    Mutation,
+    Deletion,
+    JumpBackToLoopStart,
+    ExceptionInfo,
+)
 from .block_stack import BlockStack, BlockType, Block
 
 if TYPE_CHECKING:
@@ -41,13 +48,6 @@ class _NullClass:
 
 # The NULL value pushed by BEGIN_FINALLY, WITH_CLEANUP_FINISH, LOAD_METHOD.
 NULL = _NullClass()
-
-
-@dataclasses.dataclass
-class ExceptionInfo:
-    type: type
-    value: Exception
-    traceback: any
 
 
 def emit_event(f):
@@ -105,7 +105,12 @@ class GeneralValueStack:
                     symbol.snapshot = new_snapshot
 
     def emit_event_and_update_stack(
-        self, instr: Instruction, frame: FrameType, jumped: bool, snapshot: Snapshot
+        self,
+        instr: Instruction,
+        frame: FrameType,
+        jumped: bool,
+        exc_info: Optional[ExceptionInfo],
+        snapshot: Snapshot,
     ) -> Optional[EventInfo]:
         """Given a instruction, emits EventInfo if any, and updates the stack.
 
@@ -113,6 +118,7 @@ class GeneralValueStack:
             instr: current instruction.
             jumped: whether jump just happened.
             frame: current frame.
+            exc_info: implicitly raised exception if any, or None.
             snapshot: frame state snapshot.
         """
         self.snapshot = snapshot
@@ -142,6 +148,7 @@ class GeneralValueStack:
                     "instr": instr,
                     "jumped": jumped,
                     "frame": frame,
+                    "exc_info": exc_info,
                 }.items()
                 if param_name in parameters
             ]
@@ -278,8 +285,12 @@ class GeneralValueStack:
     def _UNARY_INVERT_handler(self, instr):
         pass
 
-    def _BINARY_operation_handler(self):
-        self._pop_n_push_one(2)
+    def _BINARY_operation_handler(self, exc_info):
+        tos, tos1 = self._pop(2)
+        if exc_info:
+            self._store_exception(exc_info)
+        else:
+            self._push(utils.flatten(tos, tos1))
 
     @emit_event
     def _STORE_SUBSCR_handler(self):
@@ -431,8 +442,8 @@ class GeneralValueStack:
         vital, so we need to keep it. Thus, the handler just does nothing.
         """
 
-    def _COMPARE_OP_handler(self):
-        return self._BINARY_operation_handler()
+    def _COMPARE_OP_handler(self, exc_info):
+        return self._BINARY_operation_handler(exc_info)
 
     def _IMPORT_NAME_handler(self):
         self._pop_n_push_one(2)
@@ -530,11 +541,16 @@ class GeneralValueStack:
         self._push_arguments_or_exception(callable_obj, args)
 
     @emit_event
-    def _CALL_METHOD_handler(self, instr):
+    def _CALL_METHOD_handler(self, instr, exc_info):
         args = self._pop(instr.arg)
         inst_or_callable = self._pop()
         method_or_null = self._pop()  # method or NULL
-        self._push(utils.flatten(inst_or_callable, method_or_null, *args))
+        if exc_info:
+            self._store_exception(exc_info)
+        else:
+            if utils.is_exception(args):
+                args = (args,)
+            self._push(utils.flatten(inst_or_callable, method_or_null, *args))
 
         # The real callable can be omitted for various reasons.
         # See the _fetch_value_for_load method.
@@ -643,11 +659,6 @@ class GeneralValueStack:
         self._push_block(BlockType.SETUP_FINALLY)
         self._push(enter_func)  # The return value of __enter__()
 
-    def _WITH_CLEANUP_FINISH_handler(self):
-        self._pop(2)
-        # Again, this assumes there's no unhandled exception, and ignored the handling
-        # for those exceptions.
-
     def _return_jump_back_event_if_exists(self, instr):
         jump_target = utils.get_jump_target_or_none(instr)
         if jump_target is not None and jump_target < instr.offset:
@@ -717,6 +728,33 @@ class Py37ValueStack(GeneralValueStack):
         self.why = Why.UNINITIALIZED
         super().__init__()
 
+    def _store_exception(self, exc_info: ExceptionInfo):
+        """When an exception is raised implicitly (aka not by calling `raise`), use
+        This method to propagate it as self.last_exception.
+
+        TODO: Every instruction handler that may raise exceptions should call this
+            method.
+        """
+        self.last_exception = exc_info
+        self.why = Why.EXCEPTION
+        self._fast_block_end()
+
+    def _WITH_CLEANUP_FINISH_handler(self):
+        # For __exit__, returning a true value from this method will cause the with
+        # statement to suppress the exception and continue execution with the statement
+        # immediately following the with statement. Otherwise the exception continues
+        # propagating after this method has finished executing.
+        #
+        # res represents the return value, but there's no way CB can know its value.
+        # So we just assume res is true whenever there is an exception, because CB does
+        # not support unhandled exception, so it's safe to assume that if there's an
+        # exception raised in `with`, it is properly handled. e.g.
+        #         with pytest.raises(TypeError)
+        res = self._pop()
+        exc = self._pop()
+        if res and utils.is_exception(exc):
+            self._push(Why.SILENCED)
+
     def _RETURN_VALUE_handler(self):
         self.return_value = self._pop()
         self.why = Why.RETURN
@@ -783,10 +821,20 @@ class Py37ValueStack(GeneralValueStack):
                 exit_func = self.stack.pop(-2)  # why, ret_val, __exit__
             else:
                 exit_func = self.stack.pop(-1)  # why, __exit__
+        elif utils.is_exception_class(exc):
+            w, v, u = self._pop(3)
+            tp, exc, tb = self._pop(3)
+            exit_func = self._pop()
+            self._push(tp, exc, tb)
+            self._push(None)
+            self._push(w, v, u)
+            block = self.block_stack.tos
+            assert block.b_type == BlockType.EXCEPT_HANDLER
+            block.b_level -= 1
         else:
-            assert False, "Unhandled exception is not supported by Cyberbrain"
+            assert False, f"Unrecognized type: {exc}"
 
-        self._push(_placeholder)  # exc, set to None
+        self._push(exc)
         self._push(exit_func)
 
     def _END_FINALLY_handler(self, instr):
@@ -798,9 +846,10 @@ class Py37ValueStack(GeneralValueStack):
                 self.return_value = self._pop()
             if self.why is Why.SILENCED:
                 block = self._pop_block()
-                assert block.type is BlockType.EXCEPT_HANDLER
+                assert block.b_type is BlockType.EXCEPT_HANDLER
                 self._unwind_except_handler(block)
                 self.why = Why.NOT
+                return
             self._fast_block_end()
         elif utils.is_exception_class(status):
             exc_type = status
@@ -871,6 +920,35 @@ class Py38ValueStack(Py37ValueStack):
     Note that the this class inherits from Py37ValueStack, and not GeneralValueStack.
     This allows us to only override the methods that have changed in 3.8
     """
+
+    def _store_exception(self, exc_info: ExceptionInfo):
+        """When an exception is raised implicitly (aka not by calling `raise`), use
+        This method to propagate it as self.last_exception.
+
+        TODO: Every instruction handler that may raise exceptions should call this
+            method.
+        """
+        self.last_exception = exc_info
+        self._exception_unwind()
+
+    def _WITH_CLEANUP_FINISH_handler(self):
+        # For __exit__, returning a true value from this method will cause the with
+        # statement to suppress the exception and continue execution with the statement
+        # immediately following the with statement. Otherwise the exception continues
+        # propagating after this method has finished executing.
+        #
+        # res represents the return value, but there's no way CB can know its value.
+        # So we just assume res is true whenever there is an exception, because CB does
+        # not support unhandled exception, so it's safe to assume that if there's an
+        # exception raised in `with`, it is properly handled. e.g.
+        #         with pytest.raises(TypeError)
+        res = self._pop()
+        exc = self._pop()
+        if res and utils.is_exception(exc):
+            block = self.block_stack.pop()
+            assert block.b_type == BlockType.EXCEPT_HANDLER
+            self._unwind_except_handler(block)
+            self._push(NULL)
 
     def _RETURN_VALUE_handler(self):
         self.return_value = self._pop()
@@ -949,16 +1027,17 @@ class Py38ValueStack(Py37ValueStack):
             self._push([])  # Pushes None to the stack
             self._push(exit_func)
         else:
-            # Note that in real CPython code, this clause is used to process unhandled
-            # exceptions thrown inside `with`. However, since our stack is just a
-            # simulation, we won't push exceptions onto the stack even if an unhandled
-            # happened, which, makes it meaningless to write any code here.
-            # Essentially, users shouldn't use Cyberbrain if there will ever be
-            # unhandled exceptions.
-            pass
+            w, v, u = self._pop(3)
+            tp, exc, tb = self._pop(3)
+            exit_func = self._pop()
+            self._push(tp, exc, tb)
+            self._push(None)
+            self._push(w, v, u)
+            block = self.block_stack.tos
+            assert block.b_type == BlockType.EXCEPT_HANDLER
+            block.b_level -= 1
 
     def _exception_unwind(self):
-        print("inside _exception_unwind")
         while self.block_stack.is_not_empty():
             block = self.block_stack.pop()
 
@@ -984,11 +1063,11 @@ class Py39ValueStack(Py38ValueStack):
     def _JUMP_IF_NOT_EXC_MATCH_handler(self):
         self._pop(2)
 
-    def _CONTAINS_OP_handler(self):
-        self._BINARY_operation_handler()
+    def _CONTAINS_OP_handler(self, exc_info):
+        self._BINARY_operation_handler(exc_info)
 
-    def _IS_OP_handler(self):
-        self._BINARY_operation_handler()
+    def _IS_OP_handler(self, exc_info):
+        self._BINARY_operation_handler(exc_info)
 
     def _LOAD_ASSERTION_ERROR_handler(self):
         self._push(AssertionError())

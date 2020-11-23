@@ -233,9 +233,12 @@ class Tracer:
     def local_tracer(self, raw_frame, event, arg):
         if utils.should_exclude(raw_frame):
             return
+        if event == "exception":
+            # print("Exception 🐍", raw_frame.f_lasti, arg)
+            self.frame_logger.handle_exception(arg)
         if event == "opcode":
             # print(raw_frame, event, arg, raw_frame.f_lasti)
-            self.frame_logger.update(raw_frame)
+            self.frame_logger.handle_instructions(raw_frame)
         if event == "return":
             # print(raw_frame, event, arg, raw_frame.f_lasti)
             self.frame.log_return_event(raw_frame, value=arg)
