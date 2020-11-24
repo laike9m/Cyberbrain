@@ -6,21 +6,19 @@
 [!["GitHub Discussions"](https://img.shields.io/badge/%20GitHub-%20Discussions-gray.svg?longCache=true&logo=github&colorB=purple)](https://github.com/laike9m/Cyberbrain/discussions)
 [![Discord](https://img.shields.io/discord/751695524628922449.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/5zGS5V5)
 
-Cyberbrain aims to free programmers from debugging. It is the **only** debugger that:
+Cyberbrain aims to free programmers from debugging. It lets you:
 
 - **Backtraces variable changes**.
 
-- **Persists every state** of program execution.
+- See **every state** of program execution, including **variables' values**
 
-- **Preserves variables' values** without truncating them.
-
-- Lets you **debug loops** with confidence.
-
-[Read more about these features](docs/Features.md).
+- **Debug loops** with confidence.
 
 Never spend hours stepping through a program, let Cyberbrain tell you what happened.
 
 ![](https://user-images.githubusercontent.com/2592205/95418789-1820b480-08ed-11eb-9b3e-61c8cdbf187a.png)
+
+[Read more](docs/Features.md) about existing features, and [roadmaps](#roadmaps) for features to come.
 
 ## Install
 
@@ -61,22 +59,13 @@ Read our **[documentation](docs/Features.md)** to learn more about Cyberbrain's 
 - Cyberbrain may conflict with other debuggers. If you set breakpoints and use VSC's debugger, Cyberbrain may not function normally. Generally speaking, **prefer "Run Without Debugging"** (like shown in the gif).
 - If you have multiple VS Code window opened, the trace graph will always be created in the first one. #72 is tracking this issue.
 
-## Status Quo and Milestones
+## Roadmaps
 
-*Updated 2020.10*
+*Updated 2020.11*
 
-Cyberbrain is new and under active development, bugs are expected. If you met any, I appreciate if you can [create an issue](https://github.com/laike9m/Cyberbrain/issues/new). At this point, you should **NOT** use Cyberbrain in production.
+Cyberbrain is new and under active development, bugs are expected. If you met any, please [create an issue](https://github.com/laike9m/Cyberbrain/issues/new). At this point, you should **NOT** use Cyberbrain in production. We'll release 1.0 when it's ready for production.
 
-Milestones for the project are listed below, which may change over time. Generally speaking, we'll release 1.0 when it reaches  "*Production ready*".
-
-| Milestone        | Description                                                           | Status |
-|------------------|-----------------------------------------------------------------------|--------|
-| Examples ready   | Cyberbrain works on examples (in the `examples/` folder)      | ✔️ |
-| Scripts ready     | Cyberbrain can work with most "scripting" programs                      | WIP |
-| Announcement ready | Cyberbrain is ready to be shared on Hacker News and Reddit. **Please don't broadcast Cyberbrain before it reaches this milestone.**                  | Not started    |
-| Production ready | Cyberbrain can work with most programs in production                  | Not started    |
-
-Note that v1.0 means Cyberbrain is stable in the features it supports, it does **NOT** mean Cyberbrain is feature complete. Major features planned for each future version are listed below. Again, expect it to change at any time.
+Major features planned for future versions are listed below. It may change over time.
 
 | Version | Features                        |
 |:-------:|---------------------------------|
