@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import codecs
+
 import dataclasses
 import enum
 import functools
@@ -268,7 +270,9 @@ class BaseValueStack:
     ) -> bool:
         """Returns true if there's no exception, otherwise false."""
         if exc_info:
-            print(f"⚠️  Exception happened in {opname}")
+            sys.stdout.buffer.write(
+                f"⚠️  Exception happened in {opname}\n".encode("utf-8")
+            )
             self._store_exception(exc_info)
             return False
         return True
