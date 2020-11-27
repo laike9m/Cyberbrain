@@ -554,7 +554,18 @@ class BaseValueStack:
 
     def _LOAD_CLOSURE_handler(self, instr, frame, exc_info):
         if self._instruction_successfully_executed(exc_info, "LOAD_CLOSURE"):
-            self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
+            # It is possible that the name does not exist in the frame. Example:
+            #
+            # class Bar(Foo):  # LOAD_CLOSURE, but the name `Bar` does exist in frame.
+            #     def __init__(self):
+            #         super(Bar, self).__init__()
+            #
+            # In this case, we ignore the value cause it doesn't matter.
+            try:
+                value = self._fetch_value_for_load_instruction(instr.argrepr, frame)
+            except AssertionError:
+                value = []
+            self._push(value)
 
     def _LOAD_DEREF_handler(self, instr, frame, exc_info):
         if self._instruction_successfully_executed(exc_info, "LOAD_DEREF"):

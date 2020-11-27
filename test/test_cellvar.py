@@ -32,7 +32,15 @@ def test_closure(tracer, test_server):
     class Foo:
         print(a)  # LOAD_CLOSURE
 
+    class Bar(Foo):  # LOAD_CLOSURE. If we remove super(Bar, self) it becomes LOAD_CONST
+        def __init__(self):
+            super(Bar, self).__init__()
+
     tracer.stop()
+
+    from cyberbrain import pprint
+
+    pprint(tracer.events)
 
     assert tracer.events == [
         Binding(lineno=30, target=Symbol("a"), value="1"),
@@ -41,6 +49,13 @@ def test_closure(tracer, test_server):
             target=Symbol("Foo"),
             value='{"py/type":"test_cellvar.test_closure.<locals>.Foo"}',
             sources={Symbol("a")},
+        ),
+        Binding(
+            lineno=35,
+            target=Symbol("Bar"),
+            value='{"py/type":"test_cellvar.test_closure.<locals>.Bar"}',
+            repr="<class 'test_cellvar.test_closure.<locals>.Bar'>",
+            sources={Symbol("Foo")},
         ),
     ]
 
