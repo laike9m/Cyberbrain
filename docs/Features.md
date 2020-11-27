@@ -46,6 +46,8 @@ The UI is inspired by [birdseye](https://github.com/alexmojaki/birdseye), thanks
 
 - Cyberbrain only traces the first call, no matter how many times the decorated function is called. Support planned for 2.0.
 
+- If your code contains unhandled exceptions, Cyberbrain is not guaranteed to work. You should first resolve these exceptions or properly catch them.
+
 - Some objects cannot be converted to JSON. In this case, Cyberbrain will show the repr string of that object. We're actively working on this issue.
 
 - For generator functions, you need to manually call `trace.stop()`. see [test_generator.py](https://github.com/laike9m/Cyberbrain/blob/master/test/test_generator.py). We will fix it in future versions.

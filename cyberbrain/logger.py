@@ -198,7 +198,8 @@ class FrameLogger:
                     # Note that instr_pointer has been increased already.
                     opname_next = self.instructions[self.instr_pointer].opname
                     if opname_next in PREDICT_MAP.get(instr.opname, {}):
-                        print(f"Found PREDICT!! {instr.opname} -> {opname_next}")
+                        if self.debug_mode:
+                            print(f"Found PREDICT!! {instr.opname} -> {opname_next}")
                         continue
                 except IndexError:
                     pass

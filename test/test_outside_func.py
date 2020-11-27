@@ -7,6 +7,15 @@ x = 1
 tracer.start()
 del x  # DELETE_NAME
 y: int
+try:
+    from xxx import *
+except ImportError:
+    pass
+
+try:
+    del aaa
+except NameError:
+    pass
 tracer.stop()
 
 

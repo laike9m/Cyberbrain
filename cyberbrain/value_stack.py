@@ -74,6 +74,17 @@ class EventInfo:
     jump_target: int = None
 
 
+class Why(enum.Enum):
+    UNINITIALIZED = 0
+    NOT = 1  # No error
+    EXCEPTION = 2  # Exception occurred
+    RETURN = 3  # 'return' statement
+    BREAK = 4  # 'break' statement
+    CONTINUE = 5  # 'continue' statement
+    YIELD = 6  # 'yield' operator
+    SILENCED = 8  # Exception silenced by 'with'
+
+
 class BaseValueStack:
     """Class that simulates the a frame's value stack.
 
@@ -250,6 +261,16 @@ class BaseValueStack:
         while self.stack_level > b.b_level:
             self._pop()
 
+    def _instruction_successfully_executed(
+        self, exc_info: Optional[ExceptionInfo], opname: str
+    ) -> bool:
+        """Returns true if there's no exception, otherwise false."""
+        if exc_info:
+            print(f"⚠️  Exception happened in {opname}")
+            self._store_exception(exc_info)
+            return False
+        return True
+
     def _POP_TOP_handler(self):
         self._pop()
 
@@ -287,23 +308,25 @@ class BaseValueStack:
 
     def _BINARY_operation_handler(self, exc_info):
         tos, tos1 = self._pop(2)
-        if exc_info:
-            self._store_exception(exc_info)
-        else:
+        if self._instruction_successfully_executed(exc_info, "BINARY op"):
             self._push(utils.flatten(tos, tos1))
 
     @emit_event
-    def _STORE_SUBSCR_handler(self):
+    def _STORE_SUBSCR_handler(self, exc_info):
         tos, tos1, tos2 = self._pop(3)
         assert len(tos1) == 1
-        return EventInfo(type=Mutation, target=tos1[0], sources=set(tos + tos1 + tos2))
+        if self._instruction_successfully_executed(exc_info, "STORE_SUBSCR"):
+            return EventInfo(
+                type=Mutation, target=tos1[0], sources=set(tos + tos1 + tos2)
+            )
 
     # noinspection DuplicatedCode
     @emit_event
-    def _DELETE_SUBSCR_handler(self):
+    def _DELETE_SUBSCR_handler(self, exc_info):
         tos, tos1 = self._pop(2)
         assert len(tos1) == 1
-        return EventInfo(type=Mutation, target=tos1[0], sources=set(tos + tos1))
+        if self._instruction_successfully_executed(exc_info, "DELETE_SUBSCR"):
+            return EventInfo(type=Mutation, target=tos1[0], sources=set(tos + tos1))
 
     def _YIELD_VALUE_handler(self):
         """
@@ -339,38 +362,47 @@ class BaseValueStack:
         return binding
 
     @emit_event
-    def _DELETE_NAME_handler(self, instr):
-        return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
+    def _DELETE_NAME_handler(self, instr, exc_info):
+        if self._instruction_successfully_executed(exc_info, "DELETE_NAME"):
+            return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
 
-    def _UNPACK_SEQUENCE_handler(self, instr):
-        self._pop_one_push_n(instr.arg)
+    def _UNPACK_SEQUENCE_handler(self, instr, exc_info):
+        seq = self._pop()
+        if self._instruction_successfully_executed(exc_info, "UNPACK_SEQUENCE"):
+            for _ in range(instr.arg):
+                self._push(seq)
 
-    def _UNPACK_EX_handler(self, instr):
+    def _UNPACK_EX_handler(self, instr, exc_info):
         assert instr.arg <= 65535  # At most one extended arg.
         higher_byte, lower_byte = instr.arg >> 8, instr.arg & 0x00FF
         number_of_receivers = lower_byte + 1 + higher_byte
-        self._pop_one_push_n(number_of_receivers)
+        seq = self._pop()
+        if self._instruction_successfully_executed(exc_info, "UNPACK_EX"):
+            for _ in range(number_of_receivers):
+                self._push(seq)
 
-    # noinspection DuplicatedCode
     @emit_event
-    def _STORE_ATTR_handler(self):
+    def _STORE_ATTR_handler(self, exc_info):
         tos, tos1 = self._pop(2)
         assert len(tos) == 1
-        return EventInfo(type=Mutation, target=tos[0], sources=set(tos + tos1))
+        if self._instruction_successfully_executed(exc_info, "STORE_ATTR"):
+            return EventInfo(type=Mutation, target=tos[0], sources=set(tos + tos1))
 
     @emit_event
-    def _DELETE_ATTR_handler(self):
+    def _DELETE_ATTR_handler(self, exc_info):
         tos = self._pop()
         assert len(tos) == 1
-        return EventInfo(type=Mutation, target=tos[0], sources=set(tos))
+        if self._instruction_successfully_executed(exc_info, "DELETE_ATTR"):
+            return EventInfo(type=Mutation, target=tos[0], sources=set(tos))
 
     @emit_event
     def _STORE_GLOBAL_handler(self, instr):
         return self._STORE_NAME_handler(instr)
 
     @emit_event
-    def _DELETE_GLOBAL_handler(self, instr):
-        return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
+    def _DELETE_GLOBAL_handler(self, instr, exc_info):
+        if self._instruction_successfully_executed(exc_info, "DELETE_GLOBAL"):
+            return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
 
     def _BUILD_TUPLE_handler(self, instr):
         self._pop_n_push_one(instr.arg)
@@ -378,11 +410,15 @@ class BaseValueStack:
     def _BUILD_LIST_handler(self, instr):
         self._BUILD_TUPLE_handler(instr)
 
-    def _BUILD_SET_handler(self, instr):
-        self._BUILD_TUPLE_handler(instr)
+    def _BUILD_SET_handler(self, instr, exc_info):
+        items = self._pop(instr.arg)
+        if self._instruction_successfully_executed(exc_info, "BUILD_SET"):
+            self._push(utils.flatten(items))
 
-    def _BUILD_MAP_handler(self, instr):
-        self._pop_n_push_one(instr.arg * 2)
+    def _BUILD_MAP_handler(self, instr, exc_info):
+        items = self._pop(instr.arg * 2)
+        if self._instruction_successfully_executed(exc_info, "BUILD_MAP"):
+            self._push(utils.flatten(items))
 
     def _BUILD_CONST_KEY_MAP_handler(self, instr):
         self._pop_n_push_one(instr.arg + 1)
@@ -390,25 +426,41 @@ class BaseValueStack:
     def _BUILD_STRING_handler(self, instr):
         self._pop_n_push_one(instr.arg)
 
-    def _BUILD_TUPLE_UNPACK_handler(self, instr):
-        self._pop_n_push_one(instr.arg)
+    def _BUILD_TUPLE_UNPACK_handler(self, instr, exc_info):
+        items = self._pop(instr.arg)
+        if self._instruction_successfully_executed(exc_info, "BUILD_TUPLE_UNPACK"):
+            self._push(utils.flatten(items))
 
-    def _BUILD_TUPLE_UNPACK_WITH_CALL_handler(self, instr):
-        self._pop_n_push_one(instr.arg)
+    def _BUILD_TUPLE_UNPACK_WITH_CALL_handler(self, instr, exc_info):
+        items = self._pop(instr.arg)
+        if self._instruction_successfully_executed(
+            exc_info, "BUILD_TUPLE_UNPACK_WITH_CALL"
+        ):
+            self._push(utils.flatten(items))
 
-    def _BUILD_LIST_UNPACK_handler(self, instr):
-        self._pop_n_push_one(instr.arg)
+    def _BUILD_LIST_UNPACK_handler(self, instr, exc_info):
+        items = self._pop(instr.arg)
+        if self._instruction_successfully_executed(exc_info, "BUILD_LIST_UNPACK"):
+            self._push(utils.flatten(items))
 
-    def _BUILD_SET_UNPACK_handler(self, instr):
-        self._pop_n_push_one(instr.arg)
+    def _BUILD_SET_UNPACK_handler(self, instr, exc_info):
+        items = self._pop(instr.arg)
+        if self._instruction_successfully_executed(exc_info, "BUILD_SET_UNPACK"):
+            self._push(utils.flatten(items))
 
-    def _BUILD_MAP_UNPACK_handler(self, instr):
-        self._pop_n_push_one(instr.arg)
+    def _BUILD_MAP_UNPACK_handler(self, instr, exc_info):
+        items = self._pop(instr.arg)
+        if self._instruction_successfully_executed(exc_info, "BUILD_MAP_UNPACK"):
+            self._push(utils.flatten(items))
 
-    def _BUILD_MAP_UNPACK_WITH_CALL_handler(self, instr):
-        self._pop_n_push_one(instr.arg)
+    def _BUILD_MAP_UNPACK_WITH_CALL_handler(self, instr, exc_info):
+        items = self._pop(instr.arg)
+        if self._instruction_successfully_executed(
+            exc_info, "BUILD_MAP_UNPACK_WITH_CALL"
+        ):
+            self._push(utils.flatten(items))
 
-    def _LOAD_ATTR_handler(self, instr):
+    def _LOAD_ATTR_handler(self, exc_info):
         """Event the behavior of LOAD_ATTR.
 
         The effect of LOAD_ATTR is: Replaces TOS with getattr(TOS, co_names[namei]).
@@ -441,27 +493,34 @@ class BaseValueStack:
         to us, so it's fine if we don't store it. But the "name" of the source object is
         vital, so we need to keep it. Thus, the handler just does nothing.
         """
+        self._instruction_successfully_executed(exc_info, "LOAD_ATTR")
 
     def _COMPARE_OP_handler(self, exc_info):
         return self._BINARY_operation_handler(exc_info)
 
-    def _IMPORT_NAME_handler(self):
-        self._pop_n_push_one(2)
+    def _IMPORT_NAME_handler(self, exc_info):
+        self._pop(2)
+        if self._instruction_successfully_executed(exc_info, "IMPORT_NAME"):
+            self._push(_placeholder)
 
-    def _IMPORT_FROM_handler(self):
-        self._push(_placeholder)
+    def _IMPORT_FROM_handler(self, exc_info):
+        if self._instruction_successfully_executed(exc_info, "IMPORT_FROM"):
+            self._push(_placeholder)
 
     def _LOAD_CONST_handler(self):
         self._push(_placeholder)
 
-    def _LOAD_NAME_handler(self, instr, frame):
-        self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
+    def _LOAD_NAME_handler(self, instr, frame, exc_info):
+        if self._instruction_successfully_executed(exc_info, "LOAD_NAME"):
+            self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
 
-    def _LOAD_GLOBAL_handler(self, instr, frame):
-        self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
+    def _LOAD_GLOBAL_handler(self, instr, frame, exc_info):
+        if self._instruction_successfully_executed(exc_info, "LOAD_GLOBAL"):
+            self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
 
-    def _LOAD_FAST_handler(self, instr, frame):
-        self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
+    def _LOAD_FAST_handler(self, instr, frame, exc_info):
+        if self._instruction_successfully_executed(exc_info, "LOAD_FAST"):
+            self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
 
     def _fetch_value_for_load_instruction(self, name, frame):
         """Transforms the value to be loaded onto value stack based on their types.
@@ -487,29 +546,34 @@ class BaseValueStack:
     def _STORE_FAST_handler(self, instr):
         return self._STORE_NAME_handler(instr)
 
-    def _LOAD_CLOSURE_handler(self, instr, frame):
-        self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
+    def _LOAD_CLOSURE_handler(self, instr, frame, exc_info):
+        if self._instruction_successfully_executed(exc_info, "LOAD_CLOSURE"):
+            self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
 
-    def _LOAD_DEREF_handler(self, instr, frame):
-        self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
+    def _LOAD_DEREF_handler(self, instr, frame, exc_info):
+        if self._instruction_successfully_executed(exc_info, "LOAD_DEREF"):
+            self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
 
     @emit_event
     def _STORE_DEREF_handler(self, instr):
         return self._STORE_NAME_handler(instr)
 
     @emit_event
-    def _DELETE_DEREF_handler(self, instr):
-        return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
+    def _DELETE_DEREF_handler(self, instr, exc_info):
+        if self._instruction_successfully_executed(exc_info, "DELETE_DEREF"):
+            return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
 
     @emit_event
-    def _DELETE_FAST_handler(self, instr):
-        return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
+    def _DELETE_FAST_handler(self, instr, exc_info):
+        if self._instruction_successfully_executed(exc_info, "DELETE_FAST"):
+            return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
 
-    def _LOAD_METHOD_handler(self):
-        # NULL should be pushed if method lookup failed, but this would lead to an
-        # exception anyway, and should be very rare, so ignoring it.
-        # See https://docs.python.org/3/library/dis.html#opcode-LOAD_METHOD.
-        self._push(self.tos)
+    def _LOAD_METHOD_handler(self, exc_info):
+        if self._instruction_successfully_executed(exc_info, "LOAD_METHOD"):
+            # NULL should be pushed if method lookup failed, but this would lead to an
+            # exception anyway, and should be very rare, so ignoring it.
+            # See https://docs.python.org/3/library/dis.html#opcode-LOAD_METHOD.
+            self._push(self.tos)
 
     def _push_arguments_or_exception(self, callable_obj, args):
         if utils.is_exception_class(callable_obj):
@@ -521,33 +585,40 @@ class BaseValueStack:
             # Return value is a list containing the callable and all arguments
             self._push(utils.flatten(callable_obj, args))
 
-    def _CALL_FUNCTION_handler(self, instr):
+    def _CALL_FUNCTION_handler(self, instr, exc_info):
         args = self._pop(instr.arg)
         callable_obj = self._pop()
-        self._push_arguments_or_exception(callable_obj, args)
+        if self._instruction_successfully_executed(exc_info, "CALL_FUNCTION"):
+            if utils.is_exception(args):
+                args = (args,)
+            self._push_arguments_or_exception(callable_obj, args)
 
-    def _CALL_FUNCTION_KW_handler(self, instr: Instruction):
+    def _CALL_FUNCTION_KW_handler(self, instr: Instruction, exc_info):
         args_num = instr.arg
         _ = self._pop()  # A tuple of keyword argument names.
         args = self._pop(args_num)
         callable_obj = self._pop()
-        self._push_arguments_or_exception(callable_obj, args)
+        if self._instruction_successfully_executed(exc_info, "CALL_FUNCTION_KW"):
+            if utils.is_exception(args):
+                args = (args,)
+            self._push_arguments_or_exception(callable_obj, args)
 
-    def _CALL_FUNCTION_EX_handler(self, instr):
+    def _CALL_FUNCTION_EX_handler(self, instr, exc_info):
         kwargs = self._pop() if (instr.arg & 0x01) else []
         args = self._pop()
         args.extend(kwargs)
         callable_obj = self._pop()
-        self._push_arguments_or_exception(callable_obj, args)
+        if self._instruction_successfully_executed(exc_info, "CALL_FUNCTION_EX"):
+            if utils.is_exception(args):
+                args = (args,)
+            self._push_arguments_or_exception(callable_obj, args)
 
     @emit_event
     def _CALL_METHOD_handler(self, instr, exc_info):
         args = self._pop(instr.arg)
         inst_or_callable = self._pop()
         method_or_null = self._pop()  # method or NULL
-        if exc_info:
-            self._store_exception(exc_info)
-        else:
+        if self._instruction_successfully_executed(exc_info, "CALL_METHOD"):
             if utils.is_exception(args):
                 args = (args,)
             self._push(utils.flatten(inst_or_callable, method_or_null, *args))
@@ -592,13 +663,15 @@ class BaseValueStack:
         # Instruction.arg already contains the final value of arg, so this is a no op.
         pass
 
-    def _FORMAT_VALUE_handler(self, instr):
+    def _FORMAT_VALUE_handler(self, instr, exc_info):
         # See https://git.io/JvjTg to learn what this opcode is doing.
         elements = []
         if (instr.arg & 0x04) == 0x04:
             elements.extend(self._pop())
         elements.extend(self._pop())
-        self._push(elements)
+
+        if self._instruction_successfully_executed(exc_info, "FORMAT_VALUE"):
+            self._push(elements)
 
     def _JUMP_FORWARD_handler(self, instr, jumped):
         pass
@@ -634,30 +707,37 @@ class BaseValueStack:
         return self._return_jump_back_event_if_exists(instr)
 
     @emit_event
-    def _GET_ITER_handler(self, instr):
-        return self._return_jump_back_event_if_exists(instr)
+    def _GET_ITER_handler(self, instr, exc_info):
+        if self._instruction_successfully_executed(exc_info, "GET_ITER"):
+            return self._return_jump_back_event_if_exists(instr)
 
     @emit_event
     def _GET_YIELD_FROM_ITER_handler(self, instr):
+        """Since the handling of generators is ad-hoc, for now we didn't handle
+        exceptions. We'll add it as part of a more well-thought-out generator
+        implementation.
+        """
         return self._return_jump_back_event_if_exists(instr)
 
     @emit_event
-    def _FOR_ITER_handler(self, instr, jumped):
-        if jumped:
-            self._pop()
-        else:
-            self._push(self.tos)
-            return self._return_jump_back_event_if_exists(instr)
+    def _FOR_ITER_handler(self, instr, jumped, exc_info):
+        if self._instruction_successfully_executed(exc_info, "FOR_ITER"):
+            if jumped:
+                self._pop()
+            else:
+                self._push(self.tos)
+                return self._return_jump_back_event_if_exists(instr)
 
     def _LOAD_BUILD_CLASS_handler(self):
         self._push(_placeholder)  # builtins.__build_class__()
 
-    def _SETUP_WITH_handler(self):
-        enter_func = self.tos
-        # We ignored the operation to replace context manager on tos with __exit__,
-        # because it is a noop in our stack.
-        self._push_block(BlockType.SETUP_FINALLY)
-        self._push(enter_func)  # The return value of __enter__()
+    def _SETUP_WITH_handler(self, exc_info):
+        if self._instruction_successfully_executed(exc_info, "SETUP_WITH"):
+            enter_func = self.tos
+            # We ignored the operation to replace context manager on tos with __exit__,
+            # because it is a noop in our stack.
+            self._push_block(BlockType.SETUP_FINALLY)
+            self._push(enter_func)  # The return value of __enter__()
 
     def _return_jump_back_event_if_exists(self, instr):
         jump_target = utils.get_jump_target_or_none(instr)
@@ -710,17 +790,6 @@ class BaseValueStack:
         return False
 
 
-class Why(enum.Enum):
-    UNINITIALIZED = 0
-    NOT = 1  # No error
-    EXCEPTION = 2  # Exception occurred
-    RETURN = 3  # 'return' statement
-    BREAK = 4  # 'break' statement
-    CONTINUE = 5  # 'continue' statement
-    YIELD = 6  # 'yield' operator
-    SILENCED = 8  # Exception silenced by 'with'
-
-
 class Py37ValueStack(BaseValueStack):
     """Value stack for Python 3.7."""
 
@@ -731,9 +800,6 @@ class Py37ValueStack(BaseValueStack):
     def _store_exception(self, exc_info: ExceptionInfo):
         """When an exception is raised implicitly (aka not by calling `raise`), use
         This method to propagate it as self.last_exception.
-
-        TODO: Every instruction handler that may raise exceptions should call this
-            method.
         """
         self.last_exception = exc_info
         self.why = Why.EXCEPTION
@@ -796,6 +862,11 @@ class Py37ValueStack(BaseValueStack):
         self._unwind_except_handler(block)
 
     def _RAISE_VARARGS_handler(self, instr):
+        # Since in FrameLogger.handle_exception, we excluded implicit exceptions raised
+        # by executing RAISE_VARARGS and RERAISE, Cyberbrain can't handle exceptions
+        # caused by `raise 1` (TypeError). But since this should be super rare, it
+        # should be fine.
+
         cause = exc = None
         if instr.arg == 2:
             cause, exc = self._pop(2)
@@ -811,7 +882,8 @@ class Py37ValueStack(BaseValueStack):
         self.why = Why.EXCEPTION
         self._fast_block_end()
 
-    def _WITH_CLEANUP_START_handler(self):
+    # noinspection DuplicatedCode
+    def _WITH_CLEANUP_START_handler(self, exc_info):
         exc = self.tos
         exit_func: any
         if not exc:  # Checks if tos is None, which in our stack, is []
@@ -823,9 +895,9 @@ class Py37ValueStack(BaseValueStack):
                 exit_func = self.stack.pop(-1)  # why, __exit__
         elif utils.is_exception_class(exc):
             w, v, u = self._pop(3)
-            tp, exc, tb = self._pop(3)
+            tp2, exc2, tb2 = self._pop(3)
             exit_func = self._pop()
-            self._push(tp, exc, tb)
+            self._push(tp2, exc2, tb2)
             self._push(None)
             self._push(w, v, u)
             block = self.block_stack.tos
@@ -834,8 +906,9 @@ class Py37ValueStack(BaseValueStack):
         else:
             assert False, f"Unrecognized type: {exc}"
 
-        self._push(exc)
-        self._push(exit_func)
+        if self._instruction_successfully_executed(exc_info, "WITH_CLEANUP_START"):
+            self._push(exc)
+            self._push(exit_func)
 
     def _END_FINALLY_handler(self, instr):
         status = self._pop()
@@ -1021,21 +1094,24 @@ class Py38ValueStack(Py37ValueStack):
         else:
             raise ValueStackException(f"TOS has wrong value: {self.tos}")
 
-    def _WITH_CLEANUP_START_handler(self):
+    def _WITH_CLEANUP_START_handler(self, exc_info):
+        exc = self.tos
         if self.tos == NULL:  # Pushed by BEGIN_FINALLY
             exit_func = self.stack.pop(-2)
-            self._push([])  # Pushes None to the stack
-            self._push(exit_func)
         else:
             w, v, u = self._pop(3)
-            tp, exc, tb = self._pop(3)
+            tp2, exc2, tb2 = self._pop(3)
             exit_func = self._pop()
-            self._push(tp, exc, tb)
+            self._push(tp2, exc2, tb2)
             self._push(None)
             self._push(w, v, u)
             block = self.block_stack.tos
             assert block.b_type == BlockType.EXCEPT_HANDLER
             block.b_level -= 1
+
+        if self._instruction_successfully_executed(exc_info, "WITH_CLEANUP_START"):
+            self._push(exc)
+            self._push(exit_func)
 
     def _exception_unwind(self):
         while self.block_stack.is_not_empty():
@@ -1075,20 +1151,28 @@ class Py39ValueStack(Py38ValueStack):
     def _LIST_TO_TUPLE_handler(self, instr):
         pass
 
-    def _LIST_EXTEND_handler(self):
+    def _LIST_EXTEND_handler(self, exc_info):
         # list.extend(TOS1[-i], TOS), which essentially merges tos and tos1.
-        self._pop_n_push_one(2)
+        items = self._pop(2)
+        if self._instruction_successfully_executed(exc_info, "LIST_EXTEND"):
+            self._push(utils.flatten(items))
 
-    def _SET_UPDATE_handler(self):
+    def _SET_UPDATE_handler(self, exc_info):
         # list.extend(TOS1[-i], TOS), which essentially merges tos and tos1.
-        self._pop_n_push_one(2)
+        items = self._pop(2)
+        if self._instruction_successfully_executed(exc_info, "SET_UPDATE"):
+            self._push(utils.flatten(items))
 
-    def _DICT_UPDATE_handler(self):
+    def _DICT_UPDATE_handler(self, exc_info):
         # dict.extend(TOS1[-i], TOS), which essentially merges tos and tos1.
-        self._pop_n_push_one(2)
+        items = self._pop(2)
+        if self._instruction_successfully_executed(exc_info, "DICT_UPDATE"):
+            self._push(utils.flatten(items))
 
-    def _DICT_MERGE_handler(self):
-        self._pop_n_push_one(2)
+    def _DICT_MERGE_handler(self, exc_info):
+        items = self._pop(2)
+        if self._instruction_successfully_executed(exc_info, "DICT_MERGE"):
+            self._push(utils.flatten(items))
 
     def _RERAISE_handler(self):
         exc_type = self._pop()

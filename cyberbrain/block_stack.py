@@ -54,13 +54,13 @@ class BlockStack:
         self.stack = []
 
     def push(self, block: Block):
-        print(f"Pushed block stack: {block}")
+        # print(f"Pushed block stack: {block}")
         self.stack.append(block)
-        print(f"Current block stack: {self.stack}")
+        # print(f"Current block stack: {self.stack}")
 
     def pop(self):
-        print(f"Popped block stack: {self.tos}")
-        print(f"Current block stack: {self.stack[:-1]}")
+        # print(f"Popped block stack: {self.tos}")
+        # print(f"Current block stack: {self.stack[:-1]}")
         return self.stack.pop()
 
     @property
