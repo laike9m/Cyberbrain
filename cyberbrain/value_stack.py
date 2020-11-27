@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-import codecs
-
 import dataclasses
 import enum
 import functools
@@ -320,11 +318,13 @@ class BaseValueStack:
     @emit_event
     def _STORE_SUBSCR_handler(self, exc_info):
         tos, tos1, tos2 = self._pop(3)
-        assert len(tos1) == 1
         if self._instruction_successfully_executed(exc_info, "STORE_SUBSCR"):
-            return EventInfo(
-                type=Mutation, target=tos1[0], sources=set(tos + tos1 + tos2)
-            )
+            # We use to `assert len(tos1) == 1`, but in certain cases, like
+            # os.environ["foo"] = "2", tos1 is [].
+            if tos1:
+                return EventInfo(
+                    type=Mutation, target=tos1[0], sources=set(tos + tos1 + tos2)
+                )
 
     # noinspection DuplicatedCode
     @emit_event
@@ -726,13 +726,16 @@ class BaseValueStack:
         return self._return_jump_back_event_if_exists(instr)
 
     @emit_event
-    def _FOR_ITER_handler(self, instr, jumped, exc_info):
-        if self._instruction_successfully_executed(exc_info, "FOR_ITER"):
+    def _FOR_ITER_handler(self, instr, jumped, exc_info: ExceptionInfo):
+        # If it's StopIteration, we assume it's OK.
+        if exc_info is None or exc_info.type is StopIteration:
             if jumped:
                 self._pop()
             else:
                 self._push(self.tos)
                 return self._return_jump_back_event_if_exists(instr)
+        else:
+            self._instruction_successfully_executed(exc_info, "FOR_ITER")
 
     def _LOAD_BUILD_CLASS_handler(self):
         self._push(_placeholder)  # builtins.__build_class__()
