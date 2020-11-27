@@ -266,7 +266,7 @@ class BaseValueStack:
     ) -> bool:
         """Returns true if there's no exception, otherwise false."""
         if exc_info:
-            print(f"⚠️  Exception happened in {opname}")
+            print("⚠️  Exception happened in %s" % opname)
             self._store_exception(exc_info)
             return False
         return True
