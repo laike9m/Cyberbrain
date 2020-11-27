@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 """A self maintained value stack."""
 
 from __future__ import annotations
@@ -266,7 +268,7 @@ class BaseValueStack:
     ) -> bool:
         """Returns true if there's no exception, otherwise false."""
         if exc_info:
-            print("⚠️  Exception happened in %s" % opname)
+            print(f"⚠️  Exception happened in {opname}")
             self._store_exception(exc_info)
             return False
         return True
