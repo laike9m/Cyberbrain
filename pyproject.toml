@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cyberbrain"
-version = "0.0.10"
+version = "0.1.0"
 authors = ["laike9m <laike9m@gmail.com>"]
 homepage = "https://github.com/laike9m/Cyberbrain"
 repository = "https://github.com/laike9m/Cyberbrain"
@@ -25,12 +25,11 @@ protobuf = "^3.12.2"
 shortuuid = "^1.0.1"
 attrs = "^19.3.0"
 get-port = "^0.0.5"
-# The original repo is not actively maintained. Mine is compatible but optmized for speed.
-jsonpickle = { git = "https://github.com/laike9m/jsonpickle.git", branch = "master" }
 typing-extensions = "^3.7.4"
 more-itertools = "^8.5.0"
 cheap_repr = "^0.4.2"
 ujson = "^4.0.1"
+jsonpickle = "^1.4.1"
 
 [tool.poetry.dev-dependencies]
 tox = "^3.14"

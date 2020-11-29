@@ -2,12 +2,12 @@
 	"name": "cyberbrain",
 	"displayName": "Cyberbrain",
 	"description": "Python debugging, redefined.",
-	"version": "0.0.10",
+	"version": "0.1.0",
 	"publisher": "laike9m",
 	"repository": "https://github.com/laike9m/Cyberbrain",
 	"license": "MIT",
 	"engines": {
-		"vscode": "^1.50.0"
+		"vscode": "^1.51.0"
 	},
 	"categories": [
 		"Debuggers"

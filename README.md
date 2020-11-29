@@ -33,7 +33,7 @@ code --install-extension laike9m.cyberbrain
 
 You can also install from [PyPI](https://pypi.org/project/cyberbrain/) , [VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=laike9m.cyberbrain) or [Open VSX](https://open-vsx.org/extension/laike9m/cyberbrain) .
 
-**Or, you can try Cyberbrain online:** [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#snapshot/a198cace-5b09-4bef-8f76-d8237ea973d2)
+**Or, you can try Cyberbrain online:** [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#snapshot/91475a9d-4ccf-420a-b0ee-11db084ce689)
 
 ## How to Use
 
@@ -103,7 +103,7 @@ Visit the project's [kanban](https://github.com/laike9m/Cyberbrain/projects/1) t
 
 - 💬 **[GitHub Discussions](https://github.com/laike9m/Cyberbrain/discussions)** (for general discussions)
 - 🤖 **[Discord](https://discord.gg/5zGS5V5)** (for more instant discussions. I'm happy to chat any time!)
-- 🐦 **Twitter [@PyCyberbrain](https://twitter.com/PyCyberbrain)** (for announcement)
+- 🐦 **Twitter [@PyCyberbrain](https://twitter.com/PyCyberbrain)** (for announcements)
 
 ## Interested in Contributing?
 See the [development guide](https://github.com/laike9m/Cyberbrain/blob/master/docs/Development.md). This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. **Contributions of ANY kind welcome!**
