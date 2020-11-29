@@ -40,18 +40,22 @@ This feature has some [known bugs](https://github.com/laike9m/Cyberbrain/issues?
 
 The UI is inspired by [birdseye](https://github.com/alexmojaki/birdseye), thanks Alex for making such a innovative tool.
 
-## Know limitations
+## Known limitations
 
 - Overhead. See [Lowering the overhead brought by Cyberbrain](https://github.com/laike9m/Cyberbrain/issues/58).
 
-- Cyberbrain only traces the first call, no matter how many times the decorated function is called. Support planned for 2.0.
+- Cyberbrain only traces the first call, no matter how many times the decorated function is called.
 
-- If your code contains unhandled exceptions, Cyberbrain is not guaranteed to work. You should first resolve these exceptions or properly catch them.
+- You can only have one `@trace` decorator.
 
-- Some objects cannot be converted to JSON. In this case, Cyberbrain will show the repr string of that object. We're actively working on this issue.
+- No effort has been put on supporting threaded code (e.g. a multi-threaded web server), it may or may not work.
 
-- For generator functions, you need to manually call `trace.stop()`. see [test_generator.py](https://github.com/laike9m/Cyberbrain/blob/master/test/test_generator.py). We will fix it in future versions.
+- Cyberbrain is not guaranteed to work if the program raises unhandled exceptions. You should first resolve or properly catch them.
 
-- `async` and multi-threading are not supported. Support planned for 3.0.
+- Cyberbrain can't display the content of certain objects, because they cannot be converted to JSON. In this case, Cyberbrain will show the repr string of that object. This should be rare.
 
-We will improve them in [future versions](https://github.com/laike9m/Cyberbrain#status-quo-and-milestones).
+- For generator functions, you need to manually call `trace.stop()`. see [test_generator.py](https://github.com/laike9m/Cyberbrain/blob/master/test/test_generator.py). 
+
+- `async` and multi-threading are not supported.
+
+We will improve or fix these cases in [future versions](https://github.com/laike9m/Cyberbrain#status-quo-and-milestones).

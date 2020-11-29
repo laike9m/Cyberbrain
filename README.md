@@ -58,6 +58,14 @@ Read our **[documentation](docs/Features.md)** to learn more about Cyberbrain's 
 ❗Note on use❗
 - Cyberbrain may conflict with other debuggers. If you set breakpoints and use VSC's debugger, Cyberbrain may not function normally. Generally speaking, **prefer "Run Without Debugging"** (like shown in the gif).
 - If you have multiple VS Code window opened, the trace graph will always be created in the first one. #72 is tracking this issue.
+- When having multiple decorators, you should put `@trace` as the innermost one. 
+  ```python
+  @app.route("/")
+  @trace
+  def hello_world():
+      x = [1, 2, 3]
+      return "Hello, World!"
+  ```
 
 ## Roadmaps
 
