@@ -58,4 +58,4 @@ The UI is inspired by [birdseye](https://github.com/alexmojaki/birdseye), thanks
 
 - `async` and multi-threading are not supported.
 
-**We will improve or support these use cases in [future versions](https://github.com/laike9m/Cyberbrain#status-quo-and-milestones).**
+**We will improve or support these use cases in [future versions](https://github.com/laike9m/Cyberbrain#roadmaps).**
