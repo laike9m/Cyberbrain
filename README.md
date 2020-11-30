@@ -99,6 +99,11 @@ Visit the project's [kanban](https://github.com/laike9m/Cyberbrain/projects/1) t
 <a href="https://marketplace.visualstudio.com/items?itemName=hediet.debug-visualizer">Debug visualizer</a> and Cyberbrain have different goals. Debug visualizer visualizes data structures, while Cyberbrain visualizes program execution (but also lets you inspect values).
 </details>
 
+<details>
+<summary>Python Tutor</summary>
+<a href="http://pythontutor.com/">Python Tutor</a> is for education purposes, you can't use it to debug your own programs. It's a brilliant tool for its purpose and I do it like it very much.
+</details>
+
 ## Community
 
 - 💬 **[GitHub Discussions](https://github.com/laike9m/Cyberbrain/discussions)** (for general discussions)
