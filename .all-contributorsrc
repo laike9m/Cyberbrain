@@ -89,6 +89,15 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "poltronSuperstar",
+      "name": "foo bar",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/22001372?v=4",
+      "profile": "https://github.com/poltronSuperstar",
+      "contributions": [
+        "financial"
+      ]
     }
   ],
   "contributorsPerLine": 10,
