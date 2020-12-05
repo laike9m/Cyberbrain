@@ -58,11 +58,18 @@ class Tracer:
         self.is_generator_function = False
         self.decorated_function_code_id = None
         self.frame_logger: Optional[logger.FrameLogger] = None
+        self.tracer_state = TracerFSM.INITIAL
         if debug_mode is not None:
             self.debug_mode = debug_mode
 
-        self.tracer_state = TracerFSM.INITIAL
-        self.rpc_client = rpc_client.RpcClient()
+        if utils.run_in_test():
+            import portpicker
+
+            self.rpc_client = rpc_client.RpcClient(
+                rpc_server_port=portpicker.pick_unused_port()
+            )
+        else:
+            self.rpc_client = rpc_client.RpcClient()
 
     def _initialize_frame_and_logger(
         self, raw_frame: FrameType, initial_instr_pointer: int

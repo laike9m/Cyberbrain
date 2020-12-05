@@ -165,8 +165,8 @@ def _get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
 
 
 class RpcClient:
-    def __init__(self):
-        self.port = 1989
+    def __init__(self, rpc_server_port=1989):
+        self.port = rpc_server_port
         self.channel = grpc.insecure_channel(f"localhost:{self.port}")
         self.stub = communication_pb2_grpc.CommunicationStub(self.channel)
 

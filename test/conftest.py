@@ -9,8 +9,7 @@ import pytest
 from google.protobuf import text_format
 from google.protobuf.empty_pb2 import Empty
 
-from cyberbrain import _Tracer, _TracerFSM
-from cyberbrain import trace as trace_decorator
+from cyberbrain import _TracerFSM, trace
 from cyberbrain.generated import communication_pb2_grpc, communication_pb2
 from utils import python_version
 
@@ -19,23 +18,30 @@ def pytest_addoption(parser):
     parser.addoption("--debug_mode", action="store_true", default=False)
 
 
-@pytest.fixture(scope="function")
-def tracer(request):
-    # We still create a new Tracer object for each test to make sure Tracer has a fresh
-    # state for each test.
-    return _Tracer(debug_mode=request.config.getoption("--debug_mode"))
+@pytest.fixture(scope="function", name="tracer")
+def fixture_tracer(request):
+    trace.debug_mode = request.config.getoption("--debug_mode")
 
-
-@pytest.fixture(scope="function")
-def trace(request):
-    trace_decorator.debug_mode = request.config.getoption("--debug_mode")
-    yield trace_decorator
+    yield trace
 
     # Do cleanup because the trace decorator is reused across tests.
-    trace_decorator.raw_frame = None
-    trace_decorator.decorated_function_code_id = None
-    trace_decorator.frame_logger = None
-    trace_decorator.tracer_state = _TracerFSM.INITIAL
+    trace.raw_frame = None
+    trace.decorated_function_code_id = None
+    trace.frame_logger = None
+    trace.tracer_state = _TracerFSM.INITIAL
+
+
+@pytest.fixture(scope="function", name="trace")
+def fixture_trace(request):
+    trace.debug_mode = request.config.getoption("--debug_mode")
+
+    yield trace
+
+    # Do cleanup because the trace decorator is reused across tests.
+    trace.raw_frame = None
+    trace.decorated_function_code_id = None
+    trace.frame_logger = None
+    trace.tracer_state = _TracerFSM.INITIAL
 
 
 class TestServer:
@@ -60,9 +66,9 @@ class TestServer:
 
     @classmethod
     def start(cls):
-        cls.server.add_insecure_port(f"[::]:1989")
+        cls.server.add_insecure_port(f"[::]:{trace.rpc_client.port}")
         cls.server.start()
-        print("Listening...")
+        print(f"Listening on port {trace.rpc_client.port}...")
         Thread(target=cls.server.wait_for_termination).start()
 
     @classmethod
