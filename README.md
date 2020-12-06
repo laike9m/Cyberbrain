@@ -22,7 +22,7 @@ Never spend hours stepping through a program, let Cyberbrain tell you what happe
 
 ## Install
 
-Cyberbrain consists of a Python library and various editor/IDE integrations. Currently it supports **[VS Code](https://code.visualstudio.com/)** and **[Gitpod](https://www.gitpod.io/)**. See our [plan](https://github.com/laike9m/Cyberbrain/issues/24) on expanding the support.
+Cyberbrain consists of a Python library and various editor/IDE integrations. Currently it supports **[VS Code](https://code.visualstudio.com/)**. See our [plan](https://github.com/laike9m/Cyberbrain/issues/24) on expanding the support.
 
 To install Cyberbrain:
 
@@ -31,9 +31,7 @@ pip install cyberbrain
 code --install-extension laike9m.cyberbrain
 ```
 
-You can also install from [PyPI](https://pypi.org/project/cyberbrain/) , [VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=laike9m.cyberbrain) or [Open VSX](https://open-vsx.org/extension/laike9m/cyberbrain) .
-
-**Or, you can try Cyberbrain online:** [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#snapshot/91475a9d-4ccf-420a-b0ee-11db084ce689)
+You can also install from [PyPI](https://pypi.org/project/cyberbrain/), [VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=laike9m.cyberbrain).
 
 ## How to Use
 
