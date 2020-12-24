@@ -132,3 +132,5 @@ mocks/
 setup.py
 
 .theia/
+
+.mutmut-cache
