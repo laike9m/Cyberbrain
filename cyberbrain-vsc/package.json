@@ -18,7 +18,7 @@
 	"main": "./out/extension.js",
 	"scripts": {
 		"unittest": "mocha",
-		"copy": "$(npm bin)/rimraf ./out/*.js && $(npm bin)/copyfiles -u 1 ./src/*.js ./out/",
+		"copy": "node ./node_modules/.bin/rimraf ./out/*.js && node ./node_modules/.bin/copyfiles -u 1 ./src/*.js ./out/",
 		"vscode:prepublish": "npm run compile",
 		"compile": "npm run copy && tsc -p ./",
 		"lint": "eslint src --ext ts --fix",
