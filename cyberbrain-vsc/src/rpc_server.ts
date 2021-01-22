@@ -34,7 +34,7 @@ export class RpcServer {
         let webviewPanel = openTraceGraph(this.context);
         webviewPanel.webview.onDidReceiveMessage(
           (message: string) => {
-            if (message == "Webview ready") {
+            if (message === "Webview ready") {
               webviewPanel.webview.postMessage(new Frame(call.request));
 
               // If under test, don't open the devtools window because it will cover the trace graph.
