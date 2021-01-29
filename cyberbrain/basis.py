@@ -3,13 +3,13 @@
 from __future__ import annotations
 
 import dataclasses
-import os
 from collections import defaultdict
-from types import TracebackType
-from typing import Any, TYPE_CHECKING, Optional, Type, Tuple
 
 import attr
+import os
 import shortuuid
+from types import TracebackType
+from typing import Any, TYPE_CHECKING, Optional, Type, Tuple
 
 from . import utils
 
@@ -60,7 +60,7 @@ class Event:
     index: int = attr.ib(eq=False, default=0)
     offset: int = attr.ib(eq=False, default=0)
     filename: str = attr.ib(eq=False, default="")
-    uid: string = attr.ib(factory=UUIDGenerator.generate_uuid, eq=False, repr=False)
+    id: string = attr.ib(factory=UUIDGenerator.generate_uuid, eq=False, repr=False)
 
 
 @attr.s(auto_attribs=True, eq=False)

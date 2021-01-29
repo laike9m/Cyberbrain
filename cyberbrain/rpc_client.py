@@ -25,7 +25,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
     if isinstance(event, InitialValue):
         event_proto.initial_value.CopyFrom(
             communication_pb2.InitialValue(
-                id=event.uid,
+                id=event.id,
                 filename=event.filename,
                 lineno=event.lineno,
                 index=event.index,
@@ -38,7 +38,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
     elif isinstance(event, Binding):
         event_proto.binding.CopyFrom(
             communication_pb2.Binding(
-                id=event.uid,
+                id=event.id,
                 filename=event.filename,
                 lineno=event.lineno,
                 index=event.index,
@@ -53,7 +53,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
     elif isinstance(event, Mutation):
         event_proto.mutation.CopyFrom(
             communication_pb2.Mutation(
-                id=event.uid,
+                id=event.id,
                 filename=event.filename,
                 lineno=event.lineno,
                 index=event.index,
@@ -67,7 +67,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
     elif isinstance(event, Deletion):
         event_proto.deletion.CopyFrom(
             communication_pb2.Deletion(
-                id=event.uid,
+                id=event.id,
                 filename=event.filename,
                 lineno=event.lineno,
                 index=event.index,
@@ -78,7 +78,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
     elif isinstance(event, Return):
         getattr(event_proto, "return").CopyFrom(
             communication_pb2.Return(
-                id=event.uid,
+                id=event.id,
                 filename=event.filename,
                 lineno=event.lineno,
                 index=event.index,
@@ -91,7 +91,7 @@ def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
     elif isinstance(event, JumpBackToLoopStart):
         event_proto.jump_back_to_loop_start.CopyFrom(
             communication_pb2.JumpBackToLoopStart(
-                id=event.uid,
+                id=event.id,
                 filename=event.filename,
                 lineno=event.lineno,
                 index=event.index,
@@ -159,7 +159,7 @@ def _get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
     for source in sorted(event.sources, key=lambda x: x.name):
         source_event_index = source.snapshot.events_pointer[source.name]
         source_event = frame.identifier_to_events[source.name][source_event_index]
-        sources_uids.append(source_event.uid)
+        sources_uids.append(source_event.id)
 
     return sources_uids
 
@@ -192,6 +192,6 @@ class RpcClient:
             frame_proto.events.append(_transform_event_to_proto(event))
             event_ids = _get_event_sources_uids(event, frame)
             if event_ids:
-                frame_proto.tracing_result[event.uid].event_ids[:] = event_ids
+                frame_proto.tracing_result[event.id].event_ids[:] = event_ids
 
         self.stub.SendFrame(frame_proto)

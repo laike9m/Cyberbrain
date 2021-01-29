@@ -172,7 +172,7 @@ def test_get_iter_type_error(trace):
     get_iter_type_error()
 
 
-def test_for_iter_error(trace, capsys):
+def test_for_iter_error(trace):
     class A:
         def __iter__(self):
             return self
@@ -188,9 +188,6 @@ def test_for_iter_error(trace, capsys):
 
         for _ in range(3):
             pass
-
-        stdout = capsys.readouterr().out
-        assert "StopIteration" not in stdout
 
     for_iter_error()
 
