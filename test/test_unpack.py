@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol
 
 
-def test_unpack(tracer, test_server):
+def test_unpack(tracer, mocked_responses):
     l1 = [1, 2]
     numbers = [1, 2, 3, 4]
     m1 = m2 = {1: 2}
@@ -86,5 +86,3 @@ def test_unpack(tracer, test_server):
             lineno=19,
         ),
     ]
-
-    test_server.assert_frame_sent("test_unpack")

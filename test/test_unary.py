@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol
 
 
-def test_unary_operations(tracer, test_server):
+def test_unary_operations(tracer, mocked_responses):
     a = 1
 
     tracer.start()
@@ -20,5 +20,3 @@ def test_unary_operations(tracer, test_server):
         Binding(target=Symbol("b"), value="false", sources={Symbol("a")}, lineno=11),
         Binding(target=Symbol("b"), value="-2", sources={Symbol("a")}, lineno=12),
     ]
-
-    test_server.assert_frame_sent("test_unary_operations")

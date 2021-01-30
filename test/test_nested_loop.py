@@ -2,7 +2,7 @@ from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop
 from utils import get_value
 
 
-def test_nested_loop(tracer, test_server):
+def test_nested_loop(tracer, mocked_responses):
     tracer.start()
 
     for i in range(2):
@@ -61,4 +61,3 @@ def test_nested_loop(tracer, test_server):
             start_lineno=8,
         ),
     ]
-    test_server.assert_frame_sent("test_nested_loop")

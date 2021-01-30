@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol  # noqa
 
 
-def test_call(tracer, test_server):
+def test_call(tracer, mocked_responses):
     a = b = c = d = 1
     counter = 0
 
@@ -65,5 +65,3 @@ def test_call(tracer, test_server):
             sources={Symbol("a"), Symbol("c"), Symbol("b"), Symbol("f")},
         ),
     ]
-
-    test_server.assert_frame_sent("test_call")

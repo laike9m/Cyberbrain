@@ -5,7 +5,7 @@ def f():
     return 1
 
 
-def test_ref_outside(trace, test_server):
+def test_ref_outside(trace, mocked_responses):
     @trace
     def test_ref_outside_inner():
         a = f()
@@ -17,5 +17,3 @@ def test_ref_outside(trace, test_server):
         Binding(lineno=11, target=Symbol("a"), value="1", sources={Symbol("f")}),
         Return(lineno=11, value="null", sources=set()),
     ]
-
-    test_server.assert_frame_sent("test_ref_outside_inner")

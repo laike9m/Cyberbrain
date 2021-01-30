@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol, Deletion
 
 
-def test_deref(tracer, test_server):
+def test_deref(tracer, mocked_responses):
 
     a = 1
 
@@ -21,10 +21,8 @@ def test_deref(tracer, test_server):
         Deletion(lineno=13, target=Symbol("a")),
     ]
 
-    test_server.assert_frame_sent("test_deref_func")
 
-
-def test_closure(tracer, test_server):
+def test_closure(tracer, mocked_responses):
     tracer.start()
 
     a = 1  # LOAD_CLASSDEREF
@@ -38,25 +36,19 @@ def test_closure(tracer, test_server):
 
     tracer.stop()
 
-    from cyberbrain import pprint
-
-    pprint(tracer.events)
-
     assert tracer.events == [
-        Binding(lineno=30, target=Symbol("a"), value="1"),
+        Binding(lineno=28, target=Symbol("a"), value="1"),
         Binding(
-            lineno=32,
+            lineno=30,
             target=Symbol("Foo"),
             value='{"py/type":"test_cellvar.test_closure.<locals>.Foo"}',
             sources={Symbol("a")},
         ),
         Binding(
-            lineno=35,
+            lineno=33,
             target=Symbol("Bar"),
             value='{"py/type":"test_cellvar.test_closure.<locals>.Bar"}',
             repr="<class 'test_cellvar.test_closure.<locals>.Bar'>",
             sources={Symbol("Foo")},
         ),
     ]
-
-    test_server.assert_frame_sent("test_closure")

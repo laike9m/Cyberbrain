@@ -1,4 +1,4 @@
-def test_decorator_api(trace, test_server):
+def test_decorator_api(trace, mocked_responses):
     def f(foo):
         return foo
 
@@ -9,5 +9,3 @@ def test_decorator_api(trace, test_server):
         return a + b
 
     assert decorated_func() == 2
-
-    test_server.assert_frame_sent("decorated_func")

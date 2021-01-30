@@ -12,13 +12,15 @@ be:
 line 9  Binding(target=Symbol("x"), value=0, lineno=7)  # Not changed
 line 11  Binding(target=Symbol("x"), value=0, lineno=7)
 
-$ python change_lineno.py test/test_block.py --line_delta 3 --start_from 10
+$ python scripts/change_lineno.py test_block --line_delta 3 --start_from 10
+
+Note that test_block represents the file name, which will be expanded to
+test/test_block.py
 """
 
+import fire
 import os
 import re
-
-import fire
 
 # Assuming called from the top-level folder.
 test_dir = os.path.abspath("test")

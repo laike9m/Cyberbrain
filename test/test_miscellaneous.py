@@ -3,7 +3,7 @@ from cyberbrain import InitialValue, Binding, Mutation, Deletion, Symbol
 g = 0
 
 
-def test_miscellaneous(tracer, test_server):
+def test_miscellaneous(tracer, mocked_responses):
     a = "a"
     b = "b"
     c = "c"
@@ -49,5 +49,3 @@ def test_miscellaneous(tracer, test_server):
         Binding(target=Symbol("g"), value="1", lineno=21),
         Deletion(target=Symbol("g"), lineno=22),
     ]
-
-    test_server.assert_frame_sent("test_miscellaneous")

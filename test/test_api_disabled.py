@@ -6,7 +6,7 @@ def test_disabled_tracer(tracer):
     assert tracer.frame_logger is None, tracer.frame_logger
 
 
-def test_decorator_with_argument(trace, test_server):
+def test_decorator_with_argument(trace, mocked_responses):
     @trace(disabled=True)
     def decorated_func_disabled():
         a = 1
@@ -22,5 +22,3 @@ def test_decorator_with_argument(trace, test_server):
 
     decorated_func_enabled()
     assert trace.frame_logger
-
-    test_server.assert_frame_sent("decorated_func_enabled")

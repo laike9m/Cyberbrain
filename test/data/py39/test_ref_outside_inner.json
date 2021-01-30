@@ -1,0 +1,55 @@
+{
+    "metadata": {
+        "frame_id": "test_ref_outside_inner",
+        "frame_name": "test_ref_outside_inner",
+        "filename": "test_ref_outside.py"
+    },
+    "identifiers": [
+        "f",
+        "a"
+    ],
+    "loops": [],
+    "events": [
+        {
+            "lineno": 11,
+            "index": 0,
+            "offset": 0,
+            "filename": "test_ref_outside.py",
+            "id": "test_ref_outside:0",
+            "target": "f",
+            "value": "{\"repr\": \"<function f>\"}",
+            "repr": "<function f>",
+            "type": "InitialValue"
+        },
+        {
+            "lineno": 11,
+            "index": 1,
+            "offset": 4,
+            "filename": "test_ref_outside.py",
+            "id": "test_ref_outside:1",
+            "target": "a",
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                "f"
+            ],
+            "type": "Binding"
+        },
+        {
+            "lineno": 11,
+            "index": 2,
+            "offset": 8,
+            "filename": "test_ref_outside.py",
+            "id": "test_ref_outside:2",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "type": "Return"
+        }
+    ],
+    "tracingResult": {
+        "test_ref_outside:1": [
+            "test_ref_outside:0"
+        ]
+    }
+}

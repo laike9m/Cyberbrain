@@ -1,0 +1,26 @@
+{
+    "metadata": {
+        "frame_id": "test_try_except_finally",
+        "frame_name": "test_try_except_finally",
+        "filename": "test_block.py"
+    },
+    "identifiers": [
+        "b"
+    ],
+    "loops": [],
+    "events": [
+        {
+            "lineno": 46,
+            "index": 0,
+            "offset": 50,
+            "filename": "test_block.py",
+            "id": "test_try_except_finally:0",
+            "target": "b",
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "type": "Binding"
+        }
+    ],
+    "tracingResult": {}
+}

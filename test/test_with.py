@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol, JumpBackToLoopStart
 
 
-def test_with(tracer, test_server):
+def test_with(tracer, mocked_responses):
     class ContextManagerNoReturn:
         def __enter__(self):
             pass
@@ -100,5 +100,3 @@ def test_with(tracer, test_server):
         )
 
     assert tracer.events == expected_events
-
-    test_server.assert_frame_sent("test_with")

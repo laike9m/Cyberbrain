@@ -2,7 +2,7 @@ from cyberbrain import Symbol, Binding, InitialValue, JumpBackToLoopStart, Retur
 from utils import get_value  # noqa
 
 
-def test_generator_function(trace, test_server):
+def test_generator_function(trace, mocked_responses):
     @trace
     def generator_function(count):
         while count > 0:
@@ -64,10 +64,8 @@ def test_generator_function(trace, test_server):
         ),
     ]
 
-    test_server.assert_frame_sent("generator_function")
 
-
-def test_yield_from(trace, test_server):
+def test_yield_from(trace, mocked_responses):
     def inner():
         for i in range(2):
             yield i
@@ -84,17 +82,15 @@ def test_yield_from(trace, test_server):
 
     assert trace.events == [
         InitialValue(
-            lineno=77,
+            lineno=75,
             target=Symbol("inner"),
             value='{"repr": "<function test_yield_from.<locals>.inner>"}',
             repr="<function test_yield_from.<locals>.inner>",
         ),
         Return(
-            lineno=77,
+            lineno=75,
             value="null",
             repr="None",
             sources=set(),
         ),
     ]
-
-    test_server.assert_frame_sent("yield_from_function")

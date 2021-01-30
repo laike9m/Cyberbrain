@@ -1,7 +1,7 @@
 from cyberbrain import InitialValue, Symbol, Binding
 
 
-def test_inplace_operations(tracer, test_server):
+def test_inplace_operations(tracer, mocked_responses):
     a1 = a2 = a3 = a4 = a5 = a6 = a7 = a8 = a9 = a10 = a11 = a12 = 2
     b = 2
 
@@ -109,5 +109,3 @@ def test_inplace_operations(tracer, test_server):
             lineno=21,
         ),
     ]
-
-    test_server.assert_frame_sent("test_inplace_operations")

@@ -19,7 +19,7 @@ except NameError:
 tracer.stop()
 
 
-def test_module(test_server):
+def test_module():
     assert tracer.events == [
         InitialValue(target=Symbol("x"), value="1", lineno=8),
         Deletion(target=Symbol("x"), lineno=8),

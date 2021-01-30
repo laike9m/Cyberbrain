@@ -1,7 +1,7 @@
 from cyberbrain import InitialValue, Mutation, Symbol
 
 
-def test_attribute(tracer, test_server):
+def test_attribute(tracer, mocked_responses):
     class A:
         pass
 
@@ -52,5 +52,3 @@ def test_attribute(tracer, test_server):
             repr="<test_attribute.test_attribute.<locals>.A object>",
         ),
     ]
-
-    test_server.assert_frame_sent("test_attribute")

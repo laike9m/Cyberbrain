@@ -3,7 +3,7 @@ import pandas as pd
 from cyberbrain import Binding, Symbol  # noqa
 
 
-def test_pandas(tracer, test_server):
+def test_pandas(tracer, mocked_responses):
     tracer.start()
     baby_data_set = [
         ("Bob", 968),
@@ -37,8 +37,9 @@ def test_pandas(tracer, test_server):
         ),
     ]
 
-    if get_os_type() != "windows":
-        test_server.assert_frame_sent("test_pandas")
+    # Don't check request body on Windows because it has a different format.
+    if get_os_type() == "windows":
+        pytest.skip("skipping this test")
 
 
 # Follow https://bitbucket.org/hrojas/learn-pandas/src/master/ to add more tests.

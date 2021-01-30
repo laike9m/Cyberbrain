@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol
 
 
-def test_binary_operation(tracer, test_server):
+def test_binary_operation(tracer, mocked_responses):
     a = b = 1
     lst = [0, 1]
 
@@ -87,5 +87,3 @@ def test_binary_operation(tracer, test_server):
             lineno=24,
         ),
     ]
-
-    test_server.assert_frame_sent("test_binary_operation")

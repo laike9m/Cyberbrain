@@ -1,0 +1,77 @@
+{
+    "metadata": {
+        "frame_id": "decorated_func",
+        "frame_name": "decorated_func",
+        "filename": "test_api_decorator.py"
+    },
+    "identifiers": [
+        "a",
+        "f",
+        "b"
+    ],
+    "loops": [],
+    "events": [
+        {
+            "lineno": 7,
+            "index": 0,
+            "offset": 2,
+            "filename": "test_api_decorator.py",
+            "id": "test_decorator_api:0",
+            "target": "a",
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "type": "Binding"
+        },
+        {
+            "lineno": 8,
+            "index": 1,
+            "offset": 4,
+            "filename": "test_api_decorator.py",
+            "id": "test_decorator_api:1",
+            "target": "f",
+            "value": "{\"repr\": \"<function test_decorator_api.<locals>.f>\"}",
+            "repr": "<function test_decorator_api.<locals>.f>",
+            "type": "InitialValue"
+        },
+        {
+            "lineno": 8,
+            "index": 2,
+            "offset": 10,
+            "filename": "test_api_decorator.py",
+            "id": "test_decorator_api:2",
+            "target": "b",
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                "a",
+                "f"
+            ],
+            "type": "Binding"
+        },
+        {
+            "lineno": 9,
+            "index": 3,
+            "offset": 18,
+            "filename": "test_api_decorator.py",
+            "id": "test_decorator_api:3",
+            "value": "2",
+            "repr": "2",
+            "sources": [
+                "a",
+                "b"
+            ],
+            "type": "Return"
+        }
+    ],
+    "tracingResult": {
+        "test_decorator_api:2": [
+            "test_decorator_api:0",
+            "test_decorator_api:1"
+        ],
+        "test_decorator_api:3": [
+            "test_decorator_api:0",
+            "test_decorator_api:2"
+        ]
+    }
+}

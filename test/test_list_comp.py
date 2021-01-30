@@ -1,7 +1,7 @@
 from cyberbrain import Binding, Symbol
 
 
-def test_list_comprehension(tracer, test_server):
+def test_list_comprehension(tracer, mocked_responses):
     tracer.start()
 
     n = 2
@@ -22,5 +22,3 @@ def test_list_comprehension(tracer, test_server):
             sources={Symbol("lst")},
         ),
     ]
-
-    test_server.assert_frame_sent("test_list_comprehension")

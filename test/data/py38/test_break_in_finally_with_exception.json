@@ -1,0 +1,26 @@
+{
+    "metadata": {
+        "frame_id": "test_break_in_finally_with_exception",
+        "frame_name": "test_break_in_finally_with_exception",
+        "filename": "test_block.py"
+    },
+    "identifiers": [
+        "x"
+    ],
+    "loops": [],
+    "events": [
+        {
+            "lineno": 74,
+            "index": 0,
+            "offset": 18,
+            "filename": "test_block.py",
+            "id": "test_break_in_finally_with_exception:0",
+            "target": "x",
+            "value": "0",
+            "repr": "0",
+            "sources": [],
+            "type": "Binding"
+        }
+    ],
+    "tracingResult": {}
+}

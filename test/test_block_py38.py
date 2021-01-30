@@ -4,9 +4,8 @@ These tests are for Python > 3.8 only, because the syntax used are considered in
 Python < 3.8.
 """
 
-import sys
-
 import pytest
+import sys
 
 from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop
 from utils import get_value
@@ -16,7 +15,7 @@ from utils import get_value
     sys.version_info < (3, 8),
     reason="Python version 3.7 does not support 'continue' inside 'finally' clause .",
 )
-def test_continue_in_finally(tracer, test_server):
+def test_continue_in_finally(tracer, mocked_responses):
     tracer.start()
 
     for x in range(2):
@@ -28,27 +27,25 @@ def test_continue_in_finally(tracer, test_server):
     tracer.stop()
 
     assert tracer.events == [
-        Binding(target=Symbol("x"), value="0", lineno=22),
-        JumpBackToLoopStart(lineno=26, jump_target=16),
-        Binding(target=Symbol("x"), value="1", lineno=22),
-        JumpBackToLoopStart(lineno=26, jump_target=16),
+        Binding(target=Symbol("x"), value="0", lineno=21),
+        JumpBackToLoopStart(lineno=25, jump_target=16),
+        Binding(target=Symbol("x"), value="1", lineno=21),
+        JumpBackToLoopStart(lineno=25, jump_target=16),
     ]
     assert tracer.loops == [
         Loop(
             start_offset=16,
             end_offset=get_value({"py38": 32, "default": 24}),
-            start_lineno=22,
+            start_lineno=21,
         )
     ]
-
-    test_server.assert_frame_sent("test_continue_in_finally")
 
 
 @pytest.mark.skipif(
     sys.version_info < (3, 8),
     reason="Python version 3.7 does not support 'continue' inside 'finally' clause .",
 )
-def test_continue_in_finally_with_exception(tracer, test_server):
+def test_continue_in_finally_with_exception(tracer, mocked_responses):
     """Tests POP_FINALLY when tos is an exception."""
 
     tracer.start()
@@ -64,17 +61,15 @@ def test_continue_in_finally_with_exception(tracer, test_server):
     tracer.stop()
 
     assert tracer.events == [
-        Binding(target=Symbol("x"), value="0", lineno=58),
-        JumpBackToLoopStart(lineno=62, jump_target=16),
-        Binding(target=Symbol("x"), value="1", lineno=58),
-        JumpBackToLoopStart(lineno=62, jump_target=16),
+        Binding(target=Symbol("x"), value="0", lineno=55),
+        JumpBackToLoopStart(lineno=59, jump_target=16),
+        Binding(target=Symbol("x"), value="1", lineno=55),
+        JumpBackToLoopStart(lineno=59, jump_target=16),
     ]
     assert tracer.loops == [
         Loop(
             start_offset=16,
             end_offset=get_value({"py38": 36, "default": 40}),
-            start_lineno=58,
+            start_lineno=55,
         )
     ]
-
-    test_server.assert_frame_sent("test_continue_in_finally_with_exception")

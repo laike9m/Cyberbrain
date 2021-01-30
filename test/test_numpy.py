@@ -3,7 +3,7 @@ import numpy as np
 from cyberbrain import Binding, Symbol  # noqa
 
 
-def test_numpy(tracer, test_server):
+def test_numpy(tracer, mocked_responses):
     tracer.start()
     x = np.array([6, 7, 8])
     tracer.stop()
@@ -22,8 +22,9 @@ def test_numpy(tracer, test_server):
         )
     ]
 
-    if get_os_type() != "windows":
-        test_server.assert_frame_sent("test_numpy")
+    # Don't check request body on Windows because it has a different format.
+    if get_os_type() == "windows":
+        pytest.skip("skipping this test")
 
 
 # Add more tests

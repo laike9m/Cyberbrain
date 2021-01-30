@@ -15,7 +15,7 @@ def test_call_tracer_multiple_times(tracer):
     ]
 
 
-def test_decorator_multiple_times(trace, test_server):
+def test_decorator_multiple_times(trace, mocked_responses):
     @trace
     def func(b):
         a = b

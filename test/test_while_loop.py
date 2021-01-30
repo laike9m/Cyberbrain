@@ -2,7 +2,7 @@ from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop, InitialValue,
 from utils import get_value
 
 
-def test_while_loop(tracer, test_server):
+def test_while_loop(tracer, mocked_responses):
     tracer.start()
 
     i = 0
@@ -94,7 +94,6 @@ def test_while_loop(tracer, test_server):
             start_lineno=23,
         ),
     ]
-    test_server.assert_frame_sent("test_while_loop")
 
 
 def test_while_jump_to_zero(trace):
@@ -107,33 +106,33 @@ def test_while_jump_to_zero(trace):
 
     assert trace.events == [
         InitialValue(
-            lineno=103,
+            lineno=102,
             target=Symbol("count"),
             value="2",
             repr="2",
         ),
         Binding(
-            lineno=104,
+            lineno=103,
             target=Symbol("count"),
             value="1",
             repr="1",
             sources={Symbol("count")},
         ),
         JumpBackToLoopStart(
-            lineno=104, jump_target=get_value({"py37": 2, "default": 0})
+            lineno=103, jump_target=get_value({"py37": 2, "default": 0})
         ),
         Binding(
-            lineno=104,
+            lineno=103,
             target=Symbol("count"),
             value="0",
             repr="0",
             sources={Symbol("count")},
         ),
         JumpBackToLoopStart(
-            lineno=104, jump_target=get_value({"py37": 2, "default": 0})
+            lineno=103, jump_target=get_value({"py37": 2, "default": 0})
         ),
         Return(
-            lineno=104,
+            lineno=103,
             value="null",
             repr="None",
             sources=set(),

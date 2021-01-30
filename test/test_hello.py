@@ -1,7 +1,7 @@
 from cyberbrain import Binding, Symbol
 
 
-def test_hello(tracer, test_server):
+def test_hello(tracer, mocked_responses):
     tracer.start()
     x = "hello world"  # LOAD_CONST, STORE_FAST
     y = x  # LOAD_FAST, STORE_FAST
@@ -20,5 +20,3 @@ def test_hello(tracer, test_server):
             target=Symbol("y"), value='"hello world"', sources={Symbol("x")}, lineno=8
         ),
     ], tracer.events
-
-    test_server.assert_frame_sent("test_hello")

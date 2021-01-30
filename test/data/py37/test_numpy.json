@@ -1,0 +1,26 @@
+{
+    "metadata": {
+        "frame_id": "test_numpy",
+        "frame_name": "test_numpy",
+        "filename": "test_numpy.py"
+    },
+    "identifiers": [
+        "x"
+    ],
+    "loops": [],
+    "events": [
+        {
+            "lineno": 8,
+            "index": 0,
+            "offset": 22,
+            "filename": "test_numpy.py",
+            "id": "test_numpy:0",
+            "target": "x",
+            "value": "{\"dtype\":\"int64\",\"values\":[6,7,8]}",
+            "repr": "array([6, 7, 8])",
+            "sources": [],
+            "type": "Binding"
+        }
+    ],
+    "tracingResult": {}
+}

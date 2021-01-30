@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol
 
 
-def test_jump(tracer, test_server):
+def test_jump(tracer, mocked_responses):
     a = []
     b = "b"
     c = "c"
@@ -41,5 +41,3 @@ def test_jump(tracer, test_server):
         # Same defect here.
         Binding(target=Symbol("x"), value='"c"', sources={Symbol("c")}, lineno=20),
     ]
-
-    test_server.assert_frame_sent("test_jump")

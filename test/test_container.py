@@ -3,7 +3,7 @@ import os
 from cyberbrain import Binding, InitialValue, Symbol, Mutation
 
 
-def test_container(tracer, test_server):
+def test_container(tracer, mocked_responses):
     a = b = 1
     c = 2
     e = 0
@@ -84,5 +84,3 @@ def test_container(tracer, test_server):
             lineno=21,
         ),
     ]
-
-    test_server.assert_frame_sent("test_container")

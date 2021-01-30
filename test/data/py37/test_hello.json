@@ -1,0 +1,79 @@
+{
+    "metadata": {
+        "frame_id": "test_hello",
+        "frame_name": "test_hello",
+        "filename": "test_hello.py"
+    },
+    "identifiers": [
+        "x",
+        "y"
+    ],
+    "loops": [],
+    "events": [
+        {
+            "lineno": 6,
+            "index": 0,
+            "offset": 10,
+            "filename": "test_hello.py",
+            "id": "test_hello:0",
+            "target": "x",
+            "value": "\"hello world\"",
+            "repr": "\"hello world\"",
+            "sources": [],
+            "type": "Binding"
+        },
+        {
+            "lineno": 7,
+            "index": 1,
+            "offset": 14,
+            "filename": "test_hello.py",
+            "id": "test_hello:1",
+            "target": "y",
+            "value": "\"hello world\"",
+            "repr": "\"hello world\"",
+            "sources": [
+                "x"
+            ],
+            "type": "Binding"
+        },
+        {
+            "lineno": 8,
+            "index": 2,
+            "offset": 22,
+            "filename": "test_hello.py",
+            "id": "test_hello:2",
+            "target": "x",
+            "value": "\"hello world\"",
+            "repr": "\"hello world\"",
+            "sources": [
+                "y"
+            ],
+            "type": "Binding"
+        },
+        {
+            "lineno": 8,
+            "index": 3,
+            "offset": 24,
+            "filename": "test_hello.py",
+            "id": "test_hello:3",
+            "target": "y",
+            "value": "\"hello world\"",
+            "repr": "\"hello world\"",
+            "sources": [
+                "x"
+            ],
+            "type": "Binding"
+        }
+    ],
+    "tracingResult": {
+        "test_hello:1": [
+            "test_hello:0"
+        ],
+        "test_hello:2": [
+            "test_hello:1"
+        ],
+        "test_hello:3": [
+            "test_hello:0"
+        ]
+    }
+}
