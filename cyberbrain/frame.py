@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from dis import Instruction
+
 from types import FrameType
 from typing import Any
 
@@ -83,6 +84,25 @@ class Frame:
         self.parent: Optional[Frame] = None
         # Frames derived from this frame.
         self.children: list[Frame] = []
+
+    @property
+    def metadata(self):
+        """The FrameLocater we defined initially. See https://git.io/Jtl68.
+
+        More fields to add:
+        - int64 start_lineno  // Start line of the frame in filename.
+        - int64 end_lineno  // End line of the frame in filename.
+        - string callsite_filename  // The file from which the frame is entered.
+        - int64 callsite_lineno  // The line where the callable that generates the frame
+                                 // is called.
+        - string arguments  // Arguments stringified. f(1, b=2) -> "1, b=2"
+        """
+        return {
+            "frame_id": self.frame_id,
+            # Ideally the qualified name, at least use callable's name.
+            "frame_name": self.frame_name,
+            "filename": self.filename,
+        }
 
     @property
     def latest_snapshot(self):

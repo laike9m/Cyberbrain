@@ -62,6 +62,14 @@ class Event:
     filename: str = attr.ib(eq=False, default="")
     id: string = attr.ib(factory=UUIDGenerator.generate_uuid, eq=False, repr=False)
 
+    @staticmethod
+    def value_serializer(inst: type, field: attr.Attribute, value: Any):
+        if field.name == "sources":
+            return sorted(source.name for source in value)
+        if field.name == "target":
+            return value.name
+        return value
+
 
 @attr.s(auto_attribs=True, eq=False)
 class InitialValue(Event):

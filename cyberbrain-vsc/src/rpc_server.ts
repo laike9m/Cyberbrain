@@ -1,69 +1,54 @@
-import * as grpc from "@grpc/grpc-js";
-import { CommunicationService } from "./generated/communication_grpc_pb";
-import { Empty } from "google-protobuf/google/protobuf/empty_pb";
-import { openTraceGraph } from "./webview";
 import * as vscode from "vscode";
+import * as express from "express";
+import * as bodyParser from "body-parser";
+import { openTraceGraph } from "./webview";
 import { underTestMode } from "./utils";
-import { Frame } from "./frame";
+import { decode } from "@msgpack/msgpack";
 
 let cl = console.log;
 
 export class RpcServer {
   // Allow any size of payload to come. Default is 4MB.
-  private options = { "grpc.max_receive_message_length": -1 };
-  private server: grpc.Server;
+  private server: express.Express;
   private readonly context: vscode.ExtensionContext;
   private readonly listeningPort = 1989; // TODO: Make it configurable.
 
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
-    this.server = new grpc.Server(this.options);
+    this.server = express();
+    this.server.use(bodyParser.raw());
 
-    // See https://git.io/JkvHJ on how to create a server.
-    this.server.addService(CommunicationService, {
-      sendFrame: (
-        call: grpc.ServerUnaryCall<any, any>,
-        callback: grpc.sendUnaryData<any>
-      ) => {
-        // Responds with an empty proto.
-        callback(null, new Empty());
-        // Hides the debug console on the bottom.
-        vscode.commands.executeCommand("workbench.action.closePanel");
+    this.server.post("/frame", (req, res) => {
+      cl("get message");
+      // Hides the debug console on the bottom.
+      vscode.commands.executeCommand("workbench.action.closePanel");
 
-        // Sends data to the trace graph in webview.
-        let webviewPanel = openTraceGraph(this.context);
-        webviewPanel.webview.onDidReceiveMessage(
-          (message: string) => {
-            if (message === "Webview ready") {
-              webviewPanel.webview.postMessage(new Frame(call.request));
+      // Sends data to the trace graph in webview.
+      let webviewPanel = openTraceGraph(this.context);
+      webviewPanel.webview.onDidReceiveMessage(
+        (message: string) => {
+          if (message === "Webview ready") {
+            webviewPanel.webview.postMessage(decode(req.body));
 
-              // If under test, don't open the devtools window because it will cover the trace graph.
-              if (!underTestMode(this.context)) {
-                vscode.commands.executeCommand(
-                  "workbench.action.webview.openDeveloperTools"
-                );
-              }
+            // If under test, don't open the devtools window because it will cover the trace graph.
+            if (!underTestMode(this.context)) {
+              vscode.commands.executeCommand(
+                "workbench.action.webview.openDeveloperTools"
+              );
             }
-          },
-          undefined,
-          this.context.subscriptions
-        );
-      }
+          }
+        },
+        undefined,
+        this.context.subscriptions
+      );
+
+      res.send("success");
     });
   }
 
   start() {
-    this.server.bindAsync(
-      `0.0.0.0:${this.listeningPort}`,
-      grpc.ServerCredentials.createInsecure(),
-      (err, port) => {
-        if (err !== null) {
-          cl(err);
-        } else {
-          cl(`Listening on 0.0.0.0:${this.listeningPort}`);
-          this.server.start();
-        }
-      }
+    this.server.listen(`${this.listeningPort}`, () =>
+      cl(`Listening on ${this.listeningPort}`)
     );
   }
 }

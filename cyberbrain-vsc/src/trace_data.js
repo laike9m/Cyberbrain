@@ -67,6 +67,19 @@ export class Loop {
   }
 }
 
+// TODO: Learn from
+//   https://github.com/cuthbertLab/jsonpickleJS/blob/master/js/unpickler.js
+//   and implement a better version of decode.
+//   Maybe use https://stackoverflow.com/a/46132163.
+function decodeJson(jsonString) {
+  try {
+    return JSON.parse(jsonString);
+  } catch (error) {
+    cl(error);
+    cl(jsonString);
+  }
+}
+
 /*
 Class that
 - Manage raw events and loops, including loops' state.
@@ -77,6 +90,11 @@ export class TraceData {
   constructor(data) {
     this.frameMetadata = data.metadata;
     this.events = data.events;
+    this.events.forEach(event => {
+      if (event.hasOwnProperty("value")) {
+        event.value = decodeJson(event.value); // Previously a JSON string.
+      }
+    });
     this.loops = data.loops
       .map(loop => new Loop(loop.startOffset, loop.endOffset, loop.startLineno))
       .sort((loop1, loop2) => loop1.startOffset - loop2.startOffset);

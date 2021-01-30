@@ -1,14 +1,14 @@
 """Cyberbrain public API and tracer setup."""
-import argparse
 import dis
+
+import argparse
 import functools
 import inspect
 import os
+import requests
 import sys
 from types import MethodType, FunctionType, FrameType
 from typing import Optional, Union
-
-import grpc
 
 from . import logger, utils, rpc_client
 from .frame import Frame
@@ -148,9 +148,8 @@ class Tracer:
             assert len(self.frame_logger.frame.value_stack.stack) == 0
 
         try:
-            # print("call send")
             self.rpc_client.send_frame(self.frame)
-        except grpc._channel._InactiveRpcError:
+        except requests.exceptions.ConnectionError:
             print("Can't connect to RPC server")
 
     def __call__(self, disabled: Union[Union[FunctionType, MethodType], bool] = False):

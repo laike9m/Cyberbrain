@@ -4,7 +4,9 @@ Server that serves requests from UI (VSC as of now).
 
 from __future__ import annotations
 
-import grpc
+import attr
+import msgpack
+import requests
 
 from .basis import (
     Event,
@@ -16,91 +18,6 @@ from .basis import (
     JumpBackToLoopStart,
 )
 from .frame import Frame
-from .generated import communication_pb2
-from .generated import communication_pb2_grpc
-
-
-def _transform_event_to_proto(event: Event) -> communication_pb2.Event:
-    event_proto = communication_pb2.Event()
-    if isinstance(event, InitialValue):
-        event_proto.initial_value.CopyFrom(
-            communication_pb2.InitialValue(
-                id=event.id,
-                filename=event.filename,
-                lineno=event.lineno,
-                index=event.index,
-                offset=event.offset,
-                target=event.target.name,
-                value=event.value,
-                repr=event.repr,
-            )
-        )
-    elif isinstance(event, Binding):
-        event_proto.binding.CopyFrom(
-            communication_pb2.Binding(
-                id=event.id,
-                filename=event.filename,
-                lineno=event.lineno,
-                index=event.index,
-                offset=event.offset,
-                target=event.target.name,
-                value=event.value,
-                repr=event.repr,
-                # Sorted to make result deterministic.
-                sources=sorted(source.name for source in event.sources),
-            )
-        )
-    elif isinstance(event, Mutation):
-        event_proto.mutation.CopyFrom(
-            communication_pb2.Mutation(
-                id=event.id,
-                filename=event.filename,
-                lineno=event.lineno,
-                index=event.index,
-                offset=event.offset,
-                target=event.target.name,
-                value=event.value,
-                repr=event.repr,
-                sources=sorted(source.name for source in event.sources),
-            )
-        )
-    elif isinstance(event, Deletion):
-        event_proto.deletion.CopyFrom(
-            communication_pb2.Deletion(
-                id=event.id,
-                filename=event.filename,
-                lineno=event.lineno,
-                index=event.index,
-                offset=event.offset,
-                target=event.target.name,
-            )
-        )
-    elif isinstance(event, Return):
-        getattr(event_proto, "return").CopyFrom(
-            communication_pb2.Return(
-                id=event.id,
-                filename=event.filename,
-                lineno=event.lineno,
-                index=event.index,
-                offset=event.offset,
-                value=event.value,
-                repr=event.repr,
-                sources=sorted(source.name for source in event.sources),
-            )
-        )
-    elif isinstance(event, JumpBackToLoopStart):
-        event_proto.jump_back_to_loop_start.CopyFrom(
-            communication_pb2.JumpBackToLoopStart(
-                id=event.id,
-                filename=event.filename,
-                lineno=event.lineno,
-                index=event.index,
-                offset=event.offset,
-                jump_target=event.jump_target,
-            )
-        )
-
-    return event_proto
 
 
 def _get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
@@ -167,31 +84,36 @@ def _get_event_sources_uids(event: Event, frame: Frame) -> Optional[list[str]]:
 class RpcClient:
     def __init__(self, rpc_server_port=1989):
         self.port = rpc_server_port
-        self.channel = grpc.insecure_channel(f"localhost:{self.port}")
-        self.stub = communication_pb2_grpc.CommunicationStub(self.channel)
 
     def send_frame(self, frame: Frame):
-        frame_proto = communication_pb2.Frame(
-            metadata=communication_pb2.FrameLocater(
-                frame_id=frame.frame_id,
-                frame_name=frame.frame_name,
-                filename=frame.filename,
-            ),
-            identifiers=list(frame.identifier_to_events.keys()),
-            loops=[
-                communication_pb2.Loop(
-                    start_offset=loop.start_offset,
-                    end_offset=loop.end_offset,
-                    start_lineno=loop.start_lineno,
-                )
+        frame_data: dict[str, Any] = {
+            "metadata": frame.metadata,
+            "identifiers": list(frame.identifier_to_events.keys()),
+            "loops": [
+                {
+                    "startOffset": loop.start_offset,
+                    "endOffset": loop.end_offset,
+                    "startLineno": loop.start_lineno,
+                }
                 for loop in frame.loops.values()
             ],
-        )
-
+            "events": [],
+            "tracingResult": {},
+        }
         for event in frame.events:
-            frame_proto.events.append(_transform_event_to_proto(event))
+            # Use recurse=False so that each item in "sources" will not be iterated.
+            event_dict = attr.asdict(
+                event, value_serializer=event.value_serializer, recurse=False
+            )
+            # We have to explicitly write the type name because Js does not know it.
+            event_dict["type"] = type(event).__name__
+            frame_data["events"].append(event_dict)
             event_ids = _get_event_sources_uids(event, frame)
             if event_ids:
-                frame_proto.tracing_result[event.id].event_ids[:] = event_ids
+                frame_data["tracingResult"][event.id] = event_ids
 
-        self.stub.SendFrame(frame_proto)
+        requests.post(
+            f"http://localhost:{self.port}/frame",
+            data=msgpack.packb(frame_data),
+            headers={"Content-Type": "application/octet-stream"},
+        )
