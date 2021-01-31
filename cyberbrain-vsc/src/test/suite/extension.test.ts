@@ -59,7 +59,7 @@ const examples = [
       "-s 1",
       "--l33t"
     ],
-    timeout: 17
+    timeout: 13
   }
 ];
 

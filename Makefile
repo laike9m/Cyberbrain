@@ -31,14 +31,6 @@ update_dep:
 	poetry update
 	cd cyberbrain-vsc/ && npm update
 
-proto_compile:
-	python -m grpc_tools.protoc -I protos --python_out=cyberbrain/generated \
-           --grpc_python_out=cyberbrain/generated protos/*.proto
-    # https://github.com/protocolbuffers/protobuf/issues/1491#issuecomment-690618628
-	sed -i "" -e 's/import communication_pb2/from . import communication_pb2/g' \
-           cyberbrain/generated/communication_pb2_grpc.py
-	cd ./cyberbrain-vsc && ./build-proto.sh
-
 # We must use npm not yarn. See https://github.com/microsoft/vscode-vsce/issues/497
 publish:
 	poetry build && poetry publish
