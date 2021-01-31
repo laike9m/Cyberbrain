@@ -7,7 +7,7 @@ import pytest
 import responses
 
 from cyberbrain import _TracerFSM, trace
-from utils import python_version
+from utils import python_version, get_os_type
 
 
 def pytest_addoption(parser):
@@ -68,5 +68,9 @@ def mocked_responses(request):
         # Assuming run in root directory.
         with open(golden_filepath, "rt") as f:
             golden_frame_data = json.loads(f.read())
+
+        # Don't check request body on Windows because it has a different format.
+        if get_os_type() == "windows" and frame_name in {"test_numpy", "test_pandas"}:
+            return
 
         assert frame_data == golden_frame_data, json.dumps(frame_data, indent=4)

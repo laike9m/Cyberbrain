@@ -8,7 +8,7 @@ def test_numpy(tracer, mocked_responses):
     x = np.array([6, 7, 8])
     tracer.stop()
 
-    from utils import get_os_type, get_value
+    from utils import get_value
 
     int_type = get_value({"windows": "int32", "linux": "int64", "mac": "int64"})
 
@@ -21,10 +21,6 @@ def test_numpy(tracer, mocked_responses):
             sources=set(),
         )
     ]
-
-    # Don't check request body on Windows because it has a different format.
-    if get_os_type() == "windows":
-        pytest.skip("skipping this test")
 
 
 # Add more tests

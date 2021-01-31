@@ -37,9 +37,5 @@ def test_pandas(tracer, mocked_responses):
         ),
     ]
 
-    # Don't check request body on Windows because it has a different format.
-    if get_os_type() == "windows":
-        pytest.skip("skipping this test")
-
 
 # Follow https://bitbucket.org/hrojas/learn-pandas/src/master/ to add more tests.

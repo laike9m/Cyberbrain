@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { spawn } from "child_process";
+import { platform } from "process";
 
 let cl = console.log;
 
@@ -59,15 +60,17 @@ const examples = [
       "-s 1",
       "--l33t"
     ],
-    timeout: 13
+    timeout: 13,
+    excludeWindows: true  // Windows does not support "*" expansion, so don't run it.
   }
 ];
 
-suite("Extension Test Suite", function() {
+suite("Extension Test Suite", function () {
   this.timeout(0); // Disabled timeout.
 
-  test("Render Trace Graph", async function() {
+  test("Render Trace Graph", async function () {
     for (const example of examples) {
+      if (process.platform === "win32" && example.excludeWindows) continue;
       await runTest(example);
     }
   });
