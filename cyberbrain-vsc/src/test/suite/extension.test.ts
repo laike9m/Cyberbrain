@@ -61,16 +61,16 @@ const examples = [
       "--l33t"
     ],
     timeout: 13,
-    excludeWindows: true  // Windows does not support "*" expansion, so don't run it.
+    excludeWindows: true // Windows does not support "*" expansion, so don't run it.
   }
 ];
 
-suite("Extension Test Suite", function () {
+suite("Extension Test Suite", function() {
   this.timeout(0); // Disabled timeout.
 
-  test("Render Trace Graph", async function () {
+  test("Render Trace Graph", async function() {
     for (const example of examples) {
-      if (process.platform === "win32" && example.excludeWindows) continue;
+      if (process.platform === "win32" && example.excludeWindows) {continue;}
       await runTest(example);
     }
   });
