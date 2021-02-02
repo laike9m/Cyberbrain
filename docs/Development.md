@@ -27,7 +27,7 @@ Make sure you have Python 3.7+ and the latest version of VS Code installed.
 
 ## Run Tests
 
-After installing dependencies, you always want to run the tests to make sure everything can work correctly.
+After installing dependencies, you always want to run the tests to make sure everything works correctly.
 
 ### Run Python Tests
 
@@ -59,7 +59,7 @@ There are two ways to run the e2e tests.
 
   1. **Make sure `cyberbrain-vsc` is opened as a top-level folder in VS Code**. If you opened the root directory `Cyberbrain`, though `cyberbrain-vsc` is included, it will NOT work.
 
-  2. You should then see the two options ("Run Extension" and "Extension Tests") showed up in the Run view. This means that VS Code has recognized the extension we're developing.
+  2. You should then see the two options ("Run Extension" and "Extension Tests") show up in the Run view. This means that VS Code has recognized the extension we're developing.
 
       <img src="https://user-images.githubusercontent.com/2592205/106569059-f32dfe00-64e8-11eb-853f-2d0e499683e4.png" height=400px>
 
