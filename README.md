@@ -8,7 +8,7 @@
 
 Cyberbrain aims to free programmers from debugging. It lets you:
 
-- **Backtraces variable changes**.
+- **Backtrace variable changes**.
 
 - See **every state** of program execution, including **variables' values**
 
