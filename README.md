@@ -6,7 +6,7 @@
 [!["GitHub Discussions"](https://img.shields.io/badge/%20GitHub-%20Discussions-gray.svg?longCache=true&logo=github&colorB=purple)](https://github.com/laike9m/Cyberbrain/discussions)
 [![Discord](https://img.shields.io/discord/751695524628922449.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/5zGS5V5)
 
-Cyberbrain aims to free programmers from debugging. It lets you:
+Cyberbrain(电子脑) aims to free programmers from debugging. It lets you:
 
 - **Backtrace variable changes**.
 
