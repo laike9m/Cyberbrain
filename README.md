@@ -6,7 +6,7 @@
 [!["GitHub Discussions"](https://img.shields.io/badge/%20GitHub-%20Discussions-gray.svg?longCache=true&logo=github&colorB=purple)](https://github.com/laike9m/Cyberbrain/discussions)
 [![Discord](https://img.shields.io/discord/751695524628922449.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/5zGS5V5)
 
-Cyberbrain(电子脑) aims to free programmers from debugging. It lets you:
+Cyberbrain<sup>[1](#footnote1)</sup>(电子脑) aims to free programmers from debugging. It lets you:
 
 - **Backtrace variable changes**.
 
@@ -152,3 +152,7 @@ I'm almost working full time (besides my regular job) on Cyberbrain. This projec
 [:heart: Sponsor on GitHub](https://github.com/sponsors/laike9m)
 
 [![](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-1.svg)](https://www.buymeacoffee.com/cyberbrain)
+
+<a name="footnote1"><sup>1</sup></a>: The name of this project originates from *[Ghost in the Shell](https://en.wikipedia.org/wiki/Ghost_in_the_Shell)*, [quote](https://ghostintheshell.fandom.com/wiki/Cyberbrain):
+
+> **Cyberization** is the process whereby a normal brain is physically integrated with electronic components to produce an augmented organ referred to as a **cyberbrain**.
