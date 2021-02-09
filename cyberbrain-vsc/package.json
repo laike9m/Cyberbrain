@@ -17,7 +17,7 @@
 	],
 	"main": "./out/extension.js",
 	"scripts": {
-		"unittest": "mocha",
+		"unittest": "mocha 'src/test/**/*_test.js'",
 		"copy": "node node_modules/rimraf/bin.js ./out/*.js && node node_modules/copyfiles/copyfiles -u 1 ./src/*.js ./out/",
 		"vscode:prepublish": "npm run compile",
 		"compile": "npm run copy && tsc -p ./",
@@ -51,6 +51,5 @@
 		"log4js": "^6.3.0",
 		"randomcolor": "^0.6.2",
 		"vis-network": "^8.5.4"
-	},
-	"type": "module"
+	}
 }

@@ -10,7 +10,7 @@ global.isDevMode = false;
 
 import hamjest from "hamjest";
 
-import { Loop, TraceData } from "../src/trace_data.js";
+import { Loop, TraceData } from "../trace_data.js";
 
 const { assertThat, contains, hasProperty, hasProperties } = hamjest;
 
