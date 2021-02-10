@@ -10,10 +10,11 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1.
-2.
+**Code to reproduce the bug**
+Please provide a snippet that can reproduce the bug
+```python
+[paste your code here]
+```
 
 **Screenshots and/or error messages**
 If applicable, add screenshots to help explain your problem.
