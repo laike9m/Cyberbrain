@@ -11,7 +11,7 @@ assignees: ''
 A clear and concise description of what the bug is.
 
 **Code to reproduce the bug**
-Please provide a snippet that can reproduce the bug
+Please provide a code snippet that can reproduce the bug
 ```python
 [paste your code here]
 ```
