@@ -16,7 +16,7 @@ export class RpcServer {
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
     this.server = express();
-    this.server.use(bodyParser.raw({ limit: "50mb" }));
+    this.server.use(bodyParser.raw({ limit: "10GB" }));
 
     this.server.post("/frame", (req, res) => {
       cl("get message");
