@@ -365,7 +365,6 @@ describe("Test empty inner loop.", function() {
 
   it("Test initialize loops", function() {
     const traceData = createTraceData();
-    cl(traceData.loops);
     assertThat(
       traceData.loops,
       contains(
@@ -389,5 +388,72 @@ describe("Test empty inner loop.", function() {
         })
       )
     );
+  });
+});
+
+describe("Test early return from loop.", function() {
+  function createTraceData() {
+    return new TraceData({
+      /*
+      def f(a):  # 1 is passed in
+        while True:
+          b = a  # offset: 0
+          if b == 2:
+            return b # offset: 2
+          else:
+            a = 2  # offset: 4
+       */
+      events: [
+        { type: "Binding", index: 0, offset: 0, id: "0" }, // b = a
+        { type: "Binding", index: 1, offset: 4, id: "1" }, // a = 2
+        { type: "JumpBackToLoopStart", index: 2, offset: 6, id: "2" },
+        { type: "Binding", index: 3, offset: 0, id: "3" }, // b = a
+        { type: "Return", index: 4, offset: 2, id: "4" } // return b
+      ],
+      loops: [new Loop(0, 6)],
+      tracingResult: { "3": "1", "4": "3" }
+    });
+  }
+  let traceData = createTraceData();
+
+  it("Test initialize loops", function() {
+    assertThat(
+      traceData.loops,
+      contains(
+        hasProperties({
+          startOffset: 0,
+          endOffset: 6,
+          _iterationStarts: new Map([
+            ["0", 0],
+            ["1", 3]
+          ]),
+          _iterationEnds: new Map([
+            ["0", 2],
+            ["1", 4]
+          ])
+        })
+      )
+    );
+  });
+
+  it("0 -> 1", function() {
+    traceData.loops[0].counter = 1;
+    traceData.updateVisibleEvents();
+    assertThat(traceData.visibleEventsArray, [
+      { type: "Binding", index: 3, offset: 0, id: "3" },
+      { type: "Binding", index: 1, offset: 4, id: "1" },
+      { type: "Return", index: 4, offset: 2, id: "4" }
+    ]);
+  });
+
+  // Note that this operation should remove the "Return" node because it references
+  // an invisible node { type: "Binding", index: 3, offset: 0, id: "3" }
+  it("1 -> 0", function() {
+    traceData.loops[0].counter = 0;
+    traceData.updateVisibleEvents();
+    assertThat(traceData.visibleEventsArray, [
+      { type: "Binding", index: 0, offset: 0, id: "0" },
+      { type: "Binding", index: 1, offset: 4, id: "1" }
+    ]);
   });
 });

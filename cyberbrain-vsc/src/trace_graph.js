@@ -100,8 +100,6 @@ window.addEventListener("message", event => {
   if (!event.data.hasOwnProperty("events")) {
     return; // Server ready message.
   }
-  traceGraph = new TraceGraph(event.data);
-  traceGraph.render();
   if (isDevMode) {
     cl(event.data);
   } else {
@@ -109,6 +107,8 @@ window.addEventListener("message", event => {
       console.clear();
     }, 1000);
   }
+  traceGraph = new TraceGraph(event.data);
+  traceGraph.render();
 });
 
 class TraceGraph {

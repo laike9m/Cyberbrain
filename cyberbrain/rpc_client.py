@@ -102,6 +102,7 @@ class RpcClient:
         }
         for event in frame.events:
             # Use recurse=False so that each item in "sources" will not be iterated.
+            # TODO: Exclude the "sources" fields cause it's not used in FE.
             event_dict = attr.asdict(
                 event, value_serializer=event.value_serializer, recurse=False
             )

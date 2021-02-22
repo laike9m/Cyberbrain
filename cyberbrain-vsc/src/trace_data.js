@@ -67,6 +67,14 @@ export class Loop {
   }
 }
 
+/*
+Given an array of loops, return an array represent their counters, e.g.
+[loop(counter: 1), loop(counter: 2)] -> [1, 2]
+ */
+function getCountersArray(loopStack) {
+  return loopStack.map(loop => loop.counter);
+}
+
 // TODO: Learn from
 //   https://github.com/cuthbertLab/jsonpickleJS/blob/master/js/unpickler.js
 //   and implement a better version of decode.
@@ -155,7 +163,7 @@ export class TraceData {
         loopStack[loopStack.length - 1].endOffset < offset
       ) {
         loopStack[loopStack.length - 1].addIterationEnd(
-          loopStack.map(loop => loop.counter),
+          getCountersArray(loopStack),
           event.index - 1 // The previous event is the last event of the last iteration.
         );
         loopStack.pop().counter = 0;
@@ -164,20 +172,33 @@ export class TraceData {
       // We need to take all cases into consideration when adding iteration ends.
       // It's fine if an iteration end is added multiple times, because we use a map to
       // store it.
-      //
-      // This deals with the case when a loop end is the last event in a frame.
-      // It needs to be put after popping loops, so that we can set iteration end
-      // for the loop left on loopStack (if any).
+
+      // Case 1: current event is an early return from inside the loop, e.g.
+      //   while a:
+      //     if b:
+      //       return
+      //     do_something()
+      if (event.type === "Return") {
+        loopStack[loopStack.length - 1].addIterationEnd(
+          getCountersArray(loopStack),
+          event.index
+        );
+      }
+
+      // Case 2: a loop's end is the last event of a frame.
       if (
         loopStack.length > 0 &&
         loopStack[loopStack.length - 1].endOffset === offset
       ) {
         loopStack[loopStack.length - 1].addIterationEnd(
-          loopStack.map(loop => loop.counter),
+          getCountersArray(loopStack),
           event.index
         );
       }
 
+      // Case 3: next event has a smaller offset than the current event, representing
+      // a jump back. Thus, current event is an iteration's end, next event is next
+      // iteration's start.
       if (
         loopStack.length > 0 &&
         event.type === "JumpBackToLoopStart" &&
@@ -185,19 +206,20 @@ export class TraceData {
         this.events[nextEventIndex].offset < offset
       ) {
         let currentLoop = loopStack[loopStack.length - 1];
-        currentLoop.addIterationEnd(
-          loopStack.map(loop => loop.counter),
-          event.index
-        );
+        currentLoop.addIterationEnd(getCountersArray(loopStack), event.index);
         currentLoop.incrementCounter();
         currentLoop.addIterationStart(
-          loopStack.map(loop => loop.counter),
+          getCountersArray(loopStack),
           nextEventIndex // The event following JumpBackToLoopStart is next iteration's start.
         );
       }
 
       // Pushes loop onto the stack.
       for (let loop of this.loops) {
+        // For while loops, there's no event at the line of loop counter,
+        // so we need to add it as well. See #92
+        appearedLineNumbers.add(loop.startLineno);
+
         if (
           previousOffset < loop.startOffset &&
           loop.startOffset <= offset &&
@@ -250,6 +272,38 @@ export class TraceData {
         const event = this.events[i];
         if (event.type !== "JumpBackToLoopStart") {
           this.visibleEvents.set(event.offset, event);
+        }
+      }
+    }
+
+    // Remove nodes that should not appear on the trace graph.
+    // We remove a node if the following two conditions are met:
+    // - It has a source which is an invisible node
+    // - It is not a source of any visible node
+
+    let visibleEventIDs = new Set();
+    let sourceEventIDs = new Set();
+    for (const event of this.visibleEvents.values()) {
+      visibleEventIDs.add(event.id);
+      const sourceIDs = this.tracingResult.get(event.id);
+      if (sourceIDs !== undefined) {
+        for (const sourceID of sourceIDs) {
+          sourceEventIDs.add(sourceID);
+        }
+      }
+    }
+
+    for (const event of this.visibleEvents.values()) {
+      const sourceIDs = this.tracingResult.get(event.id);
+      if (sourceIDs === undefined) {
+        continue;
+      }
+
+      for (const sourceID of sourceIDs) {
+        if (!visibleEventIDs.has(sourceID) && !sourceEventIDs.has(event.id)) {
+          // Delete while iterating is safe, see https://stackoverflow.com/a/35943995
+          this.visibleEvents.delete(event.offset);
+          break;
         }
       }
     }
