@@ -137,3 +137,5 @@ setup.py
 
 # In the future we may check in this file.
 vscode-workspace.code-workspace
+
+examples/.vscode
