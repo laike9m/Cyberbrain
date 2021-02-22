@@ -32,7 +32,6 @@
             "target": "x",
             "value": "1",
             "repr": "1",
-            "sources": [],
             "type": "Binding"
         },
         {
@@ -44,7 +43,6 @@
             "target": "x",
             "value": "2",
             "repr": "2",
-            "sources": [],
             "type": "Binding"
         },
         {
@@ -78,10 +76,6 @@
             "target": "x",
             "value": "true",
             "repr": "True",
-            "sources": [
-                "b",
-                "c"
-            ],
             "type": "Binding"
         },
         {
@@ -93,9 +87,6 @@
             "target": "x",
             "value": "\"c\"",
             "repr": "\"c\"",
-            "sources": [
-                "c"
-            ],
             "type": "Binding"
         }
     ],

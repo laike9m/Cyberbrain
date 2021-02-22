@@ -30,9 +30,6 @@
             "target": "y",
             "value": "\"foo\"",
             "repr": "\"foo\"",
-            "sources": [
-                "x"
-            ],
             "type": "Binding"
         }
     ],

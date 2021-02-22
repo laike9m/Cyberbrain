@@ -39,10 +39,6 @@
             "filename": "test_attribute.py",
             "id": "test_attribute:2",
             "target": "a1",
-            "sources": [
-                "a1",
-                "a2"
-            ],
             "value": "{\"x\":{\"y\":1}}",
             "repr": "<test_attribute.test_attribute.<locals>.A object>",
             "type": "Mutation"
@@ -54,9 +50,6 @@
             "filename": "test_attribute.py",
             "id": "test_attribute:3",
             "target": "a1",
-            "sources": [
-                "a1"
-            ],
             "value": "{\"x\":{\"y\":2}}",
             "repr": "<test_attribute.test_attribute.<locals>.A object>",
             "type": "Mutation"
@@ -68,9 +61,6 @@
             "filename": "test_attribute.py",
             "id": "test_attribute:4",
             "target": "a1",
-            "sources": [
-                "a1"
-            ],
             "value": "{}",
             "repr": "<test_attribute.test_attribute.<locals>.A object>",
             "type": "Mutation"

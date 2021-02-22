@@ -44,10 +44,6 @@
             "target": "d",
             "value": "[1,1]",
             "repr": "[1, 1]",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -59,10 +55,6 @@
             "target": "d",
             "value": "[1,1]",
             "repr": "(1, 1)",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -74,10 +66,6 @@
             "target": "d",
             "value": "[1]",
             "repr": "{1}",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -89,10 +77,6 @@
             "target": "d",
             "value": "{\"1\":1}",
             "repr": "{1: 1}",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -104,10 +88,6 @@
             "target": "d",
             "value": "{\"1\":1,\"2\":1}",
             "repr": "{1: 1, 2: 1}",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -128,11 +108,6 @@
             "filename": "test_container.py",
             "id": "test_container:8",
             "target": "d",
-            "sources": [
-                "a",
-                "c",
-                "d"
-            ],
             "value": "{\"1\":2,\"2\":1}",
             "repr": "{1: 2, 2: 1}",
             "type": "Mutation"
@@ -144,10 +119,6 @@
             "filename": "test_container.py",
             "id": "test_container:9",
             "target": "d",
-            "sources": [
-                "a",
-                "d"
-            ],
             "value": "{\"2\":1}",
             "repr": "{2: 1}",
             "type": "Mutation"
@@ -172,12 +143,6 @@
             "target": "d",
             "value": "[1,1]",
             "repr": "[1, 1]",
-            "sources": [
-                "a",
-                "b",
-                "c",
-                "e"
-            ],
             "type": "Binding"
         },
         {
@@ -189,12 +154,6 @@
             "target": "d",
             "value": "[1,1]",
             "repr": "[1, 1]",
-            "sources": [
-                "a",
-                "b",
-                "c",
-                "e"
-            ],
             "type": "Binding"
         }
     ],

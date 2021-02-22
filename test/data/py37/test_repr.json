@@ -20,7 +20,6 @@
             "target": "match",
             "value": "{\"repr\": \"<re.Match object; span=(0, 3), match='foo'>\"}",
             "repr": "<re.Match object; span=(0, 3), match='foo'>",
-            "sources": [],
             "type": "Binding"
         },
         {
@@ -43,9 +42,6 @@
             "target": "a",
             "value": "{}",
             "repr": "<test_to_json.test_repr.<locals>.A object>",
-            "sources": [
-                "A"
-            ],
             "type": "Binding"
         }
     ],

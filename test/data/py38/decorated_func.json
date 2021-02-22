@@ -20,7 +20,6 @@
             "target": "a",
             "value": "1",
             "repr": "1",
-            "sources": [],
             "type": "Binding"
         },
         {
@@ -43,10 +42,6 @@
             "target": "b",
             "value": "1",
             "repr": "1",
-            "sources": [
-                "a",
-                "f"
-            ],
             "type": "Binding"
         },
         {
@@ -57,10 +52,6 @@
             "id": "test_decorator_api:3",
             "value": "2",
             "repr": "2",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Return"
         }
     ],

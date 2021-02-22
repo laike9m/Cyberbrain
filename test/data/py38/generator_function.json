@@ -36,7 +36,6 @@
             "target": "x",
             "value": "\"foo\"",
             "repr": "\"foo\"",
-            "sources": [],
             "type": "Binding"
         },
         {
@@ -48,9 +47,6 @@
             "target": "count",
             "value": "1",
             "repr": "1",
-            "sources": [
-                "count"
-            ],
             "type": "Binding"
         },
         {
@@ -71,7 +67,6 @@
             "target": "x",
             "value": "null",
             "repr": "None",
-            "sources": [],
             "type": "Binding"
         },
         {
@@ -83,9 +78,6 @@
             "target": "count",
             "value": "0",
             "repr": "0",
-            "sources": [
-                "count"
-            ],
             "type": "Binding"
         },
         {
@@ -105,7 +97,6 @@
             "id": "test_generator_function:7",
             "value": "null",
             "repr": "None",
-            "sources": [],
             "type": "Return"
         }
     ],

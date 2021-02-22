@@ -24,7 +24,6 @@
             "target": "x",
             "value": "0",
             "repr": "0",
-            "sources": [],
             "type": "Binding"
         },
         {
@@ -45,7 +44,6 @@
             "target": "x",
             "value": "1",
             "repr": "1",
-            "sources": [],
             "type": "Binding"
         },
         {

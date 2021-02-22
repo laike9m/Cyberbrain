@@ -18,7 +18,6 @@
             "target": "a",
             "value": "2",
             "repr": "2",
-            "sources": [],
             "type": "Binding"
         },
         {
@@ -29,9 +28,6 @@
             "id": "test_decorator_with_argument:1",
             "value": "2",
             "repr": "2",
-            "sources": [
-                "a"
-            ],
             "type": "Return"
         }
     ],

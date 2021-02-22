@@ -68,12 +68,6 @@
             "target": "x",
             "value": "\"a b    'c' 'd' \"",
             "repr": "\"a b    'c' 'd' \"",
-            "sources": [
-                "a",
-                "b",
-                "c",
-                "d"
-            ],
             "type": "Binding"
         },
         {
@@ -85,10 +79,6 @@
             "target": "x",
             "value": "false",
             "repr": "False",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -109,9 +99,6 @@
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:7",
             "target": "e",
-            "sources": [
-                "e"
-            ],
             "value": "[1,2]",
             "repr": "[1, 2]",
             "type": "Mutation"
@@ -123,9 +110,6 @@
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:8",
             "target": "e",
-            "sources": [
-                "e"
-            ],
             "value": "[4,2]",
             "repr": "[4, 2]",
             "type": "Mutation"
@@ -159,9 +143,6 @@
             "target": "x",
             "value": "0",
             "repr": "0",
-            "sources": [
-                "g"
-            ],
             "type": "Binding"
         },
         {
@@ -173,7 +154,6 @@
             "target": "g",
             "value": "1",
             "repr": "1",
-            "sources": [],
             "type": "Binding"
         },
         {

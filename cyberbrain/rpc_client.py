@@ -101,10 +101,10 @@ class RpcClient:
             "tracingResult": {},
         }
         for event in frame.events:
-            # Use recurse=False so that each item in "sources" will not be iterated.
-            # TODO: Exclude the "sources" fields cause it's not used in FE.
             event_dict = attr.asdict(
-                event, value_serializer=event.value_serializer, recurse=False
+                event,
+                filter=lambda field, _: False if field.name == "sources" else True,
+                value_serializer=event.value_serializer,
             )
             # We have to explicitly write the type name because Js does not know it.
             event_dict["type"] = type(event).__name__

@@ -18,7 +18,6 @@
             "target": "x",
             "value": "{\"dtype\":\"int64\",\"values\":[6,7,8]}",
             "repr": "array([6, 7, 8])",
-            "sources": [],
             "type": "Binding"
         }
     ],

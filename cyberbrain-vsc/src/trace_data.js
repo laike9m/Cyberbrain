@@ -178,7 +178,7 @@ export class TraceData {
       //     if b:
       //       return
       //     do_something()
-      if (event.type === "Return") {
+      if (event.type === "Return" && loopStack.length > 0) {
         loopStack[loopStack.length - 1].addIterationEnd(
           getCountersArray(loopStack),
           event.index
@@ -276,8 +276,8 @@ export class TraceData {
       }
     }
 
-    // Remove nodes that should not appear on the trace graph.
-    // We remove a node if the following two conditions are met:
+    // Remove nodes that should not appear in the trace graph, if the following two
+    // conditions are met:
     // - It has a source which is an invisible node
     // - It is not a source of any visible node
 

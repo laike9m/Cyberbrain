@@ -28,7 +28,6 @@
             "id": "test_yield_from:1",
             "value": "null",
             "repr": "None",
-            "sources": [],
             "type": "Return"
         }
     ],

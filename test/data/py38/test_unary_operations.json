@@ -30,9 +30,6 @@
             "target": "b",
             "value": "1",
             "repr": "1",
-            "sources": [
-                "a"
-            ],
             "type": "Binding"
         },
         {
@@ -44,9 +41,6 @@
             "target": "b",
             "value": "-1",
             "repr": "-1",
-            "sources": [
-                "a"
-            ],
             "type": "Binding"
         },
         {
@@ -58,9 +52,6 @@
             "target": "b",
             "value": "false",
             "repr": "False",
-            "sources": [
-                "a"
-            ],
             "type": "Binding"
         },
         {
@@ -72,9 +63,6 @@
             "target": "b",
             "value": "-2",
             "repr": "-2",
-            "sources": [
-                "a"
-            ],
             "type": "Binding"
         }
     ],

@@ -19,7 +19,6 @@
             "target": "x",
             "value": "\"hello world\"",
             "repr": "\"hello world\"",
-            "sources": [],
             "type": "Binding"
         },
         {
@@ -31,9 +30,6 @@
             "target": "y",
             "value": "\"hello world\"",
             "repr": "\"hello world\"",
-            "sources": [
-                "x"
-            ],
             "type": "Binding"
         },
         {
@@ -45,9 +41,6 @@
             "target": "x",
             "value": "\"hello world\"",
             "repr": "\"hello world\"",
-            "sources": [
-                "y"
-            ],
             "type": "Binding"
         },
         {
@@ -59,9 +52,6 @@
             "target": "y",
             "value": "\"hello world\"",
             "repr": "\"hello world\"",
-            "sources": [
-                "x"
-            ],
             "type": "Binding"
         }
     ],

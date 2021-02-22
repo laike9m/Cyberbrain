@@ -30,9 +30,6 @@
             "target": "a",
             "value": "1",
             "repr": "1",
-            "sources": [
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -43,9 +40,6 @@
             "id": "test_decorator_multiple_times:2",
             "value": "1",
             "repr": "1",
-            "sources": [
-                "a"
-            ],
             "type": "Return"
         }
     ],

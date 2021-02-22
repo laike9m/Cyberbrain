@@ -103,9 +103,9 @@ window.addEventListener("message", event => {
   if (isDevMode) {
     cl(event.data);
   } else {
-    setTimeout(() => {
-      console.clear();
-    }, 1000);
+    // setTimeout(() => {
+    //   console.clear();
+    // }, 1000);
   }
   traceGraph = new TraceGraph(event.data);
   traceGraph.render();

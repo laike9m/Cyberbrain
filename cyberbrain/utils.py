@@ -2,26 +2,26 @@
 
 from __future__ import annotations
 
-import argparse
 import dis
+import sysconfig
+
+import argparse
+import cheap_repr
 import inspect
+import jsonpickle
+import more_itertools
 import os
 import re
 import subprocess
 import sys
-import sysconfig
 from functools import lru_cache
 from pathlib import Path
 from pprint import pformat
-from types import FrameType
-from typing import Any, Optional
-
-import cheap_repr
-import jsonpickle
-import more_itertools
 from pygments import highlight
 from pygments.formatters import Terminal256Formatter
 from pygments.lexers import PythonLexer
+from types import FrameType
+from typing import Any, Optional
 
 from . import tracer
 
@@ -156,7 +156,7 @@ def should_exclude(frame):
 
     filename = frame.f_code.co_filename
 
-    # Exclude 'call' event of "tracer.init/register()", so that the execution of
+    # Exclude 'call' event of "tracer.start/end()", so that the execution of
     # these methods will never be traced.
     if filename.endswith(os.path.join("cyberbrain", "tracer.py")):
         return True

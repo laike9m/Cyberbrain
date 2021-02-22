@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { spawn } from "child_process";
-import { platform } from "process";
 
 let cl = console.log;
 
@@ -70,7 +69,9 @@ suite("Extension Test Suite", function() {
 
   test("Render Trace Graph", async function() {
     for (const example of examples) {
-      if (process.platform === "win32" && example.excludeWindows) {continue;}
+      if (process.platform === "win32" && example.excludeWindows) {
+        continue;
+      }
       await runTest(example);
     }
   });
@@ -100,15 +101,12 @@ suite("Extension Test Suite", function() {
       vscode.window.showTextDocument(doc, vscode.ViewColumn.One);
     });
 
-    // Opens webview to show the trace graph.
-    vscode.commands.executeCommand("cyberbrain.init");
-
     // Waits for enough time so we can review the trace graph.
     // TODO: Find a way to detect trace graph rendering ready, and make wait time flexible.
     return new Promise(resolve => {
       setTimeout(() => {
         serverProcess.kill();
-        resolve();
+        resolve(0);
       }, 1000 * example.timeout);
     });
   }

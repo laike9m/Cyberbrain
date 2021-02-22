@@ -20,7 +20,6 @@
             "target": "a",
             "value": "1",
             "repr": "1",
-            "sources": [],
             "type": "Binding"
         },
         {
@@ -32,9 +31,6 @@
             "target": "Foo",
             "value": "{\"py/type\":\"test_cellvar.test_closure.<locals>.Foo\"}",
             "repr": "<class 'test_cellvar.test_closure.<locals>.Foo'>",
-            "sources": [
-                "a"
-            ],
             "type": "Binding"
         },
         {
@@ -46,9 +42,6 @@
             "target": "Bar",
             "value": "{\"py/type\":\"test_cellvar.test_closure.<locals>.Bar\"}",
             "repr": "<class 'test_cellvar.test_closure.<locals>.Bar'>",
-            "sources": [
-                "Foo"
-            ],
             "type": "Binding"
         }
     ],

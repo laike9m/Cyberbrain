@@ -111,7 +111,7 @@ class Tracer:
             return
 
         self.raw_frame = sys._getframe(1)
-        # tracer.init() contains the following instructions:
+        # tracer.start() contains the following instructions:
         #               0 LOAD_FAST                0 (tracer)
         #               2 LOAD_METHOD              0 (init)
         #               4 CALL_METHOD              0

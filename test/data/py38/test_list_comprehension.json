@@ -20,7 +20,6 @@
             "target": "n",
             "value": "2",
             "repr": "2",
-            "sources": [],
             "type": "Binding"
         },
         {
@@ -32,9 +31,6 @@
             "target": "x",
             "value": "[0,1]",
             "repr": "[0, 1]",
-            "sources": [
-                "n"
-            ],
             "type": "Binding"
         },
         {
@@ -46,7 +42,6 @@
             "target": "lst",
             "value": "[\"foo\",\"bar\"]",
             "repr": "['foo', 'bar']",
-            "sources": [],
             "type": "Binding"
         },
         {
@@ -58,9 +53,6 @@
             "target": "x",
             "value": "[\"foo\",\"bar\"]",
             "repr": "['foo', 'bar']",
-            "sources": [
-                "lst"
-            ],
             "type": "Binding"
         }
     ],

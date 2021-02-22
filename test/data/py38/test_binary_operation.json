@@ -43,10 +43,6 @@
             "target": "c",
             "value": "1",
             "repr": "1",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -58,10 +54,6 @@
             "target": "c",
             "value": "1",
             "repr": "1",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -73,10 +65,6 @@
             "target": "c",
             "value": "1",
             "repr": "1",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -88,10 +76,6 @@
             "target": "c",
             "value": "1.0",
             "repr": "1.0",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -103,10 +87,6 @@
             "target": "c",
             "value": "0",
             "repr": "0",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -118,10 +98,6 @@
             "target": "c",
             "value": "2",
             "repr": "2",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -133,10 +109,6 @@
             "target": "c",
             "value": "0",
             "repr": "0",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -159,10 +131,6 @@
             "target": "c",
             "value": "1",
             "repr": "1",
-            "sources": [
-                "a",
-                "lst"
-            ],
             "type": "Binding"
         },
         {
@@ -174,10 +142,6 @@
             "target": "c",
             "value": "2",
             "repr": "2",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -189,10 +153,6 @@
             "target": "c",
             "value": "0",
             "repr": "0",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -204,10 +164,6 @@
             "target": "c",
             "value": "1",
             "repr": "1",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -219,10 +175,6 @@
             "target": "c",
             "value": "0",
             "repr": "0",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -234,10 +186,6 @@
             "target": "c",
             "value": "1",
             "repr": "1",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -249,10 +197,6 @@
             "target": "c",
             "value": "true",
             "repr": "True",
-            "sources": [
-                "a",
-                "b"
-            ],
             "type": "Binding"
         },
         {
@@ -264,10 +208,6 @@
             "target": "c",
             "value": "true",
             "repr": "True",
-            "sources": [
-                "a",
-                "lst"
-            ],
             "type": "Binding"
         }
     ],

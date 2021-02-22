@@ -30,7 +30,6 @@
             "target": "a",
             "value": "\"h\"",
             "repr": "\"h\"",
-            "sources": [],
             "type": "Binding"
         },
         {
@@ -42,7 +41,6 @@
             "target": "b",
             "value": "\"i\"",
             "repr": "\"i\"",
-            "sources": [],
             "type": "Binding"
         },
         {
@@ -65,9 +63,6 @@
             "target": "a",
             "value": "1",
             "repr": "1",
-            "sources": [
-                "l1"
-            ],
             "type": "Binding"
         },
         {
@@ -79,9 +74,6 @@
             "target": "b",
             "value": "2",
             "repr": "2",
-            "sources": [
-                "l1"
-            ],
             "type": "Binding"
         },
         {
@@ -104,9 +96,6 @@
             "target": "first",
             "value": "1",
             "repr": "1",
-            "sources": [
-                "numbers"
-            ],
             "type": "Binding"
         },
         {
@@ -118,9 +107,6 @@
             "target": "rest",
             "value": "[2,3,4]",
             "repr": "[2, 3, 4]",
-            "sources": [
-                "numbers"
-            ],
             "type": "Binding"
         },
         {
@@ -132,9 +118,6 @@
             "target": "beginning",
             "value": "[1,2,3]",
             "repr": "[1, 2, 3]",
-            "sources": [
-                "numbers"
-            ],
             "type": "Binding"
         },
         {
@@ -146,9 +129,6 @@
             "target": "last",
             "value": "4",
             "repr": "4",
-            "sources": [
-                "numbers"
-            ],
             "type": "Binding"
         },
         {
@@ -160,9 +140,6 @@
             "target": "head",
             "value": "1",
             "repr": "1",
-            "sources": [
-                "numbers"
-            ],
             "type": "Binding"
         },
         {
@@ -174,9 +151,6 @@
             "target": "middle",
             "value": "[2,3]",
             "repr": "[2, 3]",
-            "sources": [
-                "numbers"
-            ],
             "type": "Binding"
         },
         {
@@ -188,9 +162,6 @@
             "target": "tail",
             "value": "4",
             "repr": "4",
-            "sources": [
-                "numbers"
-            ],
             "type": "Binding"
         },
         {
@@ -202,10 +173,6 @@
             "target": "a",
             "value": "[1,2,1,2,3,4]",
             "repr": "(1, 2, 1, 2, 3, 4)",
-            "sources": [
-                "l1",
-                "numbers"
-            ],
             "type": "Binding"
         },
         {
@@ -217,10 +184,6 @@
             "target": "a",
             "value": "[1,2,1,2,3,4]",
             "repr": "[1, 2, 1, 2, 3, 4]",
-            "sources": [
-                "l1",
-                "numbers"
-            ],
             "type": "Binding"
         },
         {
@@ -232,10 +195,6 @@
             "target": "a",
             "value": "[1,2,3,4]",
             "repr": "{1, 2, 3, 4}",
-            "sources": [
-                "l1",
-                "numbers"
-            ],
             "type": "Binding"
         },
         {
@@ -269,10 +228,6 @@
             "target": "a",
             "value": "{\"1\":2}",
             "repr": "{1: 2}",
-            "sources": [
-                "m1",
-                "m2"
-            ],
             "type": "Binding"
         }
     ],

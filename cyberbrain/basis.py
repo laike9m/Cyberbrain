@@ -80,15 +80,15 @@ class InitialValue(Event):
     This also counts:
 
     a = 1
-    cyberbrain.init()
+    tracer.start()
     a = 2  --> emit two events: first InitialValue, then Binding.
-    cyberbrain.init()
+    tracer.stop()
 
     Compared to this one, which only emits a Binding event.
 
-    cyberbrain.init()
+    tracer.start()
     a = 2  # 'a' doesn't exist before.
-    cyberbrain.init()
+    tracer.stop()
     '"""
 
     target: Symbol = attr.ib(kw_only=True)
