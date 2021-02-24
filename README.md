@@ -20,6 +20,8 @@ Never spend hours stepping through a program, let Cyberbrain tell you what happe
 
 [Read more](docs/Features.md) about existing features, and [roadmaps](#roadmaps) for features to come.
 
+I gave a talk at PyCascades 2021 about Cyberbrain, **[watch it here](https://www.youtube.com/watch?v=eXlTVrNZ67Q)**.
+
 ## Install
 
 Cyberbrain consists of a Python library and various editor/IDE integrations. Currently it supports **[VS Code](https://code.visualstudio.com/)** and **[Gitpod](https://www.gitpod.io/)**. See our [plan](https://github.com/laike9m/Cyberbrain/issues/24) on expanding the support.
