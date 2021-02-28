@@ -26,7 +26,7 @@ let cl = console.log;
 
 const lineHeight = 40;
 
-const options = {
+let options = {
   nodes: {
     shape: "box"
   },
@@ -68,6 +68,8 @@ const options = {
     deleteNode: false,
     deleteEdge: false,
     editNode: function(data, callback) {
+      options.interaction.hover = false; // Solved #93.
+      traceGraph.network.setOptions(options);
       // filling in the popup DOM elements
       document.getElementById("node-operation").innerHTML = "Edit Loop Counter";
       editNode(data, cancelNodeEdit, callback);
@@ -372,7 +374,7 @@ class TraceGraph {
   }
 }
 
-///////////////////////// Loop counter node related /////////////////////////
+///////////////////////// Loop counter editor operations /////////////////////////
 
 function editNode(node, cancelAction, callback) {
   document.getElementById("node-label").value = node.label;
@@ -403,14 +405,17 @@ function editNode(node, cancelAction, callback) {
 }
 
 function cancelNodeEdit(callback) {
+  options.interaction.hover = true;
   clearNodePopUp();
   callback(null);
+  traceGraph.render();
 }
 
 // TODO: Move node related functions into TraceGraph.
 function saveNodeData(node, callback) {
   let userSetCounterText = document.getElementById("node-label").value;
   let userSetCounterValue = parseInt(userSetCounterText);
+  options.interaction.hover = true;
 
   if (userSetCounterValue > node.loop.maxCounter) {
     let infoText = document.getElementById("counter_info");
