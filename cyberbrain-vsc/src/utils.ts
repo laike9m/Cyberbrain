@@ -20,12 +20,12 @@ configure({
 });
 const logger = getLogger();
 
-export function underDevMode(context: vscode.ExtensionContext) {
+export function isDevMode(context: vscode.ExtensionContext) {
   // ExtensionMode: Production = 1, Development = 2, Test = 3.
   return context.extensionMode === 2;
 }
 
-export function underTestMode(context: vscode.ExtensionContext) {
+export function isTestMode(context: vscode.ExtensionContext) {
   // ExtensionMode: Production = 1, Development = 2, Test = 3.
   return context.extensionMode === 3;
 }
