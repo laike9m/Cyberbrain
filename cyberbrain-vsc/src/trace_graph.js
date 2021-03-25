@@ -294,6 +294,17 @@ class TraceGraph {
         return;
       }
       this.hoveredNodeId = node.id;
+
+      // highlight the current hoverd node's line on the editor
+      // TODO: post interaction behavior "UnHover" to cancel the highlight when unhovering the node
+      vscode.postMessage({
+        command: "Interaction behaivor",
+        context: {
+          interactionType: "Hover",
+          info: { lineno: node.lineno }
+        }
+      });
+
       // TODO: show values of all local variables at this point.
       displayValueInConsole(node);
     });
