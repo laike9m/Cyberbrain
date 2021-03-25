@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { underDevMode } from "./utils";
+import { isDevMode } from "./utils";
 
 export function openTraceGraph(
   context: vscode.ExtensionContext
@@ -25,7 +25,7 @@ export function openTraceGraph(
   // ExtensionMode: Production = 1, Development = 2, Test = 3.
   // See https://git.io/JJFvy. Use files in the src folder for development.
   let jsDir = "out";
-  if (underDevMode(context)) {
+  if (isDevMode(context)) {
     jsDir = "src";
   }
 
@@ -43,18 +43,13 @@ export function openTraceGraph(
   const valueJsURL = createWebviewUri(`${jsDir}/value.js`);
   const traceDataJsURL = createWebviewUri(`${jsDir}/trace_data.js`);
 
-  let isDevMode = false;
-  if (underDevMode(context)) {
-    isDevMode = true;
-  }
-
   webviewPanel.webview.html = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Tracing Result</title>
-    <script>const isDevMode = ${isDevMode};</script>
+    <script>const isDevMode = ${isDevMode(context)};</script>
     <script type="text/javascript" src="${randomColorJsURL}"></script>
     <script type="module" src="${valueJsURL}"></script>
     <script type="module" src="${traceDataJsURL}"></script>

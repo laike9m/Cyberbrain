@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import { openTraceGraph } from "./webview";
-import { underTestMode } from "./utils";
+import { isTestMode } from "./utils";
 import { decode } from "@msgpack/msgpack";
 
 let cl = console.log;
@@ -31,7 +31,7 @@ export class RpcServer {
             webviewPanel.webview.postMessage(decode(req.body));
 
             // If under test, don't open the devtools window because it will cover the trace graph.
-            if (!underTestMode(this.context)) {
+            if (!isTestMode(this.context)) {
               vscode.commands.executeCommand(
                 "workbench.action.webview.openDeveloperTools"
               );
