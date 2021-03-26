@@ -301,7 +301,7 @@ class TraceGraph {
         command: "Interaction behaivor",
         context: {
           interactionType: "Hover",
-          info: { lineno: node.lineno }
+          info: { lineno: node.lineno, relativePath: node.filename }
         }
       });
 
@@ -349,6 +349,7 @@ class TraceGraph {
       level: this.traceData.linenoMapping.get(event.lineno),
       lineno: event.lineno,
       label: buildLabelText(event),
+      filename: this.traceData.frameMetadata.filename,
       target: event.target,
       // "value" is a reserved property, use "runtimeValue" instead.
       runtimeValue: event.value,
