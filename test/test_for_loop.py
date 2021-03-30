@@ -8,14 +8,10 @@ def test_for_loop(tracer, mocked_responses):
     for i in range(2):  # SETUP_LOOP (3.7), GET_ITER, FOR_ITER
         a = i  # POP_BLOCK (3.7)
 
-    for i in range(2):
+    for _ in range(2):
         break  # BREAK_LOOP (3.7), JUMP_ABSOLUTE (>=3.8)
-        a = 1
-
-    for i in range(1):
+    for _ in range(1):
         continue  # CONTINUE_LOOP (3.7), JUMP_ABSOLUTE (>=3.8)
-        a = 1
-
     for i in range(2):
         if i == 0:  # This jumps directly to FOR_ITER
             continue
@@ -24,12 +20,12 @@ def test_for_loop(tracer, mocked_responses):
         if i == 1:
             break
 
-    for i in range(1):
+    for _ in range(1):
         break
     else:
         a = 1
 
-    for i in range(1):  # One iteration loop.
+    for _ in range(1):  # One iteration loop.
         pass
     else:
         a = 1

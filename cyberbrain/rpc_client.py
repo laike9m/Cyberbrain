@@ -103,9 +103,10 @@ class RpcClient:
         for event in frame.events:
             event_dict = attr.asdict(
                 event,
-                filter=lambda field, _: False if field.name == "sources" else True,
+                filter=lambda field, _: field.name != "sources",
                 value_serializer=event.value_serializer,
             )
+
             # We have to explicitly write the type name because Js does not know it.
             event_dict["type"] = type(event).__name__
             frame_data["events"].append(event_dict)

@@ -67,8 +67,7 @@ def test_generator_function(trace, mocked_responses):
 
 def test_yield_from(trace, mocked_responses):
     def inner():
-        for i in range(2):
-            yield i
+        yield from range(2)
 
     @trace
     def yield_from_function():

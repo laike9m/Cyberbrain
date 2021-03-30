@@ -3,8 +3,7 @@ from cyberbrain import trace
 
 @trace
 def container():
-    x = list(range(1000))
-    return x
+    return list(range(1000))
 
 
 if __name__ == "__main__":

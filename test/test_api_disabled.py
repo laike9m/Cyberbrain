@@ -9,13 +9,11 @@ def test_disabled_tracer(tracer):
 def test_decorator_with_argument(trace, mocked_responses):
     @trace(disabled=True)
     def decorated_func_disabled():
-        a = 1
-        return a
+        return 1
 
     @trace(disabled=False)
     def decorated_func_enabled():
-        a = 2
-        return a
+        return 2
 
     decorated_func_disabled()
     assert not trace.frame_logger

@@ -44,9 +44,12 @@ def verse(day):
         "Twelve drummers drumming,",
     ]
 
-    lines = [f"On the {ordinal[day - 1]} day of Christmas,", "My true love gave to me,"]
+    lines = [
+        f"On the {ordinal[day - 1]} day of Christmas,",
+        "My true love gave to me,",
+        *reversed(gifts[:day]),
+    ]
 
-    lines.extend(reversed(gifts[:day]))
 
     if day > 1:
         lines[-1] = "And " + lines[-1].lower()

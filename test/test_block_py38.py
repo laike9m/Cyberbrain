@@ -18,7 +18,7 @@ from utils import get_value
 def test_continue_in_finally(tracer, mocked_responses):
     tracer.start()
 
-    for x in range(2):
+    for _ in range(2):
         try:
             pass
         finally:
@@ -52,7 +52,7 @@ def test_continue_in_finally_with_exception(tracer, mocked_responses):
 
     # If the finally clause executes a return, break or continue statement, the saved
     # exception is discarded.
-    for x in range(2):
+    for _ in range(2):
         try:
             raise IndexError
         finally:
