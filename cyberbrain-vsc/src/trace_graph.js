@@ -310,6 +310,14 @@ class TraceGraph {
     });
 
     this.network.on("blurNode", event => {
+      // unhighlight the current hoverd node's line on the editor
+      vscode.postMessage({
+        command: "Interaction behaivor",
+        context: {
+          interactionType: "Unhover", 
+        }
+      });
+      
       this.hoveredNodeId = undefined;
     });
 

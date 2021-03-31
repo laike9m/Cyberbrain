@@ -1,11 +1,13 @@
-import { window, Range, Position, workspace, TextEditor, OverviewRulerLane } from 'vscode'
+import { window, Range, Position, workspace, TextEditor, OverviewRulerLane, TextEditorDecorationType } from 'vscode'
 
 export class Interactions {
 
-    private decorationType = window.createTextEditorDecorationType({
+    private decorateType: TextEditorDecorationType | undefined;
+    getDecorationType = function () {
+        return window.createTextEditorDecorationType({
             isWholeLine: true,
             overviewRulerColor: 'blue',
-		    overviewRulerLane:  OverviewRulerLane.Right,
+            overviewRulerLane: OverviewRulerLane.Right,
             light: {
                 // this color will be used in light color themes
                 backgroundColor: 'lightblue'
@@ -15,14 +17,17 @@ export class Interactions {
                 backgroundColor: 'darkblue'
             }
         });
+    }
 
     highlightLineOnEditor(lineno: number, relativePath: string) {
 
         const nodeEditor = window.visibleTextEditors.filter(
             editor => editor.document.uri.fsPath.indexOf(relativePath) !== -1)[0]
         if (nodeEditor) {
-            let lineRange = [{ range: new Range(new Position(lineno, 0), new Position(lineno, 100)) }]
-            nodeEditor.setDecorations(this.decorationType, lineRange)
+            // create a decoration type everytime since it will be disposed when unhovering the node
+            this.decorateType = this.getDecorationType();
+            let lineRange = [{ range: new Range(new Position(lineno - 1, 0), new Position(lineno - 1, 100)) }]
+            nodeEditor.setDecorations(this.decorateType, lineRange)
         }
     }
 
@@ -31,6 +36,11 @@ export class Interactions {
             case "Hover":
                 if (context.info?.hasOwnProperty("lineno"))
                     this.highlightLineOnEditor(context.info["lineno"], context.info["relativePath"]);
+                break;
+            case "Unhover":
+                if (this.decorateType) {
+                    this.decorateType.dispose();
+                }
                 break;
             default:
                 break;
