@@ -149,7 +149,7 @@ Thanks goes to these wonderful contributors ✨
 
 ## Support
 
-I'm almost working full time (besides my regular job) on Cyberbrain. This project is huge, complicated and will last for years, however it will reshape how people think and do debugging. That's why I need **your** support. Let's make it the best Python debugging tool 🤟!
+Cyberbrain is a huge and complicated project that will last for years, but once finished, it will reshape how people think and do debugging. Your support can help sustain it. Let's make it the best Python debugging tool 🤟!
 
 [:heart: Sponsor on GitHub](https://github.com/sponsors/laike9m)
 
