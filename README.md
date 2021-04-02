@@ -129,21 +129,22 @@ Thanks goes to these wonderful contributors ✨
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://www.kawabangga.com"><img src="https://avatars0.githubusercontent.com/u/9675939?v=4" width="30px;" alt=""/><br /><sub><b>laixintao</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/commits?author=laixintao" title="Documentation">📖</a> <a href="#financial-laixintao" title="Financial">💵</a></td>
-    <td align="center"><a href="http://yihong.run"><img src="https://avatars1.githubusercontent.com/u/15976103?v=4" width="30px;" alt=""/><br /><sub><b>yihong</b></sub></a><br /><a href="#financial-yihong0618" title="Financial">💵</a> <a href="#ideas-yihong0618" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="https://github.com/dingge2016"><img src="https://avatars1.githubusercontent.com/u/20748513?v=4" width="30px;" alt=""/><br /><sub><b>dingge2016</b></sub></a><br /><a href="#financial-dingge2016" title="Financial">💵</a></td>
-    <td align="center"><a href="https://frostming.com"><img src="https://avatars3.githubusercontent.com/u/16336606?v=4" width="30px;" alt=""/><br /><sub><b>Frost Ming</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/issues?q=author%3Afrostming" title="Bug reports">🐛</a> <a href="https://github.com/laike9m/Cyberbrain/commits?author=frostming" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://linw1995.com/"><img src="https://avatars0.githubusercontent.com/u/13523027?v=4" width="30px;" alt=""/><br /><sub><b>林玮 (Jade Lin)</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/issues?q=author%3Alinw1995" title="Bug reports">🐛</a> <a href="#ideas-linw1995" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="https://www.linkedin.com/in/alex-hall-8532079a/"><img src="https://avatars0.githubusercontent.com/u/3627481?v=4" width="30px;" alt=""/><br /><sub><b>Alex Hall</b></sub></a><br /><a href="#ideas-alexmojaki" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="https://github.com/inkuang"><img src="https://avatars1.githubusercontent.com/u/38498747?v=4" width="30px;" alt=""/><br /><sub><b>inkuang</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/issues?q=author%3Ainkuang" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/no1xsyzy"><img src="https://avatars0.githubusercontent.com/u/7346170?v=4" width="30px;" alt=""/><br /><sub><b>Siyuan Xu</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/issues?q=author%3Ano1xsyzy" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://ram.rachum.com"><img src="https://avatars1.githubusercontent.com/u/56778?v=4" width="30px;" alt=""/><br /><sub><b>Ram Rachum</b></sub></a><br /><a href="#ideas-cool-RR" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="https://github.com/poltronSuperstar"><img src="https://avatars1.githubusercontent.com/u/22001372?v=4" width="30px;" alt=""/><br /><sub><b>foo bar</b></sub></a><br /><a href="#financial-poltronSuperstar" title="Financial">💵</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/alex-hall-8532079a/"><img src="https://avatars0.githubusercontent.com/u/3627481?v=4?s=30" width="30px;" alt=""/><br /><sub><b>Alex Hall</b></sub></a><br /><a href="#ideas-alexmojaki" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://frostming.com"><img src="https://avatars3.githubusercontent.com/u/16336606?v=4?s=30" width="30px;" alt=""/><br /><sub><b>Frost Ming</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/issues?q=author%3Afrostming" title="Bug reports">🐛</a> <a href="https://github.com/laike9m/Cyberbrain/commits?author=frostming" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://ram.rachum.com"><img src="https://avatars1.githubusercontent.com/u/56778?v=4?s=30" width="30px;" alt=""/><br /><sub><b>Ram Rachum</b></sub></a><br /><a href="#ideas-cool-RR" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/no1xsyzy"><img src="https://avatars0.githubusercontent.com/u/7346170?v=4?s=30" width="30px;" alt=""/><br /><sub><b>Siyuan Xu</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/issues?q=author%3Ano1xsyzy" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/dingge2016"><img src="https://avatars1.githubusercontent.com/u/20748513?v=4?s=30" width="30px;" alt=""/><br /><sub><b>dingge2016</b></sub></a><br /><a href="#financial-dingge2016" title="Financial">💵</a> <a href="https://github.com/laike9m/Cyberbrain/commits?author=dingge2016" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/poltronSuperstar"><img src="https://avatars1.githubusercontent.com/u/22001372?v=4?s=30" width="30px;" alt=""/><br /><sub><b>foo bar</b></sub></a><br /><a href="#financial-poltronSuperstar" title="Financial">💵</a></td>
+    <td align="center"><a href="https://github.com/inkuang"><img src="https://avatars1.githubusercontent.com/u/38498747?v=4?s=30" width="30px;" alt=""/><br /><sub><b>inkuang</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/issues?q=author%3Ainkuang" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://www.kawabangga.com"><img src="https://avatars0.githubusercontent.com/u/9675939?v=4?s=30" width="30px;" alt=""/><br /><sub><b>laixintao</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/commits?author=laixintao" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://yihong.run"><img src="https://avatars1.githubusercontent.com/u/15976103?v=4?s=30" width="30px;" alt=""/><br /><sub><b>yihong</b></sub></a><br /><a href="#financial-yihong0618" title="Financial">💵</a> <a href="#ideas-yihong0618" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://linw1995.com/"><img src="https://avatars0.githubusercontent.com/u/13523027?v=4?s=30" width="30px;" alt=""/><br /><sub><b>林玮 (Jade Lin)</b></sub></a><br /><a href="https://github.com/laike9m/Cyberbrain/issues?q=author%3Alinw1995" title="Bug reports">🐛</a> <a href="#ideas-linw1995" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
-<!-- markdownlint-enable -->
+<!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 
