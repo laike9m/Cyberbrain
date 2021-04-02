@@ -24,12 +24,12 @@ trigger:
 pr:
   branches:
     include:
-    - master
+    - '*'
   paths:
     include:
     - cyberbrain/*
+    - cyberbrain-vsc/*
     - test/*
-    - protos/*
 
 variables:
   PYTEST_ADDOPTS: "-v -v -ra --showlocals"
