@@ -1,0 +1,8 @@
+ignore:
+  - examples/*
+  - test/*
+
+github:
+  request_review:
+    origin: owner
+    forked: author
