@@ -69,7 +69,7 @@ def should_ignore_event(
         return True
 
     # Excludes events from builtins.
-    return bool(frame and target in frame.f_builtins)
+    return frame and target in frame.f_builtins
 
 
 def map_bytecode_offset_to_lineno(frame: FrameType) -> dict[int, int]:
