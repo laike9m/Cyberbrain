@@ -69,10 +69,7 @@ def should_ignore_event(
         return True
 
     # Excludes events from builtins.
-    if frame and target in frame.f_builtins:
-        return True
-
-    return False
+    return bool(frame and target in frame.f_builtins)
 
 
 def map_bytecode_offset_to_lineno(frame: FrameType) -> dict[int, int]:
@@ -164,7 +161,7 @@ def should_exclude(frame):
     if any(filename.startswith(path) for path in _INSTALLATION_PATHS):
         return True
 
-    if any(
+    return any(
         name in filename
         for name in (
             "importlib._bootstrap",
@@ -172,10 +169,7 @@ def should_exclude(frame):
             "zipimport",
             "<string>",  # Dynamically generated frames
         )
-    ):
-        return True
-
-    return False
+    )
 
 
 def flatten(*args: any) -> list:
@@ -200,12 +194,11 @@ def pprint(*args):
 def get_value_from_frame(name: str, frame: FrameType):
     assert name_exist_in_frame(name, frame)
     if name in frame.f_locals:
-        value = frame.f_locals[name]
+        return frame.f_locals[name]
     elif name in frame.f_globals:
-        value = frame.f_globals[name]
+        return frame.f_globals[name]
     else:
-        value = frame.f_builtins[name]
-    return value
+        return frame.f_builtins[name]
 
 
 def name_exist_in_frame(name: str, frame: FrameType) -> bool:
@@ -233,11 +226,10 @@ def get_repr(obj: Any) -> str:
     match = re.search("at 0x", repr_text)
     if not match:
         return repr_text
-    else:
-        repr_text = repr_text[: match.start(0) - 1]
-        # Sometimes repr_text is like "<function f", add a '>' at the end.
-        if repr_text.startswith("<") and not repr_text.endswith(">"):
-            return repr_text + ">"
+    repr_text = repr_text[: match.start(0) - 1]
+    # Sometimes repr_text is like "<function f", add a '>' at the end.
+    if repr_text.startswith("<") and not repr_text.endswith(">"):
+        return repr_text + ">"
 
 
 def shorten_path(file_path, length):
@@ -248,10 +240,7 @@ def shorten_path(file_path, length):
 
 
 def all_none(*args):
-    for arg in args:
-        if arg is not None:
-            return False
-    return True
+    return all(arg is None for arg in args)
 
 
 if __name__ == "__main__":
