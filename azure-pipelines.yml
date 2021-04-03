@@ -49,7 +49,7 @@ jobs:
         py39:
           image: [ linux, windows, macOs ]
 
-  - job: ts-js-lint
+  - job: ts_js_lint
     steps:
       - task: NodeTool@0
         inputs:
@@ -67,7 +67,7 @@ jobs:
           workingDir: 'cyberbrain-vsc'
         displayName: Run Lint
 
-  - job: python-lint
+  - job: python_lint
     steps:
       - script: pip install black
       - script: black --check cyberbrain test
