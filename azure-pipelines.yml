@@ -56,7 +56,7 @@ jobs:
         displayName: 'Install Node.js'
 
       - script: |
-          npm install
+          npm install && npm install acorn
         workingDirectory: 'cyberbrain-vsc'
         displayName: 'NPM Install'
 
