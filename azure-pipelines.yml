@@ -17,8 +17,8 @@ trigger:
   paths:
     include:
       - cyberbrain/*
+      - cyberbrain-vsc/*
       - test/*
-      - protos/*
       - azure-pipelines.yml
 
 pr:
@@ -26,12 +26,15 @@ pr:
     include:
       - '*'
   paths:
-    # TODO: See if we can trigger different checks based on modified sources.
-    #   For example, ignore Python tests if only js files are modified.
+    # Ideally we should trigger different checks based on modified sources.
+    # For example, ignore Python tests if only js files are modified.
+    # There's a hacky way: https://stackoverflow.com/a/59608109/2142577
+    # Unless Azure pipelines provide a builtin way, I think it's not worth it.
     include:
       - cyberbrain/*
       - cyberbrain-vsc/*
       - test/*
+      - azure-pipelines.yml
 
 variables:
   PYTEST_ADDOPTS: "-v -v -ra --showlocals"
