@@ -48,15 +48,15 @@ jobs:
           image: [ linux, windows, macOs ]
         py39:
           image: [ linux, windows, macOs ]
-  - job: lint
+
+  - job: ts-js-lint
     steps:
       - task: NodeTool@0
         inputs:
           versionSpec: '12.18.3'
         displayName: 'Install Node.js'
 
-      - script: |
-          npm install && npm install acorn
+      - script: npm install && npm install acorn
         workingDirectory: 'cyberbrain-vsc'
         displayName: 'NPM Install'
 
@@ -66,3 +66,8 @@ jobs:
           customCommand: 'run lint'
           workingDir: 'cyberbrain-vsc'
         displayName: Run Lint
+
+  - job: python-lint
+    steps:
+      - script: pip install black
+      - script: black --check cyberbrain test
