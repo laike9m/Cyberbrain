@@ -50,22 +50,19 @@ jobs:
           image: [ linux, windows, macOs ]
   - job: lint
     steps:
-      # Install Node.js
       - task: NodeTool@0
         inputs:
-          versionSpec: $(nodeVersion)
+          versionSpec: '12.18.3'
         displayName: 'Install Node.js'
 
-      # Install node modules.
       - script: |
-          npm install
-        workingDirectory: cyberbrain-vsc
+          npm install && npm install acorn
+        workingDirectory: 'cyberbrain-vsc'
         displayName: 'NPM Install'
 
-      # Runs the `test` script that I included in my package.json
       - task: Npm@1
         inputs:
           command: custom
           customCommand: 'run lint'
-          workingDirectory: cyberbrain-vsc
+          workingDir: 'cyberbrain-vsc'
         displayName: Run Lint
