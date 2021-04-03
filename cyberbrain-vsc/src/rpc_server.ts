@@ -7,12 +7,14 @@ import { decode } from "@msgpack/msgpack";
 
 let cl = console.log;
 
+/*
+RPC server that communicates with the running Python program.
+ */
 export class RpcServer {
-  // Allow any size of payload to come. Default is 4MB.
   private server: express.Express;
   private readonly context: vscode.ExtensionContext;
   private readonly listeningPort = 1989; // TODO: Make it configurable.
-
+  
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
     this.server = express();

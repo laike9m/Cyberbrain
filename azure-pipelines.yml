@@ -4,16 +4,16 @@
 name: $(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.rr)
 resources:
   repositories:
-  - repository: tox
-    type: github
-    endpoint: github
-    name: tox-dev/azure-pipelines-template
+    - repository: tox
+      type: github
+      endpoint: github
+      name: tox-dev/azure-pipelines-template
 
 trigger:
   batch: true
   branches:
     include:
-    - master
+      - master
   paths:
     include:
       - cyberbrain/*
@@ -24,12 +24,14 @@ trigger:
 pr:
   branches:
     include:
-    - '*'
+      - '*'
   paths:
+    # TODO: See if we can trigger different checks based on modified sources.
+    #   For example, ignore Python tests if only js files are modified.
     include:
-    - cyberbrain/*
-    - cyberbrain-vsc/*
-    - test/*
+      - cyberbrain/*
+      - cyberbrain-vsc/*
+      - test/*
 
 variables:
   PYTEST_ADDOPTS: "-v -v -ra --showlocals"
@@ -37,12 +39,33 @@ variables:
   CI_RUN: 'yes'
 
 jobs:
-- template: run-tox-env.yml@tox
-  parameters:
-    jobs:
-      py37:
-        image: [linux, windows, macOs]
-      py38:
-        image: [linux, windows, macOs]
-      py39:
-        image: [linux, windows, macOs]
+  - template: run-tox-env.yml@tox
+    parameters:
+      jobs:
+        py37:
+          image: [ linux, windows, macOs ]
+        py38:
+          image: [ linux, windows, macOs ]
+        py39:
+          image: [ linux, windows, macOs ]
+  - job: lint
+    steps:
+      # Install Node.js
+      - task: NodeTool@0
+        inputs:
+          versionSpec: $(nodeVersion)
+        displayName: 'Install Node.js'
+
+      # Install node modules.
+      - script: |
+          npm install
+        workingDirectory: cyberbrain-vsc
+        displayName: 'NPM Install'
+
+      # Runs the `test` script that I included in my package.json
+      - task: Npm@1
+        inputs:
+          command: custom
+          customCommand: 'run lint'
+        workingDirectory: cyberbrain-vsc
+        displayName: Run Lint

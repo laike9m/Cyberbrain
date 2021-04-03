@@ -21,7 +21,8 @@
 		"copy": "node node_modules/rimraf/bin.js ./out/*.js && node node_modules/copyfiles/copyfiles -u 1 ./src/*.js ./out/",
 		"vscode:prepublish": "npm run compile",
 		"compile": "npm run copy && tsc -p ./",
-		"lint": "eslint src --ext ts --fix",
+		"lint": "prettier-eslint-check src/**/*.js src/**/*.ts",
+		"eslint": "eslint src --ext ts --fix",
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile && npm run lint",
 		"test": "node ./out/test/runTest.js"
@@ -39,6 +40,7 @@
 		"glob": "^7.1.6",
 		"hamjest": "^3.7.1",
 		"mocha": "^7.2.0",
+		"prettier-eslint-check": "^1.0.3",
 		"prettier-eslint-cli": "^5.0.0",
 		"typescript": "^3.9.7",
 		"vscode-test": "^1.4.1"
