@@ -67,5 +67,5 @@ jobs:
         inputs:
           command: custom
           customCommand: 'run lint'
-        workingDirectory: cyberbrain-vsc
+          workingDirectory: cyberbrain-vsc
         displayName: Run Lint
