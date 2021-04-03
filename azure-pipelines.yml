@@ -69,5 +69,8 @@ jobs:
 
   - job: python_lint
     steps:
-      - script: pip install black
+      - task: UsePythonVersion@0
+          inputs:
+            - versionSpec: '3.9'
+      - script: python3.9 -m pip install black
       - script: black --check cyberbrain test
