@@ -6,11 +6,12 @@ from __future__ import annotations
 
 import dataclasses
 import enum
+from copy import copy
+from dis import Instruction
+
 import functools
 import inspect
 import sys
-from copy import copy
-from dis import Instruction
 from types import FrameType
 from typing import Optional
 
@@ -144,7 +145,10 @@ class BaseValueStack:
             try:
                 handler = getattr(self, f"_{opname}_handler")
             except AttributeError:
-                raise AttributeError(f"Please add\ndef _{opname}_handler(self, instr):")
+                raise NotImplementedError(
+                    f"Bytecode {opname} not implemented.\n"
+                    "Please open git.io/JYSlG to report this issue.",
+                )
 
         # Pass arguments on demand.
         try:
