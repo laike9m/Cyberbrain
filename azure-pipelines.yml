@@ -70,7 +70,7 @@ jobs:
           workingDir: 'cyberbrain-vsc'
         displayName: Run Lint
 
-      - task: Npm@2
+      - task: Npm@1
         inputs:
           command: custom
           customCommand: 'run unittest'
