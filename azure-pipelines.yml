@@ -70,6 +70,13 @@ jobs:
           workingDir: 'cyberbrain-vsc'
         displayName: Run Lint
 
+      - task: Npm@2
+        inputs:
+          command: custom
+          customCommand: 'run unittest'
+          workingDir: 'cyberbrain-vsc'
+        displayName: Run Unit Tests
+
   - job: python_lint
     steps:
       - task: UsePythonVersion@0
