@@ -1,0 +1,8 @@
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '12.18.3'
+    displayName: 'Install Node.js'
+  - script: npm install && npm install acorn
+    workingDirectory: 'cyberbrain-vsc'
+    displayName: 'NPM Install'
