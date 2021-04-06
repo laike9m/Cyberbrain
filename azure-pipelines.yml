@@ -79,6 +79,7 @@ jobs:
           echo ">>> Started xvfb"
         displayName: Start xvfb
         condition: and(succeeded(), eq(variables['Agent.OS'], 'Linux'))
+      - bash: tree -d . -I 'node_modules|cache|test_*'
       - template: templates/npm-steps.yml
       - task: Npm@1
         inputs:
