@@ -66,7 +66,7 @@ There are two ways to run the e2e tests.
 
   This will open a new VS Code window and run the tests.
   
-  Note that if you're using the latest version of VS Code, the test runner will complain that a VS Code window has already been opened. You can download the [Insiders version](https://code.visualstudio.com/insiders/) of VS Code to solve this problem.
+  Note that if you're using the latest version of VS Code, the test runner will complain that a VS Code window has already been opened. You can download and use the [Insiders version](https://code.visualstudio.com/insiders/) for development to solve this issue.
 
 ## Code Style
 
@@ -85,12 +85,15 @@ You should be able to find the corresponding plugins that do auto-formatting for
   ![](https://user-images.githubusercontent.com/2592205/113659455-e51a6c00-9656-11eb-9eb1-fa18296380bc.png)
   
   - TypeScript
+  
   ![](https://user-images.githubusercontent.com/2592205/113659541-1abf5500-9657-11eb-9058-e0069068a20d.png)
     
   - JavaScript
+  
   ![](https://user-images.githubusercontent.com/2592205/113659628-480c0300-9657-11eb-9105-91e76b80a6b4.png)
 
   - Python
+  
   ![](https://user-images.githubusercontent.com/2592205/113659684-6f62d000-9657-11eb-9036-ca744e7b5f68.png)
 
 Code style will be checked for any PR, so make sure to get them right before filing a PR.
