@@ -71,6 +71,29 @@ jobs:
           customCommand: 'run unittest'
           workingDir: 'cyberbrain-vsc'
         displayName: Run Unit Tests
+  
+  - job: vscode_tests
+    steps:
+      - bash: |
+          /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          echo ">>> Started xvfb"
+        displayName: Start xvfb
+        condition: and(succeeded(), eq(variables['Agent.OS'], 'Linux'))
+      - template: templates/npm-steps.yml
+      - task: Npm@1
+        inputs:
+          command: custom
+          customCommand: 'run compile'
+          workingDir: 'cyberbrain-vsc'
+        displayName: NPM compile
+      - task: Npm@1
+        inputs:
+          command: custom
+          customCommand: 'run test'
+          workingDir: 'cyberbrain-vsc'
+        displayName: VSCode Integration tests
+        env:
+          DISPLAY: ':99.0'
 
   - job: python_lint
     steps:
