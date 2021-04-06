@@ -47,15 +47,7 @@ cd cyberbrain-vsc && npm run unittest
 
 There are two ways to run the e2e tests.
 
-- From command line
-
-   ```
-   cd cyberbrain-vsc && npm run test
-   ```
-
-   This will open a new VS Code window and run the tests
-
-- From VS Code's UI
+- From VS Code's UI (recommended)
 
   1. **Make sure `cyberbrain-vsc` is opened as a top-level folder in VS Code**. If you opened the root directory `Cyberbrain`, though `cyberbrain-vsc` is included, it will NOT work.
 
@@ -65,7 +57,43 @@ There are two ways to run the e2e tests.
 
   3. Choose "Extension Tests", and click the "run" icon ▶
   4. A new VS Code window will pop up and run the tests.
+    
+- From command line
 
+   ```
+   cd cyberbrain-vsc && npm test
+   ```
+
+  This will open a new VS Code window and run the tests.
+  
+  Note that if you're using the latest version of VS Code, the test runner will complain that a VS Code window has already been opened. You can download the [Insiders version](https://code.visualstudio.com/insiders/) of VS Code to solve this problem.
+
+## Code Style
+
+We use 
+- [black](https://github.com/psf/black) for Python formatting.
+- [prettier-eslint-cli](https://github.com/prettier/prettier-eslint-cli) for TypeScript/JavaScript formatting.
+
+You should be able to find the corresponding plugins that do auto-formatting for your editor or IDE of choose.
+
+- If you're using VS Code:
+  - The official [Python plugin](https://marketplace.visualstudio.com/items?itemName=ms-python.python) lets you set black as the formatter.
+  - [Prettier ESLint
+](https://marketplace.visualstudio.com/items?itemName=rvest.vs-code-prettier-eslint)
+- If you're using JetBrains' IDEs, there might be other ways, but I tend to use [File Watchers](https://www.jetbrains.com/help/idea/using-file-watchers.html):
+  
+  ![](https://user-images.githubusercontent.com/2592205/113659455-e51a6c00-9656-11eb-9eb1-fa18296380bc.png)
+  
+  - TypeScript
+  ![](https://user-images.githubusercontent.com/2592205/113659541-1abf5500-9657-11eb-9058-e0069068a20d.png)
+    
+  - JavaScript
+  ![](https://user-images.githubusercontent.com/2592205/113659628-480c0300-9657-11eb-9105-91e76b80a6b4.png)
+
+  - Python
+  ![](https://user-images.githubusercontent.com/2592205/113659684-6f62d000-9657-11eb-9036-ca744e7b5f68.png)
+
+Code style will be checked for any PR, so make sure to get them right before filing a PR.
 
 ## Packaging
 
@@ -77,7 +105,7 @@ poetry build
 cd cyberbrain-vsc && vsce package --no-yarn
 ```
 
-Normally you don't need to do packaging, because I'm the only one that can publish new versions.
+This is just FYI. As of now only me have the permission to publish new versions.
 
 ## Others
 
