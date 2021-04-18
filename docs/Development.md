@@ -109,9 +109,3 @@ cd cyberbrain-vsc && vsce package --no-yarn
 ```
 
 This is just FYI. As of now only me have the permission to publish new versions.
-
-## Others
-
-- `make gen_setup`
-   
-   Generate the latest setup.py, which you can use for [editable install](https://stackoverflow.com/a/35064498/2142577). Only use it if you know what you're doing.

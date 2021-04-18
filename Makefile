@@ -24,9 +24,6 @@ test:
 	${python383} -m pytest test --assert=plain -s -vv
 	${python383} -m pytest test/test_outside_func.py --assert=plain -s -vv
 
-gen_setup:
-	dephell deps convert
-
 update_dep:
 	poetry update
 	cd cyberbrain-vsc/ && npm update
