@@ -15,11 +15,8 @@ export class RpcServer {
   private server: express.Express;
   private readonly context: vscode.ExtensionContext;
   private readonly listeningPort = 1989; // TODO: Make it configurable.
-<<<<<<< HEAD
-  
-=======
   private interactions: Interactions;
->>>>>>>  Add a message post for hovering nodes and implement the framework of relative interaction
+
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
     this.server = express();
@@ -34,7 +31,10 @@ export class RpcServer {
       // Sends data to the trace graph in webview.
       let webviewPanel = openTraceGraph(this.context);
       webviewPanel.webview.onDidReceiveMessage(
-        (message: { command: string, context?: { interactionType: string, info?: any } }) => {
+        (message: {
+          command: string;
+          context?: { interactionType: string; info?: any };
+        }) => {
           if (message.command === "Webview ready") {
             webviewPanel.webview.postMessage(decode(req.body));
 
@@ -45,9 +45,13 @@ export class RpcServer {
               );
             }
           }
-          if (message.command === "Interaction behaivor") {
-            if (message.context) {
-              this.interactions.execute(message.context);
+          if (message.command === "Interaction behavior") {
+            try {
+              if (message.context) {
+                this.interactions.execute(message.context);
+              }
+            } catch (error) {
+              cl("Failed to execute the interation behavior: ", error);
             }
           }
         },

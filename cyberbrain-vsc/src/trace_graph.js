@@ -296,9 +296,8 @@ class TraceGraph {
       this.hoveredNodeId = node.id;
 
       // highlight the current hoverd node's line on the editor
-      // TODO: post interaction behavior "UnHover" to cancel the highlight when unhovering the node
       vscode.postMessage({
-        command: "Interaction behaivor",
+        command: "Interaction behavior",
         context: {
           interactionType: "Hover",
           info: { lineno: node.lineno, relativePath: node.filename }
@@ -312,12 +311,12 @@ class TraceGraph {
     this.network.on("blurNode", event => {
       // unhighlight the current hoverd node's line on the editor
       vscode.postMessage({
-        command: "Interaction behaivor",
+        command: "Interaction behavior",
         context: {
-          interactionType: "Unhover", 
+          interactionType: "Unhover"
         }
       });
-      
+
       this.hoveredNodeId = undefined;
     });
 
