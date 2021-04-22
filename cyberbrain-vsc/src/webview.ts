@@ -103,7 +103,7 @@ export function openTraceGraph(
     <div id='vis'>
     <script>
         const vscode = acquireVsCodeApi();
-        vscode.postMessage("Webview ready");
+        vscode.postMessage({command:"Webview ready"});
     </script>
 </body>
 </html>`;

@@ -294,11 +294,29 @@ class TraceGraph {
         return;
       }
       this.hoveredNodeId = node.id;
+
+      // highlight the current hoverd node's line on the editor
+      vscode.postMessage({
+        command: "Interaction behavior",
+        interactionConfig: {
+          type: "Hover",
+          info: { lineno: node.lineno, relativePath: node.filename }
+        }
+      });
+
       // TODO: show values of all local variables at this point.
       displayValueInConsole(node);
     });
 
     this.network.on("blurNode", event => {
+      // unhighlight the current hoverd node's line on the editor
+      vscode.postMessage({
+        command: "Interaction behavior",
+        interactionConfig: {
+          type: "Unhover"
+        }
+      });
+
       this.hoveredNodeId = undefined;
     });
 
@@ -338,6 +356,7 @@ class TraceGraph {
       level: this.traceData.linenoMapping.get(event.lineno),
       lineno: event.lineno,
       label: buildLabelText(event),
+      filename: this.traceData.frameMetadata.filename,
       target: event.target,
       // "value" is a reserved property, use "runtimeValue" instead.
       runtimeValue: event.value,
