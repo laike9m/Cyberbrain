@@ -8,14 +8,14 @@ import {
   TextEditorDecorationType
 } from "vscode";
 
-enum Behaviors {
+enum Behavior {
   Hover = "Hover",
   Unhover = "Unhover"
 }
 
 /**
- * `Interactions` is used to realize and manage the interaction behaviors from users when they iteract with the cyberbrain webpage.
- * To design a interation, post message to Vscode when a User's interaction behavior is detected, parse the message with rpc server,
+ * `Interactions` is used to implement the interaction behaviors from users when they interact with cyberbrain webpages.
+ * To add an interation, post message to Vscode when a user's interaction behavior is detected, parse the message with rpc server,
  * define relative interactions logic in the `Interactions`, and then call `Interactions.excute` to excute it.
  * Current Interaction Behaviors includes:
  * 1. Highlight the line of the node in the editor when hovering the mouse on any node. Cancel the highlight when the node is unhovered.
@@ -41,9 +41,9 @@ export class Interactions {
   }
 
   /**
-   * Highlight the given line on the Editor
+   * Highlight the given line on the Editor.
    * @param lineno  the highlighted line's number.
-   * @param relativePath  the relative file path of the highlighted line
+   * @param relativePath  the relative path of the file which the highlighted line belongs to.
    */
   highlightLineOnEditor(lineno: number, relativePath: string) {
     const nodeEditor = window.visibleTextEditors.filter(
@@ -64,17 +64,17 @@ export class Interactions {
     }
   }
 
-  execute(context: { interactionType: String; info?: any }) {
-    switch (context.interactionType) {
-      case Behaviors.Hover:
-        if (context.info?.hasOwnProperty("lineno")) {
+  execute(interactionConfig: { type: String; info?: any }) {
+    switch (interactionConfig.type) {
+      case Behavior.Hover:
+        if (interactionConfig.info?.hasOwnProperty("lineno")) {
           this.highlightLineOnEditor(
-            context.info["lineno"],
-            context.info["relativePath"]
+            interactionConfig.info["lineno"],
+            interactionConfig.info["relativePath"]
           );
         }
         break;
-      case Behaviors.Unhover:
+      case Behavior.Unhover:
         if (this.decorateType) {
           this.decorateType.dispose();
         }

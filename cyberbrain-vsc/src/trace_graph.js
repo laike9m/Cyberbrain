@@ -298,8 +298,8 @@ class TraceGraph {
       // highlight the current hoverd node's line on the editor
       vscode.postMessage({
         command: "Interaction behavior",
-        context: {
-          interactionType: "Hover",
+        interactionConfig: {
+          type: "Hover",
           info: { lineno: node.lineno, relativePath: node.filename }
         }
       });
@@ -312,8 +312,8 @@ class TraceGraph {
       // unhighlight the current hoverd node's line on the editor
       vscode.postMessage({
         command: "Interaction behavior",
-        context: {
-          interactionType: "Unhover"
+        interactionConfig: {
+          type: "Unhover"
         }
       });
 

@@ -33,7 +33,7 @@ export class RpcServer {
       webviewPanel.webview.onDidReceiveMessage(
         (message: {
           command: string;
-          context?: { interactionType: string; info?: any };
+          interactionConfig?: { type: string; info?: any };
         }) => {
           if (message.command === "Webview ready") {
             webviewPanel.webview.postMessage(decode(req.body));
@@ -47,8 +47,8 @@ export class RpcServer {
           }
           if (message.command === "Interaction behavior") {
             try {
-              if (message.context) {
-                this.interactions.execute(message.context);
+              if (message.interactionConfig) {
+                this.interactions.execute(message.interactionConfig);
               }
             } catch (error) {
               cl("Failed to execute the interation behavior: ", error);
