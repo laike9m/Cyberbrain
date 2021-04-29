@@ -80,7 +80,8 @@ suite("Extension Test Suite", function() {
     // Launches cb Python server.
     const fileBeingTraced = path.resolve(cbRoot, example.file);
     let serverProcess = spawn("python", example.args, {
-      cwd: cbRoot
+      cwd: cbRoot,
+      shell: true // Required for wildcard expansion to work.
     });
 
     serverProcess.stdout.on("data", data => {
