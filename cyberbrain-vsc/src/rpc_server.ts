@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
 import * as express from "express";
-import * as bodyParser from "body-parser";
 import { openTraceGraph } from "./webview";
 import { isTestMode } from "./utils";
 import { decode } from "@msgpack/msgpack";
@@ -20,7 +19,7 @@ export class RpcServer {
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
     this.server = express();
-    this.server.use(bodyParser.raw({ limit: "10GB" }));
+    this.server.use(express.raw({ limit: "10GB" }));
     this.interactions = new Interactions();
 
     this.server.post("/frame", (req, res) => {
