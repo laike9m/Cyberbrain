@@ -127,7 +127,6 @@ class TraceGraph {
   render() {
     this.nodes.clear();
     this.edges.clear();
-    this.traceData.updateVisibleEvents();
     this.network = new vis.Network(
       this.container,
       {
@@ -309,7 +308,7 @@ class TraceGraph {
     });
 
     this.network.on("blurNode", event => {
-      // unhighlight the current hoverd node's line on the editor
+      // Remove the highlight of the current hovered node's line in the editor.
       vscode.postMessage({
         command: "Interaction behavior",
         interactionConfig: {
@@ -427,7 +426,6 @@ function cancelNodeEdit(callback) {
   options.interaction.hover = true;
   clearNodePopUp();
   callback(null);
-  traceGraph.render();
 }
 
 // TODO: Move node related functions into TraceGraph.
@@ -449,6 +447,7 @@ function saveNodeData(node, callback) {
   node.loop.counter = userSetCounterValue;
   clearNodePopUp();
   callback(node);
+  traceGraph.traceData.updateVisibleEvents(node.loop);
   traceGraph.render();
 }
 

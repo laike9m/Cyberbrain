@@ -7,6 +7,12 @@ function debugLog(...messages) {
   }
 }
 
+function assert(condition, message) {
+  if (!condition) {
+    throw new Error(message || "Assertion failed");
+  }
+}
+
 export class Loop {
   constructor(startOffset, endOffset, startLineno) {
     this.startLineno = startLineno;
@@ -108,25 +114,19 @@ export class TraceData {
       .sort((loop1, loop2) => loop1.startOffset - loop2.startOffset);
     this.tracingResult = new Map(Object.entries(data.tracingResult));
     this.linenoMapping = new Map();
-    this.visibleEvents = this.initialize();
-    // cl(this.loops);
+    this.visibleEvents = new Map();
+    this.initialize();
   }
 
   get visibleEventsArray() {
     return Array.from(this.visibleEvents.values());
   }
 
-  /* Initialize the trace graph.
-
-  Returns:
-    - A list of events that should be displayed in the trace graph initially.
-
-  Updates:
-    Loops, whose iterations are filled.
-
+  /**
+   * Initialize the trace graph.
+   * Fills this.loops and this.visibleEvents
    */
   initialize() {
-    let visibleEvents = new Map();
     let loopStack = [];
     let maxReachedOffset = -1;
     let previousOffset = -2;
@@ -153,7 +153,7 @@ export class TraceData {
 
         // Don't include JumpBackToLoopStart in visible events.
         if (event.type !== "JumpBackToLoopStart") {
-          visibleEvents.set(offset, event);
+          this.visibleEvents.set(offset, event);
         }
       }
 
@@ -256,11 +256,13 @@ export class TraceData {
       .forEach((lineno, ranking) => {
         this.linenoMapping.set(lineno, ranking + 1); // Level starts with 1, leaving level 0 to InitialValue nodes
       });
-
-    return visibleEvents;
   }
 
-  updateVisibleEvents() {
+  /**
+   * Update visible events upon changing loop counters.
+   * @param {Loop} modifiedLoop - The loop whose counter is changed by users.
+   */
+  updateVisibleEvents(modifiedLoop) {
     // Loops are already sorted by start offset, so inner loops are guaranteed to come
     // later and override events from outer loops.
     for (const loop of this.loops) {
@@ -276,35 +278,28 @@ export class TraceData {
       }
     }
 
-    // Remove nodes that should not appear in the trace graph, if the following two
-    // conditions are met:
-    // - It has a source which is an invisible node
-    // - It is not a source of any visible node
+    assert(
+      modifiedLoop !== undefined,
+      "modifiedLoop is required to be passed to updateVisibleEvents !"
+    );
 
-    let visibleEventIDs = new Set();
-    let sourceEventIDs = new Set();
-    for (const event of this.visibleEvents.values()) {
-      visibleEventIDs.add(event.id);
-      const sourceIDs = this.tracingResult.get(event.id);
-      if (sourceIDs !== undefined) {
-        for (const sourceID of sourceIDs) {
-          sourceEventIDs.add(sourceID);
-        }
-      }
-    }
-
-    for (const event of this.visibleEvents.values()) {
-      const sourceIDs = this.tracingResult.get(event.id);
-      if (sourceIDs === undefined) {
+    // Remove invalid nodes, aka nodes that are not supposed to be displayed.
+    for (let [offset, event] of this.visibleEvents) {
+      if (
+        offset < modifiedLoop.startOffset ||
+        offset > modifiedLoop.endOffset
+      ) {
+        // Nodes not within the offset range of the modified loop is not affected.
         continue;
       }
 
-      for (const sourceID of sourceIDs) {
-        if (!visibleEventIDs.has(sourceID) && !sourceEventIDs.has(event.id)) {
-          // Delete while iterating is safe, see https://stackoverflow.com/a/35943995
-          this.visibleEvents.delete(event.offset);
-          break;
-        }
+      if (
+        event.index < modifiedLoop.currentIterationStart ||
+        event.index > modifiedLoop.currentIterationEnd
+      ) {
+        // Node is in the offset range of the modified loop, but not within the index
+        // range of the current iteration. This indicates that it is an invalid node.
+        this.visibleEvents.delete(offset);
       }
     }
   }

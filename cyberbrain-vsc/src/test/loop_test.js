@@ -102,7 +102,7 @@ describe("Test nested loops", function() {
 
     it("(0, 0) -> (1, 0)", function() {
       traceData.loops[0].counter = 1;
-      traceData.updateVisibleEvents();
+      traceData.updateVisibleEvents(traceData.loops[0]);
       assertThat(traceData.visibleEventsArray, [
         { type: "Binding", index: 9, offset: 0 },
         { type: "Binding", index: 10, offset: 2 },
@@ -114,7 +114,7 @@ describe("Test nested loops", function() {
 
     it("(1, 0) -> (1, 1)", function() {
       traceData.loops[1].counter = 1;
-      traceData.updateVisibleEvents();
+      traceData.updateVisibleEvents(traceData.loops[1]);
       assertThat(traceData.visibleEventsArray, [
         { type: "Binding", index: 9, offset: 0 },
         { type: "Binding", index: 13, offset: 2 },
@@ -130,7 +130,7 @@ describe("Test nested loops", function() {
 
     it("(0, 0) -> (0, 1)", function() {
       traceData.loops[1].counter = 1;
-      traceData.updateVisibleEvents();
+      traceData.updateVisibleEvents(traceData.loops[1]);
       assertThat(traceData.visibleEventsArray, [
         { type: "Binding", index: 0, offset: 0 },
         { type: "Binding", index: 4, offset: 2 },
@@ -142,7 +142,7 @@ describe("Test nested loops", function() {
 
     it("(0, 0) -> (0, 1)", function() {
       traceData.loops[0].counter = 1;
-      traceData.updateVisibleEvents();
+      traceData.updateVisibleEvents(traceData.loops[0]);
       assertThat(traceData.visibleEventsArray, [
         { type: "Binding", index: 9, offset: 0 },
         { type: "Binding", index: 13, offset: 2 },
@@ -156,12 +156,13 @@ describe("Test nested loops", function() {
   describe("Test decrease counter", function() {
     let traceData = createTraceData();
     traceData.loops[0].counter = 1;
+    traceData.updateVisibleEvents(traceData.loops[0]);
     traceData.loops[1].counter = 1;
-    traceData.updateVisibleEvents();
+    traceData.updateVisibleEvents(traceData.loops[1]);
 
     it("(1, 1) -> (0, 1)", function() {
       traceData.loops[0].counter = 0;
-      traceData.updateVisibleEvents();
+      traceData.updateVisibleEvents(traceData.loops[0]);
       assertThat(traceData.visibleEventsArray, [
         { type: "Binding", index: 0, offset: 0 },
         { type: "Binding", index: 4, offset: 2 },
@@ -173,7 +174,7 @@ describe("Test nested loops", function() {
 
     it("(0, 1) -> (0, 0)", function() {
       traceData.loops[1].counter = 0;
-      traceData.updateVisibleEvents();
+      traceData.updateVisibleEvents(traceData.loops[1]);
       assertThat(traceData.visibleEventsArray, [
         { type: "Binding", index: 0, offset: 0 },
         { type: "Binding", index: 1, offset: 2 },
@@ -187,12 +188,13 @@ describe("Test nested loops", function() {
   describe("Test decrease counter", function() {
     let traceData = createTraceData();
     traceData.loops[0].counter = 1;
+    traceData.updateVisibleEvents(traceData.loops[0]);
     traceData.loops[1].counter = 1;
-    traceData.updateVisibleEvents();
+    traceData.updateVisibleEvents(traceData.loops[1]);
 
     it("(1, 1) -> (1, 0)", function() {
       traceData.loops[1].counter = 0;
-      traceData.updateVisibleEvents();
+      traceData.updateVisibleEvents(traceData.loops[1]);
       assertThat(traceData.visibleEventsArray, [
         { type: "Binding", index: 9, offset: 0 },
         { type: "Binding", index: 10, offset: 2 },
@@ -204,7 +206,7 @@ describe("Test nested loops", function() {
 
     it("(1, 0) -> (0, 0)", function() {
       traceData.loops[0].counter = 0;
-      traceData.updateVisibleEvents();
+      traceData.updateVisibleEvents(traceData.loops[0]);
       assertThat(traceData.visibleEventsArray, [
         { type: "Binding", index: 0, offset: 0 },
         { type: "Binding", index: 1, offset: 2 },
@@ -339,7 +341,7 @@ describe("Test loop with empty first iteration.", function() {
   it("0 -> 1", function() {
     let traceData = createTraceData();
     traceData.loops[0].counter = 1;
-    traceData.updateVisibleEvents();
+    traceData.updateVisibleEvents(traceData.loops[0]);
     assertThat(traceData.visibleEventsArray, [
       { type: "Binding", index: 2, offset: 0 },
       { type: "Binding", index: 3, offset: 2 }
@@ -411,7 +413,7 @@ describe("Test early return from loop.", function() {
         { type: "Return", index: 4, offset: 2, id: "4" } // return b
       ],
       loops: [new Loop(0, 6)],
-      tracingResult: { "3": "1", "4": "3" }
+      tracingResult: { "3": ["1"], "4": ["3"] }
     });
   }
   let traceData = createTraceData();
@@ -438,10 +440,12 @@ describe("Test early return from loop.", function() {
 
   it("0 -> 1", function() {
     traceData.loops[0].counter = 1;
-    traceData.updateVisibleEvents();
+    traceData.updateVisibleEvents(traceData.loops[0]);
+    // Once we fixed #19, { type: "Binding", index: 1, offset: 4, id: "1" }
+    // should be visible because it is the source of a visible node:
+    // { type: "Binding", index: 3, offset: 0, id: "3" } which is "b = a".
     assertThat(traceData.visibleEventsArray, [
       { type: "Binding", index: 3, offset: 0, id: "3" },
-      { type: "Binding", index: 1, offset: 4, id: "1" },
       { type: "Return", index: 4, offset: 2, id: "4" }
     ]);
   });
@@ -450,10 +454,85 @@ describe("Test early return from loop.", function() {
   // an invisible node { type: "Binding", index: 3, offset: 0, id: "3" }
   it("1 -> 0", function() {
     traceData.loops[0].counter = 0;
-    traceData.updateVisibleEvents();
+    traceData.updateVisibleEvents(traceData.loops[0]);
     assertThat(traceData.visibleEventsArray, [
       { type: "Binding", index: 0, offset: 0, id: "0" },
       { type: "Binding", index: 1, offset: 4, id: "1" }
+    ]);
+  });
+});
+
+// Test case comes from https://github.com/laike9m/Cyberbrain/issues/47
+// But it's actually verifying the bug in #108 has been fixed.
+describe("Test issue47 self assignment.", function() {
+  function createTraceData() {
+    return new TraceData({
+      /*
+      def fib(n):  # Assuming n = 2
+          a, b = 0, 1
+          for _ in range(n):
+              a, b = b, a + b
+          return b
+       */
+      events: [
+        { type: "Binding", index: 0, offset: 0, id: "0" }, // a = 0
+        { type: "Binding", index: 1, offset: 2, id: "1" }, // b = 1
+        { type: "Binding", index: 2, offset: 4, id: "2" }, // a = b
+        { type: "Binding", index: 3, offset: 6, id: "3" }, // b = a + b
+        { type: "JumpBackToLoopStart", index: 4, offset: 8, id: "4" },
+        { type: "Binding", index: 5, offset: 4, id: "5" }, // a = b
+        { type: "Binding", index: 6, offset: 6, id: "6" }, // b = a + b
+        { type: "Return", index: 7, offset: 10, id: "7" } // return b
+      ],
+      loops: [new Loop(4, 8)],
+      tracingResult: {
+        "2": ["1"],
+        "3": ["2", "1"],
+        "5": ["3"],
+        "6": ["5", "3"],
+        "7": ["6"]
+      }
+    });
+  }
+
+  let traceData = createTraceData();
+
+  it("Test initialize loops", function() {
+    assertThat(
+      traceData.loops,
+      contains(
+        hasProperties({
+          startOffset: 4,
+          endOffset: 8,
+          _iterationStarts: new Map([
+            ["0", 2],
+            ["1", 5]
+          ]),
+          _iterationEnds: new Map([
+            ["0", 4],
+            ["1", 6]
+          ])
+        })
+      )
+    );
+    assertThat(traceData.visibleEventsArray, [
+      { type: "Binding", index: 0, offset: 0, id: "0" }, // a = 0
+      { type: "Binding", index: 1, offset: 2, id: "1" }, // b = 1
+      { type: "Binding", index: 2, offset: 4, id: "2" }, // a = b
+      { type: "Binding", index: 3, offset: 6, id: "3" }, // b = a + b
+      { type: "Return", index: 7, offset: 10, id: "7" } // return b
+    ]);
+  });
+
+  it("0 -> 1", function() {
+    traceData.loops[0].counter = 1;
+    traceData.updateVisibleEvents(traceData.loops[0]);
+    assertThat(traceData.visibleEventsArray, [
+      { type: "Binding", index: 0, offset: 0, id: "0" }, // a = 0
+      { type: "Binding", index: 1, offset: 2, id: "1" }, // b = 1
+      { type: "Binding", index: 5, offset: 4, id: "5" }, // a = b
+      { type: "Binding", index: 6, offset: 6, id: "6" }, // b = a + b
+      { type: "Return", index: 7, offset: 10, id: "7" } // return b
     ]);
   });
 });
