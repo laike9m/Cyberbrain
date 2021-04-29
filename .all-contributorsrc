@@ -98,6 +98,15 @@
       "contributions": [
         "financial"
       ]
+    },
+    {
+      "login": "CocaColf",
+      "name": "Funloading",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25732253?v=4",
+      "profile": "https://cocacolf.now.sh/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 10,
