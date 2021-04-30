@@ -17,7 +17,7 @@ Make sure you have Python>=3.7 and the latest version of VS Code installed.
    poetry install
    ```
 
-- Install the Python package **being developed**
+- [Install the Python package **being developed**](#editable-install)
   
   To be able to test the changes we made locally, we have to install it from our computer directly. We use [editable install](https://pip.pypa.io/en/stable/cli/pip_install/#install-editable) to achieve this:
 
