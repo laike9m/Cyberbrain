@@ -10,14 +10,14 @@ Make sure you have Python>=3.7 and the latest version of VS Code installed.
 
 ## Install Dependencies
 
-- Install dependencies for the Python library
+### Install dependencies for the Python library
   
    We'll use [Poetry](https://python-poetry.org/) to manage dependencies. Assuming you've installed Poetry and set it up correctly, run:
    ```
    poetry install
    ```
 
-- [Install the Python package **being developed**](#editable-install)
+### [Install the Python package **being developed**](#editable-install)
   
   To be able to test the changes we made locally, we have to install it from our computer directly. We use [editable install](https://pip.pypa.io/en/stable/cli/pip_install/#install-editable) to achieve this:
 
@@ -35,8 +35,7 @@ Make sure you have Python>=3.7 and the latest version of VS Code installed.
 
   ![image](https://user-images.githubusercontent.com/2592205/116657768-cf415380-a943-11eb-87db-9fa87eeddff5.png)
 
-
-- VS Code
+### Install dependencies for VS Code
 
    Make sure you have **Node.js 12** and npm installed. There's no guarantee that other versions will work.
 
