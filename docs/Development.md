@@ -4,18 +4,37 @@
 
 ## Prerequisites
 
-Make sure you have Python 3.7+ and the latest version of VS Code installed.
+Make sure you have Python>=3.7 and the latest version of VS Code installed.
 
 **Important: During development, make sure the Cyberbrain Python library and VS Code extension are NOT installed.**
 
 ## Install Dependencies
 
-- Install dependecies for the Python library
+- Install dependencies for the Python library
   
    We'll use [Poetry](https://python-poetry.org/) to manage dependencies. Assuming you've installed Poetry and set it up correctly, run:
    ```
    poetry install
    ```
+
+- Install the Python package **being developed**
+  
+  To be able to test the changes we made locally, we have to install it from our computer directly. We use [editable install](https://pip.pypa.io/en/stable/cli/pip_install/#install-editable) to achieve this:
+
+  ```bash
+  # Make sure you're in the root folder, aka "Cyberbrain"
+  pip install -e .
+  
+  # The following output means the installation has succeeded:
+  #   Installing collected packages: cyberbrain
+  #   Running setup.py develop for cyberbrain
+  #   Successfully installed cyberbrain
+  ```
+  
+  In case you have multiple versions of Python installed, make sure you chose the Python version that you intend to use in VS Code.
+
+  ![image](https://user-images.githubusercontent.com/2592205/116657768-cf415380-a943-11eb-87db-9fa87eeddff5.png)
+
 
 - VS Code
 

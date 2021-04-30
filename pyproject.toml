@@ -63,6 +63,6 @@ testpaths = [ # Used to speed up test discovery.
 norecursedirs = ["cyberbrain-vsc*", ".vscode", "*.egg"]
 
 [build-system]
-requires = ["poetry>=1.0"]
+requires = ["poetry>=1.0", "setuptools"]
 build-backend = "poetry.masonry.api"
 
