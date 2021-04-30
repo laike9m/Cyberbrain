@@ -129,8 +129,6 @@ legacy/
 cyberbrain/generated/client.py
 mocks/
 
-setup.py
-
 .theia/
 
 .mutmut-cache
