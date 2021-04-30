@@ -67,6 +67,14 @@ There are two ways to run the e2e tests.
   This will open a new VS Code window and run the tests.
   
   Note that if you're using the latest version of VS Code, the test runner will complain that a VS Code window has already been opened. You can download and use the [Insiders version](https://code.visualstudio.com/insiders/) for development to solve this issue.
+  
+## Run the extension under development
+
+Click "Run Extension"
+
+<img src="https://user-images.githubusercontent.com/2592205/106569059-f32dfe00-64e8-11eb-853f-2d0e499683e4.png" height=400px>
+
+Then open a file under the [`examples/`](https://github.com/laike9m/Cyberbrain/tree/master/examples) folder, [run it](https://github.com/laike9m/Cyberbrain#how-to-use) like you would normally do.
 
 ## Code Style
 
