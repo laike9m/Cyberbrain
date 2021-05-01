@@ -109,6 +109,12 @@ Visit the project's [kanban](https://github.com/laike9m/Cyberbrain/projects/1) t
 <a href="http://pythontutor.com/">Python Tutor</a> is for education purposes, you can't use it to debug your own programs. It's a brilliant tool for its purpose and I do it like it very much.
 </details>
 
+<details>
+<summary>Static analysis</summary>
+Cyberbrain is *NOT* static analyis. It's runtime tracing. Static analysis can't provide enough information for debugging.
+</details>
+
+
 ## Community
 
 - 💬 **[GitHub Discussions](https://github.com/laike9m/Cyberbrain/discussions)** (for general discussions)
