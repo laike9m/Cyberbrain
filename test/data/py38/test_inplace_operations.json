@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_inplace_operations",
         "frame_name": "test_inplace_operations",
-        "filename": "test_inplace.py"
+        "filename": "test_inplace.py",
+        "defined_lineno": 4
     },
     "identifiers": [
         "a1",

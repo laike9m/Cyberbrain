@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_list_comprehension",
         "frame_name": "test_list_comprehension",
-        "filename": "test_list_comp.py"
+        "filename": "test_list_comp.py",
+        "defined_lineno": 4
     },
     "identifiers": [
         "n",

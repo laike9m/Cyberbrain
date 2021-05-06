@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "yield_from_function",
         "frame_name": "yield_from_function",
-        "filename": "test_generator.py"
+        "filename": "test_generator.py",
+        "defined_lineno": 73
     },
     "identifiers": [
         "inner"

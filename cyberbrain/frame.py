@@ -57,6 +57,7 @@ class Frame:
         frame_name: str,
         instructions: dict[int, Instruction],
         offset_to_lineno: dict[int, int],
+        defined_lineno: int,
     ):
         # ################### Frame attribute ####################
         self.filename = filename
@@ -65,6 +66,8 @@ class Frame:
         self.frame_id = frame_name
         self.instructions = instructions
         self.offset_to_lineno = offset_to_lineno
+        # Line where traced function is defined in filename
+        self.defined_lineno = defined_lineno
 
         self.value_stack = value_stack.create_value_stack()
 
@@ -87,7 +90,7 @@ class Frame:
 
     @property
     def metadata(self):
-        """The FrameLocater we defined initially. See https://git.io/Jtl68.
+        """Frame metadata sent to rpc server
 
         More fields to add:
         - int64 start_lineno  // Start line of the frame in filename.
@@ -102,6 +105,7 @@ class Frame:
             # Ideally the qualified name, at least use callable's name.
             "frame_name": self.frame_name,
             "filename": self.filename,
+            "defined_lineno": self.defined_lineno,
         }
 
     @property

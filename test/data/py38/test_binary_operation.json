@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_binary_operation",
         "frame_name": "test_binary_operation",
-        "filename": "test_binary.py"
+        "filename": "test_binary.py",
+        "defined_lineno": 4
     },
     "identifiers": [
         "a",

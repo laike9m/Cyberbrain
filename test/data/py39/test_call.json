@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_call",
         "frame_name": "test_call",
-        "filename": "test_call.py"
+        "filename": "test_call.py",
+        "defined_lineno": 4
     },
     "identifiers": [
         "counter",

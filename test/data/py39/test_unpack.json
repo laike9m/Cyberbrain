@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_unpack",
         "frame_name": "test_unpack",
-        "filename": "test_unpack.py"
+        "filename": "test_unpack.py",
+        "defined_lineno": 4
     },
     "identifiers": [
         "a",

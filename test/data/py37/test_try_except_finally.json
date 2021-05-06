@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_try_except_finally",
         "frame_name": "test_try_except_finally",
-        "filename": "test_block.py"
+        "filename": "test_block.py",
+        "defined_lineno": 38
     },
     "identifiers": [
         "b"

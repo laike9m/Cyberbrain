@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_numpy",
         "frame_name": "test_numpy",
-        "filename": "test_numpy.py"
+        "filename": "test_numpy.py",
+        "defined_lineno": 6
     },
     "identifiers": [
         "x"

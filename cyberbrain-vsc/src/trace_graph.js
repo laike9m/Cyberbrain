@@ -193,7 +193,12 @@ class TraceGraph {
       ctx.textAlign = "center";
       ctx.fillStyle = "#cfa138";
       ctx.fillText(
-        `${this.traceData.frameMetadata.filename} ${this.traceData.frameMetadata.frame_name}`,
+        `${this.traceData.frameMetadata.filename} line ${this.traceData.frameMetadata.defined_lineno}`,
+        0,
+        topNodePos.y - 45
+      );
+      ctx.fillText(
+        `${this.traceData.frameMetadata.frame_name}`,
         0,
         topNodePos.y - 30
       );

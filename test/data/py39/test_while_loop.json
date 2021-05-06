@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_while_loop",
         "frame_name": "test_while_loop",
-        "filename": "test_while_loop.py"
+        "filename": "test_while_loop.py",
+        "defined_lineno": 5
     },
     "identifiers": [
         "i",

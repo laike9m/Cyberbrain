@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_with",
         "frame_name": "test_with",
-        "filename": "test_with.py"
+        "filename": "test_with.py",
+        "defined_lineno": 4
     },
     "identifiers": [
         "ContextManagerNoReturn",

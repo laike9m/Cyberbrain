@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_ref_outside_inner",
         "frame_name": "test_ref_outside_inner",
-        "filename": "test_ref_outside.py"
+        "filename": "test_ref_outside.py",
+        "defined_lineno": 9
     },
     "identifiers": [
         "f",

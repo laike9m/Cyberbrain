@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_deref_func",
         "frame_name": "test_deref_func",
-        "filename": "test_cellvar.py"
+        "filename": "test_cellvar.py",
+        "defined_lineno": 8
     },
     "identifiers": [
         "a"

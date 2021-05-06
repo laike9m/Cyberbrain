@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_break_in_finally",
         "frame_name": "test_break_in_finally",
-        "filename": "test_block.py"
+        "filename": "test_block.py",
+        "defined_lineno": 53
     },
     "identifiers": [
         "x"

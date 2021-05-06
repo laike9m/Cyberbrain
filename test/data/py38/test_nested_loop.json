@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_nested_loop",
         "frame_name": "test_nested_loop",
-        "filename": "test_nested_loop.py"
+        "filename": "test_nested_loop.py",
+        "defined_lineno": 5
     },
     "identifiers": [
         "i",

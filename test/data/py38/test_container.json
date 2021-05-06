@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_container",
         "frame_name": "test_container",
-        "filename": "test_container.py"
+        "filename": "test_container.py",
+        "defined_lineno": 6
     },
     "identifiers": [
         "a",
