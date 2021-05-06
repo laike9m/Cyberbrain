@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_continue_in_finally_with_exception",
         "frame_name": "test_continue_in_finally_with_exception",
-        "filename": "test_block_py38.py"
+        "filename": "test_block_py38.py",
+        "fn_lineno": 44
     },
     "identifiers": [
         "x"

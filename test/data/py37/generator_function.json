@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "generator_function",
         "frame_name": "generator_function",
-        "filename": "test_generator.py"
+        "filename": "test_generator.py",
+        "fn_lineno": 6
     },
     "identifiers": [
         "count",

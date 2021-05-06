@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "decorated_func_enabled",
         "frame_name": "decorated_func_enabled",
-        "filename": "test_api_disabled.py"
+        "filename": "test_api_disabled.py",
+        "fn_lineno": 15
     },
     "identifiers": [
         "a"

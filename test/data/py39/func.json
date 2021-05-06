@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "func",
         "frame_name": "func",
-        "filename": "test_api_state.py"
+        "filename": "test_api_state.py",
+        "fn_lineno": 19
     },
     "identifiers": [
         "b",

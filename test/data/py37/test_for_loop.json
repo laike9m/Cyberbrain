@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_for_loop",
         "frame_name": "test_for_loop",
-        "filename": "test_for_loop.py"
+        "filename": "test_for_loop.py",
+        "fn_lineno": 5
     },
     "identifiers": [
         "i",

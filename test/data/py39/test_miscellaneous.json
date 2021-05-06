@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_miscellaneous",
         "frame_name": "test_miscellaneous",
-        "filename": "test_miscellaneous.py"
+        "filename": "test_miscellaneous.py",
+        "fn_lineno": 6
     },
     "identifiers": [
         "a",

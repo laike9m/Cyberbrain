@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_repr",
         "frame_name": "test_repr",
-        "filename": "test_to_json.py"
+        "filename": "test_to_json.py",
+        "fn_lineno": 5
     },
     "identifiers": [
         "match",

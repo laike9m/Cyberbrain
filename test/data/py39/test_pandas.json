@@ -2,7 +2,8 @@
     "metadata": {
         "frame_id": "test_pandas",
         "frame_name": "test_pandas",
-        "filename": "test_pandas.py"
+        "filename": "test_pandas.py",
+        "fn_lineno": 6
     },
     "identifiers": [
         "baby_data_set",
