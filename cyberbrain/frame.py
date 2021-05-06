@@ -57,7 +57,7 @@ class Frame:
         frame_name: str,
         instructions: dict[int, Instruction],
         offset_to_lineno: dict[int, int],
-        fn_lineno: int,
+        defined_lineno: int,
     ):
         # ################### Frame attribute ####################
         self.filename = filename
@@ -67,7 +67,7 @@ class Frame:
         self.instructions = instructions
         self.offset_to_lineno = offset_to_lineno
         # Line where traced function is defined in filename
-        self.fn_lineno = fn_lineno
+        self.defined_lineno = defined_lineno
 
         self.value_stack = value_stack.create_value_stack()
 
@@ -105,7 +105,7 @@ class Frame:
             # Ideally the qualified name, at least use callable's name.
             "frame_name": self.frame_name,
             "filename": self.filename,
-            "fn_lineno": self.fn_lineno,
+            "defined_lineno": self.defined_lineno,
         }
 
     @property

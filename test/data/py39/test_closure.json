@@ -3,7 +3,7 @@
         "frame_id": "test_closure",
         "frame_name": "test_closure",
         "filename": "test_cellvar.py",
-        "fn_lineno": 25
+        "defined_lineno": 25
     },
     "identifiers": [
         "a",

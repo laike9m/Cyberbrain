@@ -3,7 +3,7 @@
         "frame_id": "test_unary_operations",
         "frame_name": "test_unary_operations",
         "filename": "test_unary.py",
-        "fn_lineno": 4
+        "defined_lineno": 4
     },
     "identifiers": [
         "a",

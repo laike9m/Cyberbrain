@@ -3,7 +3,7 @@
         "frame_id": "test_inplace_operations",
         "frame_name": "test_inplace_operations",
         "filename": "test_inplace.py",
-        "fn_lineno": 4
+        "defined_lineno": 4
     },
     "identifiers": [
         "a1",

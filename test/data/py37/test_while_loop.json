@@ -3,7 +3,7 @@
         "frame_id": "test_while_loop",
         "frame_name": "test_while_loop",
         "filename": "test_while_loop.py",
-        "fn_lineno": 5
+        "defined_lineno": 5
     },
     "identifiers": [
         "i",

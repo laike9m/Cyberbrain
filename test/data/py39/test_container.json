@@ -3,7 +3,7 @@
         "frame_id": "test_container",
         "frame_name": "test_container",
         "filename": "test_container.py",
-        "fn_lineno": 6
+        "defined_lineno": 6
     },
     "identifiers": [
         "a",

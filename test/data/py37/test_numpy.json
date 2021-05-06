@@ -3,7 +3,7 @@
         "frame_id": "test_numpy",
         "frame_name": "test_numpy",
         "filename": "test_numpy.py",
-        "fn_lineno": 6
+        "defined_lineno": 6
     },
     "identifiers": [
         "x"

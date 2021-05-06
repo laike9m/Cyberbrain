@@ -3,7 +3,7 @@
         "frame_id": "test_jump",
         "frame_name": "test_jump",
         "filename": "test_jump.py",
-        "fn_lineno": 4
+        "defined_lineno": 4
     },
     "identifiers": [
         "a",

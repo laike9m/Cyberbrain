@@ -92,7 +92,7 @@ class Tracer:
             frame_name=frame_name,
             instructions=instructions,
             offset_to_lineno=utils.map_bytecode_offset_to_lineno(raw_frame),
-            fn_lineno=raw_frame.f_code.co_firstlineno,
+            defined_lineno=raw_frame.f_code.co_firstlineno,
         )
         FrameTree.add_frame(self.frame.frame_id, self.frame)
         self.frame_logger = logger.FrameLogger(

@@ -3,7 +3,7 @@
         "frame_id": "test_deref_func",
         "frame_name": "test_deref_func",
         "filename": "test_cellvar.py",
-        "fn_lineno": 8
+        "defined_lineno": 8
     },
     "identifiers": [
         "a"

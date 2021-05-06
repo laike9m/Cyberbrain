@@ -3,7 +3,7 @@
         "frame_id": "test_binary_operation",
         "frame_name": "test_binary_operation",
         "filename": "test_binary.py",
-        "fn_lineno": 4
+        "defined_lineno": 4
     },
     "identifiers": [
         "a",

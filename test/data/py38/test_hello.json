@@ -3,7 +3,7 @@
         "frame_id": "test_hello",
         "frame_name": "test_hello",
         "filename": "test_hello.py",
-        "fn_lineno": 4
+        "defined_lineno": 4
     },
     "identifiers": [
         "x",

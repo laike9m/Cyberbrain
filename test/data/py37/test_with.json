@@ -3,7 +3,7 @@
         "frame_id": "test_with",
         "frame_name": "test_with",
         "filename": "test_with.py",
-        "fn_lineno": 4
+        "defined_lineno": 4
     },
     "identifiers": [
         "ContextManagerNoReturn",

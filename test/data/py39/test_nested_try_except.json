@@ -3,7 +3,7 @@
         "frame_id": "test_nested_try_except",
         "frame_name": "test_nested_try_except",
         "filename": "test_block.py",
-        "fn_lineno": 23
+        "defined_lineno": 23
     },
     "identifiers": [
         "a"

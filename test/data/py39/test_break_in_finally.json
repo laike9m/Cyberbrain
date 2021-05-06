@@ -3,7 +3,7 @@
         "frame_id": "test_break_in_finally",
         "frame_name": "test_break_in_finally",
         "filename": "test_block.py",
-        "fn_lineno": 53
+        "defined_lineno": 53
     },
     "identifiers": [
         "x"
