@@ -1,4 +1,12 @@
-# Development environment setup
+# Development Guide
+
+## An Overview of How Cyberbrain Works
+
+Check out this YouTube video:
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/wlb2n9Iv4aQ/0.jpg)](https://www.youtube.com/watch?v=wlb2n9Iv4aQ)
+
+## Development Environment Setup
 
 [![](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![](https://img.shields.io/badge/code_style-prettier--eslint-blueviolet)](https://github.com/prettier/prettier-eslint-cli) [![Build Status](https://dev.azure.com/laike9m/laike9m/_apis/build/status/laike9m.Cyberbrain?branchName=master)](https://dev.azure.com/laike9m/laike9m/_build/latest?definitionId=1&branchName=master)
 
