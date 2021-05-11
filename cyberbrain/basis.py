@@ -114,7 +114,7 @@ class InitialValue(Event):
 class Binding(Event):
     """An identifier is bound to an value.
 
-    A brief explanation of Python's data model.
+    A brief explanation of Python's data model:
     http://foobarnbaz.com/2012/07/08/understanding-python-variables/
 
     Roughly speaking, Binding happens when:

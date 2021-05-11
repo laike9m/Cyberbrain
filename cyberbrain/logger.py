@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from dis import Instruction
-from types import FrameType
-from typing import Optional
 
 from crayons import yellow, cyan
+from types import FrameType
+from typing import Optional
 
 from . import utils
 from .basis import ExcInfoType, ExceptionInfo
@@ -75,8 +75,8 @@ class FrameLogger:
         last_i = frame.f_lasti
 
         # Skips when no instruction has been executed. Note that we should not skip
-        # if this is not the first call to update, e.g. the program could jump back to
-        # offset 0. See test_while_jump_to_zero.
+        # if this is not the first time handle_instructions is called, e.g. the program
+        # could jump back to offset 0. See test_while_jump_to_zero.
         if last_i == 0 and len(self.frame.events) == 0:
             # Tracks possible initial value events of symbols in the first instruction.
             self.frame.log_initial_value_events(frame, self.instructions[last_i])
@@ -208,7 +208,8 @@ class FrameLogger:
                 break
 
         # Log InitialValue events that's relevant to the line that's about to be
-        # executed, this way we record the value before it's (potentially) modified.
+        # executed, this way we record the value before it's (potentially) being
+        # modified.
         self.frame.log_initial_value_events(frame, self.instructions[last_i])
         self.last_exception = None
 

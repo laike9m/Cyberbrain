@@ -73,7 +73,7 @@ def should_ignore_event(
 
 
 def map_bytecode_offset_to_lineno(frame: FrameType) -> dict[int, int]:
-    """Maps bytecode offset to lineno in file.
+    """Maps bytecode offset to lineno in source code.
 
     Note that the lineno may not be accurate for multi-line statements. If we find
     this to be blocking, we might need to use a Range to represent lineno.
@@ -201,6 +201,7 @@ def get_value_from_frame(name: str, frame: FrameType):
         return frame.f_builtins[name]
 
 
+# TODO: we can use a id(frame) -> name cache.
 def name_exist_in_frame(name: str, frame: FrameType) -> bool:
     return any(
         [name in frame.f_locals, name in frame.f_globals, name in frame.f_builtins]
