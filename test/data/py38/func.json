@@ -12,7 +12,7 @@
     "loops": [],
     "events": [
         {
-            "lineno": 21,
+            "lineno": 19,
             "index": 0,
             "offset": 0,
             "filename": "test_api_state.py",

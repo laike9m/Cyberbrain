@@ -17,7 +17,7 @@ def test_generator_function(trace, mocked_responses):
 
     assert trace.events == [
         InitialValue(
-            lineno=8,
+            lineno=6,
             target=Symbol("count"),
             value="2",
             repr="2",

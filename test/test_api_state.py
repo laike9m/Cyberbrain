@@ -26,7 +26,7 @@ def test_decorator_multiple_times(trace, mocked_responses):
     assert func(2) == 2
     assert trace.events == [
         InitialValue(
-            lineno=21,
+            lineno=19,
             target=Symbol("b"),
             value="1",
         ),

@@ -22,7 +22,7 @@ from pygments import highlight
 from pygments.formatters import Terminal256Formatter
 from pygments.lexers import PythonLexer
 from types import FrameType
-from typing import Any, Optional
+from typing import Any, Optional, Set
 
 from . import tracer
 
@@ -66,6 +66,21 @@ def get_current_callable(frame: FrameType):
         for obj in gc.get_referrers(frame.f_code)
         if hasattr(obj, "__code__") and obj.__code__ is frame.f_code
     ][0]
+
+
+def get_parameters(frame: FrameType) -> Set[str]:
+    """Get the parameters' names from a frame.
+
+    e.g. f(a, b, *args, **kwargs)
+    If called with f(1, 2, 3, x=1), returns {'a', 'b', 'args', 'kwargs'}.
+    """
+    arg_info = inspect.getargvalues(frame)
+    parameters = set(arg_info.args)
+    if arg_info.varargs is not None:
+        parameters.add(arg_info.varargs)
+    if arg_info.keywords is not None:
+        parameters.add(arg_info.keywords)
+    return parameters
 
 
 def should_ignore_event(

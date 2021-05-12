@@ -106,7 +106,7 @@ def test_while_jump_to_zero(trace):
 
     assert trace.events == [
         InitialValue(
-            lineno=102,
+            lineno=100,
             target=Symbol("count"),
             value="2",
             repr="2",

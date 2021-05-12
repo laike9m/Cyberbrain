@@ -75,6 +75,7 @@ class Frame:
         self.offset_to_lineno: dict[int, int] = utils.map_bytecode_offset_to_lineno(
             raw_frame
         )
+        self.parameters: Set[str] = utils.get_parameters(raw_frame)
 
         # ################### Mutable state ####################
         self.value_stack: value_stack.BaseValueStack = value_stack.create_value_stack()
@@ -156,6 +157,17 @@ class Frame:
         if utils.should_ignore_event(target=target, value=value, frame=frame):
             return
 
+        # TODO(#124): Use more accurate function definition lineno. Besides that,
+        #   it would be better if we can find the lineno of each parameter,
+        #   since they may exist on different lines.
+
+        # TODO: Assign it to -1 if it's not a parameter.
+        lineno = (
+            self.defined_lineno
+            if target in self.parameters
+            else self.offset_to_lineno[instr.offset]
+        )
+
         # Logs InitialValue event if it hasn't been recorded yet.
         if utils.name_exist_in_frame(target, frame) and not self._knows(target):
             value = utils.get_value_from_frame(target, frame)
@@ -164,7 +176,7 @@ class Frame:
                     target=Symbol(target),
                     value=utils.to_json(value),
                     repr=utils.get_repr(value),
-                    lineno=self.offset_to_lineno[instr.offset],
+                    lineno=lineno,
                     filename=self.filename,
                     offset=instr.offset,
                 )
