@@ -116,6 +116,16 @@
       "contributions": [
         "blog"
       ]
+    },
+    {
+      "login": "victorjzsun",
+      "name": "Victor Sun",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17478849?v=4",
+      "profile": "https://victorjzsun.github.io/",
+      "contributions": [
+        "code",
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 10,
