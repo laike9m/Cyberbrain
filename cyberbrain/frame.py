@@ -54,7 +54,7 @@ class Frame:
     """
 
     def __init__(self, raw_frame: FrameType):
-        # ################### Frame attribute ####################
+        # ################### Read-only attributes ####################
         # Only stores the basename so it's consistent on all operating systems.
         # This is mainly for the ease of testing.
         self.filename: str = utils.shorten_path(
@@ -68,18 +68,16 @@ class Frame:
         )
         # For now, use frame name as frame id. Eventually this should be a unique uuid.
         self.frame_id: str = self.frame_name
+        self.defined_lineno: int = raw_frame.f_code.co_firstlineno
         self.instructions: dict[int, Instruction] = {
             instr.offset: instr for instr in dis.get_instructions(raw_frame.f_code)
         }
         self.offset_to_lineno: dict[int, int] = utils.map_bytecode_offset_to_lineno(
             raw_frame
         )
-        # Line where traced function is defined in source code.
-        self.defined_lineno = raw_frame.f_code.co_firstlineno
 
-        self.value_stack = value_stack.create_value_stack()
-
-        # ################### Frame state ####################
+        # ################### Mutable state ####################
+        self.value_stack: value_stack.BaseValueStack = value_stack.create_value_stack()
         self.events: list[Event] = []
         self.identifier_to_events: dict[Identifier, list[Event]] = _EventsDict(list)
         self.snapshots: list[Snapshot] = [
