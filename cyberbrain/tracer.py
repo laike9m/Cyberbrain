@@ -1,10 +1,8 @@
 """Cyberbrain public API and tracer setup."""
-import dis
 
 import argparse
 import functools
 import inspect
-import os
 import requests
 import sys
 from types import MethodType, FunctionType, FrameType
@@ -75,28 +73,10 @@ class Tracer:
         self, raw_frame: FrameType, initial_instr_pointer: int
     ):
         self.tracer_state = TracerFSM.next_state(self.tracer_state, TracerFSM.START)
-        frame_name = (
-            # Use filename as frame name if code is run at module level.
-            os.path.basename(raw_frame.f_code.co_filename).rstrip(".py")
-            if raw_frame.f_code.co_name == "<module>"
-            else raw_frame.f_code.co_name
-        )
-        instructions = {
-            instr.offset: instr for instr in dis.get_instructions(raw_frame.f_code)
-        }
-        self.frame = Frame(
-            # For testing, only stores the basename so it's separator agnostic.
-            filename=utils.shorten_path(
-                raw_frame.f_code.co_filename, 1 if utils.run_in_test() else 3
-            ),
-            frame_name=frame_name,
-            instructions=instructions,
-            offset_to_lineno=utils.map_bytecode_offset_to_lineno(raw_frame),
-            defined_lineno=raw_frame.f_code.co_firstlineno,
-        )
+        self.frame = Frame(raw_frame=raw_frame)
         FrameTree.add_frame(self.frame.frame_id, self.frame)
         self.frame_logger = logger.FrameLogger(
-            instructions=instructions,
+            instructions=self.frame.instructions,
             initial_instr_pointer=initial_instr_pointer,
             frame=self.frame,
             debug_mode=self.debug_mode,

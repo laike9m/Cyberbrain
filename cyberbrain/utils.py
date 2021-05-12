@@ -7,6 +7,7 @@ import sysconfig
 
 import argparse
 import cheap_repr
+import gc
 import inspect
 import jsonpickle
 import more_itertools
@@ -53,6 +54,18 @@ jsonpickle.set_preferred_backend("ujson")
 @cheap_repr.register_repr(argparse.Namespace)
 def repr_for_namespace(_, __):
     return "argparse.Namespace"
+
+
+def get_current_callable(frame: FrameType):
+    """Returns the callable that generates the frame.
+
+    See https://stackoverflow.com/a/52762678/2142577.
+    """
+    return [
+        obj
+        for obj in gc.get_referrers(frame.f_code)
+        if hasattr(obj, "__code__") and obj.__code__ is frame.f_code
+    ][0]
 
 
 def should_ignore_event(

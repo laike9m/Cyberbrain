@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import dis
 from collections import defaultdict
 from dis import Instruction
 
+import os
 from types import FrameType
 from typing import Any
 
@@ -51,23 +53,29 @@ class Frame:
     Whether we still need identifier_to_events is yet to be decided.
     """
 
-    def __init__(
-        self,
-        filename: str,
-        frame_name: str,
-        instructions: dict[int, Instruction],
-        offset_to_lineno: dict[int, int],
-        defined_lineno: int,
-    ):
+    def __init__(self, raw_frame: FrameType):
         # ################### Frame attribute ####################
-        self.filename = filename
-        self.frame_name = frame_name
+        # Only stores the basename so it's consistent on all operating systems.
+        # This is mainly for the ease of testing.
+        self.filename: str = utils.shorten_path(
+            raw_frame.f_code.co_filename, 1 if utils.run_in_test() else 3
+        )
+        self.frame_name: str = (
+            # Use filename as frame name if code is run at module level.
+            os.path.basename(raw_frame.f_code.co_filename).rstrip(".py")
+            if raw_frame.f_code.co_name == "<module>"
+            else raw_frame.f_code.co_name
+        )
         # For now, use frame name as frame id. Eventually this should be a unique uuid.
-        self.frame_id = frame_name
-        self.instructions = instructions
-        self.offset_to_lineno = offset_to_lineno
-        # Line where traced function is defined in filename
-        self.defined_lineno = defined_lineno
+        self.frame_id: str = self.frame_name
+        self.instructions: dict[int, Instruction] = {
+            instr.offset: instr for instr in dis.get_instructions(raw_frame.f_code)
+        }
+        self.offset_to_lineno: dict[int, int] = utils.map_bytecode_offset_to_lineno(
+            raw_frame
+        )
+        # Line where traced function is defined in source code.
+        self.defined_lineno = raw_frame.f_code.co_firstlineno
 
         self.value_stack = value_stack.create_value_stack()
 
