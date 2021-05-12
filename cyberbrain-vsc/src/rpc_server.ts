@@ -50,7 +50,7 @@ export class RpcServer {
                 this.interactions.execute(message.interactionConfig);
               }
             } catch (error) {
-              cl("Failed to execute the interation behavior: ", error);
+              cl("Failed to execute the interaction behavior: ", error);
             }
           }
         },
