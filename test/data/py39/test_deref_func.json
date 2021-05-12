@@ -11,7 +11,7 @@
     "loops": [],
     "events": [
         {
-            "lineno": 11,
+            "lineno": -1,
             "index": 0,
             "offset": 10,
             "filename": "test_cellvar.py",

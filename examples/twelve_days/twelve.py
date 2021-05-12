@@ -10,9 +10,13 @@ def main():
     print(verses)
 
 
+a = 1
+
 @trace
 def verse(day):
     """Create a verse"""
+
+    b = a
 
     ordinal = [
         "first",

@@ -26,8 +26,8 @@ def test_binary_operation(tracer, mocked_responses):
     tracer.stop()
 
     assert tracer.events == [
-        InitialValue(target=Symbol("a"), value="1", lineno=10),
-        InitialValue(target=Symbol("b"), value="1", lineno=10),
+        InitialValue(target=Symbol("a"), value="1", lineno=-1),
+        InitialValue(target=Symbol("b"), value="1", lineno=-1),
         Binding(
             target=Symbol("c"), value="1", sources={Symbol("a"), Symbol("b")}, lineno=10
         ),
@@ -52,7 +52,7 @@ def test_binary_operation(tracer, mocked_responses):
         Binding(
             target=Symbol("c"), value="0", sources={Symbol("a"), Symbol("b")}, lineno=16
         ),
-        InitialValue(target=Symbol("lst"), value="[0,1]", lineno=17),
+        InitialValue(target=Symbol("lst"), value="[0,1]", lineno=-1),
         Binding(
             target=Symbol("c"),
             value="1",

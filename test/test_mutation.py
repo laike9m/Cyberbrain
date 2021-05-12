@@ -12,7 +12,7 @@ def test_mutation(tracer):
 
     assert tracer.events == [
         InitialValue(
-            lineno=9,
+            lineno=-1,
             target=Symbol("text"),
             value='"AAAA"',
             repr='"AAAA"',

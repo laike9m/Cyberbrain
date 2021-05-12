@@ -15,7 +15,7 @@
     "loops": [],
     "events": [
         {
-            "lineno": 13,
+            "lineno": -1,
             "index": 0,
             "offset": 24,
             "filename": "test_container.py",
@@ -26,7 +26,7 @@
             "type": "InitialValue"
         },
         {
-            "lineno": 13,
+            "lineno": -1,
             "index": 1,
             "offset": 26,
             "filename": "test_container.py",
@@ -92,7 +92,7 @@
             "type": "Binding"
         },
         {
-            "lineno": 18,
+            "lineno": -1,
             "index": 7,
             "offset": 66,
             "filename": "test_container.py",
@@ -125,7 +125,7 @@
             "type": "Mutation"
         },
         {
-            "lineno": 20,
+            "lineno": -1,
             "index": 10,
             "offset": 88,
             "filename": "test_container.py",

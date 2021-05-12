@@ -14,7 +14,7 @@ def test_unary_operations(tracer, mocked_responses):
     tracer.stop()
 
     assert tracer.events == [
-        InitialValue(target=Symbol("a"), value="1", lineno=9),
+        InitialValue(target=Symbol("a"), value="1", lineno=-1),
         Binding(target=Symbol("b"), value="1", sources={Symbol("a")}, lineno=9),
         Binding(target=Symbol("b"), value="-1", sources={Symbol("a")}, lineno=10),
         Binding(target=Symbol("b"), value="false", sources={Symbol("a")}, lineno=11),

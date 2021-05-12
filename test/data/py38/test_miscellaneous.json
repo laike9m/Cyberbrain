@@ -17,7 +17,7 @@
     "loops": [],
     "events": [
         {
-            "lineno": 15,
+            "lineno": -1,
             "index": 0,
             "offset": 34,
             "filename": "test_miscellaneous.py",
@@ -28,7 +28,7 @@
             "type": "InitialValue"
         },
         {
-            "lineno": 15,
+            "lineno": -1,
             "index": 1,
             "offset": 40,
             "filename": "test_miscellaneous.py",
@@ -39,7 +39,7 @@
             "type": "InitialValue"
         },
         {
-            "lineno": 15,
+            "lineno": -1,
             "index": 2,
             "offset": 48,
             "filename": "test_miscellaneous.py",
@@ -50,7 +50,7 @@
             "type": "InitialValue"
         },
         {
-            "lineno": 15,
+            "lineno": -1,
             "index": 3,
             "offset": 54,
             "filename": "test_miscellaneous.py",
@@ -83,7 +83,7 @@
             "type": "Binding"
         },
         {
-            "lineno": 17,
+            "lineno": -1,
             "index": 6,
             "offset": 88,
             "filename": "test_miscellaneous.py",
@@ -125,7 +125,7 @@
             "type": "Deletion"
         },
         {
-            "lineno": 20,
+            "lineno": -1,
             "index": 10,
             "offset": 110,
             "filename": "test_miscellaneous.py",

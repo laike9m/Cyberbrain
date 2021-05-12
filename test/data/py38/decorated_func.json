@@ -24,7 +24,7 @@
             "type": "Binding"
         },
         {
-            "lineno": 8,
+            "lineno": -1,
             "index": 1,
             "offset": 4,
             "filename": "test_api_decorator.py",

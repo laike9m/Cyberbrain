@@ -17,7 +17,7 @@
     "loops": [],
     "events": [
         {
-            "lineno": 10,
+            "lineno": -1,
             "index": 0,
             "offset": 28,
             "filename": "test_call.py",
@@ -39,7 +39,7 @@
             "type": "Binding"
         },
         {
-            "lineno": 15,
+            "lineno": -1,
             "index": 2,
             "offset": 42,
             "filename": "test_call.py",
@@ -50,7 +50,7 @@
             "type": "InitialValue"
         },
         {
-            "lineno": 15,
+            "lineno": -1,
             "index": 3,
             "offset": 44,
             "filename": "test_call.py",
@@ -83,7 +83,7 @@
             "type": "Binding"
         },
         {
-            "lineno": 17,
+            "lineno": -1,
             "index": 6,
             "offset": 70,
             "filename": "test_call.py",
@@ -94,7 +94,7 @@
             "type": "InitialValue"
         },
         {
-            "lineno": 17,
+            "lineno": -1,
             "index": 7,
             "offset": 72,
             "filename": "test_call.py",

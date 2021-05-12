@@ -19,7 +19,7 @@ def test_recursion_decorator(trace):
             repr="3",
         ),
         InitialValue(
-            lineno=10,
+            lineno=-1,
             target=Symbol("fib"),
             value='{"repr": "<function test_recursion_decorator.<locals>.fib>"}',
             repr="<function test_recursion_decorator.<locals>.fib>",
@@ -45,7 +45,7 @@ def test_recursion_tracer(tracer):
 
     assert tracer.events == [
         InitialValue(
-            lineno=43,
+            lineno=-1,
             target=Symbol("fib"),
             value='{"repr": "<function test_recursion_tracer.<locals>.fib>"}',
             repr="<function test_recursion_tracer.<locals>.fib>",

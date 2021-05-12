@@ -25,10 +25,10 @@ def test_unpack(tracer, mocked_responses):
     assert tracer.events == [
         Binding(target=Symbol("a"), value='"h"', sources=set(), lineno=11),
         Binding(target=Symbol("b"), value='"i"', sources=set(), lineno=11),
-        InitialValue(target=Symbol("l1"), value="[1,2]", lineno=12),
+        InitialValue(target=Symbol("l1"), value="[1,2]", lineno=-1),
         Binding(target=Symbol("a"), value="1", sources={Symbol("l1")}, lineno=12),
         Binding(target=Symbol("b"), value="2", sources={Symbol("l1")}, lineno=12),
-        InitialValue(target=Symbol("numbers"), value="[1,2,3,4]", lineno=13),
+        InitialValue(target=Symbol("numbers"), value="[1,2,3,4]", lineno=-1),
         Binding(
             target=Symbol("first"), value="1", sources={Symbol("numbers")}, lineno=13
         ),
@@ -77,8 +77,8 @@ def test_unpack(tracer, mocked_responses):
             sources={Symbol("l1"), Symbol("numbers")},
             lineno=18,
         ),
-        InitialValue(target=Symbol("m1"), value='{"1":2}', lineno=19),
-        InitialValue(target=Symbol("m2"), value='{"1":2}', lineno=19),
+        InitialValue(target=Symbol("m1"), value='{"1":2}', lineno=-1),
+        InitialValue(target=Symbol("m2"), value='{"1":2}', lineno=-1),
         Binding(
             target=Symbol("a"),
             value='{"1":2}',

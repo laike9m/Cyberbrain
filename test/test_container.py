@@ -25,8 +25,8 @@ def test_container(tracer, mocked_responses):
     tracer.stop()
 
     assert tracer.events == [
-        InitialValue(target=Symbol("a"), value="1", lineno=13),
-        InitialValue(target=Symbol("b"), value="1", lineno=13),
+        InitialValue(target=Symbol("a"), value="1", lineno=-1),
+        InitialValue(target=Symbol("b"), value="1", lineno=-1),
         Binding(
             target=Symbol("d"),
             value="[1,1]",
@@ -57,7 +57,7 @@ def test_container(tracer, mocked_responses):
             sources={Symbol("a"), Symbol("b")},
             lineno=17,
         ),
-        InitialValue(target=Symbol("c"), value="2", lineno=18),
+        InitialValue(target=Symbol("c"), value="2", lineno=-1),
         Mutation(
             target=Symbol("d"),
             value='{"1":2,"2":1}',
@@ -70,7 +70,7 @@ def test_container(tracer, mocked_responses):
             sources={Symbol("d"), Symbol("a")},
             lineno=19,
         ),
-        InitialValue(target=Symbol("e"), value="0", lineno=20),
+        InitialValue(target=Symbol("e"), value="0", lineno=-1),
         Binding(
             target=Symbol("d"),
             value="[1,1]",

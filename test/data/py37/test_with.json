@@ -20,7 +20,7 @@
     "loops": [],
     "events": [
         {
-            "lineno": 21,
+            "lineno": -1,
             "index": 0,
             "offset": 36,
             "filename": "test_with.py",
@@ -42,7 +42,7 @@
             "type": "Binding"
         },
         {
-            "lineno": 24,
+            "lineno": -1,
             "index": 2,
             "offset": 58,
             "filename": "test_with.py",

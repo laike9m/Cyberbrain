@@ -46,13 +46,13 @@ def test_with(tracer, mocked_responses):
 
     expected_events = [
         InitialValue(
-            lineno=21,
+            lineno=-1,
             target=Symbol("ContextManagerNoReturn"),
             value='{"py/type":"test_with.test_with.<locals>.ContextManagerNoReturn"}',
         ),
         Binding(lineno=22, target=Symbol("a"), value="1", sources=set()),
         InitialValue(
-            lineno=24,
+            lineno=-1,
             target=Symbol("ContextManagerWithReturn"),
             value='{"py/type":"test_with.test_with.<locals>.ContextManagerWithReturn"}',
         ),

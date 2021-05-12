@@ -1,11 +1,9 @@
 import {
-  window,
-  Range,
-  Position,
-  workspace,
-  TextEditor,
   OverviewRulerLane,
-  TextEditorDecorationType
+  Position,
+  Range,
+  TextEditorDecorationType,
+  window
 } from "vscode";
 
 enum Behavior {
@@ -15,8 +13,8 @@ enum Behavior {
 
 /**
  * `Interactions` is used to implement the interaction behaviors from users when they interact with cyberbrain webpages.
- * To add an interation, post message to Vscode when a user's interaction behavior is detected, parse the message with rpc server,
- * define relative interactions logic in the `Interactions`, and then call `Interactions.excute` to excute it.
+ * To add an interaction, post message to Vscode when a user's interaction behavior is detected, parse the message with rpc server,
+ * define relative interactions logic in the `Interactions`, and then call `Interactions.execute` to execute it.
  * Current Interaction Behaviors includes:
  * 1. Highlight the line of the node in the editor when hovering the mouse on any node. Cancel the highlight when the node is unhovered.
  **/
@@ -46,6 +44,9 @@ export class Interactions {
    * @param relativePath  the relative path of the file which the highlighted line belongs to.
    */
   highlightLineOnEditor(lineno: number, relativePath: string) {
+    if (lineno < 0) {
+      return;
+    }
     const nodeEditor = window.visibleTextEditors.filter(
       editor => editor.document.uri.fsPath.indexOf(relativePath) !== -1
     )[0];

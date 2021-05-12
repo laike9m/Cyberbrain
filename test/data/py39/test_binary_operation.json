@@ -14,7 +14,7 @@
     "loops": [],
     "events": [
         {
-            "lineno": 10,
+            "lineno": -1,
             "index": 0,
             "offset": 24,
             "filename": "test_binary.py",
@@ -25,7 +25,7 @@
             "type": "InitialValue"
         },
         {
-            "lineno": 10,
+            "lineno": -1,
             "index": 1,
             "offset": 26,
             "filename": "test_binary.py",
@@ -113,7 +113,7 @@
             "type": "Binding"
         },
         {
-            "lineno": 17,
+            "lineno": -1,
             "index": 9,
             "offset": 80,
             "filename": "test_binary.py",

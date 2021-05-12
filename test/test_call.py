@@ -23,15 +23,15 @@ def test_call(tracer, mocked_responses):
     tracer.stop()
 
     assert tracer.events == [
-        InitialValue(lineno=10, target=Symbol("counter"), value="0"),
+        InitialValue(lineno=-1, target=Symbol("counter"), value="0"),
         Binding(
             lineno=10,
             target=Symbol("f"),
             value='{"repr": "<function test_call.<locals>.f>"}',
             sources={Symbol("counter")},
         ),
-        InitialValue(lineno=15, target=Symbol("a"), value="1"),
-        InitialValue(lineno=15, target=Symbol("b"), value="1"),
+        InitialValue(lineno=-1, target=Symbol("a"), value="1"),
+        InitialValue(lineno=-1, target=Symbol("b"), value="1"),
         Binding(
             lineno=15,
             target=Symbol("x"),
@@ -44,8 +44,8 @@ def test_call(tracer, mocked_responses):
             value="2",
             sources={Symbol("a"), Symbol("b"), Symbol("f")},
         ),
-        InitialValue(lineno=17, target=Symbol("c"), value="1"),
-        InitialValue(lineno=17, target=Symbol("d"), value="1"),
+        InitialValue(lineno=-1, target=Symbol("c"), value="1"),
+        InitialValue(lineno=-1, target=Symbol("d"), value="1"),
         Binding(
             lineno=17,
             target=Symbol("x"),

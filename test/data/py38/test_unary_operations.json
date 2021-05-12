@@ -12,7 +12,7 @@
     "loops": [],
     "events": [
         {
-            "lineno": 9,
+            "lineno": -1,
             "index": 0,
             "offset": 12,
             "filename": "test_unary.py",

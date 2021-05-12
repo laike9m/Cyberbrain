@@ -24,11 +24,11 @@ def test_jump(tracer, mocked_responses):
     tracer.stop()
 
     assert tracer.events == [
-        InitialValue(target=Symbol("a"), value="[]", lineno=11),
+        InitialValue(target=Symbol("a"), value="[]", lineno=-1),
         Binding(target=Symbol("x"), value="1", lineno=14),
         Binding(target=Symbol("x"), value="2", lineno=17),
-        InitialValue(target=Symbol("b"), value='"b"', lineno=19),
-        InitialValue(target=Symbol("c"), value='"c"', lineno=19),
+        InitialValue(target=Symbol("b"), value='"b"', lineno=-1),
+        InitialValue(target=Symbol("c"), value='"c"', lineno=-1),
         # This is a known defect. We have no way to know `x` comes from `a`, because
         # the result of `a != b` only determines whether to jump to execute `b != c`
         # I think it's fine though.

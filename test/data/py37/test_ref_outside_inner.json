@@ -12,7 +12,7 @@
     "loops": [],
     "events": [
         {
-            "lineno": 11,
+            "lineno": -1,
             "index": 0,
             "offset": 0,
             "filename": "test_ref_outside.py",

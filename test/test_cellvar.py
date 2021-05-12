@@ -16,7 +16,7 @@ def test_deref(tracer, mocked_responses):
     test_deref_func()
 
     assert tracer.events == [
-        InitialValue(lineno=11, target=Symbol("a"), value="1"),
+        InitialValue(lineno=-1, target=Symbol("a"), value="1"),
         Binding(lineno=12, target=Symbol("a"), value="2", sources=set()),
         Deletion(lineno=13, target=Symbol("a")),
     ]

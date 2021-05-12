@@ -19,13 +19,13 @@ def test_attribute(tracer, mocked_responses):
 
     assert tracer.events == [
         InitialValue(
-            lineno=14,
+            lineno=-1,
             target=Symbol("a2"),
             value='{"y":1}',
             repr="<test_attribute.test_attribute.<locals>.A object>",
         ),
         InitialValue(
-            lineno=14,
+            lineno=-1,
             target=Symbol("a1"),
             value="{}",
             repr="<test_attribute.test_attribute.<locals>.A object>",

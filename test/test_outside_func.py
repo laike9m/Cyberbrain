@@ -21,9 +21,9 @@ tracer.stop()
 
 def test_module():
     assert tracer.events == [
-        InitialValue(target=Symbol("x"), value="1", lineno=8),
+        InitialValue(target=Symbol("x"), value="1", lineno=-1),
         Deletion(target=Symbol("x"), lineno=8),
-        InitialValue(target=Symbol("__annotations__"), value="{}", lineno=9),
+        InitialValue(target=Symbol("__annotations__"), value="{}", lineno=-1),
         Mutation(
             target=Symbol("__annotations__"),
             value='{"y":{"py/type":"builtins.int"}}',

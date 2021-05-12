@@ -12,7 +12,7 @@
     "loops": [],
     "events": [
         {
-            "lineno": 14,
+            "lineno": -1,
             "index": 0,
             "offset": 40,
             "filename": "test_attribute.py",
@@ -23,7 +23,7 @@
             "type": "InitialValue"
         },
         {
-            "lineno": 14,
+            "lineno": -1,
             "index": 1,
             "offset": 42,
             "filename": "test_attribute.py",

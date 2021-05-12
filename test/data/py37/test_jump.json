@@ -14,7 +14,7 @@
     "loops": [],
     "events": [
         {
-            "lineno": 11,
+            "lineno": -1,
             "index": 0,
             "offset": 20,
             "filename": "test_jump.py",
@@ -47,7 +47,7 @@
             "type": "Binding"
         },
         {
-            "lineno": 19,
+            "lineno": -1,
             "index": 3,
             "offset": 40,
             "filename": "test_jump.py",
@@ -58,7 +58,7 @@
             "type": "InitialValue"
         },
         {
-            "lineno": 19,
+            "lineno": -1,
             "index": 4,
             "offset": 50,
             "filename": "test_jump.py",

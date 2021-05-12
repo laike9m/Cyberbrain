@@ -82,7 +82,7 @@ def test_yield_from(trace, mocked_responses):
 
     assert trace.events == [
         InitialValue(
-            lineno=75,
+            lineno=-1,
             target=Symbol("inner"),
             value='{"repr": "<function test_yield_from.<locals>.inner>"}',
             repr="<function test_yield_from.<locals>.inner>",

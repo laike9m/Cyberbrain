@@ -161,12 +161,10 @@ class Frame:
         #   it would be better if we can find the lineno of each parameter,
         #   since they may exist on different lines.
 
-        # TODO: Assign it to -1 if it's not a parameter.
-        lineno = (
-            self.defined_lineno
-            if target in self.parameters
-            else self.offset_to_lineno[instr.offset]
-        )
+        # Set the lineno to -1 for global or enclosing vars, because we don't know
+        # their exact lineno. This will disable highlighting when users hovering on
+        # nodes of these variables.
+        lineno = self.defined_lineno if target in self.parameters else -1
 
         # Logs InitialValue event if it hasn't been recorded yet.
         if utils.name_exist_in_frame(target, frame) and not self._knows(target):

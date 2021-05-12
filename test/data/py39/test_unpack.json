@@ -45,7 +45,7 @@
             "type": "Binding"
         },
         {
-            "lineno": 12,
+            "lineno": -1,
             "index": 2,
             "offset": 44,
             "filename": "test_unpack.py",
@@ -78,7 +78,7 @@
             "type": "Binding"
         },
         {
-            "lineno": 13,
+            "lineno": -1,
             "index": 5,
             "offset": 52,
             "filename": "test_unpack.py",
@@ -199,7 +199,7 @@
             "type": "Binding"
         },
         {
-            "lineno": 19,
+            "lineno": -1,
             "index": 16,
             "offset": 122,
             "filename": "test_unpack.py",
@@ -210,7 +210,7 @@
             "type": "InitialValue"
         },
         {
-            "lineno": 19,
+            "lineno": -1,
             "index": 17,
             "offset": 126,
             "filename": "test_unpack.py",
