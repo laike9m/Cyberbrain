@@ -75,6 +75,7 @@ class EventInfo:
     target: Symbol = None
     sources: set[Symbol] = dataclasses.field(default_factory=set)
     jump_target: int = None
+    lineno: int = None
 
 
 class Why(enum.Enum):
@@ -88,6 +89,20 @@ class Why(enum.Enum):
     SILENCED = 8  # Exception silenced by 'with'
 
 
+class Value(list):
+    def __init__(self, start_lineno, *args):
+        self.start_lineno = start_lineno
+        super().__init__(*args)
+    def __repr__(self):
+        return "{" + str(self.start_lineno) + " " + str(super().__repr__()) + "}"
+
+def get_first_lineno(*values):
+    start_lineno = -1
+    for value in values:
+        start_lineno = min(value.start_lineno, start_lineno) if start_lineno != -1 else value.start_lineno
+    return start_lineno
+
+
 class BaseValueStack:
     """Class that simulates the a frame's value stack.
 
@@ -98,6 +113,7 @@ class BaseValueStack:
         self.stack = []
         self.block_stack = BlockStack()
         self.last_exception: Optional[ExceptionInfo] = None
+        self.last_starts_line = -1
         self.return_value = _placeholder
         self.handler_signature_cache: dict[str, set[str]] = {}  # keyed by opname.
         self.snapshot = None
@@ -126,6 +142,7 @@ class BaseValueStack:
         exc_info: Optional[ExceptionInfo],
         snapshot: Snapshot,
     ) -> Optional[EventInfo]:
+        print(instr.opname, self.stack)
         """Given a instruction, emits EventInfo if any, and updates the stack.
 
         Args:
@@ -198,7 +215,7 @@ class BaseValueStack:
                 f", but only has {len(self.stack)}.",
             )
 
-    def _push(self, *values):
+    def _push(self, start_lineno, *values):
         """Pushes values onto the simulated value stack.
 
         This method will automatically convert single value to a list. _placeholder will
@@ -224,7 +241,7 @@ class BaseValueStack:
                         # isolated from each other.
                         value[index] = copy(value[index])
             # For NULL or int used by block related handlers, keep the original value.
-            self.stack.append(value)
+            self.stack.append(Value(start_lineno, value))
 
     def _pop(self, n=1):
         """Pops and returns n item from stack."""
@@ -240,13 +257,15 @@ class BaseValueStack:
 
         The pushed element is expected to originates from the popped elements.
         """
+        start_lineno = -1
         elements = []
         for _ in range(n):
             tos = self._pop()
+            start_lineno = min(tos.start_lineno, start_lineno) if start_lineno != -1 else tos.start_lineno
             if isinstance(tos, list):
                 # Flattens identifiers in TOS, leave out others (NULL, int).
                 elements.extend(tos)
-        self._push(elements)
+        self._push(start_lineno, elements)
 
     def _pop_one_push_n(self, n):
         """Pops one elements from TOS, and pushes n elements to TOS.
@@ -255,7 +274,7 @@ class BaseValueStack:
         """
         tos = self._pop()
         for _ in range(n):
-            self._push(tos)
+            self._push(tos.start_lineno, tos)
 
     def _push_block(self, b_type: BlockType):
         self.block_stack.push(Block(b_level=self.stack_level, b_type=b_type))
@@ -278,22 +297,27 @@ class BaseValueStack:
             self._store_exception(exc_info)
             return False
         return True
+    
+    def _get_location(self, instr: Instruction):
+        if instr.starts_line is not None:
+            self.last_starts_line = instr.starts_line
+        return self.last_starts_line
 
     def _POP_TOP_handler(self):
         self._pop()
 
     def _ROT_TWO_handler(self):
         tos, tos1 = self._pop(2)
-        self._push(tos)
-        self._push(tos1)
+        self._push(tos.start_lineno, tos)
+        self._push(tos1.start_lineno, tos1)
 
     def _DUP_TOP_handler(self):
-        self._push(self.tos)
+        self._push(self.tos.start_lineno, self.tos)
 
     def _DUP_TOP_TWO_handler(self):
         tos1, tos = self.tos1, self.tos
-        self._push(tos1)
-        self._push(tos)
+        self._push(tos1.start_lineno, tos1)
+        self._push(tos.start_lineno, tos)
 
     def _ROT_THREE_handler(self):
         self.stack[-3], self.stack[-2], self.stack[-1] = (
@@ -316,8 +340,9 @@ class BaseValueStack:
 
     def _BINARY_operation_handler(self, exc_info):
         tos, tos1 = self._pop(2)
+        start_lineno = tos.start_lineno if tos.start_lineno < tos1.start_lineno else tos1.start_lineno
         if self._instruction_successfully_executed(exc_info, "BINARY op"):
-            self._push(utils.flatten(tos, tos1))
+            self._push(start_lineno, utils.flatten(tos, tos1))
 
     @emit_event
     def _STORE_SUBSCR_handler(self, exc_info):
@@ -351,7 +376,7 @@ class BaseValueStack:
         # this value.
         # See https://github.com/python/cpython/blob/master/Objects/genobject.c#L197
         # and https://www.cnblogs.com/coder2012/p/4990834.html for a code walk through.
-        self._push(_placeholder)
+        self._push(self.last_starts_line, _placeholder)
 
     def _YIELD_FROM_handler(self):
         self._pop()
@@ -366,7 +391,7 @@ class BaseValueStack:
     @emit_event
     def _STORE_NAME_handler(self, instr):
         binding = EventInfo(
-            type=Binding, target=Symbol(instr.argval), sources=set(self.tos)
+            type=Binding, target=Symbol(instr.argval), sources=set(self.tos), lineno=self.tos.start_lineno
         )
         self._pop()
         return binding
@@ -517,8 +542,8 @@ class BaseValueStack:
         if self._instruction_successfully_executed(exc_info, "IMPORT_FROM"):
             self._push(_placeholder)
 
-    def _LOAD_CONST_handler(self):
-        self._push(_placeholder)
+    def _LOAD_CONST_handler(self, instr):
+        self._push(self._get_location(instr), _placeholder)
 
     def _LOAD_NAME_handler(self, instr, frame, exc_info):
         if self._instruction_successfully_executed(exc_info, "LOAD_NAME"):
@@ -526,11 +551,11 @@ class BaseValueStack:
 
     def _LOAD_GLOBAL_handler(self, instr, frame, exc_info):
         if self._instruction_successfully_executed(exc_info, "LOAD_GLOBAL"):
-            self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
+            self._push(self._get_location(instr), self._fetch_value_for_load_instruction(instr.argrepr, frame))
 
     def _LOAD_FAST_handler(self, instr, frame, exc_info):
         if self._instruction_successfully_executed(exc_info, "LOAD_FAST"):
-            self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
+            self._push(self._get_location(instr), self._fetch_value_for_load_instruction(instr.argrepr, frame))
 
     def _fetch_value_for_load_instruction(self, name, frame):
         """Transforms the value to be loaded onto value stack based on their types.
@@ -589,14 +614,14 @@ class BaseValueStack:
         if self._instruction_successfully_executed(exc_info, "DELETE_FAST"):
             return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
 
-    def _LOAD_METHOD_handler(self, exc_info):
+    def _LOAD_METHOD_handler(self, instr, exc_info):
         if self._instruction_successfully_executed(exc_info, "LOAD_METHOD"):
             # NULL should be pushed if method lookup failed, but this would lead to an
             # exception anyway, and should be very rare, so ignoring it.
             # See https://docs.python.org/3/library/dis.html#opcode-LOAD_METHOD.
-            self._push(self.tos)
+            self._push(self._get_location(instr), self.tos)
 
-    def _push_arguments_or_exception(self, callable_obj, args):
+    def _push_arguments_or_exception(self, lineno, callable_obj, args):
         if utils.is_exception_class(callable_obj):
             # In `raise IndexError()`
             # We need to make sure the result of `IndexError()` is an exception inst,
@@ -604,7 +629,7 @@ class BaseValueStack:
             self._push(callable_obj())
         else:
             # Return value is a list containing the callable and all arguments
-            self._push(utils.flatten(callable_obj, args))
+            self._push(lineno, utils.flatten(callable_obj, args))
 
     def _CALL_FUNCTION_handler(self, instr, exc_info):
         args = self._pop(instr.arg)
@@ -612,7 +637,7 @@ class BaseValueStack:
         if self._instruction_successfully_executed(exc_info, "CALL_FUNCTION"):
             if utils.is_exception(args):
                 args = (args,)
-            self._push_arguments_or_exception(callable_obj, args)
+            self._push_arguments_or_exception(self._get_location(instr), callable_obj, args)
 
     def _CALL_FUNCTION_KW_handler(self, instr: Instruction, exc_info):
         args_num = instr.arg
@@ -642,7 +667,7 @@ class BaseValueStack:
         if self._instruction_successfully_executed(exc_info, "CALL_METHOD"):
             if utils.is_exception(args):
                 args = (args,)
-            self._push(utils.flatten(inst_or_callable, method_or_null, *args))
+            self._push(self._get_location(instr), utils.flatten(inst_or_callable, method_or_null, *args))
 
         # The real callable can be omitted for various reasons.
         # See the _fetch_value_for_load method.
@@ -692,7 +717,7 @@ class BaseValueStack:
         elements.extend(self._pop())
 
         if self._instruction_successfully_executed(exc_info, "FORMAT_VALUE"):
-            self._push(elements)
+            self._push(self._get_location(instr), elements)
 
     def _JUMP_FORWARD_handler(self, instr, jumped):
         pass
