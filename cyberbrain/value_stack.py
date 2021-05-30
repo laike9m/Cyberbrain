@@ -352,7 +352,7 @@ class BaseValueStack:
             # os.environ["foo"] = "2", tos1 is [].
             if tos1:
                 return EventInfo(
-                    type=Mutation, target=tos1[0], sources=set(tos + tos1 + tos2)
+                    type=Mutation, target=tos1[0], sources=set(tos + tos1 + tos2), lineno=tos2.start_lineno
                 )
 
     # noinspection DuplicatedCode
@@ -361,7 +361,7 @@ class BaseValueStack:
         tos, tos1 = self._pop(2)
         assert len(tos1) == 1
         if self._instruction_successfully_executed(exc_info, "DELETE_SUBSCR"):
-            return EventInfo(type=Mutation, target=tos1[0], sources=set(tos + tos1))
+            return EventInfo(type=Mutation, target=tos1[0], sources=set(tos + tos1), lineno=tos1.start_lineno)
 
     def _YIELD_VALUE_handler(self):
         """
@@ -391,7 +391,8 @@ class BaseValueStack:
     @emit_event
     def _STORE_NAME_handler(self, instr):
         binding = EventInfo(
-            type=Binding, target=Symbol(instr.argval), sources=set(self.tos), lineno=self.tos.start_lineno
+            type=Binding, target=Symbol(instr.argval), sources=set(self.tos),
+            lineno=min(self._get_location(instr), self.tos.start_lineno)
         )
         self._pop()
         return binding
@@ -405,7 +406,7 @@ class BaseValueStack:
         seq = self._pop()
         if self._instruction_successfully_executed(exc_info, "UNPACK_SEQUENCE"):
             for _ in range(instr.arg):
-                self._push(seq)
+                self._push(min(seq.start_lineno, self._get_location(instr)), seq)
 
     def _UNPACK_EX_handler(self, instr, exc_info):
         assert instr.arg <= 65535  # At most one extended arg.
@@ -414,21 +415,21 @@ class BaseValueStack:
         seq = self._pop()
         if self._instruction_successfully_executed(exc_info, "UNPACK_EX"):
             for _ in range(number_of_receivers):
-                self._push(seq)
+                self._push(min(seq.start_lineno, self._get_location(instr)), seq)
 
     @emit_event
     def _STORE_ATTR_handler(self, exc_info):
         tos, tos1 = self._pop(2)
         assert len(tos) == 1
         if self._instruction_successfully_executed(exc_info, "STORE_ATTR"):
-            return EventInfo(type=Mutation, target=tos[0], sources=set(tos + tos1))
+            return EventInfo(type=Mutation, target=tos[0], sources=set(tos + tos1), lineno=tos1.start_lineno)
 
     @emit_event
     def _DELETE_ATTR_handler(self, exc_info):
         tos = self._pop()
         assert len(tos) == 1
         if self._instruction_successfully_executed(exc_info, "DELETE_ATTR"):
-            return EventInfo(type=Mutation, target=tos[0], sources=set(tos))
+            return EventInfo(type=Mutation, target=tos[0], sources=set(tos), lineno=tos.start_lineno)
 
     @emit_event
     def _STORE_GLOBAL_handler(self, instr):
@@ -437,7 +438,7 @@ class BaseValueStack:
     @emit_event
     def _DELETE_GLOBAL_handler(self, instr, exc_info):
         if self._instruction_successfully_executed(exc_info, "DELETE_GLOBAL"):
-            return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
+            return EventInfo(type=Deletion, target=Symbol(instr.argrepr), lineno=self._get_location(instr))
 
     def _BUILD_TUPLE_handler(self, instr):
         self._pop_n_push_one(instr.arg)
@@ -448,12 +449,12 @@ class BaseValueStack:
     def _BUILD_SET_handler(self, instr, exc_info):
         items = self._pop(instr.arg)
         if self._instruction_successfully_executed(exc_info, "BUILD_SET"):
-            self._push(utils.flatten(items))
+            self._push(get_first_lineno(items), utils.flatten(items))
 
     def _BUILD_MAP_handler(self, instr, exc_info):
         items = self._pop(instr.arg * 2)
         if self._instruction_successfully_executed(exc_info, "BUILD_MAP"):
-            self._push(utils.flatten(items))
+            self._push(get_first_lineno(items), utils.flatten(items))
 
     def _BUILD_CONST_KEY_MAP_handler(self, instr):
         self._pop_n_push_one(instr.arg + 1)
@@ -464,36 +465,36 @@ class BaseValueStack:
     def _BUILD_TUPLE_UNPACK_handler(self, instr, exc_info):
         items = self._pop(instr.arg)
         if self._instruction_successfully_executed(exc_info, "BUILD_TUPLE_UNPACK"):
-            self._push(utils.flatten(items))
+            self._push(min(items.start_lineno, self._get_location(instr)), utils.flatten(items))
 
     def _BUILD_TUPLE_UNPACK_WITH_CALL_handler(self, instr, exc_info):
         items = self._pop(instr.arg)
         if self._instruction_successfully_executed(
             exc_info, "BUILD_TUPLE_UNPACK_WITH_CALL"
         ):
-            self._push(utils.flatten(items))
+            self._push(min(items.start_lineno, self._get_location(instr)), utils.flatten(items))
 
     def _BUILD_LIST_UNPACK_handler(self, instr, exc_info):
         items = self._pop(instr.arg)
         if self._instruction_successfully_executed(exc_info, "BUILD_LIST_UNPACK"):
-            self._push(utils.flatten(items))
+            self._push(min(items.start_lineno, self._get_location(instr)), utils.flatten(items))
 
     def _BUILD_SET_UNPACK_handler(self, instr, exc_info):
         items = self._pop(instr.arg)
         if self._instruction_successfully_executed(exc_info, "BUILD_SET_UNPACK"):
-            self._push(utils.flatten(items))
+            self._push(min(items.start_lineno, self._get_location(instr)), utils.flatten(items))
 
     def _BUILD_MAP_UNPACK_handler(self, instr, exc_info):
         items = self._pop(instr.arg)
         if self._instruction_successfully_executed(exc_info, "BUILD_MAP_UNPACK"):
-            self._push(utils.flatten(items))
+            self._push(min(items.start_lineno, self._get_location(instr)), utils.flatten(items))
 
     def _BUILD_MAP_UNPACK_WITH_CALL_handler(self, instr, exc_info):
         items = self._pop(instr.arg)
         if self._instruction_successfully_executed(
             exc_info, "BUILD_MAP_UNPACK_WITH_CALL"
         ):
-            self._push(utils.flatten(items))
+            self._push(min(items.start_lineno, self._get_location(instr)), utils.flatten(items))
 
     def _LOAD_ATTR_handler(self, exc_info):
         """Event the behavior of LOAD_ATTR.
@@ -536,18 +537,18 @@ class BaseValueStack:
     def _IMPORT_NAME_handler(self, exc_info):
         self._pop(2)
         if self._instruction_successfully_executed(exc_info, "IMPORT_NAME"):
-            self._push(_placeholder)
+            self._push(self.last_starts_line, _placeholder)
 
     def _IMPORT_FROM_handler(self, exc_info):
         if self._instruction_successfully_executed(exc_info, "IMPORT_FROM"):
-            self._push(_placeholder)
+            self._push(self.last_starts_line, _placeholder)
 
     def _LOAD_CONST_handler(self, instr):
         self._push(self._get_location(instr), _placeholder)
 
     def _LOAD_NAME_handler(self, instr, frame, exc_info):
         if self._instruction_successfully_executed(exc_info, "LOAD_NAME"):
-            self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
+            self._push(self._get_location(instr), self._fetch_value_for_load_instruction(instr.argrepr, frame))
 
     def _LOAD_GLOBAL_handler(self, instr, frame, exc_info):
         if self._instruction_successfully_executed(exc_info, "LOAD_GLOBAL"):
@@ -594,11 +595,11 @@ class BaseValueStack:
                 value = self._fetch_value_for_load_instruction(instr.argrepr, frame)
             except AssertionError:
                 value = []
-            self._push(value)
+            self._push(self._get_location(instr), value)
 
     def _LOAD_DEREF_handler(self, instr, frame, exc_info):
         if self._instruction_successfully_executed(exc_info, "LOAD_DEREF"):
-            self._push(self._fetch_value_for_load_instruction(instr.argrepr, frame))
+            self._push(self._get_location(instr), self._fetch_value_for_load_instruction(instr.argrepr, frame))
 
     @emit_event
     def _STORE_DEREF_handler(self, instr):
@@ -607,12 +608,12 @@ class BaseValueStack:
     @emit_event
     def _DELETE_DEREF_handler(self, instr, exc_info):
         if self._instruction_successfully_executed(exc_info, "DELETE_DEREF"):
-            return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
+            return EventInfo(type=Deletion, target=Symbol(instr.argrepr), lineno=self._get_location(instr))
 
     @emit_event
     def _DELETE_FAST_handler(self, instr, exc_info):
         if self._instruction_successfully_executed(exc_info, "DELETE_FAST"):
-            return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
+            return EventInfo(type=Deletion, target=Symbol(instr.argrepr), lineno=self._get_location(instr))
 
     def _LOAD_METHOD_handler(self, instr, exc_info):
         if self._instruction_successfully_executed(exc_info, "LOAD_METHOD"):
@@ -626,7 +627,7 @@ class BaseValueStack:
             # In `raise IndexError()`
             # We need to make sure the result of `IndexError()` is an exception inst,
             # so that _do_raise sees the correct value type.
-            self._push(callable_obj())
+            self._push(lineno, callable_obj())
         else:
             # Return value is a list containing the callable and all arguments
             self._push(lineno, utils.flatten(callable_obj, args))
@@ -647,7 +648,7 @@ class BaseValueStack:
         if self._instruction_successfully_executed(exc_info, "CALL_FUNCTION_KW"):
             if utils.is_exception(args):
                 args = (args,)
-            self._push_arguments_or_exception(callable_obj, args)
+            self._push_arguments_or_exception(self._get_location(instr), callable_obj, args)
 
     def _CALL_FUNCTION_EX_handler(self, instr, exc_info):
         kwargs = self._pop() if (instr.arg & 0x01) else []
@@ -657,7 +658,7 @@ class BaseValueStack:
         if self._instruction_successfully_executed(exc_info, "CALL_FUNCTION_EX"):
             if utils.is_exception(args):
                 args = (args,)
-            self._push_arguments_or_exception(callable_obj, args)
+            self._push_arguments_or_exception(self._get_location(instr), callable_obj, args)
 
     @emit_event
     def _CALL_METHOD_handler(self, instr, exc_info):
@@ -681,6 +682,7 @@ class BaseValueStack:
             type=Mutation,
             target=inst_or_callable[0],
             sources=set(utils.flatten(args, inst_or_callable)),
+            lineno=inst_or_callable.start_lineno,
         )
 
     def _MAKE_FUNCTION_handler(self, instr):
@@ -697,7 +699,7 @@ class BaseValueStack:
         if instr.argval & 0x01:
             function_obj.extend(self._pop())  # args defaults
 
-        self._push(function_obj)
+        self._push(min(self._get_location(instr), get_first_lineno(*function_obj)), function_obj)
 
     def _BUILD_SLICE_handler(self, instr):
         if instr.arg == 2:
@@ -717,7 +719,7 @@ class BaseValueStack:
         elements.extend(self._pop())
 
         if self._instruction_successfully_executed(exc_info, "FORMAT_VALUE"):
-            self._push(self._get_location(instr), elements)
+            self._push(min(self._get_location(instr), get_first_lineno(*elements)), elements)
 
     def _JUMP_FORWARD_handler(self, instr, jumped):
         pass
@@ -772,13 +774,13 @@ class BaseValueStack:
             if jumped:
                 self._pop()
             else:
-                self._push(self.tos)
+                self._push(min(self.tos.starts_lineno, self._get_location(instr), self.tos))
                 return self._return_jump_back_event_if_exists(instr)
         else:
             self._instruction_successfully_executed(exc_info, "FOR_ITER")
 
     def _LOAD_BUILD_CLASS_handler(self):
-        self._push(_placeholder)  # builtins.__build_class__()
+        self._push(self.last_starts_line, _placeholder)  # builtins.__build_class__()
 
     def _SETUP_WITH_handler(self, exc_info):
         if self._instruction_successfully_executed(exc_info, "SETUP_WITH"):
@@ -786,12 +788,12 @@ class BaseValueStack:
             # We ignored the operation to replace context manager on tos with __exit__,
             # because it is a noop in our stack.
             self._push_block(BlockType.SETUP_FINALLY)
-            self._push(enter_func)  # The return value of __enter__()
+            self._push(enter_func.starts_lineno, enter_func)  # The return value of __enter__()
 
     def _return_jump_back_event_if_exists(self, instr):
         jump_target = utils.get_jump_target_or_none(instr)
         if jump_target is not None and jump_target < instr.offset:
-            return EventInfo(type=JumpBackToLoopStart, jump_target=jump_target)
+            return EventInfo(type=JumpBackToLoopStart, jump_target=jump_target, lineno=self._get_location(instr))
 
     def _unwind_except_handler(self, b: Block):
         assert self.stack_level >= b.b_level + 3
