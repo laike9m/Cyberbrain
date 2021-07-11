@@ -128,7 +128,11 @@ def get_jump_target_or_none(instr: dis.Instruction) -> Optional[int]:
 def to_json(python_object: Any):
     # TODO: Once we implemented better deserialization in Js, use unpicklable=True.
     try:
-        if hasattr(python_object, "__iter__") and hasattr(python_object, "__next__") and iter(python_object) == python_object:
+        if (
+            hasattr(python_object, "__iter__")
+            and hasattr(python_object, "__next__")
+            and iter(python_object) == python_object
+        ):
             raise Exception("Cannot encode iterators")
         json = jsonpickle.encode(python_object, unpicklable=False)
     except:
