@@ -59,7 +59,6 @@ class Tracer:
         self.decorated_function_code_id = None
         self.frame_logger: Optional[logger.FrameLogger] = None
         self.tracer_state = TracerFSM.INITIAL
-        # Testing
         self.func_lineno = None
         if debug_mode is not None:
             self.debug_mode = debug_mode
@@ -85,7 +84,8 @@ class Tracer:
             frame=self.frame,
             debug_mode=self.debug_mode,
         )
-        self.frame.defined_lineno = self.func_lineno
+        if self.func_lineno:
+            self.frame.defined_lineno = self.func_lineno
         # print(f"Logger initialized {self.frame_logger}")
 
     def start(self, *, disabled=False):
@@ -162,6 +162,7 @@ class Tracer:
 
         def decorator(f, disabled_by_user=False):
             stack_summary = traceback.extract_stack()
+            print(stack_summary)
             self.func_lineno = stack_summary[0].lineno
 
             @functools.wraps(f)
