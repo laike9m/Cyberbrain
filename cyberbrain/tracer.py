@@ -1,5 +1,5 @@
 """Cyberbrain public API and tracer setup."""
-
+import traceback 
 import argparse
 import functools
 import inspect
@@ -11,6 +11,8 @@ from typing import Optional, Union
 from . import logger, utils, rpc_client
 from .frame import Frame
 from .frame_tree import FrameTree
+
+from undec import CountDecorators
 
 _debug_mode = False
 
@@ -57,6 +59,8 @@ class Tracer:
         self.decorated_function_code_id = None
         self.frame_logger: Optional[logger.FrameLogger] = None
         self.tracer_state = TracerFSM.INITIAL
+        # Testing
+        self.func_lineno = None
         if debug_mode is not None:
             self.debug_mode = debug_mode
 
@@ -81,6 +85,7 @@ class Tracer:
             frame=self.frame,
             debug_mode=self.debug_mode,
         )
+        self.frame.defined_lineno = self.func_lineno
         # print(f"Logger initialized {self.frame_logger}")
 
     def start(self, *, disabled=False):
@@ -154,8 +159,9 @@ class Tracer:
         (https://fastcore.fast.ai/dispatch.html) is similar to singledispatch, but it's
         not ideal either as it requires putting method implementation outside of class.
         """
-
         def decorator(f, disabled_by_user=False):
+            stack_summary = traceback.extract_stack()
+            self.func_lineno = stack_summary[0].lineno
             @functools.wraps(f)
             def wrapper(*args, **kwargs):
                 # TracerFSM.ACTIVE: appeared in recursive call. The tracer has been
@@ -171,7 +177,6 @@ class Tracer:
                 self.decorated_function_code_id = id(f.__code__)
                 sys.settrace(self.global_tracer)
                 result = f(*args, **kwargs)
-
                 # Generator function is special, because the 'call' event is not
                 # triggered when creating the function, but when each `yield` is called.
                 # So we can't call .stop() here, but have to rely on users to manually
