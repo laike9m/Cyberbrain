@@ -1,5 +1,5 @@
 """Cyberbrain public API and tracer setup."""
-import traceback 
+import traceback
 import argparse
 import functools
 import inspect
@@ -159,9 +159,11 @@ class Tracer:
         (https://fastcore.fast.ai/dispatch.html) is similar to singledispatch, but it's
         not ideal either as it requires putting method implementation outside of class.
         """
+
         def decorator(f, disabled_by_user=False):
             stack_summary = traceback.extract_stack()
             self.func_lineno = stack_summary[0].lineno
+
             @functools.wraps(f)
             def wrapper(*args, **kwargs):
                 # TracerFSM.ACTIVE: appeared in recursive call. The tracer has been
