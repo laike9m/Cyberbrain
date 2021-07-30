@@ -12,8 +12,6 @@ from . import logger, utils, rpc_client
 from .frame import Frame
 from .frame_tree import FrameTree
 
-from undec import CountDecorators
-
 _debug_mode = False
 
 # This is to allow using debug mode in both test and non-test code.
