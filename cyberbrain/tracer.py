@@ -100,6 +100,9 @@ class Tracer:
             frame=self.frame,
             debug_mode=self.debug_mode,
         )
+        # Check if the traceback has been run, if so set the frame defined_lineno
+        # Set the traceback to False so it doesn't repeatedly assign the function lineno
+        # if the traceback isn't run again
         if self.traceback._active:
             self.frame.defined_lineno = self.traceback._function_lineno
             self.traceback._active = False
