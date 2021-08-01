@@ -3,7 +3,7 @@
         "frame_id": "test_api_tracer",
         "frame_name": "test_api_tracer",
         "filename": "test_api_tracer.py",
-        "defined_lineno": 5
+        "defined_lineno": 4
     },
     "identifiers": [
         "a"
