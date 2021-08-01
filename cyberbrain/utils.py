@@ -212,16 +212,17 @@ def flatten(*args: any) -> list:
 
 
 def pprint(*args):
-    output = ""
-    for arg in args:
-        if isinstance(arg, str):
-            output += arg + "\n"
-        else:
+    output = "".join(
+        arg + "\n"
+        if isinstance(arg, str)
+        else (
             # Outputs syntax-highlighted object. See
             # https://gist.github.com/EdwardBetts/0814484fdf7bbf808f6f
-            output += (
-                highlight(pformat(arg), PythonLexer(), Terminal256Formatter()) + "\n"
-            )
+            highlight(pformat(arg), PythonLexer(), Terminal256Formatter())
+            + "\n"
+        )
+        for arg in args
+    )
     print(output)
 
 
