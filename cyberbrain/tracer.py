@@ -34,17 +34,6 @@ class TracebackHandler:
         self._function_lineno = None
         self._active = False
 
-    @property
-    def function_lineno(self):
-        return self._function_lineno
-
-    @function_lineno.setter
-    def function_lineno(self, lineno):
-        self._function_lineno = lineno
-
-    def reset_state(self):
-        self._function_lineno = None
-
     def get_function_from_tracer(self):
         # Traceback gets the stack of python program
         stack_summary = traceback.extract_stack()
