@@ -160,8 +160,8 @@ class Tracer:
 
         def decorator(f, disabled_by_user=False):
             stack_summary = traceback.extract_stack()
-            print(stack_summary)
-            self.func_lineno = stack_summary[0].lineno
+            func_index = stack_summary.index([stack for stack in stack_summary if "tracer.py" in stack.filename][0]) - 1
+            self.func_lineno = stack_summary[func_index].lineno
 
             @functools.wraps(f)
             def wrapper(*args, **kwargs):
