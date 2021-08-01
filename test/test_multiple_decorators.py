@@ -21,14 +21,14 @@ def test_multiple_decorators(trace):
 
     assert trace.events == [
         Binding(
-            lineno=17,
+            lineno=18,
             target=Symbol("a"),
             value="[1,2,3]",
             repr="[1, 2, 3]",
             sources=set(),
         ),
         Return(
-            lineno=16,
+            lineno=18,
             value="null",
             repr="None",
             sources=set(),
