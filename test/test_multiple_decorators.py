@@ -28,16 +28,12 @@ def test_multiple_decorators(trace):
             repr="[1, 2, 3]",
             sources=set(),
         ),
-        InitialValue(
-            lineno=17, 
-            target=Symbol('number'), 
-            value='1', 
-            repr='1'),
+        InitialValue(lineno=17, target=Symbol("number"), value="1", repr="1"),
         Binding(
             lineno=19,
             target=Symbol("b"),
             value="1",
-            sources={Symbol('number')},
+            sources={Symbol("number")},
         ),
         Return(
             lineno=19,

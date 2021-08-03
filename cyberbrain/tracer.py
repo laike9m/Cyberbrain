@@ -236,7 +236,7 @@ class Tracer:
         if event == "return":
             # print(raw_frame, event, arg, raw_frame.f_lasti)
             self.frame.log_return_event(raw_frame, value=arg)
-    
+
     def get_function_lineno_from_tracer(self):
         # Traceback gets the stack of python program
         stack_summary = traceback.extract_stack()
