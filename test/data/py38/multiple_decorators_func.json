@@ -64,6 +64,10 @@
         "test_multiple_decorators:3": [
             "test_multiple_decorators:0",
             "test_multiple_decorators:2"
+        ],
+        "test_multiple_decorators:4": [
+            "test_multiple_decorators:0",
+            "test_multiple_decorators:3"
         ]
     }
 }

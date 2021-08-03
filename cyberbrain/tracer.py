@@ -29,24 +29,6 @@ if not utils.run_in_test():
     _debug_mode = cb_args.debug_mode
 
 
-class TracebackHandler:
-    def __init__(self):
-        self._function_lineno = None
-        self._active = False
-
-    def get_function_from_tracer(self):
-        # Traceback gets the stack of python program
-        stack_summary = traceback.extract_stack()
-        # Get the function index in the stack trace. Should always be before the tracer index
-        func_index = (
-            stack_summary.index(
-                [stack for stack in stack_summary if "tracer.py" in stack.filename][0]
-            )
-        ) - 1
-        self._function_lineno = stack_summary[func_index].lineno
-        self._active = True
-
-
 class TracerFSM:
     # States
     INITIAL = 0
@@ -75,7 +57,7 @@ class Tracer:
         self.decorated_function_code_id = None
         self.frame_logger: Optional[logger.FrameLogger] = None
         self.tracer_state = TracerFSM.INITIAL
-        self.traceback = TracebackHandler()
+        self.function_lineno = None
         if debug_mode is not None:
             self.debug_mode = debug_mode
 
@@ -100,12 +82,10 @@ class Tracer:
             frame=self.frame,
             debug_mode=self.debug_mode,
         )
-        # Check if the traceback has been run, if so set the frame defined_lineno
-        # Set the traceback to False so it doesn't repeatedly assign the function lineno
-        # if the traceback isn't run again
-        if self.traceback._active:
-            self.frame.defined_lineno = self.traceback._function_lineno
-            self.traceback._active = False
+        # If not none assign to frame defined_lineno. When the tracer stop is run
+        # you set the function_lineno to none to avoid state carry over
+        if self.function_lineno:
+            self.frame.defined_lineno = self.function_lineno
         # print(f"Logger initialized {self.frame_logger}")
 
     def start(self, *, disabled=False):
@@ -134,6 +114,7 @@ class Tracer:
 
     def stop(self):
         # print(self.frame_logger, self.tracer_state)
+        self.function_lineno = None
         if not self.frame_logger or self.tracer_state == TracerFSM.CALLED:
             # No frame_logger means start() did not run.
             return
@@ -181,7 +162,8 @@ class Tracer:
 
         def decorator(f, disabled_by_user=False):
             # Get function line no
-            self.traceback.get_function_from_tracer()
+            print("BOTTOM")
+            self.function_lineno = self.get_function_lineno_from_tracer()
 
             @functools.wraps(f)
             def wrapper(*args, **kwargs):
@@ -254,3 +236,14 @@ class Tracer:
         if event == "return":
             # print(raw_frame, event, arg, raw_frame.f_lasti)
             self.frame.log_return_event(raw_frame, value=arg)
+    
+    def get_function_lineno_from_tracer(self):
+        # Traceback gets the stack of python program
+        stack_summary = traceback.extract_stack()
+        # Get the function index in the stack trace. Should always be before the tracer index
+        func_index = (
+            stack_summary.index(
+                [stack for stack in stack_summary if "tracer.py" in stack.filename][0]
+            )
+        ) - 1
+        return stack_summary[func_index].lineno
