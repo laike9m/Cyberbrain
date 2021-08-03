@@ -162,7 +162,6 @@ class Tracer:
 
         def decorator(f, disabled_by_user=False):
             # Get function line no
-            print("BOTTOM")
             self.function_lineno = self.get_function_lineno_from_tracer()
 
             @functools.wraps(f)
