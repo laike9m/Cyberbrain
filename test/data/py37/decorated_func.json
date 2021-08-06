@@ -3,7 +3,7 @@
         "frame_id": "decorated_func",
         "frame_name": "decorated_func",
         "filename": "test_api_decorator.py",
-        "defined_lineno": 6
+        "defined_lineno": 5
     },
     "identifiers": [
         "a",

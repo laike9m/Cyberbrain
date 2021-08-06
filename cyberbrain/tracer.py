@@ -162,7 +162,8 @@ class Tracer:
 
         def decorator(f, disabled_by_user=False):
             # Get function line no
-            self.function_lineno = self.get_function_lineno_from_tracer()
+            if sys.version_info > (3, 7):
+                self.function_lineno = self.get_function_lineno_from_tracer()
 
             @functools.wraps(f)
             def wrapper(*args, **kwargs):
