@@ -3,7 +3,7 @@
         "frame_id": "external_iterator_function",
         "frame_name": "external_iterator_function",
         "filename": "test_external_iterator.py",
-        "defined_lineno": 17
+        "defined_lineno": 18
     },
     "identifiers": [
         "iterator",
