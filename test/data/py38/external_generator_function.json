@@ -3,7 +3,7 @@
         "frame_id": "external_generator_function",
         "frame_name": "external_generator_function",
         "filename": "test_external_iterator.py",
-        "defined_lineno": 6
+        "defined_lineno": 7
     },
     "identifiers": [
         "inner",

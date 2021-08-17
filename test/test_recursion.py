@@ -13,7 +13,7 @@ def test_recursion_decorator(trace):
 
     assert trace.events == [
         InitialValue(
-            lineno=5,
+            lineno=6,
             target=Symbol("n"),
             value="3",
             repr="3",
