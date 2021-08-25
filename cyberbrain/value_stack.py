@@ -97,10 +97,8 @@ class Value(list):
         return "{" + str(self.start_lineno) + " " + str(super().__repr__()) + "}"
 
 def get_first_lineno(*values):
-    start_lineno = -1
-    for value in values:
-        start_lineno = min(value.start_lineno, start_lineno) if start_lineno != -1 else value.start_lineno
-    return start_lineno
+    if len(values) == 0: return -1
+    return functools.reduce(lambda x,y:min(x,y.start_lineno), values, values[0].start_lineno)
 
 
 class BaseValueStack:
@@ -142,7 +140,6 @@ class BaseValueStack:
         exc_info: Optional[ExceptionInfo],
         snapshot: Snapshot,
     ) -> Optional[EventInfo]:
-        print(instr.opname, self.stack)
         """Given a instruction, emits EventInfo if any, and updates the stack.
 
         Args:
@@ -668,7 +665,7 @@ class BaseValueStack:
         if self._instruction_successfully_executed(exc_info, "CALL_METHOD"):
             if utils.is_exception(args):
                 args = (args,)
-            self._push(self._get_location(instr), utils.flatten(inst_or_callable, method_or_null, *args))
+            self._push(min(self._get_location(instr), get_first_lineno(*args, inst_or_callable, method_or_null)), utils.flatten(inst_or_callable, method_or_null, *args))
 
         # The real callable can be omitted for various reasons.
         # See the _fetch_value_for_load method.
@@ -714,12 +711,14 @@ class BaseValueStack:
     def _FORMAT_VALUE_handler(self, instr, exc_info):
         # See https://git.io/JvjTg to learn what this opcode is doing.
         elements = []
+        first_lineno = self.tos.start_lineno
         if (instr.arg & 0x04) == 0x04:
             elements.extend(self._pop())
+            first_lineno = min(first_lineno, self.tos.start_lineno)
         elements.extend(self._pop())
 
         if self._instruction_successfully_executed(exc_info, "FORMAT_VALUE"):
-            self._push(min(self._get_location(instr), get_first_lineno(*elements)), elements)
+            self._push(min(self._get_location(instr), first_lineno), elements)
 
     def _JUMP_FORWARD_handler(self, instr, jumped):
         pass
@@ -774,7 +773,7 @@ class BaseValueStack:
             if jumped:
                 self._pop()
             else:
-                self._push(min(self.tos.starts_lineno, self._get_location(instr), self.tos))
+                self._push(min(self.tos.start_lineno, self._get_location(instr)), self.tos)
                 return self._return_jump_back_event_if_exists(instr)
         else:
             self._instruction_successfully_executed(exc_info, "FOR_ITER")
@@ -788,7 +787,7 @@ class BaseValueStack:
             # We ignored the operation to replace context manager on tos with __exit__,
             # because it is a noop in our stack.
             self._push_block(BlockType.SETUP_FINALLY)
-            self._push(enter_func.starts_lineno, enter_func)  # The return value of __enter__()
+            self._push(enter_func.start_lineno, enter_func)  # The return value of __enter__()
 
     def _return_jump_back_event_if_exists(self, instr):
         jump_target = utils.get_jump_target_or_none(instr)
