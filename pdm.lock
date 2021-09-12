@@ -70,11 +70,6 @@ version = "0.3.2"
 summary = "Distribution utilities"
 
 [[package]]
-name = "emoji"
-version = "0.6.0"
-summary = "Emoji for Python"
-
-[[package]]
 name = "execnet"
 version = "1.9.0"
 requires_python = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*"
@@ -84,15 +79,6 @@ summary = "execnet: rapid multi-Python deployment"
 name = "filelock"
 version = "3.0.12"
 summary = "A platform independent file lock."
-
-[[package]]
-name = "fire"
-version = "0.4.0"
-summary = "A library for automatically generating command line interfaces."
-dependencies = [
-    "six",
-    "termcolor",
-]
 
 [[package]]
 name = "get-port"
@@ -345,11 +331,6 @@ requires_python = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*"
 summary = "Python 2 and 3 compatibility utilities"
 
 [[package]]
-name = "termcolor"
-version = "1.1.0"
-summary = "ANSII Color formatting for output in terminal."
-
-[[package]]
 name = "toml"
 version = "0.10.2"
 requires_python = ">=2.6,!=3.0.*,!=3.1.*,!=3.2.*"
@@ -370,6 +351,16 @@ dependencies = [
     "six>=1.14.0",
     "toml>=0.9.4",
     "virtualenv!=20.0.0,!=20.0.1,!=20.0.2,!=20.0.3,!=20.0.4,!=20.0.5,!=20.0.6,!=20.0.7,>=16.0.0",
+]
+
+[[package]]
+name = "tox-pdm"
+version = "0.3.0"
+requires_python = ">=3.6"
+summary = "A plugin for tox that utilizes PDM as the package manager and installer"
+dependencies = [
+    "toml~=0.10",
+    "tox>=3.8.0",
 ]
 
 [[package]]
@@ -424,7 +415,7 @@ summary = "Backport of pathlib-compatible object wrapper for zip files"
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:007ec20d209feb79edbf6f2540038859010b873195ce2f50e8285a2a41b42b33"
+content_hash = "sha256:8fb41c4df50847ea11d66f7e5a4f50678ca21bcd4702e7f4a55bd1e0f78e228a"
 
 [metadata.files]
 "appdirs 1.4.4" = [
@@ -473,9 +464,6 @@ content_hash = "sha256:007ec20d209feb79edbf6f2540038859010b873195ce2f50e8285a2a4
     {file = "distlib-0.3.2-py2.py3-none-any.whl", hash = "sha256:23e223426b28491b1ced97dc3bbe183027419dfc7982b4fa2f05d5f3ff10711c"},
     {file = "distlib-0.3.2.zip", hash = "sha256:106fef6dc37dd8c0e2c0a60d3fca3e77460a48907f335fa28420463a6f799736"},
 ]
-"emoji 0.6.0" = [
-    {file = "emoji-0.6.0.tar.gz", hash = "sha256:e42da4f8d648f8ef10691bc246f682a1ec6b18373abfd9be10ec0b398823bd11"},
-]
 "execnet 1.9.0" = [
     {file = "execnet-1.9.0-py2.py3-none-any.whl", hash = "sha256:a295f7cc774947aac58dde7fdc85f4aa00c42adf5d8f5468fc630c1acf30a142"},
     {file = "execnet-1.9.0.tar.gz", hash = "sha256:8f694f3ba9cc92cab508b152dcfe322153975c29bda272e2fd7f3f00f36e47c5"},
@@ -483,9 +471,6 @@ content_hash = "sha256:007ec20d209feb79edbf6f2540038859010b873195ce2f50e8285a2a4
 "filelock 3.0.12" = [
     {file = "filelock-3.0.12-py3-none-any.whl", hash = "sha256:929b7d63ec5b7d6b71b0fa5ac14e030b3f70b75747cef1b10da9b879fef15836"},
     {file = "filelock-3.0.12.tar.gz", hash = "sha256:18d82244ee114f543149c66a6e0c14e9c4f8a1044b5cdaadd0f82159d6a6ff59"},
-]
-"fire 0.4.0" = [
-    {file = "fire-0.4.0.tar.gz", hash = "sha256:c5e2b8763699d1142393a46d0e3e790c5eb2f0706082df8f647878842c216a62"},
 ]
 "get-port 0.0.5" = [
     {file = "get-port-0.0.5.tar.gz", hash = "sha256:194daa34c41b54b72b5f630ce660e12f4a22116f7e76dfd4f7da0e42c820c198"},
@@ -677,9 +662,6 @@ content_hash = "sha256:007ec20d209feb79edbf6f2540038859010b873195ce2f50e8285a2a4
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
-"termcolor 1.1.0" = [
-    {file = "termcolor-1.1.0.tar.gz", hash = "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"},
-]
 "toml 0.10.2" = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
     {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
@@ -687,6 +669,10 @@ content_hash = "sha256:007ec20d209feb79edbf6f2540038859010b873195ce2f50e8285a2a4
 "tox 3.24.3" = [
     {file = "tox-3.24.3-py2.py3-none-any.whl", hash = "sha256:9fbf8e2ab758b2a5e7cb2c72945e4728089934853076f67ef18d7575c8ab6b88"},
     {file = "tox-3.24.3.tar.gz", hash = "sha256:c6c4e77705ada004283610fd6d9ba4f77bc85d235447f875df9f0ba1bc23b634"},
+]
+"tox-pdm 0.3.0" = [
+    {file = "tox_pdm-0.3.0-py3-none-any.whl", hash = "sha256:809ca8bbf92b4fadde15dcea734a172236c387a1fe50e0c94c5a8340922b23f6"},
+    {file = "tox-pdm-0.3.0.tar.gz", hash = "sha256:71964f12341c21202fd2cfbb034ba1c81a1e35d3c9f440d9431ff192c7dd1020"},
 ]
 "tox-pyenv 1.1.0" = [
     {file = "tox_pyenv-1.1.0-py2.py3-none-any.whl", hash = "sha256:e470c18af115fe52eeff95e7e3cdd0793613eca19709966fc2724b79d55246cb"},

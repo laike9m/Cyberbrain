@@ -1,68 +1,3 @@
-[tool.poetry]
-name = "cyberbrain"
-version = "0.2.0"
-authors = ["laike9m <laike9m@gmail.com>"]
-homepage = "https://github.com/laike9m/Cyberbrain"
-repository = "https://github.com/laike9m/Cyberbrain"
-description = "Python debugging, redefined."
-license = "MIT"
-readme = "README.md"
-keywords = ["debugging", "debugger", "visualization"]
-include = [
-    "LICENSE",
-]
-
-[tool.poetry.urls]
-"Funding" = "https://github.com/sponsors/laike9m"
-"Bug Tracker" = "https://github.com/laike9m/Cyberbrain/issues"
-
-[tool.poetry.dependencies]
-python = ">=3.7.0,<4"
-pygments = "^2.6.1"
-crayons = "^0.3.0"
-shortuuid = "^1.0.1"
-attrs = "^20.0.0"
-get-port = "^0.0.5"
-typing-extensions = "^3.7.4"
-more-itertools = "^8.5.0"
-cheap_repr = "^0.4.2"
-ujson = "^4.0.1"
-jsonpickle = "^1.4.1"
-portpicker = "^1.3.1"
-msgpack = "^1.0.2"
-requests = "^2.25.1"
-
-[tool.poetry.dev-dependencies]
-tox = "^3.14"
-tox-pyenv = "^1.1"
-pytest-xdist = "^1.31"
-pytest = "^6.0.1"
-pyhamcrest = "^2.0.2"
-bytecode = "^0.11.0"
-fire = "^0.3.1"
-emoji = "^0.6.0"
-numpy = "1.18"  # https://stackoverflow.com/q/64465836/2142577
-pandas = "1.1.3"  # Fixed version so output won't change.
-detect = "^2020.7.1"
-ptpython = "^3.0.7"
-pdir2 = "^0.3.1"
-responses = "^0.12.1"
-
-[tool.pylint.messages_control]
-disable = """
-bad-continuation,attribute-defined-outside-init,W0511,R0902,R0913,W0622,C0116,C0103,
-R0903,W0631,W0212,W0603,R1710,R0201
-"""
-
-[tool.pytest.ini_options]
-testpaths = [ # Used to speed up test discovery.
-    "test",
-]
-# Not entirely sure if this is useful, but there's no harm adding it.
-norecursedirs = ["cyberbrain-vsc*", ".vscode", "*.egg"]
-
-############################ Below are PDM configs ###################################
-
 [project]
 # PEP 621 project metadata
 # See https://www.python.org/dev/peps/pep-0621/
@@ -103,24 +38,41 @@ repository = "https://github.com/laike9m/Cyberbrain"
 includes = ["LICENSE"]
 
 [tool.pdm.dev-dependencies]
-dev = [
+# Pckages essential for tests, installed before running tests.
+test = [
     "tox<4.0,>=3.14",
     "tox-pyenv<2.0,>=1.1",
     "pytest-xdist<2.0,>=1.31",
     "pytest<7.0.0,>=6.0.1",
     "pyhamcrest<3.0.0,>=2.0.2",
-    "bytecode<1.0.0,>=0.11.0",
-    "fire<1.0.0,>=0.3.1",
-    "emoji<1.0.0,>=0.6.0",
-    "detect<2021.0.0,>=2020.7.1",
-    "ptpython<4.0.0,>=3.0.7",
-    "pdir2<1.0.0,>=0.3.1",
     "responses<1.0.0,>=0.12.1",
+    "detect<2021.0.0,>=2020.7.1",
 ]
 
 [project.optional-dependencies]
+# why 1.18? https://stackoverflow.com/q/64465836/2142577
 extra_tests = ["numpy==1.18", "pandas==1.1.3"]
+# Only required for development.
+dev = [
+    "bytecode<1.0.0,>=0.11.0",
+    "ptpython<4.0.0,>=3.0.7",
+    "pdir2<1.0.0,>=0.3.1",
+    "tox-pdm~=0.3",
+]
 
 [build-system]
 requires = ["pdm-pep517"]
 build-backend = "pdm.pep517.api"
+
+[tool.pylint.messages_control]
+disable = """
+bad-continuation,attribute-defined-outside-init,W0511,R0902,R0913,W0622,C0116,C0103,
+R0903,W0631,W0212,W0603,R1710,R0201
+"""
+
+[tool.pytest.ini_options]
+testpaths = [ # Used to speed up test discovery.
+    "test",
+]
+# Not entirely sure if this is useful, but there's no harm adding it.
+norecursedirs = ["cyberbrain-vsc*", ".vscode", "*.egg"]
