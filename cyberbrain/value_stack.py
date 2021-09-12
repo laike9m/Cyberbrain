@@ -1219,5 +1219,7 @@ def create_value_stack():
         return Py38ValueStack()
     elif version_info == (3, 9):
         return Py39ValueStack()
+    elif version_info == (3, 10):
+        return Py39ValueStack()
     else:
         raise Exception(f"Unsupported Python version: {sys.version}")

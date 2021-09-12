@@ -34,14 +34,14 @@ try:
     # Make sure Numpy and Pandas objects can be correctly encoded.
     # https://github.com/jsonpickle/jsonpickle#numpy-support
     jsonpickle_numpy.register_handlers()
-except ImportError:
+except (ImportError, RuntimeError):
     pass
 
 try:
     import jsonpickle.ext.pandas as jsonpickle_pandas
 
     jsonpickle_pandas.register_handlers()
-except ImportError:
+except (ImportError, RuntimeError):
     pass
 
 _INSTALLATION_PATHS = list(sysconfig.get_paths().values())

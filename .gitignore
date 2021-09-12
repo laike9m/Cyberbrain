@@ -137,3 +137,7 @@ mocks/
 vscode-workspace.code-workspace
 
 examples/.vscode
+
+# pdm
+.pdm.toml
+__pypackages__/

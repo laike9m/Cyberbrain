@@ -1,9 +1,8 @@
 from __future__ import annotations
 
+import detect
 import sys
 from functools import lru_cache
-
-import detect
 
 
 @lru_cache(maxsize=1)
@@ -17,7 +16,10 @@ def get_os_type() -> str:
     return "other"
 
 
-python_version = {(3, 7): "py37", (3, 8): "py38", (3, 9): "py39"}[sys.version_info[:2]]
+# TODO: Change to py310.
+python_version = {(3, 7): "py37", (3, 8): "py38", (3, 9): "py39", (3, 10): "py39"}[
+    sys.version_info[:2]
+]
 os_type = get_os_type()
 
 
