@@ -1,3 +1,6 @@
+// Sometimes to make the test work, VS Code needs to be launched from command line.
+// e.g. /Applications/Visual\ Studio\ Code\ -\ Insiders.app/Contents/MacOS/Electron
+
 import * as vscode from "vscode";
 import * as path from "path";
 import { spawn, spawnSync } from "child_process";
