@@ -42,7 +42,7 @@ summary = "The Real First Universal Charset Detector. Open, modern and actively 
 
 [[package]]
 name = "cheap-repr"
-version = "0.4.6"
+version = "0.5.0"
 summary = "Better version of repr/reprlib for short, cheap string representations."
 
 [[package]]
@@ -415,7 +415,7 @@ summary = "Backport of pathlib-compatible object wrapper for zip files"
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:8fb41c4df50847ea11d66f7e5a4f50678ca21bcd4702e7f4a55bd1e0f78e228a"
+content_hash = "sha256:319b3df1f996056cffbc6497f0c804d0c532cf841a46a63d1daa8972e0e7d821"
 
 [metadata.files]
 "appdirs 1.4.4" = [
@@ -446,8 +446,9 @@ content_hash = "sha256:8fb41c4df50847ea11d66f7e5a4f50678ca21bcd4702e7f4a55bd1e0f
     {file = "charset_normalizer-2.0.4-py3-none-any.whl", hash = "sha256:0c8911edd15d19223366a194a513099a302055a962bca2cec0f54b8b63175d8b"},
     {file = "charset-normalizer-2.0.4.tar.gz", hash = "sha256:f23667ebe1084be45f6ae0538e4a5a865206544097e4e8bbcacf42cd02a348f3"},
 ]
-"cheap-repr 0.4.6" = [
-    {file = "cheap_repr-0.4.6.tar.gz", hash = "sha256:b4aec1219b0b3ad0e8f99d8253ecc6263b54991b902e9ed7c03f1e7ff72180c3"},
+"cheap-repr 0.5.0" = [
+    {file = "cheap_repr-0.5.0-py2.py3-none-any.whl", hash = "sha256:af9646f2872cdce311c5c08d23633479a5b34666788a06864c3af783c82e841a"},
+    {file = "cheap_repr-0.5.0.tar.gz", hash = "sha256:3e2b9688e83970139d0efa51a68e7737e4fd1f6ea2e4e82b53de168bc89d8e0f"},
 ]
 "colorama 0.4.4" = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},

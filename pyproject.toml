@@ -41,6 +41,7 @@ includes = ["LICENSE"]
 # Pckages essential for tests, installed before running tests.
 test = [
     "tox<4.0,>=3.14",
+    "tox-pdm~=0.3",
     "tox-pyenv<2.0,>=1.1",
     "pytest-xdist<2.0,>=1.31",
     "pytest<7.0.0,>=6.0.1",
@@ -57,7 +58,6 @@ dev = [
     "bytecode<1.0.0,>=0.11.0",
     "ptpython<4.0.0,>=3.0.7",
     "pdir2<1.0.0,>=0.3.1",
-    "tox-pdm~=0.3",
 ]
 
 [build-system]
