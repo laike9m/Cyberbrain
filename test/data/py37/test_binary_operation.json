@@ -288,7 +288,8 @@
                 "snapshot": null
             },
             "value": "1",
-            "repr": "1"
+            "repr": "1",
+            "__class__": "InitialValue"
         },
         {
             "lineno": -1,
@@ -301,7 +302,8 @@
                 "snapshot": null
             },
             "value": "1",
-            "repr": "1"
+            "repr": "1",
+            "__class__": "InitialValue"
         },
         {
             "lineno": 10,
@@ -335,7 +337,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 11,
@@ -372,7 +375,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 12,
@@ -409,7 +413,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 13,
@@ -446,7 +451,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 14,
@@ -483,7 +489,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 15,
@@ -520,7 +527,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 16,
@@ -557,7 +565,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": -1,
@@ -570,7 +579,8 @@
                 "snapshot": null
             },
             "value": "[0,1]",
-            "repr": "[0, 1]"
+            "repr": "[0, 1]",
+            "__class__": "InitialValue"
         },
         {
             "lineno": 17,
@@ -609,7 +619,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 18,
@@ -648,7 +659,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 19,
@@ -687,7 +699,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 20,
@@ -726,7 +739,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 21,
@@ -765,7 +779,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 22,
@@ -804,7 +819,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 23,
@@ -843,7 +859,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 24,
@@ -882,7 +899,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "__class__": "Binding"
         }
     ]
 }
