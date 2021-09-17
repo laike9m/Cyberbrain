@@ -1,28 +1,294 @@
 {
-    "metadata": {
-        "frame_id": "test_binary_operation",
-        "frame_name": "test_binary_operation",
-        "filename": "test_binary.py",
-        "defined_lineno": 4
+    "response": {
+        "metadata": {
+            "frame_id": "test_binary_operation",
+            "frame_name": "test_binary_operation",
+            "filename": "test_binary.py",
+            "defined_lineno": 4
+        },
+        "identifiers": [
+            "a",
+            "b",
+            "c",
+            "lst"
+        ],
+        "loops": [],
+        "events": [
+            {
+                "lineno": -1,
+                "index": 0,
+                "offset": 24,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:0",
+                "target": "a",
+                "value": "1",
+                "repr": "1",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": -1,
+                "index": 1,
+                "offset": 26,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:1",
+                "target": "b",
+                "value": "1",
+                "repr": "1",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 10,
+                "index": 2,
+                "offset": 30,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:2",
+                "target": "c",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            },
+            {
+                "lineno": 11,
+                "index": 3,
+                "offset": 38,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:3",
+                "target": "c",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            },
+            {
+                "lineno": 12,
+                "index": 4,
+                "offset": 46,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:4",
+                "target": "c",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            },
+            {
+                "lineno": 13,
+                "index": 5,
+                "offset": 54,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:5",
+                "target": "c",
+                "value": "1.0",
+                "repr": "1.0",
+                "type": "Binding"
+            },
+            {
+                "lineno": 14,
+                "index": 6,
+                "offset": 62,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:6",
+                "target": "c",
+                "value": "0",
+                "repr": "0",
+                "type": "Binding"
+            },
+            {
+                "lineno": 15,
+                "index": 7,
+                "offset": 70,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:7",
+                "target": "c",
+                "value": "2",
+                "repr": "2",
+                "type": "Binding"
+            },
+            {
+                "lineno": 16,
+                "index": 8,
+                "offset": 78,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:8",
+                "target": "c",
+                "value": "0",
+                "repr": "0",
+                "type": "Binding"
+            },
+            {
+                "lineno": -1,
+                "index": 9,
+                "offset": 80,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:9",
+                "target": "lst",
+                "value": "[0,1]",
+                "repr": "[0, 1]",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 17,
+                "index": 10,
+                "offset": 86,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:10",
+                "target": "c",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            },
+            {
+                "lineno": 18,
+                "index": 11,
+                "offset": 94,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:11",
+                "target": "c",
+                "value": "2",
+                "repr": "2",
+                "type": "Binding"
+            },
+            {
+                "lineno": 19,
+                "index": 12,
+                "offset": 102,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:12",
+                "target": "c",
+                "value": "0",
+                "repr": "0",
+                "type": "Binding"
+            },
+            {
+                "lineno": 20,
+                "index": 13,
+                "offset": 110,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:13",
+                "target": "c",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            },
+            {
+                "lineno": 21,
+                "index": 14,
+                "offset": 118,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:14",
+                "target": "c",
+                "value": "0",
+                "repr": "0",
+                "type": "Binding"
+            },
+            {
+                "lineno": 22,
+                "index": 15,
+                "offset": 126,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:15",
+                "target": "c",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            },
+            {
+                "lineno": 23,
+                "index": 16,
+                "offset": 134,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:16",
+                "target": "c",
+                "value": "true",
+                "repr": "True",
+                "type": "Binding"
+            },
+            {
+                "lineno": 24,
+                "index": 17,
+                "offset": 142,
+                "filename": "test_binary.py",
+                "id": "test_binary_operation:17",
+                "target": "c",
+                "value": "true",
+                "repr": "True",
+                "type": "Binding"
+            }
+        ],
+        "tracingResult": {
+            "test_binary_operation:2": [
+                "test_binary_operation:0",
+                "test_binary_operation:1"
+            ],
+            "test_binary_operation:3": [
+                "test_binary_operation:0",
+                "test_binary_operation:1"
+            ],
+            "test_binary_operation:4": [
+                "test_binary_operation:0",
+                "test_binary_operation:1"
+            ],
+            "test_binary_operation:5": [
+                "test_binary_operation:0",
+                "test_binary_operation:1"
+            ],
+            "test_binary_operation:6": [
+                "test_binary_operation:0",
+                "test_binary_operation:1"
+            ],
+            "test_binary_operation:7": [
+                "test_binary_operation:0",
+                "test_binary_operation:1"
+            ],
+            "test_binary_operation:8": [
+                "test_binary_operation:0",
+                "test_binary_operation:1"
+            ],
+            "test_binary_operation:10": [
+                "test_binary_operation:0",
+                "test_binary_operation:9"
+            ],
+            "test_binary_operation:11": [
+                "test_binary_operation:0",
+                "test_binary_operation:1"
+            ],
+            "test_binary_operation:12": [
+                "test_binary_operation:0",
+                "test_binary_operation:1"
+            ],
+            "test_binary_operation:13": [
+                "test_binary_operation:0",
+                "test_binary_operation:1"
+            ],
+            "test_binary_operation:14": [
+                "test_binary_operation:0",
+                "test_binary_operation:1"
+            ],
+            "test_binary_operation:15": [
+                "test_binary_operation:0",
+                "test_binary_operation:1"
+            ],
+            "test_binary_operation:16": [
+                "test_binary_operation:0",
+                "test_binary_operation:1"
+            ],
+            "test_binary_operation:17": [
+                "test_binary_operation:0",
+                "test_binary_operation:9"
+            ]
+        }
     },
-    "identifiers": [
-        "a",
-        "b",
-        "c",
-        "lst"
-    ],
-    "loops": [],
-    "events": [
+    "tracer.events": [
         {
             "lineno": -1,
             "index": 0,
             "offset": 24,
             "filename": "test_binary.py",
             "id": "test_binary_operation:0",
-            "target": "a",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
             "value": "1",
-            "repr": "1",
-            "type": "InitialValue"
+            "repr": "1"
         },
         {
             "lineno": -1,
@@ -30,10 +296,12 @@
             "offset": 26,
             "filename": "test_binary.py",
             "id": "test_binary_operation:1",
-            "target": "b",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
             "value": "1",
-            "repr": "1",
-            "type": "InitialValue"
+            "repr": "1"
         },
         {
             "lineno": 10,
@@ -41,10 +309,33 @@
             "offset": 30,
             "filename": "test_binary.py",
             "id": "test_binary_operation:2",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "1",
             "repr": "1",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0
+                        }
+                    }
+                }
+            ]
         },
         {
             "lineno": 11,
@@ -52,10 +343,36 @@
             "offset": 38,
             "filename": "test_binary.py",
             "id": "test_binary_operation:3",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "1",
             "repr": "1",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0
+                        }
+                    }
+                }
+            ]
         },
         {
             "lineno": 12,
@@ -63,10 +380,36 @@
             "offset": 46,
             "filename": "test_binary.py",
             "id": "test_binary_operation:4",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "1",
             "repr": "1",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 1
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 1
+                        }
+                    }
+                }
+            ]
         },
         {
             "lineno": 13,
@@ -74,10 +417,36 @@
             "offset": 54,
             "filename": "test_binary.py",
             "id": "test_binary_operation:5",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "1.0",
             "repr": "1.0",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 2
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 2
+                        }
+                    }
+                }
+            ]
         },
         {
             "lineno": 14,
@@ -85,10 +454,36 @@
             "offset": 62,
             "filename": "test_binary.py",
             "id": "test_binary_operation:6",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "0",
             "repr": "0",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 3
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 3
+                        }
+                    }
+                }
+            ]
         },
         {
             "lineno": 15,
@@ -96,10 +491,36 @@
             "offset": 70,
             "filename": "test_binary.py",
             "id": "test_binary_operation:7",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "2",
             "repr": "2",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 4
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 4
+                        }
+                    }
+                }
+            ]
         },
         {
             "lineno": 16,
@@ -107,10 +528,36 @@
             "offset": 78,
             "filename": "test_binary.py",
             "id": "test_binary_operation:8",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "0",
             "repr": "0",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 5
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 5
+                        }
+                    }
+                }
+            ]
         },
         {
             "lineno": -1,
@@ -118,10 +565,12 @@
             "offset": 80,
             "filename": "test_binary.py",
             "id": "test_binary_operation:9",
-            "target": "lst",
+            "target": {
+                "name": "lst",
+                "snapshot": null
+            },
             "value": "[0,1]",
-            "repr": "[0, 1]",
-            "type": "InitialValue"
+            "repr": "[0, 1]"
         },
         {
             "lineno": 17,
@@ -129,10 +578,38 @@
             "offset": 86,
             "filename": "test_binary.py",
             "id": "test_binary_operation:10",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "1",
             "repr": "1",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 6,
+                            "lst": 0
+                        }
+                    }
+                },
+                {
+                    "name": "lst",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 6,
+                            "lst": 0
+                        }
+                    }
+                }
+            ]
         },
         {
             "lineno": 18,
@@ -140,10 +617,38 @@
             "offset": 94,
             "filename": "test_binary.py",
             "id": "test_binary_operation:11",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "2",
             "repr": "2",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 7,
+                            "lst": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 7,
+                            "lst": 0
+                        }
+                    }
+                }
+            ]
         },
         {
             "lineno": 19,
@@ -151,10 +656,38 @@
             "offset": 102,
             "filename": "test_binary.py",
             "id": "test_binary_operation:12",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "0",
             "repr": "0",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 8,
+                            "lst": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 8,
+                            "lst": 0
+                        }
+                    }
+                }
+            ]
         },
         {
             "lineno": 20,
@@ -162,10 +695,38 @@
             "offset": 110,
             "filename": "test_binary.py",
             "id": "test_binary_operation:13",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "1",
             "repr": "1",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 9,
+                            "lst": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 9,
+                            "lst": 0
+                        }
+                    }
+                }
+            ]
         },
         {
             "lineno": 21,
@@ -173,10 +734,38 @@
             "offset": 118,
             "filename": "test_binary.py",
             "id": "test_binary_operation:14",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "0",
             "repr": "0",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 10,
+                            "lst": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 10,
+                            "lst": 0
+                        }
+                    }
+                }
+            ]
         },
         {
             "lineno": 22,
@@ -184,10 +773,38 @@
             "offset": 126,
             "filename": "test_binary.py",
             "id": "test_binary_operation:15",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "1",
             "repr": "1",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 11,
+                            "lst": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 11,
+                            "lst": 0
+                        }
+                    }
+                }
+            ]
         },
         {
             "lineno": 23,
@@ -195,10 +812,38 @@
             "offset": 134,
             "filename": "test_binary.py",
             "id": "test_binary_operation:16",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "true",
             "repr": "True",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 12,
+                            "lst": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 12,
+                            "lst": 0
+                        }
+                    }
+                }
+            ]
         },
         {
             "lineno": 24,
@@ -206,72 +851,38 @@
             "offset": 142,
             "filename": "test_binary.py",
             "id": "test_binary_operation:17",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "true",
             "repr": "True",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 13,
+                            "lst": 0
+                        }
+                    }
+                },
+                {
+                    "name": "lst",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 13,
+                            "lst": 0
+                        }
+                    }
+                }
+            ]
         }
-    ],
-    "tracingResult": {
-        "test_binary_operation:2": [
-            "test_binary_operation:0",
-            "test_binary_operation:1"
-        ],
-        "test_binary_operation:3": [
-            "test_binary_operation:0",
-            "test_binary_operation:1"
-        ],
-        "test_binary_operation:4": [
-            "test_binary_operation:0",
-            "test_binary_operation:1"
-        ],
-        "test_binary_operation:5": [
-            "test_binary_operation:0",
-            "test_binary_operation:1"
-        ],
-        "test_binary_operation:6": [
-            "test_binary_operation:0",
-            "test_binary_operation:1"
-        ],
-        "test_binary_operation:7": [
-            "test_binary_operation:0",
-            "test_binary_operation:1"
-        ],
-        "test_binary_operation:8": [
-            "test_binary_operation:0",
-            "test_binary_operation:1"
-        ],
-        "test_binary_operation:10": [
-            "test_binary_operation:0",
-            "test_binary_operation:9"
-        ],
-        "test_binary_operation:11": [
-            "test_binary_operation:0",
-            "test_binary_operation:1"
-        ],
-        "test_binary_operation:12": [
-            "test_binary_operation:0",
-            "test_binary_operation:1"
-        ],
-        "test_binary_operation:13": [
-            "test_binary_operation:0",
-            "test_binary_operation:1"
-        ],
-        "test_binary_operation:14": [
-            "test_binary_operation:0",
-            "test_binary_operation:1"
-        ],
-        "test_binary_operation:15": [
-            "test_binary_operation:0",
-            "test_binary_operation:1"
-        ],
-        "test_binary_operation:16": [
-            "test_binary_operation:0",
-            "test_binary_operation:1"
-        ],
-        "test_binary_operation:17": [
-            "test_binary_operation:0",
-            "test_binary_operation:9"
-        ]
-    }
+    ]
 }
