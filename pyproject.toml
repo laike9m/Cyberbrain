@@ -42,13 +42,11 @@ includes = ["LICENSE"]
 test = [
     "tox<4.0,>=3.14",
     "tox-pdm~=0.3",
-    "tox-pyenv<2.0,>=1.1",
     "pytest-xdist<2.0,>=1.31",
     "pytest<7.0.0,>=6.0.1",
     "pyhamcrest<3.0.0,>=2.0.2",
     "responses<1.0.0,>=0.12.1",
-    "detect<2021.0.0,>=2020.7.1",
-]
+    "detect<2021.0.0,>=2020.7.1"]
 
 [project.optional-dependencies]
 # why 1.18? https://stackoverflow.com/q/64465836/2142577

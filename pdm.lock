@@ -373,14 +373,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tox-pyenv"
-version = "1.1.0"
-summary = "tox plugin that makes tox use `pyenv which` to find python executables"
-dependencies = [
-    "tox>=2.0",
-]
-
-[[package]]
 name = "typing-extensions"
 version = "3.10.0.2"
 summary = "Backported and Experimental Type Hints for Python 3.5+"
@@ -424,7 +416,7 @@ summary = "Backport of pathlib-compatible object wrapper for zip files"
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:023335576d8d68d308f92ea1f94d92c37fac5478cecf68391b05d95fb2faefa8"
+content_hash = "sha256:50d3b8fde58d641c6dd397cb126e9f53b61a9fb9daa74bc6aaa21f9e479fd9ee"
 
 [metadata.files]
 "appdirs 1.4.4" = [
@@ -687,10 +679,6 @@ content_hash = "sha256:023335576d8d68d308f92ea1f94d92c37fac5478cecf68391b05d95fb
 "tox-pdm 0.3.0" = [
     {file = "tox_pdm-0.3.0-py3-none-any.whl", hash = "sha256:809ca8bbf92b4fadde15dcea734a172236c387a1fe50e0c94c5a8340922b23f6"},
     {file = "tox-pdm-0.3.0.tar.gz", hash = "sha256:71964f12341c21202fd2cfbb034ba1c81a1e35d3c9f440d9431ff192c7dd1020"},
-]
-"tox-pyenv 1.1.0" = [
-    {file = "tox_pyenv-1.1.0-py2.py3-none-any.whl", hash = "sha256:e470c18af115fe52eeff95e7e3cdd0793613eca19709966fc2724b79d55246cb"},
-    {file = "tox-pyenv-1.1.0.tar.gz", hash = "sha256:916c2213577aec0b3b5452c5bfb32fd077f3a3196f50a81ad57d7ef3fc2599e4"},
 ]
 "typing-extensions 3.10.0.2" = [
     {file = "typing_extensions-3.10.0.2-py2-none-any.whl", hash = "sha256:d8226d10bc02a29bcc81df19a26e56a9647f8b0a6d4a83924139f4a8b01f17b7"},
