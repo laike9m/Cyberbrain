@@ -11,12 +11,16 @@ on:
       - "cyberbrain-vsc/*"
       - "test/*"
       - ".github/workflows/ci.yml"
+      - "pdm.lock"
+      - "tox.ini"
   push:
     paths:
       - "cyberbrain/*"
       - "cyberbrain-vsc/*"
       - "test/*"
       - ".github/workflows/ci.yml"
+      - "pdm.lock"
+      - "tox.ini"
   workflow_dispatch:
 
 jobs:
