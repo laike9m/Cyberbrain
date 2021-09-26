@@ -354,6 +354,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "tox-gh-actions"
+version = "2.8.1"
+requires_python = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*"
+summary = "Seamless integration of tox into GitHub Actions"
+dependencies = [
+    "tox<4,>=3.12",
+]
+
+[[package]]
 name = "tox-pdm"
 version = "0.3.0"
 requires_python = ">=3.6"
@@ -415,7 +424,7 @@ summary = "Backport of pathlib-compatible object wrapper for zip files"
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:319b3df1f996056cffbc6497f0c804d0c532cf841a46a63d1daa8972e0e7d821"
+content_hash = "sha256:023335576d8d68d308f92ea1f94d92c37fac5478cecf68391b05d95fb2faefa8"
 
 [metadata.files]
 "appdirs 1.4.4" = [
@@ -670,6 +679,10 @@ content_hash = "sha256:319b3df1f996056cffbc6497f0c804d0c532cf841a46a63d1daa8972e
 "tox 3.24.3" = [
     {file = "tox-3.24.3-py2.py3-none-any.whl", hash = "sha256:9fbf8e2ab758b2a5e7cb2c72945e4728089934853076f67ef18d7575c8ab6b88"},
     {file = "tox-3.24.3.tar.gz", hash = "sha256:c6c4e77705ada004283610fd6d9ba4f77bc85d235447f875df9f0ba1bc23b634"},
+]
+"tox-gh-actions 2.8.1" = [
+    {file = "tox_gh_actions-2.8.1-py2.py3-none-any.whl", hash = "sha256:9d22215a487f3c2f61ba0af5454010009b23fecf0a909b4a831a20d641a77369"},
+    {file = "tox-gh-actions-2.8.1.tar.gz", hash = "sha256:43262d7ed1c126dacfd26b600641be4d51199622ce3b3e240e19b557fd4fa5a6"},
 ]
 "tox-pdm 0.3.0" = [
     {file = "tox_pdm-0.3.0-py3-none-any.whl", hash = "sha256:809ca8bbf92b4fadde15dcea734a172236c387a1fe50e0c94c5a8340922b23f6"},
