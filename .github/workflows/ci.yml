@@ -41,6 +41,7 @@ jobs:
       run:
         working-directory: cyberbrain-vsc
     steps:
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
@@ -55,7 +56,7 @@ jobs:
         python-version: [ 3.7, 3.8, 3.9 ]
         os: [ ubuntu-latest, macOS-latest, windows-latest ]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Set up PDM
         uses: pdm-project/setup-pdm@main
         with:
