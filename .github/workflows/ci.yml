@@ -46,6 +46,7 @@ jobs:
       with:
         node-version: '14'
     - run: npm install
+    - run: npm install acorn
     - run: npm run lint
     - run: npm run unittest
 
