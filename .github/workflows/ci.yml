@@ -66,3 +66,16 @@ jobs:
         run: pdm install
       - name: Run tests
         run: pdm run tox -v
+
+  VsCodeTest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      - run: npm install
+      - name: VSCode Integration tests
+        run: xvfb-run -a npm run test
+        if: runner.os == 'Linux'
