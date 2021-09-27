@@ -1,12 +1,17 @@
 [project]
 # PEP 621 project metadata
 # See https://www.python.org/dev/peps/pep-0621/
+name = "cyberbrain"
+version = "0.2.1"
+description = "Python debugging, redefined."
 authors = [
     {name = "laike9m", email = "laike9m@gmail.com"},
 ]
-dynamic = ["classifiers"]
 license = {text = "MIT"}
 requires-python = ">=3.7,<4.0"
+dynamic = ["classifiers"]
+readme = "README.md"
+keywords = ["debugging", "debugger", "visualization"]
 dependencies = [
     "pygments<3.0.0,>=2.6.1",
     "crayons<1.0.0,>=0.3.0",
@@ -22,11 +27,6 @@ dependencies = [
     "msgpack<2.0.0,>=1.0.2",
     "requests<3.0.0,>=2.25.1",
 ]
-name = "cyberbrain"
-version = "0.2.0"
-description = "Python debugging, redefined."
-readme = "README.md"
-keywords = ["debugging", "debugger", "visualization"]
 
 [project.urls]
 Funding = "https://github.com/sponsors/laike9m"
@@ -51,6 +51,7 @@ dev = [
     "ptpython<4.0.0,>=3.0.7",
     "pdir2<1.0.0,>=0.3.1",
     "tox-gh-actions~=2.8",
+    "twine~=3.4",
 ]
 
 [project.optional-dependencies]
