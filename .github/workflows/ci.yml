@@ -71,11 +71,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Set up PDM
+        uses: pdm-project/setup-pdm@main
+        with:
+          python-version: 3.9
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '12'
-      - run: npm install
+      - name: Install dependencies
+        run: |
+          pdm install
+          npm install
       - name: VSCode Integration tests
         run: xvfb-run -a npm run test
         if: runner.os == 'Linux'
