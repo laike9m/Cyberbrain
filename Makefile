@@ -31,7 +31,7 @@ update_dep:
 # We must use npm not yarn. See https://github.com/microsoft/vscode-vsce/issues/497
 publish:
 	npm install -g vsce
-#	pdm build
-#	pdm run twine upload -r pypi dist/*  # Assuming .pypirc exists.
+	pdm build
+	pdm run twine upload -r pypi dist/*  # Assuming .pypirc exists.
 	cd ./cyberbrain-vsc && vsce package --no-yarn && vsce publish --no-yarn
 	cd ./cyberbrain-vsc && npx ovsx publish -p ${ovsx_token}
