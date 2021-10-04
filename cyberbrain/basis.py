@@ -8,10 +8,9 @@ from collections import defaultdict
 import attr
 import os
 import shortuuid
+import sys
 from types import TracebackType
 from typing import Any, TYPE_CHECKING, Optional, Type, Tuple
-
-from . import utils
 
 if TYPE_CHECKING:
     from .frame import Snapshot
@@ -19,6 +18,10 @@ if TYPE_CHECKING:
 _dummy = object()
 
 ExcInfoType = Tuple[Type[BaseException], Exception, TracebackType]
+
+VERSION_INFO = sys.version_info[:2]
+
+RUN_IN_TEST = "pytest" in sys.modules
 
 
 @dataclasses.dataclass
@@ -37,7 +40,7 @@ class UUIDGenerator:
     @classmethod
     def generate_uuid(cls) -> str:
         """Generates a 8-char uuid."""
-        if utils.run_in_test():
+        if RUN_IN_TEST:
             # When run in test, generates predictable uids so we can assert on them.
             test_name = (
                 # When executed in global scope, $PYTEST_CURRENT_TEST is not set.

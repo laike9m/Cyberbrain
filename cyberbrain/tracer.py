@@ -8,7 +8,7 @@ import sys
 from types import MethodType, FunctionType, FrameType
 from typing import Optional, Union
 
-from . import logger, utils, rpc_client
+from . import basis, logger, utils, rpc_client
 from .frame import Frame
 from .frame_tree import FrameTree
 
@@ -16,7 +16,7 @@ _debug_mode = False
 
 # This is to allow using debug mode in both test and non-test code.
 # Flag will conflict, so only execute it if not running a test.
-if not utils.run_in_test():
+if not basis.RUN_IN_TEST:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--debug_mode",
@@ -61,7 +61,7 @@ class Tracer:
         if debug_mode is not None:
             self.debug_mode = debug_mode
 
-        if utils.run_in_test():
+        if basis.RUN_IN_TEST:
             import portpicker
 
             self.rpc_client = rpc_client.RpcClient(
@@ -164,7 +164,7 @@ class Tracer:
             # Get function line no
             self.function_lineno = (
                 self.get_function_lineno_from_tracer() + 1
-                if sys.version_info < (3, 8)
+                if basis.VERSION_INFO < (3, 8)
                 else self.get_function_lineno_from_tracer()
             )
 

@@ -20,7 +20,7 @@ try:
 except ImportError:
     from typing_extensions import Literal
 
-from . import utils
+from . import basis, utils
 from .basis import (
     Symbol,
     Binding,
@@ -1212,7 +1212,7 @@ class Py39ValueStack(Py38ValueStack):
 
 
 def create_value_stack():
-    version_info = sys.version_info[:2]
+    version_info = basis.VERSION_INFO
     if version_info == (3, 7):
         return Py37ValueStack()
     elif version_info == (3, 8):
@@ -1222,4 +1222,4 @@ def create_value_stack():
     elif version_info == (3, 10):
         return Py39ValueStack()
     else:
-        raise Exception(f"Unsupported Python version: {sys.version}")
+        raise Exception(f"Unsupported Python version: {version_info}")
