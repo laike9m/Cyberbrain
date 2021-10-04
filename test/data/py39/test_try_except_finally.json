@@ -4,7 +4,7 @@
             "frame_id": "test_try_except_finally",
             "frame_name": "test_try_except_finally",
             "filename": "test_block.py",
-            "defined_lineno": 38
+            "defined_lineno": 35
         },
         "identifiers": [
             "b"
@@ -12,7 +12,7 @@
         "loops": [],
         "events": [
             {
-                "lineno": 46,
+                "lineno": 43,
                 "index": 0,
                 "offset": 46,
                 "filename": "test_block.py",
@@ -27,7 +27,7 @@
     },
     "tracer.events": [
         {
-            "lineno": 46,
+            "lineno": 43,
             "index": 0,
             "offset": 46,
             "filename": "test_block.py",

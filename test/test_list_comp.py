@@ -10,15 +10,3 @@ def test_list_comprehension(tracer, check_golden_file):
     x = [e for e in lst]
 
     tracer.stop()
-
-    assert tracer.events == [
-        Binding(target=Symbol("n"), value="2", lineno=7),
-        Binding(target=Symbol("x"), value="[0,1]", lineno=8, sources={Symbol("n")}),
-        Binding(target=Symbol("lst"), value='["foo","bar"]', lineno=9),
-        Binding(
-            target=Symbol("x"),
-            value='["foo","bar"]',
-            lineno=10,
-            sources={Symbol("lst")},
-        ),
-    ]

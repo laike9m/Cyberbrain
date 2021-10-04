@@ -26,12 +26,6 @@ def test_continue_in_finally(tracer, check_golden_file):
 
     tracer.stop()
 
-    assert tracer.events == [
-        Binding(target=Symbol("x"), value="0", lineno=21),
-        JumpBackToLoopStart(lineno=25, jump_target=16),
-        Binding(target=Symbol("x"), value="1", lineno=21),
-        JumpBackToLoopStart(lineno=25, jump_target=16),
-    ]
     assert tracer.loops == [
         Loop(
             start_offset=16,
@@ -59,17 +53,3 @@ def test_continue_in_finally_with_exception(tracer, check_golden_file):
             continue  # BREAK_LOOP (3.7) POP_FINALLY (3.8)
 
     tracer.stop()
-
-    assert tracer.events == [
-        Binding(target=Symbol("x"), value="0", lineno=55),
-        JumpBackToLoopStart(lineno=59, jump_target=16),
-        Binding(target=Symbol("x"), value="1", lineno=55),
-        JumpBackToLoopStart(lineno=59, jump_target=16),
-    ]
-    assert tracer.loops == [
-        Loop(
-            start_offset=16,
-            end_offset=get_value({"py38": 36, "default": 40}),
-            start_lineno=55,
-        )
-    ]

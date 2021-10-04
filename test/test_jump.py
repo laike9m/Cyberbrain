@@ -22,22 +22,3 @@ def test_jump(tracer, check_golden_file):
     # TODO: Test JUMP_ABSOLUTE. This requires loop instructions to be Implemented.
 
     tracer.stop()
-
-    assert tracer.events == [
-        InitialValue(target=Symbol("a"), value="[]", lineno=-1),
-        Binding(target=Symbol("x"), value="1", lineno=14),
-        Binding(target=Symbol("x"), value="2", lineno=17),
-        InitialValue(target=Symbol("b"), value='"b"', lineno=-1),
-        InitialValue(target=Symbol("c"), value='"c"', lineno=-1),
-        # This is a known defect. We have no way to know `x` comes from `a`, because
-        # the result of `a != b` only determines whether to jump to execute `b != c`
-        # I think it's fine though.
-        Binding(
-            target=Symbol("x"),
-            value="true",
-            sources={Symbol("b"), Symbol("c")},
-            lineno=19,
-        ),
-        # Same defect here.
-        Binding(target=Symbol("x"), value='"c"', sources={Symbol("c")}, lineno=20),
-    ]

@@ -17,8 +17,6 @@ def test_basic_try_except(tracer, check_golden_file):
 
     tracer.stop()
 
-    assert tracer.events == []
-
 
 def test_nested_try_except(tracer, check_golden_file):
     tracer.start()
@@ -32,7 +30,6 @@ def test_nested_try_except(tracer, check_golden_file):
         pass
 
     tracer.stop()
-    assert tracer.events == [Binding(target=Symbol("a"), value="1", lineno=30)]
 
 
 def test_try_except_finally(tracer, check_golden_file):
@@ -47,8 +44,6 @@ def test_try_except_finally(tracer, check_golden_file):
 
     tracer.stop()
 
-    assert tracer.events == [Binding(target=Symbol("b"), value="1", lineno=46)]
-
 
 def test_break_in_finally(tracer, check_golden_file):
     tracer.start()
@@ -60,8 +55,6 @@ def test_break_in_finally(tracer, check_golden_file):
             break  # BREAK_LOOP (3.7) POP_FINALLY (3.8)
 
     tracer.stop()
-
-    assert tracer.events == [Binding(target=Symbol("x"), value="0", lineno=56)]
 
 
 def test_break_in_finally_with_exception(tracer, check_golden_file):
@@ -78,5 +71,3 @@ def test_break_in_finally_with_exception(tracer, check_golden_file):
             break  # BREAK_LOOP (3.7) POP_FINALLY (3.8)
 
     tracer.stop()
-
-    assert tracer.events == [Binding(target=Symbol("x"), value="0", lineno=74)]

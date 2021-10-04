@@ -8,5 +8,3 @@ def test_assertion(tracer, check_golden_file):
     except AssertionError:
         pass
     tracer.stop()
-
-    assert tracer.events == []

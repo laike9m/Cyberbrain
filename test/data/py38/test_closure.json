@@ -4,7 +4,7 @@
             "frame_id": "test_closure",
             "frame_name": "test_closure",
             "filename": "test_cellvar.py",
-            "defined_lineno": 25
+            "defined_lineno": 19
         },
         "identifiers": [
             "a",
@@ -14,7 +14,7 @@
         "loops": [],
         "events": [
             {
-                "lineno": 28,
+                "lineno": 22,
                 "index": 0,
                 "offset": 10,
                 "filename": "test_cellvar.py",
@@ -25,7 +25,7 @@
                 "type": "Binding"
             },
             {
-                "lineno": 30,
+                "lineno": 24,
                 "index": 1,
                 "offset": 28,
                 "filename": "test_cellvar.py",
@@ -36,7 +36,7 @@
                 "type": "Binding"
             },
             {
-                "lineno": 33,
+                "lineno": 27,
                 "index": 2,
                 "offset": 48,
                 "filename": "test_cellvar.py",
@@ -58,7 +58,7 @@
     },
     "tracer.events": [
         {
-            "lineno": 28,
+            "lineno": 22,
             "index": 0,
             "offset": 10,
             "filename": "test_cellvar.py",
@@ -73,7 +73,7 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 30,
+            "lineno": 24,
             "index": 1,
             "offset": 28,
             "filename": "test_cellvar.py",
@@ -98,7 +98,7 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 33,
+            "lineno": 27,
             "index": 2,
             "offset": 48,
             "filename": "test_cellvar.py",

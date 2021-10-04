@@ -16,19 +16,3 @@ def test_trace_decorated_function(trace, check_golden_file):
         a = [1, 2, 3]
 
     original_func()
-
-    assert trace.events == [
-        Binding(
-            lineno=16,
-            target=Symbol("a"),
-            value="[1,2,3]",
-            repr="[1, 2, 3]",
-            sources=set(),
-        ),
-        Return(
-            lineno=16,
-            value="null",
-            repr="None",
-            sources=set(),
-        ),
-    ]

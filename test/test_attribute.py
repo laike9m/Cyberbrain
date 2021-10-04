@@ -16,39 +16,3 @@ def test_attribute(tracer, check_golden_file):
     del a1.x  # DELETE_ATTR
 
     tracer.stop()
-
-    assert tracer.events == [
-        InitialValue(
-            lineno=-1,
-            target=Symbol("a2"),
-            value='{"y":1}',
-            repr="<test_attribute.test_attribute.<locals>.A object>",
-        ),
-        InitialValue(
-            lineno=-1,
-            target=Symbol("a1"),
-            value="{}",
-            repr="<test_attribute.test_attribute.<locals>.A object>",
-        ),
-        Mutation(
-            lineno=14,
-            target=Symbol("a1"),
-            sources={Symbol("a2"), Symbol("a1")},
-            value='{"x":{"y":1}}',
-            repr="<test_attribute.test_attribute.<locals>.A object>",
-        ),
-        Mutation(
-            lineno=15,
-            target=Symbol("a1"),
-            sources={Symbol("a1")},
-            value='{"x":{"y":2}}',
-            repr="<test_attribute.test_attribute.<locals>.A object>",
-        ),
-        Mutation(
-            lineno=16,
-            target=Symbol("a1"),
-            sources={Symbol("a1")},
-            value="{}",
-            repr="<test_attribute.test_attribute.<locals>.A object>",
-        ),
-    ]

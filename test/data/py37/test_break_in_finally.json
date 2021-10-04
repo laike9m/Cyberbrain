@@ -4,7 +4,7 @@
             "frame_id": "test_break_in_finally",
             "frame_name": "test_break_in_finally",
             "filename": "test_block.py",
-            "defined_lineno": 53
+            "defined_lineno": 48
         },
         "identifiers": [
             "x"
@@ -12,7 +12,7 @@
         "loops": [],
         "events": [
             {
-                "lineno": 56,
+                "lineno": 51,
                 "index": 0,
                 "offset": 20,
                 "filename": "test_block.py",
@@ -27,7 +27,7 @@
     },
     "tracer.events": [
         {
-            "lineno": 56,
+            "lineno": 51,
             "index": 0,
             "offset": 20,
             "filename": "test_block.py",

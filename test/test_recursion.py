@@ -11,27 +11,6 @@ def test_recursion_decorator(trace, check_golden_file):
 
     print(fib(3))
 
-    assert trace.events == [
-        InitialValue(
-            lineno=6,
-            target=Symbol("n"),
-            value="3",
-            repr="3",
-        ),
-        InitialValue(
-            lineno=-1,
-            target=Symbol("fib"),
-            value='{"repr": "<function test_recursion_decorator.<locals>.fib>"}',
-            repr="<function test_recursion_decorator.<locals>.fib>",
-        ),
-        Return(
-            lineno=10,
-            value="2",
-            repr="2",
-            sources={Symbol("fib"), Symbol("n")},
-        ),
-    ]
-
 
 def test_recursion_tracer(tracer, check_golden_file):
     def fib(n):
@@ -42,12 +21,3 @@ def test_recursion_tracer(tracer, check_golden_file):
     tracer.start()
     print(fib(3))
     tracer.stop()
-
-    assert tracer.events == [
-        InitialValue(
-            lineno=-1,
-            target=Symbol("fib"),
-            value='{"repr": "<function test_recursion_tracer.<locals>.fib>"}',
-            repr="<function test_recursion_tracer.<locals>.fib>",
-        )
-    ]

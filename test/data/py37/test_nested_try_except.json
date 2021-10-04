@@ -4,7 +4,7 @@
             "frame_id": "test_nested_try_except",
             "frame_name": "test_nested_try_except",
             "filename": "test_block.py",
-            "defined_lineno": 23
+            "defined_lineno": 21
         },
         "identifiers": [
             "a"
@@ -12,7 +12,7 @@
         "loops": [],
         "events": [
             {
-                "lineno": 30,
+                "lineno": 28,
                 "index": 0,
                 "offset": 22,
                 "filename": "test_block.py",
@@ -27,7 +27,7 @@
     },
     "tracer.events": [
         {
-            "lineno": 30,
+            "lineno": 28,
             "index": 0,
             "offset": 22,
             "filename": "test_block.py",

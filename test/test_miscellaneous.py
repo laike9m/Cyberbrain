@@ -22,30 +22,3 @@ def test_miscellaneous(tracer, check_golden_file):
     del g  # DELETE_GLOBAL
 
     tracer.stop()
-
-    assert tracer.events == [
-        InitialValue(target=Symbol("a"), value='"a"', lineno=-1),
-        InitialValue(target=Symbol("b"), value='"b"', lineno=-1),
-        InitialValue(target=Symbol("c"), value='"c"', lineno=-1),
-        InitialValue(target=Symbol("d"), value='"d"', lineno=-1),
-        Binding(
-            target=Symbol("x"),
-            value="\"a b    'c' 'd' \"",
-            sources={Symbol("a"), Symbol("b"), Symbol("d"), Symbol("c")},
-            lineno=15,
-        ),
-        Binding(
-            target=Symbol("x"),
-            value="false",
-            sources={Symbol("a"), Symbol("b")},
-            lineno=16,
-        ),
-        InitialValue(target=Symbol("e"), value="[1,2,3]", lineno=-1),
-        Mutation(target=Symbol("e"), value="[1,2]", sources={Symbol("e")}, lineno=17),
-        Mutation(target=Symbol("e"), value="[4,2]", sources={Symbol("e")}, lineno=17),
-        Deletion(target=Symbol("e"), lineno=18),
-        InitialValue(target=Symbol("g"), value="0", lineno=-1),
-        Binding(target=Symbol("x"), value="0", sources={Symbol("g")}, lineno=20),
-        Binding(target=Symbol("g"), value="1", lineno=21),
-        Deletion(target=Symbol("g"), lineno=22),
-    ]
