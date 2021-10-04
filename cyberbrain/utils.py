@@ -118,20 +118,25 @@ def map_bytecode_offset_to_lineno(frame: FrameType) -> dict[int, int]:
     return mapping
 
 
-def get_jump_target_or_none(
-    instr: dis.Instruction, version_info=basis.VERSION_INFO
-) -> Optional[int]:
-    if version_info < (3, 10):
-        if instr.opcode in dis.hasjrel:
-            return instr.offset + 2 + instr.arg
-        elif instr.opcode in dis.hasjabs:
-            return instr.arg
-
+# get_jump_target_or_none is called for every instruction, as a micro-optimization,
+# we avoid checking basis.VERSION_INFO everytime by generating the correct function.
+def _compute_get_jump_target_or_none():
     # bpo-27129, use instruction offsets (as opposed to byte offsets).
-    if instr.opcode in dis.hasjrel:
-        return instr.offset + 2 + instr.arg * 2
-    elif instr.opcode in dis.hasjabs:
-        return instr.arg * 2
+    bytes_per_offset = 1 if basis.VERSION_INFO < (3, 10) else 2
+
+    def function_to_return(instr):
+        if instr.opcode in dis.hasjrel:
+            return instr.offset + 2 + instr.arg * bytes_per_offset
+        elif instr.opcode in dis.hasjabs:
+            return instr.arg * bytes_per_offset
+
+    return function_to_return
+
+
+# Returns the jump target for a jump instruction, otherwise none.
+get_jump_target_or_none: Callable[
+    [dis.Instruction], Optional[int]
+] = _compute_get_jump_target_or_none()
 
 
 def to_json(python_object: Any):
@@ -153,6 +158,11 @@ def to_json(python_object: Any):
         return '{"repr": "%s"}' % get_repr(python_object)
     else:
         return json
+
+
+@lru_cache(maxsize=1)
+def run_in_test() -> bool:
+    return "pytest" in sys.modules
 
 
 def computed_gotos_enabled() -> bool:
