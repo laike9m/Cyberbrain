@@ -46,7 +46,10 @@ def check_tracer_events():
     def serialize_symbol(symbol):
         if symbol.snapshot is None:
             return {"name": symbol.name, "snapshot": symbol.snapshot}
-        snapshot = {"location": symbol.snapshot.location, "events_pointer": symbol.snapshot.events_pointer}
+        snapshot = {
+            "location": symbol.snapshot.location,
+            "events_pointer": symbol.snapshot.events_pointer,
+        }
         return {"name": symbol.name, "snapshot": snapshot}
 
     yield
@@ -62,7 +65,9 @@ def check_tracer_events():
             if type(val) == Symbol:
                 event_dict[key] = serialize_symbol(val)
             elif type(val) == list and type(val[0]) == Symbol:
-                event_dict[key] = sorted([serialize_symbol(sym) for sym in val], key=lambda x:x["name"])
+                event_dict[key] = sorted(
+                    [serialize_symbol(sym) for sym in val], key=lambda x: x["name"]
+                )
         event_dict["__class__"] = event.__class__.__name__
         tracer_events.append(event_dict)
 
@@ -80,14 +85,15 @@ def check_tracer_events():
     # Assuming run in root directory.
     with open(golden_filepath, "rt") as f:
         golden_frame_data = json.loads(f.read())
-    
+
     if golden_frame_data.get("tracer.events", None) is None:
         with open(golden_filepath, "wt") as f:
             golden_frame_data["tracer.events"] = tracer_events
             json.dump(golden_frame_data, f, ensure_ascii=False, indent=4)
 
-    assert tracer_events == golden_frame_data["tracer.events"], json.dumps(tracer_events, indent=4)
-    
+    assert tracer_events == golden_frame_data["tracer.events"], json.dumps(
+        tracer_events, indent=4
+    )
 
 
 @pytest.fixture
@@ -122,10 +128,12 @@ def mocked_responses(request):
         # Don't check request body on Windows because it has a different format.
         if get_os_type() == "windows" and frame_name in {"test_numpy", "test_pandas"}:
             return
-    
+
         if golden_frame_data.get("response", None) is None:
             with open(golden_filepath, "wt") as f:
                 golden_frame_data["response"] = frame_data
                 json.dump(golden_frame_data, f, ensure_ascii=False, indent=4)
 
-        assert frame_data == golden_frame_data["response"], json.dumps(frame_data, indent=4)
+        assert frame_data == golden_frame_data["response"], json.dumps(
+            frame_data, indent=4
+        )
