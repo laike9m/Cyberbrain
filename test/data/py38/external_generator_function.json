@@ -31,8 +31,8 @@
                 "filename": "test_external_iterator.py",
                 "id": "test_external_generator:1",
                 "target": "generator",
-                "value": "{\"repr\": \"<generator object test_exter...als>.inner>\"}",
-                "repr": "<generator object test_exter...als>.inner>",
+                "value": "{\"repr\": \"<generator object test_external_generator.<locals>.inner>\"}",
+                "repr": "<generator object test_external_generator.<locals>.inner>",
                 "type": "Binding"
             },
             {
@@ -108,8 +108,8 @@
                 "name": "generator",
                 "snapshot": null
             },
-            "value": "{\"repr\": \"<generator object test_exter...als>.inner>\"}",
-            "repr": "<generator object test_exter...als>.inner>",
+            "value": "{\"repr\": \"<generator object test_external_generator.<locals>.inner>\"}",
+            "repr": "<generator object test_external_generator.<locals>.inner>",
             "sources": [
                 {
                     "name": "inner",
