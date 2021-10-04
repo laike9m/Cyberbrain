@@ -51,7 +51,6 @@ def check_tracer_events():
             "events_pointer": symbol.snapshot.events_pointer,
         }
         return {"name": symbol.name, "snapshot": snapshot}
-    
 
     yield
 
