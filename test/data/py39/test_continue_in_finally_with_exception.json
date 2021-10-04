@@ -59,5 +59,55 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 55,
+            "index": 0,
+            "offset": 18,
+            "filename": "test_block_py38.py",
+            "id": "test_continue_in_finally_with_exception:0",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 59,
+            "index": 1,
+            "offset": 40,
+            "filename": "test_block_py38.py",
+            "id": "test_continue_in_finally_with_exception:1",
+            "jump_target": 16,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 55,
+            "index": 2,
+            "offset": 18,
+            "filename": "test_block_py38.py",
+            "id": "test_continue_in_finally_with_exception:2",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 59,
+            "index": 3,
+            "offset": 40,
+            "filename": "test_block_py38.py",
+            "id": "test_continue_in_finally_with_exception:3",
+            "jump_target": 16,
+            "__class__": "JumpBackToLoopStart"
+        }
+    ]
 }

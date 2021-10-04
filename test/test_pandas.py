@@ -3,7 +3,7 @@ import pandas as pd
 from cyberbrain import Binding, Symbol  # noqa
 
 
-def test_pandas(tracer, mocked_responses):
+def test_pandas(tracer, check_golden_file):
     tracer.start()
     baby_data_set = [
         ("Bob", 968),

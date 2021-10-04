@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol, JumpBackToLoopStart
 
 
-def test_with(tracer, mocked_responses):
+def test_with(tracer, check_golden_file):
     class ContextManagerNoReturn:
         def __enter__(self):
             pass

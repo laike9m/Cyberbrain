@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol
 
 
-def test_unpack(tracer, mocked_responses):
+def test_unpack(tracer, check_golden_file):
     l1 = [1, 2]
     numbers = [1, 2, 3, 4]
     m1 = m2 = {1: 2}

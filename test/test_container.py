@@ -3,7 +3,7 @@ import os
 from cyberbrain import Binding, InitialValue, Symbol, Mutation
 
 
-def test_container(tracer, mocked_responses):
+def test_container(tracer, check_golden_file):
     a = b = 1
     c = 2
     e = 0

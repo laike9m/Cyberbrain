@@ -87,5 +87,100 @@
                 "test_while_jump_to_zero:1"
             ]
         }
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 101,
+            "index": 0,
+            "offset": 2,
+            "filename": "test_while_loop.py",
+            "id": "test_while_jump_to_zero:0",
+            "target": {
+                "name": "count",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 103,
+            "index": 1,
+            "offset": 16,
+            "filename": "test_while_loop.py",
+            "id": "test_while_jump_to_zero:1",
+            "target": {
+                "name": "count",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "count",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "count": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 103,
+            "index": 2,
+            "offset": 18,
+            "filename": "test_while_loop.py",
+            "id": "test_while_jump_to_zero:2",
+            "jump_target": 2,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 103,
+            "index": 3,
+            "offset": 16,
+            "filename": "test_while_loop.py",
+            "id": "test_while_jump_to_zero:3",
+            "target": {
+                "name": "count",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [
+                {
+                    "name": "count",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "count": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 103,
+            "index": 4,
+            "offset": 18,
+            "filename": "test_while_loop.py",
+            "id": "test_while_jump_to_zero:4",
+            "jump_target": 2,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 103,
+            "index": 5,
+            "offset": 24,
+            "filename": "test_while_loop.py",
+            "id": "test_while_jump_to_zero:5",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
 }

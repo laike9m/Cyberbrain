@@ -38,5 +38,43 @@
                 "test_decorator_with_argument:0"
             ]
         }
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 17,
+            "index": 0,
+            "offset": 2,
+            "filename": "test_api_disabled.py",
+            "id": "test_decorator_with_argument:0",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 18,
+            "index": 1,
+            "offset": 6,
+            "filename": "test_api_disabled.py",
+            "id": "test_decorator_with_argument:1",
+            "value": "2",
+            "repr": "2",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Return"
+        }
+    ]
 }

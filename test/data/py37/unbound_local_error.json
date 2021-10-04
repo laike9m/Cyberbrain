@@ -21,5 +21,18 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 227,
+            "index": 0,
+            "offset": 36,
+            "filename": "test_exception.py",
+            "id": "test_unbound_local_error:0",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
 }

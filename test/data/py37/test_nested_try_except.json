@@ -24,5 +24,22 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 30,
+            "index": 0,
+            "offset": 22,
+            "filename": "test_block.py",
+            "id": "test_nested_try_except:0",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "__class__": "Binding"
+        }
+    ]
 }

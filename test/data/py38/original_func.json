@@ -34,5 +34,33 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 16,
+            "index": 0,
+            "offset": 8,
+            "filename": "test_decorator.py",
+            "id": "test_trace_decorated_function:0",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "[1,2,3]",
+            "repr": "[1, 2, 3]",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 16,
+            "index": 1,
+            "offset": 12,
+            "filename": "test_decorator.py",
+            "id": "test_trace_decorated_function:1",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
 }

@@ -24,5 +24,22 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 6,
+            "index": 0,
+            "offset": 10,
+            "filename": "test_api_state.py",
+            "id": "test_call_tracer_multiple_times:0",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "__class__": "Binding"
+        }
+    ]
 }

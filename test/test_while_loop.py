@@ -2,7 +2,7 @@ from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop, InitialValue,
 from utils import get_value
 
 
-def test_while_loop(tracer, mocked_responses):
+def test_while_loop(tracer, check_golden_file):
     tracer.start()
 
     i = 0
@@ -96,7 +96,7 @@ def test_while_loop(tracer, mocked_responses):
     ]
 
 
-def test_while_jump_to_zero(trace, mocked_responses):
+def test_while_jump_to_zero(trace, check_golden_file):
     @trace
     def while_jump_to_zero(count):
         while count > 0:

@@ -44,5 +44,48 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": -1,
+            "index": 0,
+            "offset": 10,
+            "filename": "test_cellvar.py",
+            "id": "test_deref:0",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 12,
+            "index": 1,
+            "offset": 18,
+            "filename": "test_cellvar.py",
+            "id": "test_deref:1",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 13,
+            "index": 2,
+            "offset": 20,
+            "filename": "test_cellvar.py",
+            "id": "test_deref:2",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "__class__": "Deletion"
+        }
+    ]
 }

@@ -24,5 +24,22 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 8,
+            "index": 0,
+            "offset": 22,
+            "filename": "test_numpy.py",
+            "id": "test_numpy:0",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "{\"dtype\":\"int64\",\"values\":[6,7,8]}",
+            "repr": "array([6, 7, 8])",
+            "sources": [],
+            "__class__": "Binding"
+        }
+    ]
 }

@@ -1,7 +1,7 @@
 from cyberbrain import Binding, Symbol
 
 
-def test_list_comprehension(tracer, mocked_responses):
+def test_list_comprehension(tracer, check_golden_file):
     tracer.start()
 
     n = 2

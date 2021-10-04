@@ -59,5 +59,55 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 21,
+            "index": 0,
+            "offset": 18,
+            "filename": "test_block_py38.py",
+            "id": "test_continue_in_finally:0",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 25,
+            "index": 1,
+            "offset": 24,
+            "filename": "test_block_py38.py",
+            "id": "test_continue_in_finally:1",
+            "jump_target": 16,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 21,
+            "index": 2,
+            "offset": 18,
+            "filename": "test_block_py38.py",
+            "id": "test_continue_in_finally:2",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 25,
+            "index": 3,
+            "offset": 24,
+            "filename": "test_block_py38.py",
+            "id": "test_continue_in_finally:3",
+            "jump_target": 16,
+            "__class__": "JumpBackToLoopStart"
+        }
+    ]
 }

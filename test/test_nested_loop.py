@@ -2,7 +2,7 @@ from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop
 from utils import get_value
 
 
-def test_nested_loop(tracer, mocked_responses):
+def test_nested_loop(tracer, check_golden_file):
     tracer.start()
 
     for i in range(2):

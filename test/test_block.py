@@ -6,7 +6,7 @@ from cyberbrain import Binding, Symbol
 # Loops can generate blocks too, they are tested in test_loop.py
 
 
-def test_basic_try_except(tracer, mocked_responses):
+def test_basic_try_except(tracer, check_golden_file):
     tracer.start()
 
     try:  # SETUP_EXCEPT (3.7), SETUP_FINALLY (3.8)
@@ -20,7 +20,7 @@ def test_basic_try_except(tracer, mocked_responses):
     assert tracer.events == []
 
 
-def test_nested_try_except(tracer, mocked_responses):
+def test_nested_try_except(tracer, check_golden_file):
     tracer.start()
 
     try:
@@ -35,7 +35,7 @@ def test_nested_try_except(tracer, mocked_responses):
     assert tracer.events == [Binding(target=Symbol("a"), value="1", lineno=30)]
 
 
-def test_try_except_finally(tracer, mocked_responses):
+def test_try_except_finally(tracer, check_golden_file):
     tracer.start()
 
     try:  # SETUP_EXCEPT + SETUP_FINALLY (3.7), SETUP_FINALLY (3.8)
@@ -50,7 +50,7 @@ def test_try_except_finally(tracer, mocked_responses):
     assert tracer.events == [Binding(target=Symbol("b"), value="1", lineno=46)]
 
 
-def test_break_in_finally(tracer, mocked_responses):
+def test_break_in_finally(tracer, check_golden_file):
     tracer.start()
 
     for x in range(2):
@@ -64,7 +64,7 @@ def test_break_in_finally(tracer, mocked_responses):
     assert tracer.events == [Binding(target=Symbol("x"), value="0", lineno=56)]
 
 
-def test_break_in_finally_with_exception(tracer, mocked_responses):
+def test_break_in_finally_with_exception(tracer, check_golden_file):
     """Tests POP_FINALLY when tos is an exception."""
 
     tracer.start()

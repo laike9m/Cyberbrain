@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol
 
 
-def test_unary_operations(tracer, mocked_responses):
+def test_unary_operations(tracer, check_golden_file):
     a = 1
 
     tracer.start()

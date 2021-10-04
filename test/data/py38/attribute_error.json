@@ -34,5 +34,33 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 74,
+            "index": 0,
+            "offset": 14,
+            "filename": "test_exception.py",
+            "id": "test_attribute_error:0",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 84,
+            "index": 1,
+            "offset": 126,
+            "filename": "test_exception.py",
+            "id": "test_attribute_error:1",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
 }

@@ -10,5 +10,6 @@
         "loops": [],
         "events": [],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": []
 }

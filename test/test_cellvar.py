@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol, Deletion
 
 
-def test_deref(tracer, mocked_responses):
+def test_deref(tracer, check_golden_file):
 
     a = 1
 
@@ -22,7 +22,7 @@ def test_deref(tracer, mocked_responses):
     ]
 
 
-def test_closure(tracer, mocked_responses):
+def test_closure(tracer, check_golden_file):
     tracer.start()
 
     a = 1  # LOAD_CLASSDEREF

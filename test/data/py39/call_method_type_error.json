@@ -34,5 +34,33 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 9,
+            "index": 0,
+            "offset": 2,
+            "filename": "test_exception.py",
+            "id": "test_call_method_type_error:0",
+            "target": {
+                "name": "s",
+                "snapshot": null
+            },
+            "value": "\"hello world\"",
+            "repr": "\"hello world\"",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 12,
+            "index": 1,
+            "offset": 78,
+            "filename": "test_exception.py",
+            "id": "test_call_method_type_error:1",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
 }

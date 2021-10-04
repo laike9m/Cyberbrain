@@ -21,5 +21,18 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 102,
+            "index": 0,
+            "offset": 34,
+            "filename": "test_exception.py",
+            "id": "test_build_map_type_error:0",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
 }

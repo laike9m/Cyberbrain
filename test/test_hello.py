@@ -1,7 +1,7 @@
 from cyberbrain import Binding, Symbol
 
 
-def test_hello(tracer, mocked_responses):
+def test_hello(tracer, check_golden_file):
     tracer.start()
     x = "hello world"  # LOAD_CONST, STORE_FAST
     y = x  # LOAD_FAST, STORE_FAST

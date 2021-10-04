@@ -1,7 +1,7 @@
 from cyberbrain import InitialValue, Mutation, Symbol
 
 
-def test_attribute(tracer, mocked_responses):
+def test_attribute(tracer, check_golden_file):
     class A:
         pass
 

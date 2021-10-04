@@ -163,5 +163,234 @@
                 "test_with:2"
             ]
         }
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": -1,
+            "index": 0,
+            "offset": 36,
+            "filename": "test_with.py",
+            "id": "test_with:0",
+            "target": {
+                "name": "ContextManagerNoReturn",
+                "snapshot": null
+            },
+            "value": "{\"py/type\":\"test_with.test_with.<locals>.ContextManagerNoReturn\"}",
+            "repr": "<class 'test_with.test_with....als>.ContextManagerNoReturn'>",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 22,
+            "index": 1,
+            "offset": 46,
+            "filename": "test_with.py",
+            "id": "test_with:1",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": -1,
+            "index": 2,
+            "offset": 58,
+            "filename": "test_with.py",
+            "id": "test_with:2",
+            "target": {
+                "name": "ContextManagerWithReturn",
+                "snapshot": null
+            },
+            "value": "{\"py/type\":\"test_with.test_with.<locals>.ContextManagerWithReturn\"}",
+            "repr": "<class 'test_with.test_with....s>.ContextManagerWithReturn'>",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 24,
+            "index": 3,
+            "offset": 64,
+            "filename": "test_with.py",
+            "id": "test_with:3",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [
+                {
+                    "name": "ContextManagerWithReturn",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "ContextManagerNoReturn": 0,
+                            "a": 0,
+                            "ContextManagerWithReturn": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 27,
+            "index": 4,
+            "offset": 82,
+            "filename": "test_with.py",
+            "id": "test_with:4",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [
+                {
+                    "name": "ContextManagerWithReturn",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "ContextManagerNoReturn": 0,
+                            "a": 0,
+                            "ContextManagerWithReturn": 0,
+                            "b": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 27,
+            "index": 5,
+            "offset": 90,
+            "filename": "test_with.py",
+            "id": "test_with:5",
+            "target": {
+                "name": "d",
+                "snapshot": null
+            },
+            "value": "null",
+            "repr": "None",
+            "sources": [
+                {
+                    "name": "ContextManagerNoReturn",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "ContextManagerNoReturn": 0,
+                            "a": 0,
+                            "ContextManagerWithReturn": 0,
+                            "b": 0,
+                            "c": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 30,
+            "index": 6,
+            "offset": 118,
+            "filename": "test_with.py",
+            "id": "test_with:6",
+            "target": {
+                "name": "e",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [
+                {
+                    "name": "ContextManagerWithReturn",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "ContextManagerNoReturn": 0,
+                            "a": 0,
+                            "ContextManagerWithReturn": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 31,
+            "index": 7,
+            "offset": 126,
+            "filename": "test_with.py",
+            "id": "test_with:7",
+            "target": {
+                "name": "f",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [
+                {
+                    "name": "ContextManagerWithReturn",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "ContextManagerNoReturn": 0,
+                            "a": 0,
+                            "ContextManagerWithReturn": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "e": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 36,
+            "index": 8,
+            "offset": 160,
+            "filename": "test_with.py",
+            "id": "test_with:8",
+            "target": {
+                "name": "g",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 41,
+            "index": 9,
+            "offset": 210,
+            "filename": "test_with.py",
+            "id": "test_with:9",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 43,
+            "index": 10,
+            "offset": 230,
+            "filename": "test_with.py",
+            "id": "test_with:10",
+            "jump_target": 208,
+            "__class__": "JumpBackToLoopStart"
+        }
+    ]
 }

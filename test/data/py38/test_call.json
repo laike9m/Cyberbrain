@@ -174,5 +174,457 @@
                 "test_call:1"
             ]
         }
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": -1,
+            "index": 0,
+            "offset": 28,
+            "filename": "test_call.py",
+            "id": "test_call:0",
+            "target": {
+                "name": "counter",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 10,
+            "index": 1,
+            "offset": 38,
+            "filename": "test_call.py",
+            "id": "test_call:1",
+            "target": {
+                "name": "f",
+                "snapshot": null
+            },
+            "value": "{\"repr\": \"<function test_call.<locals>.f>\"}",
+            "repr": "<function test_call.<locals>.f>",
+            "sources": [
+                {
+                    "name": "counter",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": -1,
+            "index": 2,
+            "offset": 42,
+            "filename": "test_call.py",
+            "id": "test_call:2",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": -1,
+            "index": 3,
+            "offset": 44,
+            "filename": "test_call.py",
+            "id": "test_call:3",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 15,
+            "index": 4,
+            "offset": 48,
+            "filename": "test_call.py",
+            "id": "test_call:4",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0
+                        }
+                    }
+                },
+                {
+                    "name": "f",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 16,
+            "index": 5,
+            "offset": 60,
+            "filename": "test_call.py",
+            "id": "test_call:5",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 0
+                        }
+                    }
+                },
+                {
+                    "name": "f",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": -1,
+            "index": 6,
+            "offset": 70,
+            "filename": "test_call.py",
+            "id": "test_call:6",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": -1,
+            "index": 7,
+            "offset": 72,
+            "filename": "test_call.py",
+            "id": "test_call:7",
+            "target": {
+                "name": "d",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 17,
+            "index": 8,
+            "offset": 80,
+            "filename": "test_call.py",
+            "id": "test_call:8",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "3",
+            "repr": "3",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 1
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 1
+                        }
+                    }
+                },
+                {
+                    "name": "c",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 1,
+                            "c": 0
+                        }
+                    }
+                },
+                {
+                    "name": "d",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 1,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "f",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 18,
+            "index": 9,
+            "offset": 104,
+            "filename": "test_call.py",
+            "id": "test_call:9",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "4",
+            "repr": "4",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 2,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 2,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "c",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 2,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "d",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 2,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "f",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 2,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 21,
+            "index": 10,
+            "offset": 128,
+            "filename": "test_call.py",
+            "id": "test_call:10",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "5",
+            "repr": "5",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 3,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 3,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "c",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 3,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "f",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 3,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        }
+    ]
 }

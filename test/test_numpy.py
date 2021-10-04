@@ -3,7 +3,7 @@ import numpy as np
 from cyberbrain import Binding, Symbol  # noqa
 
 
-def test_numpy(tracer, mocked_responses):
+def test_numpy(tracer, check_golden_file):
     tracer.start()
     x = np.array([6, 7, 8])
     tracer.stop()

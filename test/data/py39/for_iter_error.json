@@ -101,5 +101,104 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": -1,
+            "index": 0,
+            "offset": 12,
+            "filename": "test_exception.py",
+            "id": "test_for_iter_error:0",
+            "target": {
+                "name": "A",
+                "snapshot": null
+            },
+            "value": "{\"repr\": \"<class 'test_exception.test_for_iter_error.<locals>.A'>\"}",
+            "repr": "<class 'test_exception.test_for_iter_error.<locals>.A'>",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 189,
+            "index": 1,
+            "offset": 64,
+            "filename": "test_exception.py",
+            "id": "test_for_iter_error:1",
+            "target": {
+                "name": "_",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 190,
+            "index": 2,
+            "offset": 66,
+            "filename": "test_exception.py",
+            "id": "test_for_iter_error:2",
+            "jump_target": 62,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 189,
+            "index": 3,
+            "offset": 64,
+            "filename": "test_exception.py",
+            "id": "test_for_iter_error:3",
+            "target": {
+                "name": "_",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 190,
+            "index": 4,
+            "offset": 66,
+            "filename": "test_exception.py",
+            "id": "test_for_iter_error:4",
+            "jump_target": 62,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 189,
+            "index": 5,
+            "offset": 64,
+            "filename": "test_exception.py",
+            "id": "test_for_iter_error:5",
+            "target": {
+                "name": "_",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 190,
+            "index": 6,
+            "offset": 66,
+            "filename": "test_exception.py",
+            "id": "test_for_iter_error:6",
+            "jump_target": 62,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 190,
+            "index": 7,
+            "offset": 70,
+            "filename": "test_exception.py",
+            "id": "test_for_iter_error:7",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
 }

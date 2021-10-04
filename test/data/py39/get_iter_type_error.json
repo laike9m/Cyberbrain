@@ -21,5 +21,18 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 170,
+            "index": 0,
+            "offset": 54,
+            "filename": "test_exception.py",
+            "id": "test_get_iter_type_error:0",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
 }

@@ -68,5 +68,99 @@
                 "test_hello:0"
             ]
         }
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 6,
+            "index": 0,
+            "offset": 10,
+            "filename": "test_hello.py",
+            "id": "test_hello:0",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "\"hello world\"",
+            "repr": "\"hello world\"",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 7,
+            "index": 1,
+            "offset": 14,
+            "filename": "test_hello.py",
+            "id": "test_hello:1",
+            "target": {
+                "name": "y",
+                "snapshot": null
+            },
+            "value": "\"hello world\"",
+            "repr": "\"hello world\"",
+            "sources": [
+                {
+                    "name": "x",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "x": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 8,
+            "index": 2,
+            "offset": 22,
+            "filename": "test_hello.py",
+            "id": "test_hello:2",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "\"hello world\"",
+            "repr": "\"hello world\"",
+            "sources": [
+                {
+                    "name": "y",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 8,
+            "index": 3,
+            "offset": 24,
+            "filename": "test_hello.py",
+            "id": "test_hello:3",
+            "target": {
+                "name": "y",
+                "snapshot": null
+            },
+            "value": "\"hello world\"",
+            "repr": "\"hello world\"",
+            "sources": [
+                {
+                    "name": "x",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        }
+    ]
 }

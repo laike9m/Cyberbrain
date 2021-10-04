@@ -3,7 +3,7 @@ from cyberbrain import InitialValue, Binding, Mutation, Deletion, Symbol
 g = 0
 
 
-def test_miscellaneous(tracer, mocked_responses):
+def test_miscellaneous(tracer, check_golden_file):
     a = "a"
     b = "b"
     c = "c"

@@ -1,4 +1,4 @@
-def test_decorator_api(trace, mocked_responses):
+def test_decorator_api(trace, check_golden_file):
     def f(foo):
         return foo
 

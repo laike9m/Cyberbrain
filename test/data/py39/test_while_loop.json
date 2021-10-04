@@ -254,5 +254,349 @@
                 "test_while_loop:16"
             ]
         }
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 8,
+            "index": 0,
+            "offset": 10,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:0",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 10,
+            "index": 1,
+            "offset": 22,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:1",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "i": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 11,
+            "index": 2,
+            "offset": 30,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:2",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "i": 0,
+                            "a": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 11,
+            "index": 3,
+            "offset": 32,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:3",
+            "jump_target": 12,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 10,
+            "index": 4,
+            "offset": 22,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:4",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "i": 1,
+                            "a": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 11,
+            "index": 5,
+            "offset": 30,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:5",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "i": 1,
+                            "a": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 11,
+            "index": 6,
+            "offset": 32,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:6",
+            "jump_target": 12,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 13,
+            "index": 7,
+            "offset": 36,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:7",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 17,
+            "index": 8,
+            "offset": 52,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:8",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 19,
+            "index": 9,
+            "offset": 68,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:9",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "i": 4,
+                            "a": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 20,
+            "index": 10,
+            "offset": 70,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:10",
+            "jump_target": 54,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 22,
+            "index": 11,
+            "offset": 76,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:11",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 24,
+            "index": 12,
+            "offset": 92,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:12",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "i": 6,
+                            "a": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 26,
+            "index": 13,
+            "offset": 102,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:13",
+            "jump_target": 78,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 24,
+            "index": 14,
+            "offset": 92,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:14",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "i": 7,
+                            "a": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 25,
+            "index": 15,
+            "offset": 100,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:15",
+            "jump_target": 78,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 28,
+            "index": 16,
+            "offset": 108,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:16",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 30,
+            "index": 17,
+            "offset": 124,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:17",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "i": 9,
+                            "a": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 42,
+            "index": 18,
+            "offset": 148,
+            "filename": "test_while_loop.py",
+            "id": "test_while_loop:18",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "__class__": "Binding"
+        }
+    ]
 }

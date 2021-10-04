@@ -2,7 +2,7 @@ import msgpack
 import re
 
 
-def test_repr(tracer, mocked_responses):
+def test_repr(tracer, check_golden_file):
     class A:
         pass
 
@@ -11,7 +11,7 @@ def test_repr(tracer, mocked_responses):
     a = A()
     tracer.stop()
 
-    frame_data = msgpack.unpackb(mocked_responses.calls[0].request.body)
+    frame_data = msgpack.unpackb(check_golden_file.calls[0].request.body)
     binding_match_event = frame_data["events"][0]
 
     assert binding_match_event["repr"] == "<re.Match object; span=(0, 3), match='foo'>"

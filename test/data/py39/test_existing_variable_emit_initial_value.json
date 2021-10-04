@@ -40,5 +40,46 @@
                 "test_existing_variable_emit_initial_value:0"
             ]
         }
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": -1,
+            "index": 0,
+            "offset": 12,
+            "filename": "test_initial_value.py",
+            "id": "test_existing_variable_emit_initial_value:0",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "\"foo\"",
+            "repr": "\"foo\"",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 7,
+            "index": 1,
+            "offset": 14,
+            "filename": "test_initial_value.py",
+            "id": "test_existing_variable_emit_initial_value:1",
+            "target": {
+                "name": "y",
+                "snapshot": null
+            },
+            "value": "\"foo\"",
+            "repr": "\"foo\"",
+            "sources": [
+                {
+                    "name": "x",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "x": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        }
+    ]
 }

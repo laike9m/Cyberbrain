@@ -15,7 +15,7 @@ from utils import get_value
     sys.version_info < (3, 8),
     reason="Python version 3.7 does not support 'continue' inside 'finally' clause .",
 )
-def test_continue_in_finally(tracer, mocked_responses):
+def test_continue_in_finally(tracer, check_golden_file):
     tracer.start()
 
     for x in range(2):
@@ -45,7 +45,7 @@ def test_continue_in_finally(tracer, mocked_responses):
     sys.version_info < (3, 8),
     reason="Python version 3.7 does not support 'continue' inside 'finally' clause .",
 )
-def test_continue_in_finally_with_exception(tracer, mocked_responses):
+def test_continue_in_finally_with_exception(tracer, check_golden_file):
     """Tests POP_FINALLY when tos is an exception."""
 
     tracer.start()

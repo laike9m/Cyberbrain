@@ -34,5 +34,32 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": -1,
+            "index": 0,
+            "offset": 12,
+            "filename": "test_exception.py",
+            "id": "test_with_cleanup_start_error:0",
+            "target": {
+                "name": "A",
+                "snapshot": null
+            },
+            "value": "{\"py/type\":\"test_exception.test_with_cleanup_start_error.<locals>.A\"}",
+            "repr": "<class 'test_exception.test_...anup_start_error.<locals>.A'>",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 217,
+            "index": 1,
+            "offset": 42,
+            "filename": "test_exception.py",
+            "id": "test_with_cleanup_start_error:1",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
 }

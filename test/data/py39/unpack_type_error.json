@@ -34,5 +34,32 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": -1,
+            "index": 0,
+            "offset": 170,
+            "filename": "test_exception.py",
+            "id": "test_unpack_type_error:0",
+            "target": {
+                "name": "f",
+                "snapshot": null
+            },
+            "value": "{\"repr\": \"<function test_unpack_type_error.<locals>.f>\"}",
+            "repr": "<function test_unpack_type_error.<locals>.f>",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 146,
+            "index": 1,
+            "offset": 450,
+            "filename": "test_exception.py",
+            "id": "test_unpack_type_error:1",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
 }

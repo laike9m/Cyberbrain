@@ -55,5 +55,73 @@
                 "test_closure:1"
             ]
         }
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 28,
+            "index": 0,
+            "offset": 10,
+            "filename": "test_cellvar.py",
+            "id": "test_closure:0",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 30,
+            "index": 1,
+            "offset": 28,
+            "filename": "test_cellvar.py",
+            "id": "test_closure:1",
+            "target": {
+                "name": "Foo",
+                "snapshot": null
+            },
+            "value": "{\"py/type\":\"test_cellvar.test_closure.<locals>.Foo\"}",
+            "repr": "<class 'test_cellvar.test_closure.<locals>.Foo'>",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 33,
+            "index": 2,
+            "offset": 48,
+            "filename": "test_cellvar.py",
+            "id": "test_closure:2",
+            "target": {
+                "name": "Bar",
+                "snapshot": null
+            },
+            "value": "{\"py/type\":\"test_cellvar.test_closure.<locals>.Bar\"}",
+            "repr": "<class 'test_cellvar.test_closure.<locals>.Bar'>",
+            "sources": [
+                {
+                    "name": "Foo",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "Foo": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        }
+    ]
 }

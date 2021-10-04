@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol  # noqa
 
 
-def test_call(tracer, mocked_responses):
+def test_call(tracer, check_golden_file):
     a = b = c = d = 1
     counter = 0
 

@@ -2,7 +2,7 @@ from cyberbrain import Symbol, Binding, InitialValue, JumpBackToLoopStart, Retur
 from utils import get_value  # noqa
 
 
-def test_generator_function(trace, mocked_responses):
+def test_generator_function(trace, check_golden_file):
     @trace
     def generator_function(count):
         while count > 0:
@@ -65,7 +65,7 @@ def test_generator_function(trace, mocked_responses):
     ]
 
 
-def test_yield_from(trace, mocked_responses):
+def test_yield_from(trace, check_golden_file):
     def inner():
         for i in range(2):
             yield i

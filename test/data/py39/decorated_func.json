@@ -67,5 +67,106 @@
                 "test_decorator_api:2"
             ]
         }
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 7,
+            "index": 0,
+            "offset": 2,
+            "filename": "test_api_decorator.py",
+            "id": "test_decorator_api:0",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": -1,
+            "index": 1,
+            "offset": 4,
+            "filename": "test_api_decorator.py",
+            "id": "test_decorator_api:1",
+            "target": {
+                "name": "f",
+                "snapshot": null
+            },
+            "value": "{\"repr\": \"<function test_decorator_api.<locals>.f>\"}",
+            "repr": "<function test_decorator_api.<locals>.f>",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 8,
+            "index": 2,
+            "offset": 10,
+            "filename": "test_api_decorator.py",
+            "id": "test_decorator_api:2",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "f": 0
+                        }
+                    }
+                },
+                {
+                    "name": "f",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "f": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 9,
+            "index": 3,
+            "offset": 18,
+            "filename": "test_api_decorator.py",
+            "id": "test_decorator_api:3",
+            "value": "2",
+            "repr": "2",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "f": 0,
+                            "b": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "f": 0,
+                            "b": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Return"
+        }
+    ]
 }

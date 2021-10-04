@@ -82,5 +82,124 @@
                 "test_unary_operations:0"
             ]
         }
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": -1,
+            "index": 0,
+            "offset": 12,
+            "filename": "test_unary.py",
+            "id": "test_unary_operations:0",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 9,
+            "index": 1,
+            "offset": 16,
+            "filename": "test_unary.py",
+            "id": "test_unary_operations:1",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 10,
+            "index": 2,
+            "offset": 22,
+            "filename": "test_unary.py",
+            "id": "test_unary_operations:2",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
+            "value": "-1",
+            "repr": "-1",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 11,
+            "index": 3,
+            "offset": 28,
+            "filename": "test_unary.py",
+            "id": "test_unary_operations:3",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
+            "value": "false",
+            "repr": "False",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 12,
+            "index": 4,
+            "offset": 34,
+            "filename": "test_unary.py",
+            "id": "test_unary_operations:4",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
+            "value": "-2",
+            "repr": "-2",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 2
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        }
+    ]
 }

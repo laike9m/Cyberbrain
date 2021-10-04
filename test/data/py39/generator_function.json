@@ -110,5 +110,132 @@
                 "test_generator_function:2"
             ]
         }
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 7,
+            "index": 0,
+            "offset": 0,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:0",
+            "target": {
+                "name": "count",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 9,
+            "index": 1,
+            "offset": 12,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:1",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "\"foo\"",
+            "repr": "\"foo\"",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 10,
+            "index": 2,
+            "offset": 20,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:2",
+            "target": {
+                "name": "count",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "count",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "count": 0,
+                            "x": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 10,
+            "index": 3,
+            "offset": 22,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:3",
+            "jump_target": 0,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 9,
+            "index": 4,
+            "offset": 12,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:4",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 10,
+            "index": 5,
+            "offset": 20,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:5",
+            "target": {
+                "name": "count",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [
+                {
+                    "name": "count",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "count": 1,
+                            "x": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 10,
+            "index": 6,
+            "offset": 22,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:6",
+            "jump_target": 0,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 10,
+            "index": 7,
+            "offset": 26,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:7",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
 }

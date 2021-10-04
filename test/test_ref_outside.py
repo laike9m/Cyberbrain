@@ -5,7 +5,7 @@ def f():
     return 1
 
 
-def test_ref_outside(trace, mocked_responses):
+def test_ref_outside(trace, check_golden_file):
     @trace
     def test_ref_outside_inner():
         a = f()

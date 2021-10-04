@@ -50,5 +50,57 @@
                 "test_ref_outside:0"
             ]
         }
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": -1,
+            "index": 0,
+            "offset": 0,
+            "filename": "test_ref_outside.py",
+            "id": "test_ref_outside:0",
+            "target": {
+                "name": "f",
+                "snapshot": null
+            },
+            "value": "{\"repr\": \"<function f>\"}",
+            "repr": "<function f>",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 11,
+            "index": 1,
+            "offset": 4,
+            "filename": "test_ref_outside.py",
+            "id": "test_ref_outside:1",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "f",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "f": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 11,
+            "index": 2,
+            "offset": 8,
+            "filename": "test_ref_outside.py",
+            "id": "test_ref_outside:2",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
 }

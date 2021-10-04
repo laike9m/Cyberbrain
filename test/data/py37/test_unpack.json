@@ -278,5 +278,578 @@
                 "test_unpack:17"
             ]
         }
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 11,
+            "index": 0,
+            "offset": 44,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:0",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "\"h\"",
+            "repr": "\"h\"",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 11,
+            "index": 1,
+            "offset": 46,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:1",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
+            "value": "\"i\"",
+            "repr": "\"i\"",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": -1,
+            "index": 2,
+            "offset": 48,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:2",
+            "target": {
+                "name": "l1",
+                "snapshot": null
+            },
+            "value": "[1,2]",
+            "repr": "[1, 2]",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 12,
+            "index": 3,
+            "offset": 52,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:3",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "l1",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "l1": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 12,
+            "index": 4,
+            "offset": 54,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:4",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [
+                {
+                    "name": "l1",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "l1": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": -1,
+            "index": 5,
+            "offset": 56,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:5",
+            "target": {
+                "name": "numbers",
+                "snapshot": null
+            },
+            "value": "[1,2,3,4]",
+            "repr": "[1, 2, 3, 4]",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 13,
+            "index": 6,
+            "offset": 60,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:6",
+            "target": {
+                "name": "first",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "numbers",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 1,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 13,
+            "index": 7,
+            "offset": 62,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:7",
+            "target": {
+                "name": "rest",
+                "snapshot": null
+            },
+            "value": "[2,3,4]",
+            "repr": "[2, 3, 4]",
+            "sources": [
+                {
+                    "name": "numbers",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 1,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 14,
+            "index": 8,
+            "offset": 70,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:8",
+            "target": {
+                "name": "beginning",
+                "snapshot": null
+            },
+            "value": "[1,2,3]",
+            "repr": "[1, 2, 3]",
+            "sources": [
+                {
+                    "name": "numbers",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 1,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0,
+                            "first": 0,
+                            "rest": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 14,
+            "index": 9,
+            "offset": 72,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:9",
+            "target": {
+                "name": "last",
+                "snapshot": null
+            },
+            "value": "4",
+            "repr": "4",
+            "sources": [
+                {
+                    "name": "numbers",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 1,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0,
+                            "first": 0,
+                            "rest": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 15,
+            "index": 10,
+            "offset": 80,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:10",
+            "target": {
+                "name": "head",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "numbers",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 1,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0,
+                            "first": 0,
+                            "rest": 0,
+                            "beginning": 0,
+                            "last": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 15,
+            "index": 11,
+            "offset": 82,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:11",
+            "target": {
+                "name": "middle",
+                "snapshot": null
+            },
+            "value": "[2,3]",
+            "repr": "[2, 3]",
+            "sources": [
+                {
+                    "name": "numbers",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 1,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0,
+                            "first": 0,
+                            "rest": 0,
+                            "beginning": 0,
+                            "last": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 15,
+            "index": 12,
+            "offset": 84,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:12",
+            "target": {
+                "name": "tail",
+                "snapshot": null
+            },
+            "value": "4",
+            "repr": "4",
+            "sources": [
+                {
+                    "name": "numbers",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 1,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0,
+                            "first": 0,
+                            "rest": 0,
+                            "beginning": 0,
+                            "last": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 16,
+            "index": 13,
+            "offset": 92,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:13",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "[1,2,1,2,3,4]",
+            "repr": "(1, 2, 1, 2, 3, 4)",
+            "sources": [
+                {
+                    "name": "l1",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 1,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0,
+                            "first": 0,
+                            "rest": 0,
+                            "beginning": 0,
+                            "last": 0,
+                            "head": 0,
+                            "middle": 0,
+                            "tail": 0
+                        }
+                    }
+                },
+                {
+                    "name": "numbers",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 1,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0,
+                            "first": 0,
+                            "rest": 0,
+                            "beginning": 0,
+                            "last": 0,
+                            "head": 0,
+                            "middle": 0,
+                            "tail": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 17,
+            "index": 14,
+            "offset": 100,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:14",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "[1,2,1,2,3,4]",
+            "repr": "[1, 2, 1, 2, 3, 4]",
+            "sources": [
+                {
+                    "name": "l1",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 2,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0,
+                            "first": 0,
+                            "rest": 0,
+                            "beginning": 0,
+                            "last": 0,
+                            "head": 0,
+                            "middle": 0,
+                            "tail": 0
+                        }
+                    }
+                },
+                {
+                    "name": "numbers",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 2,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0,
+                            "first": 0,
+                            "rest": 0,
+                            "beginning": 0,
+                            "last": 0,
+                            "head": 0,
+                            "middle": 0,
+                            "tail": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 18,
+            "index": 15,
+            "offset": 108,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:15",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "[1,2,3,4]",
+            "repr": "{1, 2, 3, 4}",
+            "sources": [
+                {
+                    "name": "l1",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 3,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0,
+                            "first": 0,
+                            "rest": 0,
+                            "beginning": 0,
+                            "last": 0,
+                            "head": 0,
+                            "middle": 0,
+                            "tail": 0
+                        }
+                    }
+                },
+                {
+                    "name": "numbers",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 3,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0,
+                            "first": 0,
+                            "rest": 0,
+                            "beginning": 0,
+                            "last": 0,
+                            "head": 0,
+                            "middle": 0,
+                            "tail": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": -1,
+            "index": 16,
+            "offset": 110,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:16",
+            "target": {
+                "name": "m1",
+                "snapshot": null
+            },
+            "value": "{\"1\":2}",
+            "repr": "{1: 2}",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": -1,
+            "index": 17,
+            "offset": 112,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:17",
+            "target": {
+                "name": "m2",
+                "snapshot": null
+            },
+            "value": "{\"1\":2}",
+            "repr": "{1: 2}",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 19,
+            "index": 18,
+            "offset": 116,
+            "filename": "test_unpack.py",
+            "id": "test_unpack:18",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "{\"1\":2}",
+            "repr": "{1: 2}",
+            "sources": [
+                {
+                    "name": "m1",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 4,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0,
+                            "first": 0,
+                            "rest": 0,
+                            "beginning": 0,
+                            "last": 0,
+                            "head": 0,
+                            "middle": 0,
+                            "tail": 0,
+                            "m1": 0
+                        }
+                    }
+                },
+                {
+                    "name": "m2",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 4,
+                            "b": 1,
+                            "l1": 0,
+                            "numbers": 0,
+                            "first": 0,
+                            "rest": 0,
+                            "beginning": 0,
+                            "last": 0,
+                            "head": 0,
+                            "middle": 0,
+                            "tail": 0,
+                            "m1": 0,
+                            "m2": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        }
+    ]
 }

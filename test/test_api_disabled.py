@@ -6,7 +6,7 @@ def test_disabled_tracer(tracer):
     assert tracer.frame_logger is None, tracer.frame_logger
 
 
-def test_decorator_with_argument(trace, mocked_responses):
+def test_decorator_with_argument(trace, check_golden_file):
     @trace(disabled=True)
     def decorated_func_disabled():
         a = 1

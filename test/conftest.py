@@ -51,22 +51,20 @@ def check_tracer_events():
             "events_pointer": symbol.snapshot.events_pointer,
         }
         return {"name": symbol.name, "snapshot": snapshot}
+    
 
     yield
 
     tracer_events = []
     for event in trace.events:
-        # event_dict = attr.asdict(
-        #     event,
-        #     value_serializer=event.value_serializer,
-        # )
         event_dict = attr.asdict(event)
         for key, val in event_dict.items():
             if type(val) == Symbol:
                 event_dict[key] = serialize_symbol(val)
-            elif type(val) == list and type(val[0]) == Symbol:
+            elif type(val) == list:
                 event_dict[key] = sorted(
-                    [serialize_symbol(sym) for sym in val], key=lambda x: x["name"]
+                    [serialize_symbol(sym) for sym in val if type(sym) == Symbol],
+                    key=lambda x: x["name"],
                 )
         event_dict["__class__"] = event.__class__.__name__
         tracer_events.append(event_dict)
@@ -137,3 +135,8 @@ def mocked_responses(request):
         assert frame_data == golden_frame_data["response"], json.dumps(
             frame_data, indent=4
         )
+
+
+@pytest.fixture
+def check_golden_file(check_tracer_events, mocked_responses):
+    yield mocked_responses

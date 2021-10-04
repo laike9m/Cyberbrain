@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol
 
 
-def test_jump(tracer, mocked_responses):
+def test_jump(tracer, check_golden_file):
     a = []
     b = "b"
     c = "c"

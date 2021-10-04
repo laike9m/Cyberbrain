@@ -34,5 +34,33 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 40,
+            "index": 0,
+            "offset": 14,
+            "filename": "test_exception.py",
+            "id": "test_delete_subscr_type_error:0",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "[0]",
+            "repr": "(0,)",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 41,
+            "index": 1,
+            "offset": 54,
+            "filename": "test_exception.py",
+            "id": "test_delete_subscr_type_error:1",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
 }

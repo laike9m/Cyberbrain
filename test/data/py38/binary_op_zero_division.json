@@ -21,5 +21,18 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": 21,
+            "index": 0,
+            "offset": 32,
+            "filename": "test_exception.py",
+            "id": "test_binary_op_zero_division:0",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
 }

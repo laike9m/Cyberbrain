@@ -24,5 +24,21 @@
             }
         ],
         "tracingResult": {}
-    }
+    },
+    "tracer.events": [
+        {
+            "lineno": -1,
+            "index": 0,
+            "offset": 22,
+            "filename": "test_recursion.py",
+            "id": "test_recursion_tracer:0",
+            "target": {
+                "name": "fib",
+                "snapshot": null
+            },
+            "value": "{\"repr\": \"<function test_recursion_tracer.<locals>.fib>\"}",
+            "repr": "<function test_recursion_tracer.<locals>.fib>",
+            "__class__": "InitialValue"
+        }
+    ]
 }

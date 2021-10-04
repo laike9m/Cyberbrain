@@ -1,7 +1,7 @@
 from cyberbrain import Symbol, InitialValue, Return
 
 
-def test_recursion_decorator(trace, mocked_responses):
+def test_recursion_decorator(trace, check_golden_file):
     @trace
     def fib(n):
         if n <= 1:
@@ -33,7 +33,7 @@ def test_recursion_decorator(trace, mocked_responses):
     ]
 
 
-def test_recursion_tracer(tracer, mocked_responses):
+def test_recursion_tracer(tracer, check_golden_file):
     def fib(n):
         return n if n <= 1 else fib(n - 1) + fib(n - 2)
 
