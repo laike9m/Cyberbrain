@@ -94,7 +94,7 @@ def check_tracer_events():
 
 
 @pytest.fixture
-def mocked_responses(request):
+def check_response(request):
     with responses.RequestsMock() as resp:
         resp.add(
             responses.POST,
@@ -102,7 +102,7 @@ def mocked_responses(request):
             status=200,
             content_type="application/octet-stream",
         )
-        yield resp
+        yield
 
         frame_data = msgpack.unpackb(resp.calls[0].request.body)
         frame_name = frame_data["metadata"]["frame_name"]
@@ -137,5 +137,5 @@ def mocked_responses(request):
 
 
 @pytest.fixture
-def check_golden_file(check_tracer_events, mocked_responses):
-    yield mocked_responses
+def check_golden_file(check_tracer_events, check_response):
+    yield
