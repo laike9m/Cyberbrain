@@ -130,9 +130,7 @@ def check_response(request):
         if golden_response is None:
             update_golden_data(golden_filepath, "response", response)
         else:
-            assert response == golden_response, json.dumps(
-                response, indent=4
-            )
+            assert response == golden_response, json.dumps(response, indent=4)
 
 
 @pytest.fixture
