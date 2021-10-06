@@ -41,19 +41,40 @@ def fixture_trace(request):
     trace.tracer_state = _TracerFSM.INITIAL
 
 
-@pytest.fixture(scope="function")
-def check_tracer_events():
-    def serialize_symbol(symbol):
-        if symbol.snapshot is None:
-            return {"name": symbol.name, "snapshot": symbol.snapshot}
-        snapshot = {
-            "location": symbol.snapshot.location,
-            "events_pointer": symbol.snapshot.events_pointer,
-        }
-        return {"name": symbol.name, "snapshot": snapshot}
+def get_golden_data(golden_filepath, key):
+    directory = os.path.dirname(golden_filepath)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
-    yield
+    if not os.path.exists(golden_filepath):
+        return None
 
+    with open(golden_filepath, "r") as f:
+        golden_frame_data = json.load(f)
+    return golden_frame_data.get(key)
+
+
+def update_golden_data(golden_filepath, key, value):
+    golden_frame_data = {}
+    if os.path.exists(golden_filepath):
+        with open(golden_filepath, "r") as f:
+            golden_frame_data = json.load(f)
+
+    golden_frame_data[key] = value
+
+    with open(golden_filepath, "w") as f:
+        json.dump(golden_frame_data, f, ensure_ascii=False, indent=4)
+
+
+def serialize_symbol(symbol):
+    snapshot = symbol.snapshot and {
+        "location": symbol.snapshot.location,
+        "events_pointer": symbol.snapshot.events_pointer,
+    }
+    return {"name": symbol.name, "snapshot": snapshot}
+
+
+def get_serialized_events():
     tracer_events = []
     for event in trace.events:
         event_dict = attr.asdict(event)
@@ -67,30 +88,23 @@ def check_tracer_events():
                 )
         event_dict["__class__"] = event.__class__.__name__
         tracer_events.append(event_dict)
+    return tracer_events
 
-    # Generates golden data.
+
+@pytest.fixture(scope="function")
+def check_tracer_events():
+    yield
+
+    tracer_events = get_serialized_events()
+
     golden_filepath = f"test/data/{python_version}/{trace.frame.frame_name}.json"
-    directory = os.path.dirname(golden_filepath)
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-
-    if not os.path.exists(golden_filepath):
-        with open(golden_filepath, "wt") as f:
-            json.dump({"tracer.events": tracer_events}, f, ensure_ascii=False, indent=4)
-        return
-
-    # Assuming run in root directory.
-    with open(golden_filepath, "rt") as f:
-        golden_frame_data = json.loads(f.read())
-
-    if golden_frame_data.get("tracer.events", None) is None:
-        with open(golden_filepath, "wt") as f:
-            golden_frame_data["tracer.events"] = tracer_events
-            json.dump(golden_frame_data, f, ensure_ascii=False, indent=4)
-
-    assert tracer_events == golden_frame_data["tracer.events"], json.dumps(
-        tracer_events, indent=4
-    )
+    golden_tracer_events = get_golden_data(golden_filepath, "tracer.events")
+    if golden_tracer_events is None:
+        update_golden_data(golden_filepath, "tracer.events", tracer_events)
+    else:
+        assert tracer_events == golden_tracer_events, json.dumps(
+            tracer_events, indent=4
+        )
 
 
 @pytest.fixture
@@ -104,36 +118,21 @@ def check_response(request):
         )
         yield
 
-        frame_data = msgpack.unpackb(resp.calls[0].request.body)
-        frame_name = frame_data["metadata"]["frame_name"]
-
-        # Generates golden data.
-        golden_filepath = f"test/data/{python_version}/{frame_name}.json"
-        directory = os.path.dirname(golden_filepath)
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-
-        if not os.path.exists(golden_filepath):
-            with open(golden_filepath, "wt") as f:
-                json.dump({"response": frame_data}, f, ensure_ascii=False, indent=4)
-            return
-
-        # Assuming run in root directory.
-        with open(golden_filepath, "rt") as f:
-            golden_frame_data = json.loads(f.read())
+        response = msgpack.unpackb(resp.calls[0].request.body)
+        frame_name = response["metadata"]["frame_name"]
 
         # Don't check request body on Windows because it has a different format.
         if get_os_type() == "windows" and frame_name in {"test_numpy", "test_pandas"}:
             return
 
-        if golden_frame_data.get("response", None) is None:
-            with open(golden_filepath, "wt") as f:
-                golden_frame_data["response"] = frame_data
-                json.dump(golden_frame_data, f, ensure_ascii=False, indent=4)
-
-        assert frame_data == golden_frame_data["response"], json.dumps(
-            frame_data, indent=4
-        )
+        golden_filepath = f"test/data/{python_version}/{frame_name}.json"
+        golden_response = get_golden_data(golden_filepath, "response")
+        if golden_response is None:
+            update_golden_data(golden_filepath, "response", response)
+        else:
+            assert response == golden_response, json.dumps(
+                response, indent=4
+            )
 
 
 @pytest.fixture
