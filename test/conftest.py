@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from typing import Any
 import msgpack
 import os
 import pytest
@@ -41,7 +42,7 @@ def fixture_trace(request):
     trace.tracer_state = _TracerFSM.INITIAL
 
 
-def get_golden_data(golden_filepath, key):
+def get_golden_data(golden_filepath: str, key: str):
     directory = os.path.dirname(golden_filepath)
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -54,7 +55,7 @@ def get_golden_data(golden_filepath, key):
     return golden_frame_data.get(key)
 
 
-def update_golden_data(golden_filepath, key, value):
+def update_golden_data(golden_filepath: str, key: str, value: Any):
     golden_frame_data = {}
     if os.path.exists(golden_filepath):
         with open(golden_filepath, "r") as f:
@@ -66,7 +67,7 @@ def update_golden_data(golden_filepath, key, value):
         json.dump(golden_frame_data, f, ensure_ascii=False, indent=4)
 
 
-def serialize_symbol(symbol):
+def serialize_symbol(symbol: Symbol):
     snapshot = symbol.snapshot and {
         "location": symbol.snapshot.location,
         "events_pointer": symbol.snapshot.events_pointer,
@@ -75,6 +76,39 @@ def serialize_symbol(symbol):
 
 
 def get_serialized_events():
+    """
+    Parses and serializes the current events stored in the tracer's frame.
+    The results have more information than the events sent to RPC client, such
+        as containing snapshot and sources information.
+    Sources are sorted by name.
+    Example of a serialized event:
+    {
+        "lineno": 17,
+        "index": 1,
+        "offset": 2,
+        "filename": "test_api_state.py",
+        "id": "test_decorator_multiple_times:1",
+        "target": {
+            "name": "a",
+            "snapshot": null
+        },
+        "value": "1",
+        "repr": "1",
+        "sources": [
+            {
+                "name": "b",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "b": 0
+                    }
+                }
+            }
+        ],
+        "__class__": "Binding"
+    }
+    """
+
     tracer_events = []
     for event in trace.events:
         event_dict = attr.asdict(event)
