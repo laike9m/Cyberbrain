@@ -1,31 +1,194 @@
 {
-    "metadata": {
-        "frame_id": "test_call",
-        "frame_name": "test_call",
-        "filename": "test_call.py",
-        "defined_lineno": 4
+    "response": {
+        "metadata": {
+            "frame_id": "test_call",
+            "frame_name": "test_call",
+            "filename": "test_call.py",
+            "defined_lineno": 4
+        },
+        "identifiers": [
+            "counter",
+            "f",
+            "a",
+            "b",
+            "x",
+            "c",
+            "d"
+        ],
+        "loops": [],
+        "events": [
+            {
+                "lineno": -1,
+                "index": 0,
+                "offset": 28,
+                "filename": "test_call.py",
+                "id": "test_call:0",
+                "target": "counter",
+                "value": "0",
+                "repr": "0",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 10,
+                "index": 1,
+                "offset": 38,
+                "filename": "test_call.py",
+                "id": "test_call:1",
+                "target": "f",
+                "value": "{\"repr\": \"<function test_call.<locals>.f>\"}",
+                "repr": "<function test_call.<locals>.f>",
+                "type": "Binding"
+            },
+            {
+                "lineno": -1,
+                "index": 2,
+                "offset": 42,
+                "filename": "test_call.py",
+                "id": "test_call:2",
+                "target": "a",
+                "value": "1",
+                "repr": "1",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": -1,
+                "index": 3,
+                "offset": 44,
+                "filename": "test_call.py",
+                "id": "test_call:3",
+                "target": "b",
+                "value": "1",
+                "repr": "1",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 15,
+                "index": 4,
+                "offset": 48,
+                "filename": "test_call.py",
+                "id": "test_call:4",
+                "target": "x",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            },
+            {
+                "lineno": 16,
+                "index": 5,
+                "offset": 60,
+                "filename": "test_call.py",
+                "id": "test_call:5",
+                "target": "x",
+                "value": "2",
+                "repr": "2",
+                "type": "Binding"
+            },
+            {
+                "lineno": -1,
+                "index": 6,
+                "offset": 70,
+                "filename": "test_call.py",
+                "id": "test_call:6",
+                "target": "c",
+                "value": "1",
+                "repr": "1",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": -1,
+                "index": 7,
+                "offset": 72,
+                "filename": "test_call.py",
+                "id": "test_call:7",
+                "target": "d",
+                "value": "1",
+                "repr": "1",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 17,
+                "index": 8,
+                "offset": 80,
+                "filename": "test_call.py",
+                "id": "test_call:8",
+                "target": "x",
+                "value": "3",
+                "repr": "3",
+                "type": "Binding"
+            },
+            {
+                "lineno": 18,
+                "index": 9,
+                "offset": 104,
+                "filename": "test_call.py",
+                "id": "test_call:9",
+                "target": "x",
+                "value": "4",
+                "repr": "4",
+                "type": "Binding"
+            },
+            {
+                "lineno": 21,
+                "index": 10,
+                "offset": 128,
+                "filename": "test_call.py",
+                "id": "test_call:10",
+                "target": "x",
+                "value": "5",
+                "repr": "5",
+                "type": "Binding"
+            }
+        ],
+        "tracingResult": {
+            "test_call:1": [
+                "test_call:0"
+            ],
+            "test_call:4": [
+                "test_call:2",
+                "test_call:3",
+                "test_call:1"
+            ],
+            "test_call:5": [
+                "test_call:2",
+                "test_call:3",
+                "test_call:1"
+            ],
+            "test_call:8": [
+                "test_call:2",
+                "test_call:3",
+                "test_call:6",
+                "test_call:7",
+                "test_call:1"
+            ],
+            "test_call:9": [
+                "test_call:2",
+                "test_call:3",
+                "test_call:6",
+                "test_call:7",
+                "test_call:1"
+            ],
+            "test_call:10": [
+                "test_call:2",
+                "test_call:3",
+                "test_call:6",
+                "test_call:1"
+            ]
+        }
     },
-    "identifiers": [
-        "counter",
-        "f",
-        "a",
-        "b",
-        "x",
-        "c",
-        "d"
-    ],
-    "loops": [],
-    "events": [
+    "tracer.events": [
         {
             "lineno": -1,
             "index": 0,
             "offset": 28,
             "filename": "test_call.py",
             "id": "test_call:0",
-            "target": "counter",
+            "target": {
+                "name": "counter",
+                "snapshot": null
+            },
             "value": "0",
             "repr": "0",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": 10,
@@ -33,10 +196,24 @@
             "offset": 38,
             "filename": "test_call.py",
             "id": "test_call:1",
-            "target": "f",
+            "target": {
+                "name": "f",
+                "snapshot": null
+            },
             "value": "{\"repr\": \"<function test_call.<locals>.f>\"}",
             "repr": "<function test_call.<locals>.f>",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "counter",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": -1,
@@ -44,10 +221,13 @@
             "offset": 42,
             "filename": "test_call.py",
             "id": "test_call:2",
-            "target": "a",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
             "value": "1",
             "repr": "1",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": -1,
@@ -55,10 +235,13 @@
             "offset": 44,
             "filename": "test_call.py",
             "id": "test_call:3",
-            "target": "b",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
             "value": "1",
             "repr": "1",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": 15,
@@ -66,10 +249,48 @@
             "offset": 48,
             "filename": "test_call.py",
             "id": "test_call:4",
-            "target": "x",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
             "value": "1",
             "repr": "1",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0
+                        }
+                    }
+                },
+                {
+                    "name": "f",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 16,
@@ -77,10 +298,54 @@
             "offset": 60,
             "filename": "test_call.py",
             "id": "test_call:5",
-            "target": "x",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
             "value": "2",
             "repr": "2",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 0
+                        }
+                    }
+                },
+                {
+                    "name": "f",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": -1,
@@ -88,10 +353,13 @@
             "offset": 70,
             "filename": "test_call.py",
             "id": "test_call:6",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "1",
             "repr": "1",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": -1,
@@ -99,10 +367,13 @@
             "offset": 72,
             "filename": "test_call.py",
             "id": "test_call:7",
-            "target": "d",
+            "target": {
+                "name": "d",
+                "snapshot": null
+            },
             "value": "1",
             "repr": "1",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": 17,
@@ -110,10 +381,83 @@
             "offset": 80,
             "filename": "test_call.py",
             "id": "test_call:8",
-            "target": "x",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
             "value": "3",
             "repr": "3",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 1
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 1
+                        }
+                    }
+                },
+                {
+                    "name": "c",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 1,
+                            "c": 0
+                        }
+                    }
+                },
+                {
+                    "name": "d",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 1,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "f",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 18,
@@ -121,10 +465,90 @@
             "offset": 104,
             "filename": "test_call.py",
             "id": "test_call:9",
-            "target": "x",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
             "value": "4",
             "repr": "4",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 2,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 2,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "c",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 2,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "d",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 2,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "f",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 2,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 21,
@@ -132,45 +556,75 @@
             "offset": 128,
             "filename": "test_call.py",
             "id": "test_call:10",
-            "target": "x",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
             "value": "5",
             "repr": "5",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 3,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 3,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "c",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 3,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "f",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "counter": 0,
+                            "f": 0,
+                            "a": 0,
+                            "b": 0,
+                            "x": 3,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         }
-    ],
-    "tracingResult": {
-        "test_call:1": [
-            "test_call:0"
-        ],
-        "test_call:4": [
-            "test_call:2",
-            "test_call:3",
-            "test_call:1"
-        ],
-        "test_call:5": [
-            "test_call:2",
-            "test_call:3",
-            "test_call:1"
-        ],
-        "test_call:8": [
-            "test_call:2",
-            "test_call:3",
-            "test_call:6",
-            "test_call:7",
-            "test_call:1"
-        ],
-        "test_call:9": [
-            "test_call:2",
-            "test_call:3",
-            "test_call:6",
-            "test_call:7",
-            "test_call:1"
-        ],
-        "test_call:10": [
-            "test_call:2",
-            "test_call:3",
-            "test_call:6",
-            "test_call:1"
-        ]
-    }
+    ]
 }

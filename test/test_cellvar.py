@@ -1,7 +1,7 @@
 from cyberbrain import Binding, InitialValue, Symbol, Deletion
 
 
-def test_deref(tracer, mocked_responses):
+def test_deref(tracer, check_golden_file):
 
     a = 1
 
@@ -15,14 +15,8 @@ def test_deref(tracer, mocked_responses):
 
     test_deref_func()
 
-    assert tracer.events == [
-        InitialValue(lineno=-1, target=Symbol("a"), value="1"),
-        Binding(lineno=12, target=Symbol("a"), value="2", sources=set()),
-        Deletion(lineno=13, target=Symbol("a")),
-    ]
 
-
-def test_closure(tracer, mocked_responses):
+def test_closure(tracer, check_golden_file):
     tracer.start()
 
     a = 1  # LOAD_CLASSDEREF
@@ -35,20 +29,3 @@ def test_closure(tracer, mocked_responses):
             super(Bar, self).__init__()
 
     tracer.stop()
-
-    assert tracer.events == [
-        Binding(lineno=28, target=Symbol("a"), value="1"),
-        Binding(
-            lineno=30,
-            target=Symbol("Foo"),
-            value='{"py/type":"test_cellvar.test_closure.<locals>.Foo"}',
-            sources={Symbol("a")},
-        ),
-        Binding(
-            lineno=33,
-            target=Symbol("Bar"),
-            value='{"py/type":"test_cellvar.test_closure.<locals>.Bar"}',
-            repr="<class 'test_cellvar.test_closure.<locals>.Bar'>",
-            sources={Symbol("Foo")},
-        ),
-    ]

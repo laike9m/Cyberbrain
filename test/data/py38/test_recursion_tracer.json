@@ -1,0 +1,44 @@
+{
+    "response": {
+        "metadata": {
+            "frame_id": "test_recursion_tracer",
+            "frame_name": "test_recursion_tracer",
+            "filename": "test_recursion.py",
+            "defined_lineno": 15
+        },
+        "identifiers": [
+            "fib"
+        ],
+        "loops": [],
+        "events": [
+            {
+                "lineno": -1,
+                "index": 0,
+                "offset": 22,
+                "filename": "test_recursion.py",
+                "id": "test_recursion_tracer:0",
+                "target": "fib",
+                "value": "{\"repr\": \"<function test_recursion_tracer.<locals>.fib>\"}",
+                "repr": "<function test_recursion_tracer.<locals>.fib>",
+                "type": "InitialValue"
+            }
+        ],
+        "tracingResult": {}
+    },
+    "tracer.events": [
+        {
+            "lineno": -1,
+            "index": 0,
+            "offset": 22,
+            "filename": "test_recursion.py",
+            "id": "test_recursion_tracer:0",
+            "target": {
+                "name": "fib",
+                "snapshot": null
+            },
+            "value": "{\"repr\": \"<function test_recursion_tracer.<locals>.fib>\"}",
+            "repr": "<function test_recursion_tracer.<locals>.fib>",
+            "__class__": "InitialValue"
+        }
+    ]
+}

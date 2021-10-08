@@ -67,6 +67,10 @@ class Event:
 
     @staticmethod
     def value_serializer(inst: type, field: attr.Attribute, value: Any):
+        if field is None:
+            # This can happen when attr.asdict recuses on basic types in list fields
+            #   including the serialized result of the "sources" field
+            return value
         if field.name == "sources":
             return sorted(source.name for source in value)
         if field.name == "target":

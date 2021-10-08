@@ -1,31 +1,209 @@
 {
-    "metadata": {
-        "frame_id": "test_miscellaneous",
-        "frame_name": "test_miscellaneous",
-        "filename": "test_miscellaneous.py",
-        "defined_lineno": 6
+    "response": {
+        "metadata": {
+            "frame_id": "test_miscellaneous",
+            "frame_name": "test_miscellaneous",
+            "filename": "test_miscellaneous.py",
+            "defined_lineno": 6
+        },
+        "identifiers": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "x",
+            "e",
+            "g"
+        ],
+        "loops": [],
+        "events": [
+            {
+                "lineno": -1,
+                "index": 0,
+                "offset": 34,
+                "filename": "test_miscellaneous.py",
+                "id": "test_miscellaneous:0",
+                "target": "a",
+                "value": "\"a\"",
+                "repr": "\"a\"",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": -1,
+                "index": 1,
+                "offset": 40,
+                "filename": "test_miscellaneous.py",
+                "id": "test_miscellaneous:1",
+                "target": "b",
+                "value": "\"b\"",
+                "repr": "\"b\"",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": -1,
+                "index": 2,
+                "offset": 48,
+                "filename": "test_miscellaneous.py",
+                "id": "test_miscellaneous:2",
+                "target": "c",
+                "value": "\"c\"",
+                "repr": "\"c\"",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": -1,
+                "index": 3,
+                "offset": 54,
+                "filename": "test_miscellaneous.py",
+                "id": "test_miscellaneous:3",
+                "target": "d",
+                "value": "\"d\"",
+                "repr": "\"d\"",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 15,
+                "index": 4,
+                "offset": 62,
+                "filename": "test_miscellaneous.py",
+                "id": "test_miscellaneous:4",
+                "target": "x",
+                "value": "\"a b    'c' 'd' \"",
+                "repr": "\"a b    'c' 'd' \"",
+                "type": "Binding"
+            },
+            {
+                "lineno": 16,
+                "index": 5,
+                "offset": 86,
+                "filename": "test_miscellaneous.py",
+                "id": "test_miscellaneous:5",
+                "target": "x",
+                "value": "false",
+                "repr": "False",
+                "type": "Binding"
+            },
+            {
+                "lineno": -1,
+                "index": 6,
+                "offset": 88,
+                "filename": "test_miscellaneous.py",
+                "id": "test_miscellaneous:6",
+                "target": "e",
+                "value": "[1,2,3]",
+                "repr": "[1, 2, 3]",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 17,
+                "index": 7,
+                "offset": 100,
+                "filename": "test_miscellaneous.py",
+                "id": "test_miscellaneous:7",
+                "target": "e",
+                "value": "[1,2]",
+                "repr": "[1, 2]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 17,
+                "index": 8,
+                "offset": 106,
+                "filename": "test_miscellaneous.py",
+                "id": "test_miscellaneous:8",
+                "target": "e",
+                "value": "[4,2]",
+                "repr": "[4, 2]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 18,
+                "index": 9,
+                "offset": 108,
+                "filename": "test_miscellaneous.py",
+                "id": "test_miscellaneous:9",
+                "target": "e",
+                "type": "Deletion"
+            },
+            {
+                "lineno": -1,
+                "index": 10,
+                "offset": 110,
+                "filename": "test_miscellaneous.py",
+                "id": "test_miscellaneous:10",
+                "target": "g",
+                "value": "0",
+                "repr": "0",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 20,
+                "index": 11,
+                "offset": 112,
+                "filename": "test_miscellaneous.py",
+                "id": "test_miscellaneous:11",
+                "target": "x",
+                "value": "0",
+                "repr": "0",
+                "type": "Binding"
+            },
+            {
+                "lineno": 21,
+                "index": 12,
+                "offset": 116,
+                "filename": "test_miscellaneous.py",
+                "id": "test_miscellaneous:12",
+                "target": "g",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            },
+            {
+                "lineno": 22,
+                "index": 13,
+                "offset": 118,
+                "filename": "test_miscellaneous.py",
+                "id": "test_miscellaneous:13",
+                "target": "g",
+                "type": "Deletion"
+            }
+        ],
+        "tracingResult": {
+            "test_miscellaneous:4": [
+                "test_miscellaneous:0",
+                "test_miscellaneous:1",
+                "test_miscellaneous:2",
+                "test_miscellaneous:3"
+            ],
+            "test_miscellaneous:5": [
+                "test_miscellaneous:0",
+                "test_miscellaneous:1"
+            ],
+            "test_miscellaneous:7": [
+                "test_miscellaneous:6"
+            ],
+            "test_miscellaneous:8": [
+                "test_miscellaneous:7"
+            ],
+            "test_miscellaneous:11": [
+                "test_miscellaneous:10"
+            ]
+        }
     },
-    "identifiers": [
-        "a",
-        "b",
-        "c",
-        "d",
-        "x",
-        "e",
-        "g"
-    ],
-    "loops": [],
-    "events": [
+    "tracer.events": [
         {
             "lineno": -1,
             "index": 0,
             "offset": 34,
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:0",
-            "target": "a",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
             "value": "\"a\"",
             "repr": "\"a\"",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": -1,
@@ -33,10 +211,13 @@
             "offset": 40,
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:1",
-            "target": "b",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
             "value": "\"b\"",
             "repr": "\"b\"",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": -1,
@@ -44,10 +225,13 @@
             "offset": 48,
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:2",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "\"c\"",
             "repr": "\"c\"",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": -1,
@@ -55,10 +239,13 @@
             "offset": 54,
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:3",
-            "target": "d",
+            "target": {
+                "name": "d",
+                "snapshot": null
+            },
             "value": "\"d\"",
             "repr": "\"d\"",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": 15,
@@ -66,10 +253,57 @@
             "offset": 62,
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:4",
-            "target": "x",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
             "value": "\"a b    'c' 'd' \"",
             "repr": "\"a b    'c' 'd' \"",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0
+                        }
+                    }
+                },
+                {
+                    "name": "c",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0
+                        }
+                    }
+                },
+                {
+                    "name": "d",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 16,
@@ -77,10 +311,41 @@
             "offset": 86,
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:5",
-            "target": "x",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
             "value": "false",
             "repr": "False",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "x": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "x": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": -1,
@@ -88,10 +353,13 @@
             "offset": 88,
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:6",
-            "target": "e",
+            "target": {
+                "name": "e",
+                "snapshot": null
+            },
             "value": "[1,2,3]",
             "repr": "[1, 2, 3]",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": 17,
@@ -99,10 +367,39 @@
             "offset": 100,
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:7",
-            "target": "e",
+            "target": {
+                "name": "e",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "x": 1,
+                        "e": 0
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "e",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "x": 1,
+                            "e": 0
+                        }
+                    }
+                }
+            ],
             "value": "[1,2]",
             "repr": "[1, 2]",
-            "type": "Mutation"
+            "__class__": "Mutation"
         },
         {
             "lineno": 17,
@@ -110,10 +407,39 @@
             "offset": 106,
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:8",
-            "target": "e",
+            "target": {
+                "name": "e",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "x": 1,
+                        "e": 1
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "e",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "x": 1,
+                            "e": 1
+                        }
+                    }
+                }
+            ],
             "value": "[4,2]",
             "repr": "[4, 2]",
-            "type": "Mutation"
+            "__class__": "Mutation"
         },
         {
             "lineno": 18,
@@ -121,8 +447,11 @@
             "offset": 108,
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:9",
-            "target": "e",
-            "type": "Deletion"
+            "target": {
+                "name": "e",
+                "snapshot": null
+            },
+            "__class__": "Deletion"
         },
         {
             "lineno": -1,
@@ -130,10 +459,13 @@
             "offset": 110,
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:10",
-            "target": "g",
+            "target": {
+                "name": "g",
+                "snapshot": null
+            },
             "value": "0",
             "repr": "0",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": 20,
@@ -141,10 +473,30 @@
             "offset": 112,
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:11",
-            "target": "x",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
             "value": "0",
             "repr": "0",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "g",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "x": 1,
+                            "e": 3,
+                            "g": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 21,
@@ -152,10 +504,14 @@
             "offset": 116,
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:12",
-            "target": "g",
+            "target": {
+                "name": "g",
+                "snapshot": null
+            },
             "value": "1",
             "repr": "1",
-            "type": "Binding"
+            "sources": [],
+            "__class__": "Binding"
         },
         {
             "lineno": 22,
@@ -163,29 +519,11 @@
             "offset": 118,
             "filename": "test_miscellaneous.py",
             "id": "test_miscellaneous:13",
-            "target": "g",
-            "type": "Deletion"
+            "target": {
+                "name": "g",
+                "snapshot": null
+            },
+            "__class__": "Deletion"
         }
-    ],
-    "tracingResult": {
-        "test_miscellaneous:4": [
-            "test_miscellaneous:0",
-            "test_miscellaneous:1",
-            "test_miscellaneous:2",
-            "test_miscellaneous:3"
-        ],
-        "test_miscellaneous:5": [
-            "test_miscellaneous:0",
-            "test_miscellaneous:1"
-        ],
-        "test_miscellaneous:7": [
-            "test_miscellaneous:6"
-        ],
-        "test_miscellaneous:8": [
-            "test_miscellaneous:7"
-        ],
-        "test_miscellaneous:11": [
-            "test_miscellaneous:10"
-        ]
-    }
+    ]
 }

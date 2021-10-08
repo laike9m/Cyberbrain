@@ -1,29 +1,222 @@
 {
-    "metadata": {
-        "frame_id": "test_container",
-        "frame_name": "test_container",
-        "filename": "test_container.py",
-        "defined_lineno": 6
+    "response": {
+        "metadata": {
+            "frame_id": "test_container",
+            "frame_name": "test_container",
+            "filename": "test_container.py",
+            "defined_lineno": 6
+        },
+        "identifiers": [
+            "a",
+            "b",
+            "d",
+            "c",
+            "e"
+        ],
+        "loops": [],
+        "events": [
+            {
+                "lineno": -1,
+                "index": 0,
+                "offset": 24,
+                "filename": "test_container.py",
+                "id": "test_container:0",
+                "target": "a",
+                "value": "1",
+                "repr": "1",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": -1,
+                "index": 1,
+                "offset": 26,
+                "filename": "test_container.py",
+                "id": "test_container:1",
+                "target": "b",
+                "value": "1",
+                "repr": "1",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 13,
+                "index": 2,
+                "offset": 30,
+                "filename": "test_container.py",
+                "id": "test_container:2",
+                "target": "d",
+                "value": "[1,1]",
+                "repr": "[1, 1]",
+                "type": "Binding"
+            },
+            {
+                "lineno": 14,
+                "index": 3,
+                "offset": 38,
+                "filename": "test_container.py",
+                "id": "test_container:3",
+                "target": "d",
+                "value": "[1,1]",
+                "repr": "(1, 1)",
+                "type": "Binding"
+            },
+            {
+                "lineno": 15,
+                "index": 4,
+                "offset": 46,
+                "filename": "test_container.py",
+                "id": "test_container:4",
+                "target": "d",
+                "value": "[1]",
+                "repr": "{1}",
+                "type": "Binding"
+            },
+            {
+                "lineno": 16,
+                "index": 5,
+                "offset": 54,
+                "filename": "test_container.py",
+                "id": "test_container:5",
+                "target": "d",
+                "value": "{\"1\":1}",
+                "repr": "{1: 1}",
+                "type": "Binding"
+            },
+            {
+                "lineno": 17,
+                "index": 6,
+                "offset": 64,
+                "filename": "test_container.py",
+                "id": "test_container:6",
+                "target": "d",
+                "value": "{\"1\":1,\"2\":1}",
+                "repr": "{1: 1, 2: 1}",
+                "type": "Binding"
+            },
+            {
+                "lineno": -1,
+                "index": 7,
+                "offset": 66,
+                "filename": "test_container.py",
+                "id": "test_container:7",
+                "target": "c",
+                "value": "2",
+                "repr": "2",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 18,
+                "index": 8,
+                "offset": 72,
+                "filename": "test_container.py",
+                "id": "test_container:8",
+                "target": "d",
+                "value": "{\"1\":2,\"2\":1}",
+                "repr": "{1: 2, 2: 1}",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 19,
+                "index": 9,
+                "offset": 78,
+                "filename": "test_container.py",
+                "id": "test_container:9",
+                "target": "d",
+                "value": "{\"2\":1}",
+                "repr": "{2: 1}",
+                "type": "Mutation"
+            },
+            {
+                "lineno": -1,
+                "index": 10,
+                "offset": 88,
+                "filename": "test_container.py",
+                "id": "test_container:10",
+                "target": "e",
+                "value": "0",
+                "repr": "0",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 20,
+                "index": 11,
+                "offset": 96,
+                "filename": "test_container.py",
+                "id": "test_container:11",
+                "target": "d",
+                "value": "[1,1]",
+                "repr": "[1, 1]",
+                "type": "Binding"
+            },
+            {
+                "lineno": 21,
+                "index": 12,
+                "offset": 116,
+                "filename": "test_container.py",
+                "id": "test_container:12",
+                "target": "d",
+                "value": "[1,1]",
+                "repr": "[1, 1]",
+                "type": "Binding"
+            }
+        ],
+        "tracingResult": {
+            "test_container:2": [
+                "test_container:0",
+                "test_container:1"
+            ],
+            "test_container:3": [
+                "test_container:0",
+                "test_container:1"
+            ],
+            "test_container:4": [
+                "test_container:0",
+                "test_container:1"
+            ],
+            "test_container:5": [
+                "test_container:0",
+                "test_container:1"
+            ],
+            "test_container:6": [
+                "test_container:0",
+                "test_container:1"
+            ],
+            "test_container:8": [
+                "test_container:0",
+                "test_container:7",
+                "test_container:6"
+            ],
+            "test_container:9": [
+                "test_container:0",
+                "test_container:8"
+            ],
+            "test_container:11": [
+                "test_container:0",
+                "test_container:1",
+                "test_container:7",
+                "test_container:10"
+            ],
+            "test_container:12": [
+                "test_container:0",
+                "test_container:1",
+                "test_container:7",
+                "test_container:10"
+            ]
+        }
     },
-    "identifiers": [
-        "a",
-        "b",
-        "d",
-        "c",
-        "e"
-    ],
-    "loops": [],
-    "events": [
+    "tracer.events": [
         {
             "lineno": -1,
             "index": 0,
             "offset": 24,
             "filename": "test_container.py",
             "id": "test_container:0",
-            "target": "a",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
             "value": "1",
             "repr": "1",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": -1,
@@ -31,10 +224,13 @@
             "offset": 26,
             "filename": "test_container.py",
             "id": "test_container:1",
-            "target": "b",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
             "value": "1",
             "repr": "1",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": 13,
@@ -42,10 +238,34 @@
             "offset": 30,
             "filename": "test_container.py",
             "id": "test_container:2",
-            "target": "d",
+            "target": {
+                "name": "d",
+                "snapshot": null
+            },
             "value": "[1,1]",
             "repr": "[1, 1]",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 14,
@@ -53,10 +273,37 @@
             "offset": 38,
             "filename": "test_container.py",
             "id": "test_container:3",
-            "target": "d",
+            "target": {
+                "name": "d",
+                "snapshot": null
+            },
             "value": "[1,1]",
             "repr": "(1, 1)",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 15,
@@ -64,10 +311,37 @@
             "offset": 46,
             "filename": "test_container.py",
             "id": "test_container:4",
-            "target": "d",
+            "target": {
+                "name": "d",
+                "snapshot": null
+            },
             "value": "[1]",
             "repr": "{1}",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 1
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 16,
@@ -75,10 +349,37 @@
             "offset": 54,
             "filename": "test_container.py",
             "id": "test_container:5",
-            "target": "d",
+            "target": {
+                "name": "d",
+                "snapshot": null
+            },
             "value": "{\"1\":1}",
             "repr": "{1: 1}",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 2
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 2
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 17,
@@ -86,10 +387,37 @@
             "offset": 64,
             "filename": "test_container.py",
             "id": "test_container:6",
-            "target": "d",
+            "target": {
+                "name": "d",
+                "snapshot": null
+            },
             "value": "{\"1\":1,\"2\":1}",
             "repr": "{1: 1, 2: 1}",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 3
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 3
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": -1,
@@ -97,10 +425,13 @@
             "offset": 66,
             "filename": "test_container.py",
             "id": "test_container:7",
-            "target": "c",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
             "value": "2",
             "repr": "2",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": 18,
@@ -108,10 +439,59 @@
             "offset": 72,
             "filename": "test_container.py",
             "id": "test_container:8",
-            "target": "d",
+            "target": {
+                "name": "d",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "d": 4,
+                        "c": 0
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 4,
+                            "c": 0
+                        }
+                    }
+                },
+                {
+                    "name": "c",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 4,
+                            "c": 0
+                        }
+                    }
+                },
+                {
+                    "name": "d",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 4,
+                            "c": 0
+                        }
+                    }
+                }
+            ],
             "value": "{\"1\":2,\"2\":1}",
             "repr": "{1: 2, 2: 1}",
-            "type": "Mutation"
+            "__class__": "Mutation"
         },
         {
             "lineno": 19,
@@ -119,10 +499,47 @@
             "offset": 78,
             "filename": "test_container.py",
             "id": "test_container:9",
-            "target": "d",
+            "target": {
+                "name": "d",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "d": 5,
+                        "c": 0
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 5,
+                            "c": 0
+                        }
+                    }
+                },
+                {
+                    "name": "d",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 5,
+                            "c": 0
+                        }
+                    }
+                }
+            ],
             "value": "{\"2\":1}",
             "repr": "{2: 1}",
-            "type": "Mutation"
+            "__class__": "Mutation"
         },
         {
             "lineno": -1,
@@ -130,10 +547,13 @@
             "offset": 88,
             "filename": "test_container.py",
             "id": "test_container:10",
-            "target": "e",
+            "target": {
+                "name": "e",
+                "snapshot": null
+            },
             "value": "0",
             "repr": "0",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": 20,
@@ -141,10 +561,65 @@
             "offset": 96,
             "filename": "test_container.py",
             "id": "test_container:11",
-            "target": "d",
+            "target": {
+                "name": "d",
+                "snapshot": null
+            },
             "value": "[1,1]",
             "repr": "[1, 1]",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 6,
+                            "c": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 6,
+                            "c": 0
+                        }
+                    }
+                },
+                {
+                    "name": "c",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 6,
+                            "c": 0,
+                            "e": 0
+                        }
+                    }
+                },
+                {
+                    "name": "e",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 6,
+                            "c": 0,
+                            "e": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         },
         {
             "lineno": 21,
@@ -152,53 +627,67 @@
             "offset": 116,
             "filename": "test_container.py",
             "id": "test_container:12",
-            "target": "d",
+            "target": {
+                "name": "d",
+                "snapshot": null
+            },
             "value": "[1,1]",
             "repr": "[1, 1]",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 7,
+                            "c": 0,
+                            "e": 0
+                        }
+                    }
+                },
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 7,
+                            "c": 0,
+                            "e": 0
+                        }
+                    }
+                },
+                {
+                    "name": "c",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 7,
+                            "c": 0,
+                            "e": 0
+                        }
+                    }
+                },
+                {
+                    "name": "e",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "d": 7,
+                            "c": 0,
+                            "e": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         }
-    ],
-    "tracingResult": {
-        "test_container:2": [
-            "test_container:0",
-            "test_container:1"
-        ],
-        "test_container:3": [
-            "test_container:0",
-            "test_container:1"
-        ],
-        "test_container:4": [
-            "test_container:0",
-            "test_container:1"
-        ],
-        "test_container:5": [
-            "test_container:0",
-            "test_container:1"
-        ],
-        "test_container:6": [
-            "test_container:0",
-            "test_container:1"
-        ],
-        "test_container:8": [
-            "test_container:0",
-            "test_container:7",
-            "test_container:6"
-        ],
-        "test_container:9": [
-            "test_container:0",
-            "test_container:8"
-        ],
-        "test_container:11": [
-            "test_container:0",
-            "test_container:1",
-            "test_container:7",
-            "test_container:10"
-        ],
-        "test_container:12": [
-            "test_container:0",
-            "test_container:1",
-            "test_container:7",
-            "test_container:10"
-        ]
-    }
+    ]
 }
