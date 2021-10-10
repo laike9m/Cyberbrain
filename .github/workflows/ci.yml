@@ -61,6 +61,7 @@ jobs:
         uses: pdm-project/setup-pdm@main
         with:
           python-version: ${{ matrix.python-version }}
+      - run: pdm info -v
       - name: Install dependencies
         run: pdm install -v
       - name: Run tests
@@ -78,6 +79,7 @@ jobs:
         uses: pdm-project/setup-pdm@main
         with:
           python-version: ${{ matrix.python-version }}
+      - run: pdm info -v
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:

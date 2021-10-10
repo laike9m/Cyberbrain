@@ -8,7 +8,7 @@ authors = [
     {name = "laike9m", email = "laike9m@gmail.com"},
 ]
 license = {text = "MIT"}
-requires-python = ">=3.7,<4.0"
+requires-python = ">=3.7,<3.10"
 dynamic = ["classifiers"]
 readme = "README.md"
 keywords = ["debugging", "debugger", "visualization"]
