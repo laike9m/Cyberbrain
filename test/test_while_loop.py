@@ -45,18 +45,18 @@ def test_while_loop(tracer, check_golden_file):
 
     assert tracer.loops == [
         Loop(
-            start_offset=get_value({"default": 12, "py37": 14}),
-            end_offset=get_value({"default": 32, "py37": 34}),
-            start_lineno=9,
+            start_offset=get_value({"default": 12, "py37": 14, "py310": 20}),
+            end_offset=get_value({"default": 32, "py37": 34, "py310": 38}),
+            start_lineno=get_value({"default": 9, "py310": 10}),
         ),
         Loop(
-            start_offset=get_value({"default": 54, "py37": 64}),
-            end_offset=get_value({"default": 70, "py37": 80}),
+            start_offset=get_value({"default": 54, "py37": 64, "py310": 58}),
+            end_offset=get_value({"default": 70, "py37": 80, "py310": 74}),
             start_lineno=18,
         ),
         Loop(
-            start_offset=get_value({"default": 78, "py37": 92}),
-            end_offset=get_value({"default": 102, "py37": 116}),
+            start_offset=get_value({"default": 78, "py37": 92, "py310": 80}),
+            end_offset=get_value({"default": 102, "py37": 116, "py310": 104}),
             start_lineno=23,
         ),
     ]
@@ -69,3 +69,7 @@ def test_while_jump_to_zero(trace, check_golden_file):
             count -= 1
 
     while_jump_to_zero(2)
+
+
+# TODO: There seems to be a bug with Python 3.10 with start lineno, needs investigation
+# See #139

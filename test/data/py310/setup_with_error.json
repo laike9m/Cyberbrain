@@ -1,0 +1,38 @@
+{
+    "response": {
+        "metadata": {
+            "frame_id": "setup_with_error",
+            "frame_name": "setup_with_error",
+            "filename": "test_exception.py",
+            "defined_lineno": 197
+        },
+        "identifiers": [],
+        "loops": [],
+        "events": [
+            {
+                "lineno": 198,
+                "index": 0,
+                "offset": 98,
+                "filename": "test_exception.py",
+                "id": "test_setup_with_error:0",
+                "value": "null",
+                "repr": "None",
+                "type": "Return"
+            }
+        ],
+        "tracingResult": {}
+    },
+    "tracer.events": [
+        {
+            "lineno": 198,
+            "index": 0,
+            "offset": 98,
+            "filename": "test_exception.py",
+            "id": "test_setup_with_error:0",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
+}

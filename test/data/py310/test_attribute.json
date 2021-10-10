@@ -1,0 +1,219 @@
+{
+    "response": {
+        "metadata": {
+            "frame_id": "test_attribute",
+            "frame_name": "test_attribute",
+            "filename": "test_attribute.py",
+            "defined_lineno": 4
+        },
+        "identifiers": [
+            "a2",
+            "a1"
+        ],
+        "loops": [],
+        "events": [
+            {
+                "lineno": -1,
+                "index": 0,
+                "offset": 40,
+                "filename": "test_attribute.py",
+                "id": "test_attribute:0",
+                "target": "a2",
+                "value": "{\"y\":1}",
+                "repr": "<test_attribute.test_attribute.<locals>.A object>",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": -1,
+                "index": 1,
+                "offset": 42,
+                "filename": "test_attribute.py",
+                "id": "test_attribute:1",
+                "target": "a1",
+                "value": "{}",
+                "repr": "<test_attribute.test_attribute.<locals>.A object>",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 14,
+                "index": 2,
+                "offset": 44,
+                "filename": "test_attribute.py",
+                "id": "test_attribute:2",
+                "target": "a1",
+                "value": "{\"x\":{\"y\":1}}",
+                "repr": "<test_attribute.test_attribute.<locals>.A object>",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 15,
+                "index": 3,
+                "offset": 52,
+                "filename": "test_attribute.py",
+                "id": "test_attribute:3",
+                "target": "a1",
+                "value": "{\"x\":{\"y\":2}}",
+                "repr": "<test_attribute.test_attribute.<locals>.A object>",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 16,
+                "index": 4,
+                "offset": 56,
+                "filename": "test_attribute.py",
+                "id": "test_attribute:4",
+                "target": "a1",
+                "value": "{}",
+                "repr": "<test_attribute.test_attribute.<locals>.A object>",
+                "type": "Mutation"
+            }
+        ],
+        "tracingResult": {
+            "test_attribute:2": [
+                "test_attribute:1",
+                "test_attribute:0"
+            ],
+            "test_attribute:3": [
+                "test_attribute:2"
+            ],
+            "test_attribute:4": [
+                "test_attribute:3"
+            ]
+        }
+    },
+    "tracer.events": [
+        {
+            "lineno": -1,
+            "index": 0,
+            "offset": 40,
+            "filename": "test_attribute.py",
+            "id": "test_attribute:0",
+            "target": {
+                "name": "a2",
+                "snapshot": null
+            },
+            "value": "{\"y\":1}",
+            "repr": "<test_attribute.test_attribute.<locals>.A object>",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": -1,
+            "index": 1,
+            "offset": 42,
+            "filename": "test_attribute.py",
+            "id": "test_attribute:1",
+            "target": {
+                "name": "a1",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "<test_attribute.test_attribute.<locals>.A object>",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 14,
+            "index": 2,
+            "offset": 44,
+            "filename": "test_attribute.py",
+            "id": "test_attribute:2",
+            "target": {
+                "name": "a1",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a2": 0,
+                        "a1": 0
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "a1",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a2": 0,
+                            "a1": 0
+                        }
+                    }
+                },
+                {
+                    "name": "a2",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a2": 0
+                        }
+                    }
+                }
+            ],
+            "value": "{\"x\":{\"y\":1}}",
+            "repr": "<test_attribute.test_attribute.<locals>.A object>",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 15,
+            "index": 3,
+            "offset": 52,
+            "filename": "test_attribute.py",
+            "id": "test_attribute:3",
+            "target": {
+                "name": "a1",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a2": 0,
+                        "a1": 1
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "a1",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a2": 0,
+                            "a1": 1
+                        }
+                    }
+                }
+            ],
+            "value": "{\"x\":{\"y\":2}}",
+            "repr": "<test_attribute.test_attribute.<locals>.A object>",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 16,
+            "index": 4,
+            "offset": 56,
+            "filename": "test_attribute.py",
+            "id": "test_attribute:4",
+            "target": {
+                "name": "a1",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a2": 0,
+                        "a1": 2
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "a1",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a2": 0,
+                            "a1": 2
+                        }
+                    }
+                }
+            ],
+            "value": "{}",
+            "repr": "<test_attribute.test_attribute.<locals>.A object>",
+            "__class__": "Mutation"
+        }
+    ]
+}

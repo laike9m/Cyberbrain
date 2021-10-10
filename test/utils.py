@@ -16,8 +16,7 @@ def get_os_type() -> str:
     return "other"
 
 
-# TODO: Change to py310.
-python_version = {(3, 7): "py37", (3, 8): "py38", (3, 9): "py39", (3, 10): "py39"}[
+python_version = {(3, 7): "py37", (3, 8): "py38", (3, 9): "py39", (3, 10): "py310"}[
     sys.version_info[:2]
 ]
 os_type = get_os_type()

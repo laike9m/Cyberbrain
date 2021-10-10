@@ -1,0 +1,45 @@
+{
+    "response": {
+        "metadata": {
+            "frame_id": "test_nested_try_except",
+            "frame_name": "test_nested_try_except",
+            "filename": "test_block.py",
+            "defined_lineno": 21
+        },
+        "identifiers": [
+            "a"
+        ],
+        "loops": [],
+        "events": [
+            {
+                "lineno": 28,
+                "index": 0,
+                "offset": 18,
+                "filename": "test_block.py",
+                "id": "test_nested_try_except:0",
+                "target": "a",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            }
+        ],
+        "tracingResult": {}
+    },
+    "tracer.events": [
+        {
+            "lineno": 28,
+            "index": 0,
+            "offset": 18,
+            "filename": "test_block.py",
+            "id": "test_nested_try_except:0",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "__class__": "Binding"
+        }
+    ]
+}

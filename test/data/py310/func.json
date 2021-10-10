@@ -1,0 +1,120 @@
+{
+    "response": {
+        "metadata": {
+            "frame_id": "func",
+            "frame_name": "func",
+            "filename": "test_api_state.py",
+            "defined_lineno": 16
+        },
+        "identifiers": [
+            "b",
+            "a"
+        ],
+        "loops": [],
+        "events": [
+            {
+                "lineno": 16,
+                "index": 0,
+                "offset": 0,
+                "filename": "test_api_state.py",
+                "id": "test_decorator_multiple_times:0",
+                "target": "b",
+                "value": "1",
+                "repr": "1",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 17,
+                "index": 1,
+                "offset": 2,
+                "filename": "test_api_state.py",
+                "id": "test_decorator_multiple_times:1",
+                "target": "a",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            },
+            {
+                "lineno": 18,
+                "index": 2,
+                "offset": 6,
+                "filename": "test_api_state.py",
+                "id": "test_decorator_multiple_times:2",
+                "value": "1",
+                "repr": "1",
+                "type": "Return"
+            }
+        ],
+        "tracingResult": {
+            "test_decorator_multiple_times:1": [
+                "test_decorator_multiple_times:0"
+            ],
+            "test_decorator_multiple_times:2": [
+                "test_decorator_multiple_times:1"
+            ]
+        }
+    },
+    "tracer.events": [
+        {
+            "lineno": 16,
+            "index": 0,
+            "offset": 0,
+            "filename": "test_api_state.py",
+            "id": "test_decorator_multiple_times:0",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 17,
+            "index": 1,
+            "offset": 2,
+            "filename": "test_api_state.py",
+            "id": "test_decorator_multiple_times:1",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "b": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 18,
+            "index": 2,
+            "offset": 6,
+            "filename": "test_api_state.py",
+            "id": "test_decorator_multiple_times:2",
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "b": 0,
+                            "a": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Return"
+        }
+    ]
+}

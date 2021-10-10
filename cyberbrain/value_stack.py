@@ -279,6 +279,9 @@ class BaseValueStack:
             return False
         return True
 
+    def _NOP_handler(self):
+        pass
+
     def _POP_TOP_handler(self):
         self._pop()
 
@@ -1211,6 +1214,11 @@ class Py39ValueStack(Py38ValueStack):
         self._push(exit_func)
 
 
+class Py310ValueStack(Py39ValueStack):
+    def _GEN_START_handler(self):
+        """Left unhandled for now."""
+
+
 def create_value_stack():
     version_info = basis.VERSION_INFO
     if version_info == (3, 7):
@@ -1220,6 +1228,6 @@ def create_value_stack():
     elif version_info == (3, 9):
         return Py39ValueStack()
     elif version_info == (3, 10):
-        return Py39ValueStack()
+        return Py310ValueStack()
     else:
         raise Exception(f"Unsupported Python version: {version_info}")
