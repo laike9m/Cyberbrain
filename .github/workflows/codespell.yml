@@ -1,0 +1,14 @@
+# GitHub Action to automate the identification of common misspellings in text files.
+name: codespell
+on: [push, pull_request]
+jobs:
+  codespell:
+    name: Check for spelling errors
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: codespell-project/actions-codespell@master
+        with:
+          check_filenames: true
+          # When using this Action in other repos, the --skip option below can be removed
+          skip: ./.git,tox.ini, *.lock, Makefile,*.pyc, *.json, .gitignore
