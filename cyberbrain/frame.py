@@ -137,7 +137,7 @@ class Frame:
                 lineno=self.offset_to_lineno[frame.f_lasti],
                 filename=self.filename,
                 offset=frame.f_lasti,
-                sources=set(utils.flatten(self.value_stack._pop())),
+                sources=set(self.value_stack._pop().sources),
                 index=len(self.events),
             )
         )
