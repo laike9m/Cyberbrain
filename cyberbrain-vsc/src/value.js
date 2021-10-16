@@ -8,11 +8,15 @@ and make them more "Python-like", while loosing as few information as possible.
 let cl = console.log;
 
 // An enum of Js object types.
-const Types = Object.freeze({ NULL: "Null", STRING: "String" });
+const Types = Object.freeze({
+  NULL: "Null",
+  UNDEFINED: "Undefined",
+  STRING: "String",
+});
 
 // From https://bonsaiden.github.io/JavaScript-Garden/#types.typeof
 // Returns the type of a Js object. Possible return values:
-// Arguments, Array, Boolean, Date, Error, Function, JSON, Math, Number, Object, RegExp, String, NULL.
+// Arguments, Array, Boolean, Date, Error, Function, JSON, Math, Number, Object, RegExp, String, Null, Undefined.
 function getType(obj) {
   return Object.prototype.toString.call(obj).slice(8, -1);
 }
@@ -40,6 +44,9 @@ export function displayValueInConsole(node) {
 
   switch (getType(obj)) {
     case Types.NULL:
+      cl("None");
+      break;
+    case Types.UNDEFINED:
       cl("None");
       break;
     case Types.STRING:
