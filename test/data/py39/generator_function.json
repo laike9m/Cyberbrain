@@ -3,7 +3,7 @@
         "frame_id": "generator_function",
         "frame_name": "generator_function",
         "filename": "test_generator.py",
-        "defined_lineno": 6
+        "defined_lineno": 7
     },
     "identifiers": [
         "count",
@@ -18,7 +18,7 @@
     ],
     "events": [
         {
-            "lineno": 6,
+            "lineno": 7,
             "index": 0,
             "offset": 0,
             "filename": "test_generator.py",

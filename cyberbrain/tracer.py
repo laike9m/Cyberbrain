@@ -1,5 +1,5 @@
 """Cyberbrain public API and tracer setup."""
-
+import traceback
 import argparse
 import functools
 import inspect
@@ -57,6 +57,7 @@ class Tracer:
         self.decorated_function_code_id = None
         self.frame_logger: Optional[logger.FrameLogger] = None
         self.tracer_state = TracerFSM.INITIAL
+        self.function_lineno = None
         if debug_mode is not None:
             self.debug_mode = debug_mode
 
@@ -81,11 +82,14 @@ class Tracer:
             frame=self.frame,
             debug_mode=self.debug_mode,
         )
+        # If not none assign to frame defined_lineno. When the tracer stop is run
+        # you set the function_lineno to none to avoid state carry over
+        if self.function_lineno:
+            self.frame.defined_lineno = self.function_lineno
         # print(f"Logger initialized {self.frame_logger}")
 
     def start(self, *, disabled=False):
         """Initializes tracing."""
-
         # For now, we only allow triggering tracing once. This might change in the
         # future.
         if disabled or self.tracer_state != TracerFSM.INITIAL:
@@ -110,6 +114,7 @@ class Tracer:
 
     def stop(self):
         # print(self.frame_logger, self.tracer_state)
+        self.function_lineno = None
         if not self.frame_logger or self.tracer_state == TracerFSM.CALLED:
             # No frame_logger means start() did not run.
             return
@@ -156,6 +161,13 @@ class Tracer:
         """
 
         def decorator(f, disabled_by_user=False):
+            # Get function line no
+            self.function_lineno = (
+                self.get_function_lineno_from_tracer() + 1
+                if sys.version_info < (3, 8)
+                else self.get_function_lineno_from_tracer()
+            )
+
             @functools.wraps(f)
             def wrapper(*args, **kwargs):
                 # TracerFSM.ACTIVE: appeared in recursive call. The tracer has been
@@ -167,11 +179,9 @@ class Tracer:
                     TracerFSM.CALLED,
                 }:
                     return f(*args, **kwargs)
-
                 self.decorated_function_code_id = id(f.__code__)
                 sys.settrace(self.global_tracer)
                 result = f(*args, **kwargs)
-
                 # Generator function is special, because the 'call' event is not
                 # triggered when creating the function, but when each `yield` is called.
                 # So we can't call .stop() here, but have to rely on users to manually
@@ -229,3 +239,14 @@ class Tracer:
         if event == "return":
             # print(raw_frame, event, arg, raw_frame.f_lasti)
             self.frame.log_return_event(raw_frame, value=arg)
+
+    def get_function_lineno_from_tracer(self):
+        # Traceback gets the stack of python program
+        stack_summary = traceback.extract_stack()
+        # Get the function index in the stack trace. Should always be before the tracer index
+        func_index = (
+            stack_summary.index(
+                [stack for stack in stack_summary if "tracer.py" in stack.filename][0]
+            )
+        ) - 1
+        return stack_summary[func_index].lineno

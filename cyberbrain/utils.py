@@ -128,6 +128,12 @@ def get_jump_target_or_none(instr: dis.Instruction) -> Optional[int]:
 def to_json(python_object: Any):
     # TODO: Once we implemented better deserialization in Js, use unpicklable=True.
     try:
+        if (
+            hasattr(python_object, "__iter__")
+            and hasattr(python_object, "__next__")
+            and iter(python_object) == python_object
+        ):
+            raise Exception("Cannot encode iterators")
         json = jsonpickle.encode(python_object, unpicklable=False)
     except:
         # There are always things we just cannot encode, like a ML model.
@@ -206,16 +212,17 @@ def flatten(*args: any) -> list:
 
 
 def pprint(*args):
-    output = ""
-    for arg in args:
-        if isinstance(arg, str):
-            output += arg + "\n"
-        else:
+    output = "".join(
+        arg + "\n"
+        if isinstance(arg, str)
+        else (
             # Outputs syntax-highlighted object. See
             # https://gist.github.com/EdwardBetts/0814484fdf7bbf808f6f
-            output += (
-                highlight(pformat(arg), PythonLexer(), Terminal256Formatter()) + "\n"
-            )
+            highlight(pformat(arg), PythonLexer(), Terminal256Formatter())
+            + "\n"
+        )
+        for arg in args
+    )
     print(output)
 
 

@@ -85,7 +85,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "cheap-repr"
-version = "0.4.5"
+version = "0.4.6"
 description = "Better version of repr/reprlib for short, cheap string representations."
 category = "main"
 optional = false
@@ -749,7 +749,7 @@ chardet = [
     {file = "chardet-4.0.0.tar.gz", hash = "sha256:0d6f53a15db4120f2b08c94f11e7d93d2c911ee118b6b30a04ec3ee8310179fa"},
 ]
 cheap-repr = [
-    {file = "cheap_repr-0.4.5.tar.gz", hash = "sha256:5b8cde6babbe953bd8b83be18ba13d24f7f1f845b052c365c10c54d9da11aab4"},
+    {file = "cheap_repr-0.4.6.tar.gz", hash = "sha256:b4aec1219b0b3ad0e8f99d8253ecc6263b54991b902e9ed7c03f1e7ff72180c3"},
 ]
 click = [
     {file = "click-7.1.2-py2.py3-none-any.whl", hash = "sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc"},
