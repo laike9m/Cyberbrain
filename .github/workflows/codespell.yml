@@ -11,4 +11,4 @@ jobs:
         with:
           check_filenames: true
           # When using this Action in other repos, the --skip option below can be removed
-          skip: ./.git,tox.ini, *.lock, Makefile,*.pyc, *.json, .gitignore
+          skip: ./.git, tox.ini, *.lock, Makefile, *.pyc, *.json, .gitignore

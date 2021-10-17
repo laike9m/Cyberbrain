@@ -1,2 +1,0 @@
-[files]
-extend-exclude = ["cyberbrain-vsc/package.json", "test/*", ".github/"]
