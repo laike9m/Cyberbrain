@@ -8,15 +8,17 @@ Check out this YouTube video:
 
 ## Development Environment Setup
 
-[![](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![](https://img.shields.io/badge/code_style-prettier--eslint-blueviolet)](https://github.com/prettier/prettier-eslint-cli) [![Build Status](https://dev.azure.com/laike9m/laike9m/_apis/build/status/laike9m.Cyberbrain?branchName=master)](https://dev.azure.com/laike9m/laike9m/_build/latest?definitionId=1&branchName=master)
+[![](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![](https://img.shields.io/badge/code_style-prettier--eslint-blueviolet)](https://github.com/prettier/prettier-eslint-cli)
 
 ## Prerequisites
 
-Make sure you have Python>=3.7 and the latest version of VS Code installed.
+Make sure you have **Python 3.7, 3.8, 3.9**, and the **latest version of VS Code** installed.
+
+NOTE: there's no preference on how to manage different Python versions. I personally use [pyenv](https://github.com/pyenv/pyenv), others may use [Conda](https://docs.conda.io/en/latest/). What's important is that the above three Python versions have all been installed.
 
 Important: During development, make sure you:
-- **Didn't** install Cyberbrain from PyPI
-- **Didn't** Install the Cyberbrain VS Code extension 
+- **Don't** install Cyberbrain from PyPI
+- **Don't** install the Cyberbrain VS Code extension
 
 ## Install Dependencies
 
@@ -24,34 +26,17 @@ Cyberbrain consists of a Python package, and a VS Code extension. We have to ins
 
 ### Install dependencies for the Python library
   
-   We use [Poetry](https://python-poetry.org/) to manage dependencies. Assuming you've installed Poetry and set it up correctly, run:
+   We use [PDM](https://pdm.fming.dev/) to manage dependencies. Assuming you've installed PDM and set it up correctly, run:
    ```
-   poetry install
+   pdm install
    ```
-
-### Install the Python package **being developed**
-  
-  To test the changes we made locally, we have to install the Python package from our computer directly. We use [editable install](https://pip.pypa.io/en/stable/cli/pip_install/#install-editable) to achieve this:
-
-  ```bash
-  # Make sure you're in the root folder, aka "Cyberbrain"
-  pip install -e .
-  
-  # Seeing the following output means the installation has succeeded:
-  #   Installing collected packages: cyberbrain
-  #   Running setup.py develop for cyberbrain
-  #   Successfully installed cyberbrain
-  ```
-  
-  In case you have multiple versions of Python installed, make sure you chose the Python version that you intend to use in VS Code.
+Make sure the default Python version (i.e. the version when you run "python") matches with what's used in VS Code.
 
   ![image](https://user-images.githubusercontent.com/2592205/116657768-cf415380-a943-11eb-87db-9fa87eeddff5.png)
 
 ### Install dependencies for VS Code
 
-   Make sure you have **Node.js 12** and npm installed. There's no guarantee that other versions will work.
-
-   On Mac, you can `brew install node@12 && brew link --force --overwrite node@12` and add `/usr/local/opt/node@12/bin` (or whatever the binary path is) to your `$PATH`.
+   Make sure you have **[Node.js 14.16.0](https://nodejs.org/ko/blog/release/v14.16.0/)** and npm installed. There's no guarantee that other versions will work.
 
    Then `npm install` inside the `cyberbrain-vsc` folder.
 
@@ -61,10 +46,16 @@ After installing dependencies, you always want to run the tests to make sure eve
 
 ### Run Python Tests
 
-In the project root directory.
+In the project root directory. If you're busy coding, use:
 
 ```
-pytest --assert=plain
+pdm run pytest --assert=plain
+```
+
+When you're done with development, make sure to test against all supported Python versions by running:
+
+```
+pdm run tox
 ```
 
 ### Run JavaScript Tests
@@ -90,9 +81,9 @@ There are two ways to run the e2e tests.
     
 - From command line
 
-   ```
-   cd cyberbrain-vsc && npm test
-   ```
+  ```
+  cd cyberbrain-vsc && npm test
+  ```
 
   This will open a new VS Code window and run the tests.
   
@@ -139,11 +130,7 @@ Code style will be checked for any PR, so make sure to get them right before fil
 ## Packaging
 
 ```
-# Build the Python package.
-poetry build
-
-# Build the VS Code package.
-cd cyberbrain-vsc && vsce package --no-yarn
+make publish
 ```
 
 This is just FYI. As of now only me have the permission to publish new versions.

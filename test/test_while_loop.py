@@ -2,7 +2,7 @@ from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop, InitialValue,
 from utils import get_value
 
 
-def test_while_loop(tracer, mocked_responses):
+def test_while_loop(tracer, check_golden_file):
     tracer.start()
 
     i = 0
@@ -43,60 +43,26 @@ def test_while_loop(tracer, mocked_responses):
 
     tracer.stop()
 
-    assert tracer.events == [
-        Binding(lineno=8, target=Symbol("i"), value="0"),
-        Binding(lineno=10, target=Symbol("a"), value="0", sources={Symbol("i")}),
-        Binding(lineno=11, target=Symbol("i"), value="1", sources={Symbol("i")}),
-        JumpBackToLoopStart(
-            lineno=11, jump_target=get_value({"default": 12, "py37": 14})
-        ),
-        Binding(lineno=10, target=Symbol("a"), value="1", sources={Symbol("i")}),
-        Binding(lineno=11, target=Symbol("i"), value="2", sources={Symbol("i")}),
-        JumpBackToLoopStart(
-            lineno=11, jump_target=get_value({"default": 12, "py37": 14})
-        ),
-        ##
-        Binding(lineno=13, target=Symbol("i"), value="0"),
-        Binding(lineno=17, target=Symbol("i"), value="0"),
-        Binding(lineno=19, target=Symbol("i"), value="1", sources={Symbol("i")}),
-        JumpBackToLoopStart(
-            lineno=20, jump_target=get_value({"default": 54, "py37": 64})
-        ),
-        ##
-        Binding(lineno=22, target=Symbol("i"), value="0"),
-        Binding(lineno=24, target=Symbol("i"), value="1", sources={Symbol("i")}),
-        JumpBackToLoopStart(
-            lineno=26, jump_target=get_value({"default": 78, "py37": 92})
-        ),
-        Binding(lineno=24, target=Symbol("i"), value="2", sources={Symbol("i")}),
-        JumpBackToLoopStart(
-            lineno=25, jump_target=get_value({"default": 78, "py37": 92})
-        ),
-        ##
-        Binding(lineno=28, target=Symbol("i"), value="0"),
-        Binding(lineno=30, target=Symbol("i"), value="1", sources={Symbol("i")}),
-        Binding(lineno=42, target=Symbol("a"), value="1"),
-    ]
     assert tracer.loops == [
         Loop(
-            start_offset=get_value({"default": 12, "py37": 14}),
-            end_offset=get_value({"default": 32, "py37": 34}),
-            start_lineno=9,
+            start_offset=get_value({"default": 12, "py37": 14, "py310": 20}),
+            end_offset=get_value({"default": 32, "py37": 34, "py310": 38}),
+            start_lineno=get_value({"default": 9, "py310": 10}),
         ),
         Loop(
-            start_offset=get_value({"default": 54, "py37": 64}),
-            end_offset=get_value({"default": 70, "py37": 80}),
+            start_offset=get_value({"default": 54, "py37": 64, "py310": 58}),
+            end_offset=get_value({"default": 70, "py37": 80, "py310": 74}),
             start_lineno=18,
         ),
         Loop(
-            start_offset=get_value({"default": 78, "py37": 92}),
-            end_offset=get_value({"default": 102, "py37": 116}),
+            start_offset=get_value({"default": 78, "py37": 92, "py310": 80}),
+            end_offset=get_value({"default": 102, "py37": 116, "py310": 104}),
             start_lineno=23,
         ),
     ]
 
 
-def test_while_jump_to_zero(trace):
+def test_while_jump_to_zero(trace, check_golden_file):
     @trace
     def while_jump_to_zero(count):
         while count > 0:
@@ -104,37 +70,6 @@ def test_while_jump_to_zero(trace):
 
     while_jump_to_zero(2)
 
-    assert trace.events == [
-        InitialValue(
-            lineno=101,
-            target=Symbol("count"),
-            value="2",
-            repr="2",
-        ),
-        Binding(
-            lineno=103,
-            target=Symbol("count"),
-            value="1",
-            repr="1",
-            sources={Symbol("count")},
-        ),
-        JumpBackToLoopStart(
-            lineno=103, jump_target=get_value({"py37": 2, "default": 0})
-        ),
-        Binding(
-            lineno=103,
-            target=Symbol("count"),
-            value="0",
-            repr="0",
-            sources={Symbol("count")},
-        ),
-        JumpBackToLoopStart(
-            lineno=103, jump_target=get_value({"py37": 2, "default": 0})
-        ),
-        Return(
-            lineno=103,
-            value="null",
-            repr="None",
-            sources=set(),
-        ),
-    ]
+
+# TODO: There seems to be a bug with Python 3.10 with start lineno, needs investigation
+# See #139

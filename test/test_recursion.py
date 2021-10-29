@@ -1,7 +1,7 @@
 from cyberbrain import Symbol, InitialValue, Return
 
 
-def test_recursion_decorator(trace):
+def test_recursion_decorator(trace, check_golden_file):
     @trace
     def fib(n):
         if n <= 1:
@@ -11,29 +11,8 @@ def test_recursion_decorator(trace):
 
     print(fib(3))
 
-    assert trace.events == [
-        InitialValue(
-            lineno=6,
-            target=Symbol("n"),
-            value="3",
-            repr="3",
-        ),
-        InitialValue(
-            lineno=-1,
-            target=Symbol("fib"),
-            value='{"repr": "<function test_recursion_decorator.<locals>.fib>"}',
-            repr="<function test_recursion_decorator.<locals>.fib>",
-        ),
-        Return(
-            lineno=10,
-            value="2",
-            repr="2",
-            sources={Symbol("fib"), Symbol("n")},
-        ),
-    ]
 
-
-def test_recursion_tracer(tracer):
+def test_recursion_tracer(tracer, check_golden_file):
     def fib(n):
         return n if n <= 1 else fib(n - 1) + fib(n - 2)
 
@@ -42,12 +21,3 @@ def test_recursion_tracer(tracer):
     tracer.start()
     print(fib(3))
     tracer.stop()
-
-    assert tracer.events == [
-        InitialValue(
-            lineno=-1,
-            target=Symbol("fib"),
-            value='{"repr": "<function test_recursion_tracer.<locals>.fib>"}',
-            repr="<function test_recursion_tracer.<locals>.fib>",
-        )
-    ]

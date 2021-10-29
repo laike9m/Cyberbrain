@@ -10,5 +10,17 @@
     "typescript.tsc.autoDetect": "off",
     "cSpell.words": [
         "proto"
-    ]
+    ],
+    "python.autoComplete.extraPaths": [
+        "__pypackages__/3.7/lib",
+        "__pypackages__/3.8/lib",
+        "__pypackages__/3.9/lib",
+        "__pypackages__/3.10/lib"
+    ],
+    "python.analysis.extraPaths": [
+        "__pypackages__/3.7/lib",
+        "__pypackages__/3.8/lib",
+        "__pypackages__/3.9/lib",
+        "__pypackages__/3.10/lib"
+    ],
 }

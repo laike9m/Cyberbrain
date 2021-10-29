@@ -1,27 +1,73 @@
 {
-    "metadata": {
-        "frame_id": "test_repr",
-        "frame_name": "test_repr",
-        "filename": "test_to_json.py",
-        "defined_lineno": 5
+    "response": {
+        "metadata": {
+            "frame_id": "test_repr",
+            "frame_name": "test_repr",
+            "filename": "test_to_json.py",
+            "defined_lineno": 5
+        },
+        "identifiers": [
+            "match",
+            "A",
+            "a"
+        ],
+        "loops": [],
+        "events": [
+            {
+                "lineno": 10,
+                "index": 0,
+                "offset": 32,
+                "filename": "test_to_json.py",
+                "id": "test_repr:0",
+                "target": "match",
+                "value": "{\"repr\": \"<re.Match object; span=(0, 3), match='foo'>\"}",
+                "repr": "<re.Match object; span=(0, 3), match='foo'>",
+                "type": "Binding"
+            },
+            {
+                "lineno": -1,
+                "index": 1,
+                "offset": 34,
+                "filename": "test_to_json.py",
+                "id": "test_repr:1",
+                "target": "A",
+                "value": "{\"py/type\":\"test_to_json.test_repr.<locals>.A\"}",
+                "repr": "<class 'test_to_json.test_repr.<locals>.A'>",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 11,
+                "index": 2,
+                "offset": 38,
+                "filename": "test_to_json.py",
+                "id": "test_repr:2",
+                "target": "a",
+                "value": "{}",
+                "repr": "<test_to_json.test_repr.<locals>.A object>",
+                "type": "Binding"
+            }
+        ],
+        "tracingResult": {
+            "test_repr:2": [
+                "test_repr:1"
+            ]
+        }
     },
-    "identifiers": [
-        "match",
-        "A",
-        "a"
-    ],
-    "loops": [],
-    "events": [
+    "tracer.events": [
         {
             "lineno": 10,
             "index": 0,
             "offset": 32,
             "filename": "test_to_json.py",
             "id": "test_repr:0",
-            "target": "match",
+            "target": {
+                "name": "match",
+                "snapshot": null
+            },
             "value": "{\"repr\": \"<re.Match object; span=(0, 3), match='foo'>\"}",
             "repr": "<re.Match object; span=(0, 3), match='foo'>",
-            "type": "Binding"
+            "sources": [],
+            "__class__": "Binding"
         },
         {
             "lineno": -1,
@@ -29,10 +75,13 @@
             "offset": 34,
             "filename": "test_to_json.py",
             "id": "test_repr:1",
-            "target": "A",
+            "target": {
+                "name": "A",
+                "snapshot": null
+            },
             "value": "{\"py/type\":\"test_to_json.test_repr.<locals>.A\"}",
             "repr": "<class 'test_to_json.test_repr.<locals>.A'>",
-            "type": "InitialValue"
+            "__class__": "InitialValue"
         },
         {
             "lineno": 11,
@@ -40,15 +89,25 @@
             "offset": 38,
             "filename": "test_to_json.py",
             "id": "test_repr:2",
-            "target": "a",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
             "value": "{}",
             "repr": "<test_to_json.test_repr.<locals>.A object>",
-            "type": "Binding"
+            "sources": [
+                {
+                    "name": "A",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "match": 0,
+                            "A": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
         }
-    ],
-    "tracingResult": {
-        "test_repr:2": [
-            "test_repr:1"
-        ]
-    }
+    ]
 }

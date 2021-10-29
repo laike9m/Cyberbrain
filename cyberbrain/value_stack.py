@@ -20,7 +20,7 @@ try:
 except ImportError:
     from typing_extensions import Literal
 
-from . import utils
+from . import basis, utils
 from .basis import (
     Symbol,
     Binding,
@@ -345,6 +345,9 @@ class BaseValueStack:
             self._store_exception(exc_info)
             return False
         return True
+
+    def _NOP_handler(self):
+        pass
 
     def _POP_TOP_handler(self):
         self._pop()
@@ -1326,13 +1329,20 @@ class Py39ValueStack(Py38ValueStack):
         self._push_stackitem(exit_func)
 
 
+class Py310ValueStack(Py39ValueStack):
+    def _GEN_START_handler(self):
+        """Left unhandled for now."""
+
+
 def create_value_stack():
-    version_info = sys.version_info[:2]
+    version_info = basis.VERSION_INFO
     if version_info == (3, 7):
         return Py37ValueStack()
     elif version_info == (3, 8):
         return Py38ValueStack()
     elif version_info == (3, 9):
         return Py39ValueStack()
+    elif version_info == (3, 10):
+        return Py310ValueStack()
     else:
-        raise Exception(f"Unsupported Python version: {sys.version}")
+        raise Exception(f"Unsupported Python version: {version_info}")

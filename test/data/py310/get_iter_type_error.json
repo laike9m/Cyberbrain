@@ -1,0 +1,38 @@
+{
+    "response": {
+        "metadata": {
+            "frame_id": "get_iter_type_error",
+            "frame_name": "get_iter_type_error",
+            "filename": "test_exception.py",
+            "defined_lineno": 167
+        },
+        "identifiers": [],
+        "loops": [],
+        "events": [
+            {
+                "lineno": 168,
+                "index": 0,
+                "offset": 56,
+                "filename": "test_exception.py",
+                "id": "test_get_iter_type_error:0",
+                "value": "null",
+                "repr": "None",
+                "type": "Return"
+            }
+        ],
+        "tracingResult": {}
+    },
+    "tracer.events": [
+        {
+            "lineno": 168,
+            "index": 0,
+            "offset": 56,
+            "filename": "test_exception.py",
+            "id": "test_get_iter_type_error:0",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
+}

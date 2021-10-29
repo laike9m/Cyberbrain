@@ -1,4 +1,4 @@
-def test_external_generator(trace, mocked_responses):
+def test_external_generator(trace, check_golden_file):
     def inner():
         for i in range(2):
             yield i
@@ -13,7 +13,7 @@ def test_external_generator(trace, mocked_responses):
     external_generator_function()
 
 
-def test_external_iterator(trace, mocked_responses):
+def test_external_iterator(trace, check_golden_file):
     @trace
     def external_iterator_function():
         iterator = iter((1, 2, 3))

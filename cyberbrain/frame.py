@@ -8,7 +8,7 @@ import os
 from types import FrameType
 from typing import Any
 
-from . import value_stack, utils
+from . import basis, value_stack, utils
 from .basis import (
     Event,
     InitialValue,
@@ -58,7 +58,7 @@ class Frame:
         # Only stores the basename so it's consistent on all operating systems.
         # This is mainly for the ease of testing.
         self.filename: str = utils.shorten_path(
-            raw_frame.f_code.co_filename, 1 if utils.run_in_test() else 3
+            raw_frame.f_code.co_filename, 1 if basis.RUN_IN_TEST else 3
         )
         self.frame_name: str = (
             # Use filename as frame name if code is run at module level.

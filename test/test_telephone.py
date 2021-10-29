@@ -7,7 +7,7 @@ from hamcrest import *
 from cyberbrain import Symbol
 
 
-def test_telephone(trace):
+def test_telephone(trace, check_golden_file):
     @trace
     def test_telephone_inner():
         args = argparse.Namespace(

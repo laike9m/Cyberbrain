@@ -1,0 +1,76 @@
+{
+    "tracer.events": [
+        {
+            "lineno": -1,
+            "index": 0,
+            "offset": 46,
+            "filename": "test_outside_func.py",
+            "id": "global:0",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 8,
+            "index": 1,
+            "offset": 46,
+            "filename": "test_outside_func.py",
+            "id": "global:1",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "__class__": "Deletion"
+        },
+        {
+            "lineno": -1,
+            "index": 2,
+            "offset": 50,
+            "filename": "test_outside_func.py",
+            "id": "global:2",
+            "target": {
+                "name": "__annotations__",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "{}",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 9,
+            "index": 3,
+            "offset": 54,
+            "filename": "test_outside_func.py",
+            "id": "global:3",
+            "target": {
+                "name": "__annotations__",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "x": 1,
+                        "__annotations__": 0
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "__annotations__",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "x": 1,
+                            "__annotations__": 0
+                        }
+                    }
+                }
+            ],
+            "value": "{\"y\":{\"py/type\":\"builtins.int\"}}",
+            "repr": "{'y': <class 'int'>}",
+            "__class__": "Mutation"
+        }
+    ]
+}

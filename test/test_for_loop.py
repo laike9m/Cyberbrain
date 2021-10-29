@@ -2,7 +2,7 @@ from cyberbrain import Binding, Symbol, JumpBackToLoopStart, Loop
 from utils import get_value
 
 
-def test_for_loop(tracer, mocked_responses):
+def test_for_loop(tracer, check_golden_file):
     tracer.start()
 
     for i in range(2):  # SETUP_LOOP (3.7), GET_ITER, FOR_ITER
@@ -36,45 +36,6 @@ def test_for_loop(tracer, mocked_responses):
 
     tracer.stop()
 
-    expected_events = [
-        Binding(target=Symbol("i"), value="0", lineno=8),
-        Binding(target=Symbol("a"), value="0", lineno=9, sources={Symbol("i")}),
-        JumpBackToLoopStart(
-            jump_target=get_value({"default": 16, "py37": 18}), lineno=9
-        ),
-        Binding(target=Symbol("i"), value="1", lineno=8),
-        Binding(target=Symbol("a"), value="1", lineno=9, sources={Symbol("i")}),
-        JumpBackToLoopStart(
-            jump_target=get_value({"default": 16, "py37": 18}), lineno=9
-        ),
-        Binding(target=Symbol("i"), value="0", lineno=11),
-        Binding(target=Symbol("i"), value="0", lineno=15),
-        JumpBackToLoopStart(
-            jump_target=get_value({"default": 56, "py37": 64}), lineno=16
-        ),
-        Binding(target=Symbol("i"), value="0", lineno=19),
-        JumpBackToLoopStart(
-            jump_target=get_value({"default": 76, "py37": 88}), lineno=21
-        ),
-        Binding(target=Symbol("i"), value="1", lineno=19),
-        JumpBackToLoopStart(
-            jump_target=get_value({"default": 76, "py37": 88}), lineno=20
-        ),
-        Binding(target=Symbol("i"), value="0", lineno=23),
-        JumpBackToLoopStart(
-            jump_target=get_value({"default": 100, "py37": 116}), lineno=24
-        ),
-        Binding(target=Symbol("i"), value="1", lineno=23),
-        Binding(target=Symbol("i"), value="0", lineno=27),
-        Binding(target=Symbol("i"), value="0", lineno=32),
-        JumpBackToLoopStart(
-            jump_target=get_value({"default": 148, "py37": 168}), lineno=33
-        ),
-        Binding(target=Symbol("a"), value="1", lineno=35),
-    ]
-    for index, event in enumerate(tracer.events):
-        assert event == expected_events[index], f"{event} {expected_events[index]}"
-    print(tracer.loops)
     assert tracer.loops == [
         Loop(
             start_offset=get_value({"default": 16, "py37": 18}),
@@ -82,23 +43,23 @@ def test_for_loop(tracer, mocked_responses):
             start_lineno=8,
         ),
         Loop(
-            start_offset=get_value({"default": 56, "py37": 64}),
-            end_offset=get_value({"default": 60, "py37": 68}),
+            start_offset=get_value({"default": 56, "py37": 64, "py310": 48}),
+            end_offset=get_value({"default": 60, "py37": 68, "py310": 52}),
             start_lineno=15,
         ),
         Loop(
-            start_offset=get_value({"default": 76, "py37": 88}),
-            end_offset=get_value({"default": 88, "py37": 100}),
+            start_offset=get_value({"default": 76, "py37": 88, "py310": 62}),
+            end_offset=get_value({"default": 88, "py37": 100, "py310": 76}),
             start_lineno=19,
         ),
         Loop(
-            start_offset=get_value({"default": 100, "py37": 116}),
-            end_offset=get_value({"default": 110, "py37": 126}),
+            start_offset=get_value({"default": 100, "py37": 116, "py310": 86}),
+            end_offset=get_value({"default": 110, "py37": 126, "py310": 102}),
             start_lineno=23,
         ),
         Loop(
-            start_offset=get_value({"default": 148, "py37": 168}),
-            end_offset=get_value({"default": 152, "py37": 172}),
+            start_offset=get_value({"default": 148, "py37": 168, "py310": 132}),
+            end_offset=get_value({"default": 152, "py37": 172, "py310": 136}),
             start_lineno=32,
         ),
     ]

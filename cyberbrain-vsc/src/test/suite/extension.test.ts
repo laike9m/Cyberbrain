@@ -1,10 +1,22 @@
+// Sometimes to make the test work, VS Code needs to be launched from command line.
+// e.g. /Applications/Visual\ Studio\ Code\ -\ Insiders.app/Contents/MacOS/Electron
+
 import * as vscode from "vscode";
 import * as path from "path";
-import { spawn } from "child_process";
+import { spawn, spawnSync } from "child_process";
 
 let cl = console.log;
 
 const cbRoot = path.resolve(__dirname, "../../../..");
+
+// We have to identify the actual interpreter being used to correctly load local libs.
+const interpreterPath: string = spawnSync("pdm", ["info"], {
+  cwd: cbRoot
+})
+  .stdout.toString()
+  .match(/(?<=Python Interpreter: )\S+/)![0];
+
+cl("Python interpreter path: " + interpreterPath);
 
 // Timeout is in seconds.
 const examples = [
@@ -79,7 +91,7 @@ suite("Extension Test Suite", function() {
   async function runTest(example: any) {
     // Launches cb Python server.
     const fileBeingTraced = path.resolve(cbRoot, example.file);
-    let serverProcess = spawn("python", example.args, {
+    let serverProcess = spawn(interpreterPath, example.args, {
       cwd: cbRoot,
       shell: true // Required for wildcard expansion to work.
     });

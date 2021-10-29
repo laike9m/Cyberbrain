@@ -1,0 +1,223 @@
+{
+    "response": {
+        "metadata": {
+            "frame_id": "generator_function",
+            "frame_name": "generator_function",
+            "filename": "test_generator.py",
+            "defined_lineno": 7
+        },
+        "identifiers": [
+            "count",
+            "x"
+        ],
+        "loops": [
+            {
+                "startOffset": 10,
+                "endOffset": 30,
+                "startLineno": 9
+            }
+        ],
+        "events": [
+            {
+                "lineno": 7,
+                "index": 0,
+                "offset": 2,
+                "filename": "test_generator.py",
+                "id": "test_generator_function:0",
+                "target": "count",
+                "value": "2",
+                "repr": "2",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 9,
+                "index": 1,
+                "offset": 14,
+                "filename": "test_generator.py",
+                "id": "test_generator_function:1",
+                "target": "x",
+                "value": "\"foo\"",
+                "repr": "\"foo\"",
+                "type": "Binding"
+            },
+            {
+                "lineno": 10,
+                "index": 2,
+                "offset": 22,
+                "filename": "test_generator.py",
+                "id": "test_generator_function:2",
+                "target": "count",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            },
+            {
+                "lineno": 8,
+                "index": 3,
+                "offset": 30,
+                "filename": "test_generator.py",
+                "id": "test_generator_function:3",
+                "jump_target": 10,
+                "type": "JumpBackToLoopStart"
+            },
+            {
+                "lineno": 9,
+                "index": 4,
+                "offset": 14,
+                "filename": "test_generator.py",
+                "id": "test_generator_function:4",
+                "target": "x",
+                "value": "null",
+                "repr": "None",
+                "type": "Binding"
+            },
+            {
+                "lineno": 10,
+                "index": 5,
+                "offset": 22,
+                "filename": "test_generator.py",
+                "id": "test_generator_function:5",
+                "target": "count",
+                "value": "0",
+                "repr": "0",
+                "type": "Binding"
+            },
+            {
+                "lineno": 8,
+                "index": 6,
+                "offset": 34,
+                "filename": "test_generator.py",
+                "id": "test_generator_function:6",
+                "value": "null",
+                "repr": "None",
+                "type": "Return"
+            }
+        ],
+        "tracingResult": {
+            "test_generator_function:2": [
+                "test_generator_function:0"
+            ],
+            "test_generator_function:5": [
+                "test_generator_function:2"
+            ]
+        }
+    },
+    "tracer.events": [
+        {
+            "lineno": 7,
+            "index": 0,
+            "offset": 2,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:0",
+            "target": {
+                "name": "count",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 9,
+            "index": 1,
+            "offset": 14,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:1",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "\"foo\"",
+            "repr": "\"foo\"",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 10,
+            "index": 2,
+            "offset": 22,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:2",
+            "target": {
+                "name": "count",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "count",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "count": 0,
+                            "x": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 8,
+            "index": 3,
+            "offset": 30,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:3",
+            "jump_target": 10,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 9,
+            "index": 4,
+            "offset": 14,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:4",
+            "target": {
+                "name": "x",
+                "snapshot": null
+            },
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 10,
+            "index": 5,
+            "offset": 22,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:5",
+            "target": {
+                "name": "count",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [
+                {
+                    "name": "count",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "count": 1,
+                            "x": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 8,
+            "index": 6,
+            "offset": 34,
+            "filename": "test_generator.py",
+            "id": "test_generator_function:6",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
+}

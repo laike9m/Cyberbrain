@@ -1,12 +1,15 @@
 {
-    "metadata": {
-        "frame_id": "test_basic_try_except",
-        "frame_name": "test_basic_try_except",
-        "filename": "test_block.py",
-        "defined_lineno": 9
+    "response": {
+        "metadata": {
+            "frame_id": "test_basic_try_except",
+            "frame_name": "test_basic_try_except",
+            "filename": "test_block.py",
+            "defined_lineno": 9
+        },
+        "identifiers": [],
+        "loops": [],
+        "events": [],
+        "tracingResult": {}
     },
-    "identifiers": [],
-    "loops": [],
-    "events": [],
-    "tracingResult": {}
+    "tracer.events": []
 }

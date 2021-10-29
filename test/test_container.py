@@ -3,7 +3,7 @@ import os
 from cyberbrain import Binding, InitialValue, Symbol, Mutation
 
 
-def test_container(tracer, mocked_responses):
+def test_container(tracer, check_golden_file):
     a = b = 1
     c = 2
     e = 0
@@ -23,64 +23,3 @@ def test_container(tracer, mocked_responses):
     os.environ["foo"] = "bar"  # STORE_SUBSCR without emitting any event.
 
     tracer.stop()
-
-    assert tracer.events == [
-        InitialValue(target=Symbol("a"), value="1", lineno=-1),
-        InitialValue(target=Symbol("b"), value="1", lineno=-1),
-        Binding(
-            target=Symbol("d"),
-            value="[1,1]",
-            sources={Symbol("a"), Symbol("b")},
-            lineno=13,
-        ),
-        Binding(
-            target=Symbol("d"),
-            value="[1,1]",
-            sources={Symbol("a"), Symbol("b")},
-            lineno=14,
-        ),
-        Binding(
-            target=Symbol("d"),
-            value="[1]",
-            sources={Symbol("a"), Symbol("b")},
-            lineno=15,
-        ),
-        Binding(
-            target=Symbol("d"),
-            value='{"1":1}',
-            sources={Symbol("a"), Symbol("b")},
-            lineno=16,
-        ),
-        Binding(
-            target=Symbol("d"),
-            value='{"1":1,"2":1}',
-            sources={Symbol("a"), Symbol("b")},
-            lineno=17,
-        ),
-        InitialValue(target=Symbol("c"), value="2", lineno=-1),
-        Mutation(
-            target=Symbol("d"),
-            value='{"1":2,"2":1}',
-            sources={Symbol("d"), Symbol("a"), Symbol("c")},
-            lineno=18,
-        ),
-        Mutation(
-            target=Symbol("d"),
-            value='{"2":1}',
-            sources={Symbol("d"), Symbol("a")},
-            lineno=19,
-        ),
-        InitialValue(target=Symbol("e"), value="0", lineno=-1),
-        Binding(
-            target=Symbol("d"),
-            value="[1,1]",
-            sources={Symbol("a"), Symbol("b"), Symbol("c"), Symbol("e")},
-            lineno=20,
-        ),
-        Binding(
-            target=Symbol("d"),
-            value="[1,1]",
-            sources={Symbol("a"), Symbol("b"), Symbol("c"), Symbol("e")},
-            lineno=21,
-        ),
-    ]
