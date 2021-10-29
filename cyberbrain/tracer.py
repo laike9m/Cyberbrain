@@ -129,7 +129,11 @@ class Tracer:
             del self.raw_frame
             # Checks the value stack is in correct state: no extra elements left on
             # stack.These two are tracers replaced with placeholders.
-            assert self.frame_logger.frame.value_stack.stack == [[], []]
+            assert (
+                self.frame_logger.frame.value_stack.stack_level == 2
+                and self.frame_logger.frame.value_stack.tos.sources == []
+                and self.frame_logger.frame.value_stack.tos1.sources == []
+            )
         else:
             assert len(self.frame_logger.frame.value_stack.stack) == 0
 

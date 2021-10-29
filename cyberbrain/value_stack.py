@@ -112,13 +112,20 @@ class StackItem:
             return None
         return self.sources[0]
 
+    def copy(self) -> StackItem:
+        if self.custom_value:
+            return StackItem(self.start_lineno, [], self.custom_value)
+        return StackItem(
+            self.start_lineno, [copy(sym) for sym in self.sources], self.custom_value
+        )
+
 
 def merge_items(*values) -> StackItem:
     start_lineno = -1
     sources = []
     for item in values:
         if item.custom_value is not None:
-            return StackItem(-1, None, values)
+            return StackItem(-1, None, item.custom_value)
         if item.start_lineno != -1:
             start_lineno = (
                 min(item.start_lineno, start_lineno)
@@ -156,9 +163,10 @@ class BaseValueStack:
         to update.
         """
         for item in self.stack:
-            for symbol in item:
-                if symbol.name == mutated_identifier:
-                    symbol.snapshot = new_snapshot
+            if item.custom_value is None:
+                for symbol in item.sources:
+                    if symbol.name == mutated_identifier:
+                        symbol.snapshot = new_snapshot
 
     def emit_event_and_update_stack(
         self,
@@ -245,8 +253,9 @@ class BaseValueStack:
     def _push_stackitem(self, value: StackItem, new_start_lineno=None):
         if new_start_lineno is None:
             new_start_lineno = self.last_starts_line
-        value.start_lineno = min(value.start_lineno, new_start_lineno)
-        self.stack.append(value)
+        newValue = value.copy()
+        newValue.start_lineno = min(value.start_lineno, new_start_lineno)
+        self.stack.append(newValue)
 
     def _push(self, *values, start_lineno=None):
         """Pushes values onto the simulated value stack.
@@ -287,10 +296,10 @@ class BaseValueStack:
                 # For NULL or int used by block related handlers, keep the original value.
                 self.stack.append(StackItem(start_lineno, None, value))
 
-    def _pop(self, n=1):
+    def _pop(self, n=1, return_list=False):
         """Pops and returns n item from stack."""
         try:
-            if n == 1:
+            if n == 1 and not return_list:
                 return self.stack.pop()
             return [self.stack.pop() for _ in range(n)]
         except IndexError:
@@ -397,7 +406,7 @@ class BaseValueStack:
     @emit_event
     def _DELETE_SUBSCR_handler(self, exc_info):
         tos, tos1 = self._pop(2)
-        assert len(tos1) == 1
+        assert len(tos1.sources) == 1
         if self._instruction_successfully_executed(exc_info, "DELETE_SUBSCR"):
             if tos1 and tos1.get_top_source() is not None:
                 return EventInfo(
@@ -472,7 +481,7 @@ class BaseValueStack:
     @emit_event
     def _STORE_ATTR_handler(self, exc_info):
         tos, tos1 = self._pop(2)
-        assert len(tos) == 1
+        assert len(tos.sources) == 1
         if self._instruction_successfully_executed(exc_info, "STORE_ATTR"):
             if tos and tos.get_top_source() is not None:
                 return EventInfo(
@@ -485,7 +494,7 @@ class BaseValueStack:
     @emit_event
     def _DELETE_ATTR_handler(self, exc_info):
         tos = self._pop()
-        assert len(tos) == 1
+        assert len(tos.sources) == 1
         if self._instruction_successfully_executed(exc_info, "DELETE_ATTR"):
             if tos and tos.get_top_source() is not None:
                 return EventInfo(
@@ -515,7 +524,7 @@ class BaseValueStack:
         self._BUILD_TUPLE_handler(instr)
 
     def _BUILD_SET_handler(self, instr, exc_info):
-        items = self._pop(instr.arg)
+        items = self._pop(instr.arg, return_list=True)
         if self._instruction_successfully_executed(exc_info, "BUILD_SET"):
             self._push_stackitem(merge_items(*items))
 
@@ -531,34 +540,34 @@ class BaseValueStack:
         self._pop_n_push_one(instr.arg)
 
     def _BUILD_TUPLE_UNPACK_handler(self, instr, exc_info):
-        items = self._pop(instr.arg)
+        items = self._pop(instr.arg, return_list=True)
         if self._instruction_successfully_executed(exc_info, "BUILD_TUPLE_UNPACK"):
             self._push_stackitem(merge_items(*items))
 
     def _BUILD_TUPLE_UNPACK_WITH_CALL_handler(self, instr, exc_info):
-        items = self._pop(instr.arg)
+        items = self._pop(instr.arg, return_list=True)
         if self._instruction_successfully_executed(
             exc_info, "BUILD_TUPLE_UNPACK_WITH_CALL"
         ):
             self._push_stackitem(merge_items(*items))
 
     def _BUILD_LIST_UNPACK_handler(self, instr, exc_info):
-        items = self._pop(instr.arg)
+        items = self._pop(instr.arg, return_list=True)
         if self._instruction_successfully_executed(exc_info, "BUILD_LIST_UNPACK"):
             self._push_stackitem(merge_items(*items))
 
     def _BUILD_SET_UNPACK_handler(self, instr, exc_info):
-        items = self._pop(instr.arg)
+        items = self._pop(instr.arg, return_list=True)
         if self._instruction_successfully_executed(exc_info, "BUILD_SET_UNPACK"):
             self._push_stackitem(merge_items(*items))
 
     def _BUILD_MAP_UNPACK_handler(self, instr, exc_info):
-        items = self._pop(instr.arg)
+        items = self._pop(instr.arg, return_list=True)
         if self._instruction_successfully_executed(exc_info, "BUILD_MAP_UNPACK"):
             self._push_stackitem(merge_items(*items))
 
     def _BUILD_MAP_UNPACK_WITH_CALL_handler(self, instr, exc_info):
-        items = self._pop(instr.arg)
+        items = self._pop(instr.arg, return_list=True)
         if self._instruction_successfully_executed(
             exc_info, "BUILD_MAP_UNPACK_WITH_CALL"
         ):
@@ -706,47 +715,36 @@ class BaseValueStack:
             self._push(callable_obj(), lineno)
         else:
             # Return value is a list containing the callable and all arguments
-            if isinstance(args, StackItem):
-                self._push_stackitem(merge_items(callable_obj, args), lineno)
-            else:
-                self._push_stackitem(merge_items(callable_obj, *args), lineno)
+            self._push_stackitem(merge_items(callable_obj, *args), lineno)
 
     def _CALL_FUNCTION_handler(self, instr, exc_info):
-        args = self._pop(instr.arg)
+        args = self._pop(instr.arg, return_list=True)
         callable_obj = self._pop()
         if self._instruction_successfully_executed(exc_info, "CALL_FUNCTION"):
-            if utils.is_exception(args):
-                args = (args,)
             self._push_arguments_or_exception(callable_obj, args)
 
     def _CALL_FUNCTION_KW_handler(self, instr: Instruction, exc_info):
         args_num = instr.arg
         _ = self._pop()  # A tuple of keyword argument names.
-        args = self._pop(args_num)
+        args = self._pop(args_num, return_list=True)
         callable_obj = self._pop()
         if self._instruction_successfully_executed(exc_info, "CALL_FUNCTION_KW"):
-            if utils.is_exception(args):
-                args = (args,)
             self._push_arguments_or_exception(callable_obj, args)
 
     def _CALL_FUNCTION_EX_handler(self, instr, exc_info):
-        kwargs = self._pop() if (instr.arg & 0x01) else []
+        kwargs = self._pop() if (instr.arg & 0x01) else StackItem(-1, [])
         args = self._pop()
-        args.extend(kwargs)
+        args = merge_items(args, kwargs)
         callable_obj = self._pop()
         if self._instruction_successfully_executed(exc_info, "CALL_FUNCTION_EX"):
-            if utils.is_exception(args):
-                args = (args,)
-            self._push_arguments_or_exception(callable_obj, args)
+            self._push_arguments_or_exception(callable_obj, (args,))
 
     @emit_event
     def _CALL_METHOD_handler(self, instr, exc_info):
-        args = self._pop(instr.arg)
+        args = self._pop(instr.arg, return_list=True)
         inst_or_callable = self._pop()
         method_or_null = self._pop()  # method or NULL
         if self._instruction_successfully_executed(exc_info, "CALL_METHOD"):
-            if utils.is_exception(args):
-                args = (args,)
             self._push_stackitem(merge_items(inst_or_callable, method_or_null, *args))
 
         # The real callable can be omitted for various reasons.
@@ -757,11 +755,11 @@ class BaseValueStack:
         # Actually, there could be multiple identifiers in inst_or_callable, but right
         # now we'll assume there's just one, and improve it as part of fine-grained
         # symbol tracing (main feature of version 3).
-        if not inst_or_callable.get_top_source():
+        if inst_or_callable.get_top_source():
             return EventInfo(
                 type=Mutation,
                 target=inst_or_callable.get_top_source(),
-                sources=set(merge_items(inst_or_callable, *args).get_sources()),
+                sources=set(merge_items(inst_or_callable, *args).copy().get_sources()),
                 lineno=inst_or_callable.start_lineno,
             )
 
@@ -1013,25 +1011,25 @@ class Py37ValueStack(BaseValueStack):
         # need to actually raise an exception. If _do_raise returns false, it breaks
         # out of the switch clause, then jumps to label "error", which is above
         # _fast_block_end. So _fast_block_end will be executed anyway.
-        self._do_raise(exc, cause)
+        self._do_raise(exc.custom_value, cause.custom_value)
         self.why = Why.EXCEPTION
         self._fast_block_end()
 
     # noinspection DuplicatedCode
     def _WITH_CLEANUP_START_handler(self, exc_info):
-        exc = self.tos
+        exc = self.tos.custom_value
         exit_func: any
         if not exc:  # Checks if tos is None, which in our stack, is []
-            exit_func = self.stack.pop(-2)
+            exit_func = self.stack.pop(-2).custom_value
         elif isinstance(exc, Why):
             if exc in {Why.RETURN, Why.CONTINUE}:
-                exit_func = self.stack.pop(-2)  # why, ret_val, __exit__
+                exit_func = self.stack.pop(-2).custom_value  # why, ret_val, __exit__
             else:
-                exit_func = self.stack.pop(-1)  # why, __exit__
+                exit_func = self.stack.pop(-1).custom_value  # why, __exit__
         elif utils.is_exception_class(exc):
-            w, v, u = self._pop(3)
-            tp2, exc2, tb2 = self._pop(3)
-            exit_func = self._pop()
+            w, v, u = (x.custom_value for x in self._pop(3))
+            tp2, exc2, tb2 = (x.custom_value for x in self._pop(3))
+            exit_func = self._pop().custom_value
             self._push(tp2, exc2, tb2)
             self._push(None)
             self._push(w, v, u)
@@ -1046,7 +1044,7 @@ class Py37ValueStack(BaseValueStack):
             self._push(exit_func)
 
     def _END_FINALLY_handler(self, instr):
-        status = self._pop()
+        status = self._pop().custom_value
         if isinstance(status, Why):
             self.why = status
             assert self.why not in {Why.YIELD, Why.EXCEPTION}
@@ -1061,8 +1059,8 @@ class Py37ValueStack(BaseValueStack):
             self._fast_block_end()
         elif utils.is_exception_class(status):
             exc_type = status
-            value = self._pop()
-            tb = self._pop()
+            value = self._pop().custom_value
+            tb = self._pop().custom_value
             self.last_exception = ExceptionInfo(
                 type=exc_type, value=value, traceback=tb
             )
@@ -1168,9 +1166,9 @@ class Py38ValueStack(Py37ValueStack):
     def _RAISE_VARARGS_handler(self, instr):
         cause = exc = None
         if instr.arg == 2:
-            cause, exc = self._pop(2)
+            cause, exc = (x.custom_value for x in self._pop(2))
         elif instr.arg == 1:
-            exc = self._pop()
+            exc = self._pop().custom_value
 
         # In CPython's source code, it uses the result of _do_raise to decide whether to
         # raise an exception, then execute exception_unwind. Our value stack doesn't
@@ -1184,17 +1182,19 @@ class Py38ValueStack(Py37ValueStack):
         block = self._pop_block()
         assert block.b_type == BlockType.EXCEPT_HANDLER
         assert block.b_level + 3 <= self.stack_level <= block.b_level + 4
-        exc_type = self._pop()
-        value = self._pop()
-        tb = self._pop()
-        self.last_exception = ExceptionInfo(type=exc_type, value=value, traceback=tb)
+        exc_type, value, tb = self._pop(3)
+        self.last_exception = ExceptionInfo(
+            type=exc_type.custom_value,
+            value=value.custom_value,
+            traceback=tb.custom_value,
+        )
 
     def _POP_FINALLY_handler(self, instr):
         preserve_tos = instr.arg
         if preserve_tos:
             res = self._pop()
 
-        if self.tos is NULL or isinstance(self.tos, int):
+        if self.tos.custom_value is NULL or isinstance(self.tos.custom_value, int):
             _ = self._pop()
         else:
             _, _, _ = self._pop(3)
@@ -1203,11 +1203,13 @@ class Py38ValueStack(Py37ValueStack):
             assert self.stack_level == block.b_level + 3
             exc_type, value, tb = self._pop(3)
             self.last_exception = ExceptionInfo(
-                type=exc_type, value=value, traceback=tb
+                type=exc_type.custom_value,
+                value=value.custom_value,
+                traceback=tb.custom_value,
             )
 
         if preserve_tos:
-            self._push(res)
+            self._push_stackitem(res)
 
     def _POP_BLOCK_handler(self):
         self._pop_block()
@@ -1219,24 +1221,24 @@ class Py38ValueStack(Py37ValueStack):
         if self.tos.custom_value is NULL or isinstance(self.tos.custom_value, int):
             self._pop()
         elif utils.is_exception_class(self.tos.custom_value):
-            exc_type = self._pop().custom_value
-            value = self._pop().custom_value
-            tb = self._pop().custom_value
+            exc_type, value, tb = self._pop(3)
             self.last_exception = ExceptionInfo(
-                type=exc_type, value=value, traceback=tb
+                type=exc_type.custom_value,
+                value=value.custom_value,
+                traceback=tb.custom_value,
             )
             self._exception_unwind()
         else:
             raise ValueStackException(f"TOS has wrong value: {self.tos}")
 
     def _WITH_CLEANUP_START_handler(self, exc_info):
-        exc = self.tos
-        if self.tos == NULL:  # Pushed by BEGIN_FINALLY
+        exc = self.tos.custom_value
+        if self.tos.custom_value == NULL:  # Pushed by BEGIN_FINALLY
             exit_func = self.stack.pop(-2)
         else:
-            w, v, u = self._pop(3)
-            tp2, exc2, tb2 = self._pop(3)
-            exit_func = self._pop()
+            w, v, u = (x.custom_value for x in self._pop(3))
+            tp2, exc2, tb2 = (x.custom_value for x in self._pop(3))
+            exit_func = self._pop().custom_value
             self._push(tp2, exc2, tb2)
             self._push(None)
             self._push(w, v, u)
@@ -1290,36 +1292,38 @@ class Py39ValueStack(Py38ValueStack):
         # list.extend(TOS1[-i], TOS), which essentially merges tos and tos1.
         items = self._pop(2)
         if self._instruction_successfully_executed(exc_info, "LIST_EXTEND"):
-            self._push_stackitem(merge_items(items))
+            self._push_stackitem(merge_items(*items))
 
     def _SET_UPDATE_handler(self, exc_info):
         # list.extend(TOS1[-i], TOS), which essentially merges tos and tos1.
         items = self._pop(2)
         if self._instruction_successfully_executed(exc_info, "SET_UPDATE"):
-            self._push_stackitem(merge_items(items))
+            self._push_stackitem(merge_items(*items))
 
     def _DICT_UPDATE_handler(self, exc_info):
         # dict.extend(TOS1[-i], TOS), which essentially merges tos and tos1.
         items = self._pop(2)
         if self._instruction_successfully_executed(exc_info, "DICT_UPDATE"):
-            self._push_stackitem(merge_items(items))
+            self._push_stackitem(merge_items(*items))
 
     def _DICT_MERGE_handler(self, exc_info):
         items = self._pop(2)
         if self._instruction_successfully_executed(exc_info, "DICT_MERGE"):
-            self._push_stackitem(merge_items(items))
+            self._push_stackitem(merge_items(*items))
 
     def _RERAISE_handler(self):
-        exc_type = self._pop()
-        value = self._pop()
-        tb = self._pop()
+        exc_type, value, tb = self._pop(3)
         assert utils.is_exception_class(exc_type)
-        self.last_exception = ExceptionInfo(type=exc_type, value=value, traceback=tb)
+        self.last_exception = ExceptionInfo(
+            type=exc_type.custom_value,
+            value=value.custom_value,
+            traceback=tb.custom_value,
+        )
         self._exception_unwind()
 
     def _WITH_EXCEPT_START_handler(self):
         exit_func = self.stack[-7]
-        self._push(exit_func)
+        self._push_stackitem(exit_func)
 
 
 def create_value_stack():
