@@ -25,7 +25,7 @@
         ],
         "events": [
             {
-                "lineno": 14,
+                "lineno": 13,
                 "index": 0,
                 "offset": 14,
                 "filename": "test_telephone.py",
@@ -1575,7 +1575,7 @@
     },
     "tracer.events": [
         {
-            "lineno": 14,
+            "lineno": 13,
             "index": 0,
             "offset": 14,
             "filename": "test_telephone.py",

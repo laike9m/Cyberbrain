@@ -13,7 +13,7 @@
         "loops": [],
         "events": [
             {
-                "lineno": 13,
+                "lineno": 9,
                 "index": 0,
                 "offset": 20,
                 "filename": "test_pandas.py",
@@ -43,7 +43,7 @@
     },
     "tracer.events": [
         {
-            "lineno": 13,
+            "lineno": 9,
             "index": 0,
             "offset": 20,
             "filename": "test_pandas.py",

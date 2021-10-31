@@ -1005,16 +1005,16 @@ class Py37ValueStack(BaseValueStack):
 
         cause = exc = None
         if instr.arg == 2:
-            cause, exc = self._pop(2)
+            cause, exc = (x.custom_value for x in self._pop(2))
         elif instr.arg == 1:
-            exc = self._pop()
+            exc = self._pop().custom_value
 
         # In CPython's source code, it uses the result of _do_raise to decide whether to
         # raise an exception, then execute exception_unwind. Our value stack doesn't
         # need to actually raise an exception. If _do_raise returns false, it breaks
         # out of the switch clause, then jumps to label "error", which is above
         # _fast_block_end. So _fast_block_end will be executed anyway.
-        self._do_raise(exc.custom_value, cause.custom_value)
+        self._do_raise(exc, cause)
         self.why = Why.EXCEPTION
         self._fast_block_end()
 
@@ -1048,6 +1048,8 @@ class Py37ValueStack(BaseValueStack):
 
     def _END_FINALLY_handler(self, instr):
         status = self._pop().custom_value
+        if status is None and self.why is not None:
+            return
         if isinstance(status, Why):
             self.why = status
             assert self.why not in {Why.YIELD, Why.EXCEPTION}

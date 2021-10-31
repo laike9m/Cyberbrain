@@ -180,7 +180,9 @@ def computed_gotos_enabled() -> bool:
 
 def is_exception(obj) -> bool:
     if hasattr(obj, "custom_value"):
-        return isinstance(obj.custom_value, BaseException) or is_exception_class(obj.custom_value)
+        return isinstance(obj.custom_value, BaseException) or is_exception_class(
+            obj.custom_value
+        )
     """Checks whether the given obj is an exception instance or class."""
     return isinstance(obj, BaseException) or is_exception_class(obj)
 
