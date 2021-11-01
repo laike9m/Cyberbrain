@@ -194,6 +194,7 @@ class Frame:
             jumped=jumped,
             exc_info=exc_info,
             snapshot=self.latest_snapshot,
+            lineno=self.offset_to_lineno[instr.offset],
         )
         if not event_info:
             return

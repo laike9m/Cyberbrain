@@ -175,6 +175,7 @@ class BaseValueStack:
         jumped: bool,
         exc_info: Optional[ExceptionInfo],
         snapshot: Snapshot,
+        lineno: int,
     ) -> Optional[EventInfo]:
         """Given a instruction, emits EventInfo if any, and updates the stack.
 
@@ -187,8 +188,7 @@ class BaseValueStack:
         """
         self.snapshot = snapshot
         opname = instr.opname
-        if instr.starts_line is not None:
-            self.last_starts_line = instr.starts_line
+        self.last_starts_line = lineno
 
         if opname.startswith("BINARY") or opname.startswith("INPLACE"):
             # Binary operations are all the same.
@@ -1318,7 +1318,7 @@ class Py39ValueStack(Py38ValueStack):
 
     def _RERAISE_handler(self):
         exc_type, value, tb = self._pop(3)
-        assert utils.is_exception_class(exc_type)
+        assert utils.is_exception_class(exc_type.custom_value)
         self.last_exception = ExceptionInfo(
             type=exc_type.custom_value,
             value=value.custom_value,
