@@ -107,6 +107,8 @@ def map_bytecode_offset_to_lineno(frame: FrameType) -> dict[int, int]:
     this to be blocking, we might need to use a Range to represent lineno.
     """
     mapping = dict(dis.findlinestarts(frame.f_code))
+    if mapping.get(0) is None:
+        mapping[0] = -1
     frame_byte_count = len(frame.f_code.co_code)
     for offset, lineno in mapping.copy().items():
         while offset <= frame_byte_count:

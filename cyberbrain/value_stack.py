@@ -188,7 +188,10 @@ class BaseValueStack:
         """
         self.snapshot = snapshot
         opname = instr.opname
-        self.last_starts_line = lineno
+        if lineno != -1:
+            self.last_starts_line = lineno
+        elif instr.starts_line is not None:
+            self.last_starts_line = instr.starts_line
 
         if opname.startswith("BINARY") or opname.startswith("INPLACE"):
             # Binary operations are all the same.
