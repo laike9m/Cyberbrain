@@ -33,7 +33,7 @@ export function displayValueInConsole(node) {
       cl(node.id);
     }
     cl(
-      `Value of %c${node.target} %cat line %c${node.lineno}%c:`,
+      `Value of %c${ node.target } %cat line %c${ node.lineno }%c:`,
       "color: #b43024",
       "",
       "color: #b43024",
@@ -50,7 +50,7 @@ export function displayValueInConsole(node) {
       cl("None");
       break;
     case Types.STRING:
-      cl('"' + `%c${obj}` + '%c"', "color: #b43024", "");
+      cl('"' + `%c${ obj }` + '%c"', "color: #b43024", "");
       break;
     default:
       // When there's only one property "repr", it means we currently can't rely
