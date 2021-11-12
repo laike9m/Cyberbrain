@@ -94,6 +94,7 @@ class StackItem:
     Normal items will have a lineno (starting lineno if multiline) and a list of sources and a custom_value of None.
     Custom items (Exceptions, Why's, anything not tracked by Cyberbrain) will have the value stored in custom_value.
     """
+
     def __init__(
         self, start_lineno: int, sources: List[Symbol], custom_value: any = None
     ):
@@ -955,8 +956,8 @@ class Py37ValueStack(BaseValueStack):
         # not support unhandled exception, so it's safe to assume that if there's an
         # exception raised in `with`, it is properly handled. e.g.
         #         with pytest.raises(TypeError)
-        res = self._pop()
-        exc = self._pop()
+        res = self._pop().custom_value
+        exc = self._pop().custom_value
         if res and utils.is_exception(exc):
             self._push(Why.SILENCED)
 
@@ -1156,8 +1157,8 @@ class Py38ValueStack(Py37ValueStack):
         # not support unhandled exception, so it's safe to assume that if there's an
         # exception raised in `with`, it is properly handled. e.g.
         #         with pytest.raises(TypeError)
-        res = self._pop()
-        exc = self._pop()
+        res = self._pop().custom_value
+        exc = self._pop().custom_value
         if res and utils.is_exception(exc):
             block = self.block_stack.pop()
             assert block.b_type == BlockType.EXCEPT_HANDLER
