@@ -216,7 +216,7 @@ class Frame:
                     value=json,
                     repr=utils.get_repr(value),
                     filename=self.filename,
-                    lineno=self.offset_to_lineno[instr.offset],
+                    lineno=event_info.lineno,
                     sources=event_info.sources,
                     offset=instr.offset,
                 )
@@ -239,7 +239,7 @@ class Frame:
                 Deletion(
                     target=target,
                     filename=self.filename,
-                    lineno=self.offset_to_lineno[instr.offset],
+                    lineno=event_info.lineno,
                     offset=instr.offset,
                 )
             )
@@ -248,7 +248,7 @@ class Frame:
             self.events.append(
                 JumpBackToLoopStart(
                     filename=self.filename,
-                    lineno=self.offset_to_lineno[instr.offset],
+                    lineno=event_info.lineno,
                     offset=instr.offset,
                     index=len(self.events),
                     jump_target=loop_start,
