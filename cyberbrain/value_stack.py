@@ -103,22 +103,22 @@ class StackItem:
         self.custom_value = custom_value
 
     def __repr__(self) -> str:
-        if self.custom_value:
+        if self.custom_value is not None:
             return repr(self.custom_value)
         return "{" + repr(self.start_lineno) + " " + repr(self.sources) + "}"
 
     def get_sources(self) -> List[Symbol]:
-        if self.custom_value:
+        if self.custom_value is not None:
             return []
         return self.sources
 
     def get_top_source(self) -> Symbol:
-        if self.custom_value or len(self.sources) == 0:
+        if self.custom_value is not None or len(self.sources) == 0:
             return None
         return self.sources[0]
 
     def copy(self) -> StackItem:
-        if self.custom_value:
+        if self.custom_value is not None:
             return StackItem(self.start_lineno, [], self.custom_value)
         return StackItem(
             self.start_lineno, [copy(sym) for sym in self.sources], self.custom_value
@@ -391,7 +391,7 @@ class BaseValueStack:
         if self._instruction_successfully_executed(exc_info, "STORE_SUBSCR"):
             # We use to `assert len(tos1) == 1`, but in certain cases, like
             # os.environ["foo"] = "2", tos1 is [].
-            if tos1 and tos1.get_top_source() is not None:
+            if tos1.get_top_source() is not None:
                 return EventInfo(
                     type=Mutation,
                     target=tos1.get_top_source(),
@@ -407,7 +407,7 @@ class BaseValueStack:
         tos, tos1 = self._pop(2)
         assert len(tos1.sources) == 1
         if self._instruction_successfully_executed(exc_info, "DELETE_SUBSCR"):
-            if tos1 and tos1.get_top_source() is not None:
+            if tos1.get_top_source() is not None:
                 return EventInfo(
                     type=Mutation,
                     target=tos1.get_top_source(),
@@ -482,7 +482,7 @@ class BaseValueStack:
         tos, tos1 = self._pop(2)
         assert len(tos.sources) == 1
         if self._instruction_successfully_executed(exc_info, "STORE_ATTR"):
-            if tos and tos.get_top_source() is not None:
+            if tos.get_top_source() is not None:
                 return EventInfo(
                     type=Mutation,
                     target=tos.get_top_source(),
@@ -495,7 +495,7 @@ class BaseValueStack:
         tos = self._pop()
         assert len(tos.sources) == 1
         if self._instruction_successfully_executed(exc_info, "DELETE_ATTR"):
-            if tos and tos.get_top_source() is not None:
+            if tos.get_top_source() is not None:
                 return EventInfo(
                     type=Mutation,
                     target=tos.get_top_source(),
