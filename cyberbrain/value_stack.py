@@ -880,9 +880,7 @@ class BaseValueStack:
         assert self.stack_level >= b.b_level + 3
         while self.stack_level > b.b_level + 3:
             self._pop()
-        exc_type = self._pop().custom_value
-        value = self._pop().custom_value
-        tb = self._pop().custom_value
+        exc_type, value, tb = (x.custom_value for x in self._pop(3))
         self.last_exception = ExceptionInfo(type=exc_type, value=value, traceback=tb)
 
     def _do_raise(self, exc, cause) -> bool:
@@ -948,8 +946,7 @@ class Py37ValueStack(BaseValueStack):
         # not support unhandled exception, so it's safe to assume that if there's an
         # exception raised in `with`, it is properly handled. e.g.
         #         with pytest.raises(TypeError)
-        res = self._pop().custom_value
-        exc = self._pop().custom_value
+        res, exc = (x.custom_value for x in self._pop(2))
         if res and utils.is_exception(exc):
             self._push(Why.SILENCED)
 
@@ -1060,8 +1057,7 @@ class Py37ValueStack(BaseValueStack):
             self._fast_block_end()
         elif utils.is_exception_class(status):
             exc_type = status
-            value = self._pop().custom_value
-            tb = self._pop().custom_value
+            value, tb = (x.custom_value for x in self._pop(2))
             self.last_exception = ExceptionInfo(
                 type=exc_type, value=value, traceback=tb
             )
@@ -1149,8 +1145,7 @@ class Py38ValueStack(Py37ValueStack):
         # not support unhandled exception, so it's safe to assume that if there's an
         # exception raised in `with`, it is properly handled. e.g.
         #         with pytest.raises(TypeError)
-        res = self._pop().custom_value
-        exc = self._pop().custom_value
+        res, exc = (x.custom_value for x in self._pop(2))
         if res and utils.is_exception(exc):
             block = self.block_stack.pop()
             assert block.b_type == BlockType.EXCEPT_HANDLER
