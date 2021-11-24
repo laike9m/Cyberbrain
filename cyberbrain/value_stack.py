@@ -91,35 +91,40 @@ class Why(enum.Enum):
 
 class StackItem:
     """Class representing an item on the value stack.
-    Normal items will have a lineno (starting lineno if multiline) and a list of sources and a custom_value of None.
+    Normal items will have a lineno (starting lineno if multiline) and a list of sources and is_custom will be false.
     Custom items (Exceptions, Why's, anything not tracked by Cyberbrain) will have the value stored in custom_value.
     """
 
     def __init__(
-        self, start_lineno: int, sources: List[Symbol], custom_value: any = None
+        self,
+        start_lineno: int,
+        sources: List[Symbol],
+        custom_value: any = None,
+        is_custom: bool = False,
     ):
         self.start_lineno = start_lineno
         self.sources = sources
         self.custom_value = custom_value
+        self.is_custom = is_custom
 
     def __repr__(self) -> str:
-        if self.custom_value is not None:
+        if self.is_custom:
             return repr(self.custom_value)
         return "{" + repr(self.start_lineno) + " " + repr(self.sources) + "}"
 
     def get_sources(self) -> List[Symbol]:
-        if self.custom_value is not None:
+        if self.is_custom:
             return []
         return self.sources
 
     def get_top_source(self) -> Symbol:
-        if self.custom_value is not None or len(self.sources) == 0:
+        if self.is_custom or len(self.sources) == 0:
             return None
         return self.sources[0]
 
     def copy(self) -> StackItem:
-        if self.custom_value is not None:
-            return StackItem(self.start_lineno, [], self.custom_value)
+        if self.is_custom:
+            return StackItem(self.start_lineno, [], self.custom_value, self.is_custom)
         return StackItem(
             self.start_lineno, [copy(sym) for sym in self.sources], self.custom_value
         )
@@ -133,8 +138,8 @@ def merge_items(*values: List[StackItem]) -> StackItem:
     start_lineno = -1
     sources = []
     for item in values:
-        if item.custom_value is not None:
-            return StackItem(-1, [], item.custom_value)
+        if item.is_custom:
+            return item
         if item.start_lineno != -1:
             start_lineno = (
                 min(item.start_lineno, start_lineno)
@@ -172,7 +177,7 @@ class BaseValueStack:
         to update.
         """
         for item in self.stack:
-            if item.custom_value is None:
+            if not item.is_custom:
                 for symbol in item.sources:
                     if symbol.name == mutated_identifier:
                         symbol.snapshot = new_snapshot
@@ -288,7 +293,7 @@ class BaseValueStack:
                 sources.append(copy(value))
             else:
                 # For NULL or int used by block related handlers, keep the original value.
-                self.stack.append(StackItem(start_lineno, sources, value))
+                self.stack.append(StackItem(start_lineno, sources, value, True))
                 continue
             self.stack.append(StackItem(start_lineno, sources))
 
@@ -447,7 +452,7 @@ class BaseValueStack:
             target=Symbol(instr.argval),
             sources=set(self.tos.get_sources()),
             lineno=min(self.last_starts_line, self.tos.start_lineno)
-            if self.tos.custom_value is None
+            if not self.tos.is_custom
             else self.last_starts_line,
         )
         self._pop()
@@ -1015,7 +1020,7 @@ class Py37ValueStack(BaseValueStack):
     def _WITH_CLEANUP_START_handler(self, exc_info):
         exc = self.tos.custom_value
         exit_func: any
-        if not exc:  # Checks if tos is None
+        if not self.tos.is_custom:
             exit_func = self.stack.pop(-2).custom_value
         elif isinstance(exc, Why):
             if exc in {Why.RETURN, Why.CONTINUE}:
@@ -1040,9 +1045,9 @@ class Py37ValueStack(BaseValueStack):
             self._push(exit_func)
 
     def _END_FINALLY_handler(self, instr):
+        assert not self.tos.is_custom or self.tos.custom_value is not None
+
         status = self._pop().custom_value
-        if status is None and self.why is not None:
-            return
         if isinstance(status, Why):
             self.why = status
             assert self.why not in {Why.YIELD, Why.EXCEPTION}
@@ -1063,8 +1068,6 @@ class Py37ValueStack(BaseValueStack):
             )
             self.why = Why.EXCEPTION
             self._fast_block_end()
-
-        assert status is not None
 
     def _fast_block_end(self):
         assert self.why is not Why.NOT
