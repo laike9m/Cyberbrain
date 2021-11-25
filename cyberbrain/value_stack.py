@@ -40,8 +40,18 @@ class ValueStackException(Exception):
 
 
 # Sometimes we need to put a _placeholder on TOS because we don't care about its value,
-# like LOAD_CONST. We convert it to [] when putting it on the stack.
+# like LOAD_CONST
 _placeholder = None
+
+
+class _NonePlaceholder:
+    def __repr__(self):
+        return "NonePlaceholder"
+
+
+# Sometimes LOAD_CONST puts a None onto the stack but we don't know whether it's a normal None
+# or a special exception-related None.
+_none_placeholder = _NonePlaceholder()
 
 
 class _NullClass:
@@ -127,6 +137,11 @@ class StackItem:
             return StackItem(self.start_lineno, [], self.custom_value, self.is_custom)
         return StackItem(
             self.start_lineno, [copy(sym) for sym in self.sources], self.custom_value
+        )
+
+    def is_custom_none(self) -> bool:
+        return (self.is_custom and self.custom_value is None) or (
+            not self.is_custom and self.custom_value is _none_placeholder
         )
 
 
@@ -267,8 +282,9 @@ class BaseValueStack:
     def _push(self, *values):
         """Pushes values onto the simulated value stack.
 
-        StackItem will just be copied onto the stack
-        _placeholder will just be a StackItem with no sources.
+        StackItem is copied onto the stack
+        _placeholder is a StackItem with no sources.
+        _none_placeholder is similar to _placeholder but has special custom value.
         Str (name of variable) is converted to Symbol.
         If it is none of the above, the value is stored as a custom value.
         """
@@ -277,6 +293,11 @@ class BaseValueStack:
             sources = []
             if value is _placeholder:
                 pass
+            elif value is _none_placeholder:
+                self.stack.append(
+                    StackItem(start_lineno, sources, _none_placeholder, False)
+                )
+                continue
             elif isinstance(value, StackItem):
                 newValue = value.copy()
                 self.stack.append(newValue)
@@ -624,8 +645,11 @@ class BaseValueStack:
         if self._instruction_successfully_executed(exc_info, "IMPORT_FROM"):
             self._push(_placeholder)
 
-    def _LOAD_CONST_handler(self):
-        self._push(_placeholder)
+    def _LOAD_CONST_handler(self, instr):
+        if instr.argrepr == "None":
+            self._push(_none_placeholder)
+        else:
+            self._push(_placeholder)
 
     def _LOAD_NAME_handler(self, instr, frame, exc_info):
         if self._instruction_successfully_executed(exc_info, "LOAD_NAME"):
@@ -1020,7 +1044,7 @@ class Py37ValueStack(BaseValueStack):
     def _WITH_CLEANUP_START_handler(self, exc_info):
         exc = self.tos.custom_value
         exit_func: any
-        if not self.tos.is_custom:
+        if self.tos.is_custom_none():
             exit_func = self.stack.pop(-2).custom_value
         elif isinstance(exc, Why):
             if exc in {Why.RETURN, Why.CONTINUE}:
@@ -1045,8 +1069,7 @@ class Py37ValueStack(BaseValueStack):
             self._push(exit_func)
 
     def _END_FINALLY_handler(self, instr):
-        assert not self.tos.is_custom or self.tos.custom_value is not None
-
+        tos = self.tos
         status = self._pop().custom_value
         if isinstance(status, Why):
             self.why = status
@@ -1068,6 +1091,8 @@ class Py37ValueStack(BaseValueStack):
             )
             self.why = Why.EXCEPTION
             self._fast_block_end()
+        else:
+            assert tos.is_custom_none()
 
     def _fast_block_end(self):
         assert self.why is not Why.NOT
