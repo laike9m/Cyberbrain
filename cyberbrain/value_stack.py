@@ -138,6 +138,7 @@ class NoneStackItem(StackItem, CustomStackItem):
     None's can be pushed onto the stack as either a normal StackItem or a CustomStackItem used for exceptions.
     Therefore, this class inherits from both StackItem and CustomStackItem for flexibility.
     """
+
     def __init__(self, start_lineno: int, sources: List[Symbol]):
         StackItem.__init__(self, start_lineno, sources)
         CustomStackItem.__init__(self, None)
@@ -257,7 +258,9 @@ class BaseValueStack:
         return self._tos(2)
 
     @staticmethod
-    def from_stack_items(*stack_items: List[StackItem | CustomStackItem]) -> StackItem | CustomStackItem:
+    def from_stack_items(
+        *stack_items: List[StackItem | CustomStackItem],
+    ) -> StackItem | CustomStackItem:
         """Merges multiple StackItems into one StackItem.
 
         If any non-StackItem is encountered, it is returned.
@@ -426,9 +429,7 @@ class BaseValueStack:
                 return EventInfo(
                     type=Mutation,
                     target=tos1.get_top_source(),
-                    sources=set(
-                        tos.sources + tos1.sources + tos2.sources
-                    ),
+                    sources=set(tos.sources + tos1.sources + tos2.sources),
                     lineno=tos2.start_lineno,
                 )
 
