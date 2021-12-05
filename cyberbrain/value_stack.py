@@ -84,7 +84,7 @@ class Why(enum.Enum):
     SILENCED = 8  # Exception silenced by 'with'
 
 
-class StackItem:
+class SymbolStackItem:
     """Class representing an item on the value stack to be tracked by Cyberbrain.
 
     Attributes:
@@ -104,15 +104,16 @@ class StackItem:
         return "{" + repr(self.start_lineno) + " " + repr(self.sources) + "}"
 
     def get_top_source(self) -> Symbol:
+        # This happens when variables (e.g. globals) that we don't care about are mutated.
         if len(self.sources) == 0:
             return None
         return self.sources[0]
 
-    def copy(self) -> StackItem:
-        return StackItem(self.start_lineno, [copy(sym) for sym in self.sources])
+    def copy(self) -> SymbolStackItem:
+        return SymbolStackItem(self.start_lineno, [copy(sym) for sym in self.sources])
 
 
-class CustomStackItem:
+class CustomValueStackItem:
     """Class representing a custom value (Exceptions, Why's, anything not tracked by Cyberbrain) on the value stack
 
     Attributes:
@@ -128,30 +129,40 @@ class CustomStackItem:
     def __repr__(self) -> str:
         return repr(self.custom_value)
 
-    def copy(self) -> CustomStackItem:
-        return CustomStackItem(self.custom_value)
+    def copy(self) -> CustomValueStackItem:
+        return CustomValueStackItem(self.custom_value)
 
 
-class NoneStackItem(StackItem, CustomStackItem):
-    """Class representing a None on the value stack
+class SymbolWithCustomValueStackItem(SymbolStackItem, CustomValueStackItem):
+    """Class representing a both a symbol and a custom value on the value stack
 
-    None's can be pushed onto the stack as either a normal StackItem or a CustomStackItem used for exceptions.
-    Therefore, this class inherits from both StackItem and CustomStackItem for flexibility.
+    Some types like None's and Exceptions can be pushed onto the stack as either
+    a normal SymbolStackItem or a CustomValueStackItem used for exceptions.
+    Therefore, this class inherits from both SymbolStackItem and CustomValueStackItem for flexibility.
     """
 
-    def __init__(self, start_lineno: int, sources: List[Symbol]):
-        StackItem.__init__(self, start_lineno, sources)
-        CustomStackItem.__init__(self, None)
+    def __init__(self, start_lineno: int, sources: List[Symbol], custom_value=None):
+        SymbolStackItem.__init__(self, start_lineno, sources)
+        CustomValueStackItem.__init__(self, custom_value)
 
-    def copy(self) -> NoneStackItem:
-        return NoneStackItem(self.start_lineno, self.sources)
+    def copy(self) -> SymbolWithCustomValueStackItem:
+        return SymbolWithCustomValueStackItem(
+            self.start_lineno, self.sources, self.custom_value
+        )
 
     def __repr__(self) -> str:
-        return "NoneStackItem"
+        return "SymbolWithCustomValueStackItem{" + repr(self.custom_value) + "}"
 
 
-_placeholder = StackItem(-1, [])
-_none_placeholder = NoneStackItem(-1, [])
+# Placeholder for the items on the stack that we don't care about.
+# This could be from a LOAD_CONST but since we can get the value later,
+# we don't care about the value pushed on the stack
+_placeholder = SymbolStackItem(-1, [])
+
+
+# Placeholder for a None on the stack
+# Could be a None that is stored in a variable or a None used by exception handling.
+_none_placeholder = SymbolWithCustomValueStackItem(-1, [], None)
 
 
 class BaseValueStack:
@@ -161,7 +172,7 @@ class BaseValueStack:
     """
 
     def __init__(self):
-        self.stack: List[StackItem | CustomStackItem] = []
+        self.stack: List[SymbolStackItem | CustomValueStackItem] = []
         self.block_stack = BlockStack()
         self.last_exception: Optional[ExceptionInfo] = None
         self.last_starts_line = -1
@@ -181,7 +192,7 @@ class BaseValueStack:
         to update.
         """
         for item in self.stack:
-            if isinstance(item, StackItem):
+            if isinstance(item, SymbolStackItem):
                 for symbol in item.sources:
                     if symbol.name == mutated_identifier:
                         symbol.snapshot = new_snapshot
@@ -206,7 +217,7 @@ class BaseValueStack:
         """
         self.snapshot = snapshot
         opname = instr.opname
-        self.last_starts_line = lineno
+        _placeholder.start_lineno = self.last_starts_line = lineno
 
         if opname.startswith("BINARY") or opname.startswith("INPLACE"):
             # Binary operations are all the same.
@@ -259,18 +270,18 @@ class BaseValueStack:
 
     @staticmethod
     def from_stack_items(
-        *stack_items: List[StackItem | CustomStackItem],
-    ) -> StackItem | CustomStackItem:
-        """Merges multiple StackItems into one StackItem.
+        *stack_items: List[SymbolStackItem | CustomValueStackItem],
+    ) -> SymbolStackItem | CustomValueStackItem:
+        """Merges multiple SymbolStackItem into one SymbolStackItem.
 
-        If any non-StackItem is encountered, it is returned.
-        Otherwise, a new StackItem is created with the combined sources
+        If any non-SymbolStackItem is encountered, it is returned.
+        Otherwise, a new SymbolStackItem is created with the combined sources
         and the start_lineno is the minimum of all the start_lineno's.
         """
         start_lineno = -1
         sources = []
         for item in stack_items:
-            if not isinstance(item, StackItem):
+            if not isinstance(item, SymbolStackItem):
                 return item
             if item.start_lineno != -1:
                 start_lineno = (
@@ -279,7 +290,7 @@ class BaseValueStack:
                     else item.start_lineno
                 )
             sources.extend(item.sources)
-        return StackItem(start_lineno, sources)
+        return SymbolStackItem(start_lineno, sources)
 
     def _tos(self, n):
         """Returns the i-th element on the stack. Stack keeps unchanged."""
@@ -295,18 +306,16 @@ class BaseValueStack:
     def _push(self, *values):
         """Pushes values onto the simulated value stack.
 
-        StackItem is copied onto the stack
-        _placeholder is a StackItem with no sources.
-        _none_placeholder is similar to _placeholder but has special custom value.
-        Str (name of variable) is converted to Symbol.
+        StackItems are copied onto the stack
+        Str (name of variable) is converted to Symbol and then wrapped into a SymbolStackItem.
         If it is none of the above, the value is stored as a custom value.
         """
         start_lineno = self.last_starts_line
         for value in values:
             sources = []
-            if value is _placeholder:
-                pass
-            elif isinstance(value, StackItem) or isinstance(value, CustomStackItem):
+            if isinstance(value, SymbolStackItem) or isinstance(
+                value, CustomValueStackItem
+            ):
                 newValue = value.copy()
                 self.stack.append(newValue)
                 continue
@@ -322,9 +331,9 @@ class BaseValueStack:
                 sources.append(copy(value))
             else:
                 # For NULL or int used by block related handlers, keep the original value.
-                self.stack.append(CustomStackItem(value))
+                self.stack.append(CustomValueStackItem(value))
                 continue
-            self.stack.append(StackItem(start_lineno, sources))
+            self.stack.append(SymbolStackItem(start_lineno, sources))
 
     def _pop(self, n=1, return_list=False):
         """Pops and returns n item from stack."""
@@ -740,16 +749,17 @@ class BaseValueStack:
             self._push(self.tos)
 
     def _push_arguments_or_exception(self, callable_obj, args):
-        if isinstance(callable_obj, CustomStackItem) and utils.is_exception_class(
-            callable_obj.custom_value
-        ):
+        if isinstance(callable_obj, SymbolStackItem):
+            # Normal, return the callable and all arguments in a new symbol
+            self._push(BaseValueStack.from_stack_items(callable_obj, *args))
+        elif utils.is_exception_class(callable_obj.custom_value):
             # In `raise IndexError()`
             # We need to make sure the result of `IndexError()` is an exception inst,
             # so that _do_raise sees the correct value type.
             self._push(callable_obj.custom_value())
         else:
-            # Return value is a list containing the callable and all arguments
-            self._push(BaseValueStack.from_stack_items(callable_obj, *args))
+            # Non-exception custom value
+            self._push(callable_obj)
 
     def _CALL_FUNCTION_handler(self, instr, exc_info):
         args = self._pop(instr.arg, return_list=True)
@@ -766,7 +776,7 @@ class BaseValueStack:
             self._push_arguments_or_exception(callable_obj, args)
 
     def _CALL_FUNCTION_EX_handler(self, instr, exc_info):
-        kwargs = self._pop() if (instr.arg & 0x01) else StackItem(-1, [])
+        kwargs = self._pop() if (instr.arg & 0x01) else SymbolStackItem(-1, [])
         args = self._pop()
         args = BaseValueStack.from_stack_items(args, kwargs)
         callable_obj = self._pop()
@@ -785,13 +795,10 @@ class BaseValueStack:
 
         # The real callable can be omitted for various reasons.
         # See the _fetch_value_for_load method.
-        if not inst_or_callable or not inst_or_callable.get_top_source():
-            return
-
-        # Actually, there could be multiple identifiers in inst_or_callable, but right
-        # now we'll assume there's just one, and improve it as part of fine-grained
-        # symbol tracing (main feature of version 3).
         if inst_or_callable.get_top_source():
+            # Actually, there could be multiple identifiers in inst_or_callable, but right
+            # now we'll assume there's just one, and improve it as part of fine-grained
+            # symbol tracing (main feature of version 3).
             return EventInfo(
                 type=Mutation,
                 target=inst_or_callable.get_top_source(),
@@ -1067,7 +1074,7 @@ class Py37ValueStack(BaseValueStack):
         elif utils.is_exception_class(exc):
             w, v, u = (x.custom_value for x in self._pop(3))
             tp2, exc2, tb2 = (x.custom_value for x in self._pop(3))
-            exit_func = self._pop().custom_value
+            exit_func = self._pop()
             self._push(tp2, exc2, tb2)
             self._push(None)
             self._push(w, v, u)
@@ -1275,7 +1282,7 @@ class Py38ValueStack(Py37ValueStack):
         else:
             w, v, u = (x.custom_value for x in self._pop(3))
             tp2, exc2, tb2 = (x.custom_value for x in self._pop(3))
-            exit_func = self._pop().custom_value
+            exit_func = self._pop()
             self._push(tp2, exc2, tb2)
             self._push(None)
             self._push(w, v, u)
