@@ -145,6 +145,7 @@ export class TraceData {
     for (let event of this.events) {
       const nextEventIndex = event.index + 1;
       const offset = event.offset;
+      const lineno = event.lineno;
       appearedLineNumbers.add(event.lineno);
 
       // For initial state, all loop counters are 0, thus visible events should form a
@@ -170,7 +171,7 @@ export class TraceData {
       // Pops loop out of the stack.
       if (
         loopStack.length > 0 &&
-        loopStack[loopStack.length - 1].endOffset < offset
+        loopStack[loopStack.length - 1].endLineno < lineno
       ) {
         loopStack[loopStack.length - 1].addIterationEnd(
           getCountersArray(loopStack),
@@ -198,7 +199,7 @@ export class TraceData {
       // Case 2: a loop's end is the last event of a frame.
       if (
         loopStack.length > 0 &&
-        loopStack[loopStack.length - 1].endOffset === offset
+        loopStack[loopStack.length - 1].endLineno === lineno
       ) {
         loopStack[loopStack.length - 1].addIterationEnd(
           getCountersArray(loopStack),
@@ -233,7 +234,7 @@ export class TraceData {
         if (
           previousOffset < loop.startOffset &&
           loop.startOffset <= offset &&
-          offset <= loop.endOffset
+          lineno <= loop.endLineno
         ) {
           if (loopStack.length > 0 && loop.parent === undefined) {
             let innerMostLoop = loopStack[loopStack.length - 1];
@@ -295,9 +296,10 @@ export class TraceData {
 
     // Remove invalid nodes, aka nodes that are not supposed to be displayed.
     for (let [offset, event] of this.visibleEvents) {
+      const lineno = event.lineno;
       if (
-        offset < modifiedLoop.startOffset ||
-        offset > modifiedLoop.endOffset
+        lineno <= modifiedLoop.startLineno ||
+        lineno >= modifiedLoop.endLineno
       ) {
         // Nodes not within the offset range of the modified loop is not affected.
         continue;
