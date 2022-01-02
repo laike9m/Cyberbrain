@@ -144,7 +144,7 @@ class TraceGraph {
       nodesToShow.push({
         title: "Loop counter",
         id: loop.id,
-        level: this.traceData.linenoMapping.get(loop.startLineno),
+        level: this.traceData.linenoToLevel.get(loop.startLineno),
         label: loop.counter.toString(),
         loop: loop,
         color: {
@@ -204,9 +204,9 @@ class TraceGraph {
       );
 
       // Draw lineno nodes.
-      for (let [lineno, ranking] of this.traceData.linenoMapping) {
+      for (let [lineno, level] of this.traceData.linenoToLevel) {
         const centerX = Math.min(-150, leftBoundary - 10);
-        const centerY = topNodePos.y + lineHeight * (ranking - topNodeLevel);
+        const centerY = topNodePos.y + lineHeight * (level - topNodeLevel);
         ctx.fillStyle = "#95ACB9";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -357,7 +357,7 @@ class TraceGraph {
   createNode(event) {
     let node = {
       id: event.id,
-      level: this.traceData.linenoMapping.get(event.lineno),
+      level: this.traceData.linenoToLevel.get(event.lineno),
       lineno: event.lineno,
       label: buildLabelText(event),
       filename: this.traceData.frameMetadata.filename,
