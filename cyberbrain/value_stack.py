@@ -158,19 +158,6 @@ class SymbolWithCustomValueStackItem(SymbolStackItem, CustomValueStackItem):
         return "SymbolWithCustomValueStackItem{" + repr(self.custom_value) + "}"
 
 
-# Placeholder for the items on the stack that we don't care about.
-# This could be from a LOAD_CONST but since we can get the value later,
-# we don't care about the value pushed on the stack
-_placeholder = SymbolStackItem(-1, [])
-
-
-# Placeholder for a None on the stack
-# Could be a None that is stored in a variable or a None used by exception handling
-# (e.g. at the end of a py37 try..except..finally block with no exceptions,
-#  LOAD_CONST pushes a None and it's checked in END_FINALLY)
-_none_placeholder = SymbolWithCustomValueStackItem(-1, [], None)
-
-
 def merge_stack_items(
     *stack_items,
 ):
@@ -249,7 +236,7 @@ class BaseValueStack:
         """
         self.snapshot = snapshot
         opname = instr.opname
-        _placeholder.start_lineno = self.last_starts_line = lineno
+        self.last_starts_line = lineno
 
         if opname.startswith("BINARY") or opname.startswith("INPLACE"):
             # Binary operations are all the same.
@@ -299,6 +286,15 @@ class BaseValueStack:
     @property
     def tos2(self):
         return self._tos(2)
+
+    @property
+    def _placeholder(self) -> SymbolStackItem:
+        """Placeholder for the items on the stack with sources we don't care about.
+        
+        e.g. this could be from a LOAD_CONST but since we can get the value later, we
+        don't care about the value pushed on the stack. We do need updated lineno though.
+        """
+        return SymbolStackItem(self.last_starts_line, [])
 
     def _tos(self, n):
         """Returns the i-th element on the stack. Stack keeps unchanged."""
@@ -468,7 +464,7 @@ class BaseValueStack:
         # this value.
         # See https://github.com/python/cpython/blob/master/Objects/genobject.c#L197
         # and https://www.cnblogs.com/coder2012/p/4990834.html for a code walk through.
-        self._push(_placeholder)
+        self._push(self._placeholder)
 
     def _YIELD_FROM_handler(self):
         self._pop()
@@ -651,17 +647,21 @@ class BaseValueStack:
     def _IMPORT_NAME_handler(self, exc_info):
         self._pop(2)
         if self._instruction_successfully_executed(exc_info, "IMPORT_NAME"):
-            self._push(_placeholder)
+            self._push(self._placeholder)
 
     def _IMPORT_FROM_handler(self, exc_info):
         if self._instruction_successfully_executed(exc_info, "IMPORT_FROM"):
-            self._push(_placeholder)
+            self._push(self._placeholder)
 
     def _LOAD_CONST_handler(self, instr):
         if instr.argrepr == "None":
-            self._push(_none_placeholder)
+            # Placeholder for a None on the stack
+            # Could be a None that is stored in a variable or a None used by exception handling
+            # (e.g. at the end of a py37 try..except..finally block with no exceptions,
+            #  LOAD_CONST pushes a None and it's checked in END_FINALLY)
+            self._push(SymbolWithCustomValueStackItem(-1, [], None))
         else:
-            self._push(_placeholder)
+            self._push(self._placeholder)
 
     def _LOAD_NAME_handler(self, instr, frame, exc_info):
         if self._instruction_successfully_executed(exc_info, "LOAD_NAME"):
@@ -691,7 +691,7 @@ class BaseValueStack:
             return CustomValueStackItem(val)
 
         if utils.should_ignore_event(target=name, value=val, frame=frame):
-            return _placeholder
+            return self._placeholder
 
         return SymbolStackItem(
             self.last_starts_line, [Symbol(name=name, snapshot=self.snapshot)]
@@ -713,7 +713,7 @@ class BaseValueStack:
             try:
                 value = self._fetch_value_for_load_instruction(instr.argrepr, frame)
             except AssertionError:
-                value = _placeholder
+                value = self._placeholder
             self._push(value)
 
     def _LOAD_DEREF_handler(self, instr, frame, exc_info):
@@ -900,7 +900,7 @@ class BaseValueStack:
             self._instruction_successfully_executed(exc_info, "FOR_ITER")
 
     def _LOAD_BUILD_CLASS_handler(self):
-        self._push(_placeholder)  # builtins.__build_class__()
+        self._push(self._placeholder)  # builtins.__build_class__()
 
     def _SETUP_WITH_handler(self, exc_info):
         if self._instruction_successfully_executed(exc_info, "SETUP_WITH"):
