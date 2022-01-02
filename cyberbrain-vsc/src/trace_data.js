@@ -14,10 +14,11 @@ function assert(condition, message) {
 }
 
 export class Loop {
-  constructor(startOffset, endOffset, startLineno) {
-    this.startLineno = startLineno;
+  constructor(startOffset, endOffset, startLineno, endLineno) {
     this.startOffset = startOffset;
     this.endOffset = endOffset;
+    this.startLineno = startLineno;
+    this.endLineno = endLineno;
     this.counter = 0;
     this.parent = undefined;
     this.children = new Set();
@@ -110,10 +111,19 @@ export class TraceData {
       }
     });
     this.loops = data.loops
-      .map(loop => new Loop(loop.startOffset, loop.endOffset, loop.startLineno))
+      .map(
+        loop =>
+          new Loop(
+            loop.startOffset,
+            loop.endOffset,
+            loop.startLineno,
+            loop.endLineno
+          )
+      )
       .sort((loop1, loop2) => loop1.startOffset - loop2.startOffset);
     this.tracingResult = new Map(Object.entries(data.tracingResult));
-    this.linenoMapping = new Map();
+    // Level represents the hierarchy in the tree view.
+    this.linenoToLevel = new Map();
     this.visibleEvents = new Map();
     this.initialize();
   }
@@ -140,7 +150,7 @@ export class TraceData {
       // For initial state, all loop counters are 0, thus visible events should form a
       // sequence in which the next event always has a larger offset than the previous one.
       //
-      // Note that we use >= instead of >. This is because we may need to two nodes of the
+      // Note that we use >= instead of >. This is because we may have two nodes of the
       // same offset. e.g.
       //
       //    nonlocal a
@@ -245,16 +255,16 @@ export class TraceData {
       loop.counter = 0;
     }
 
-    // There's space from improvements for building linenoMapping.
+    // There's space for improvements for building linenoMapping.
     //
-    // The easiest one being, if line range is small, just use the original lineno as rank.
+    // The easiest one being, if line range is small, just use the original lineno as level.
     //
     // Another idea is to recalculate distance and make them smaller.
     // for example, distance [1, 2] becomes 1, [3, 5] becomes 2, > 5 becomes 3.
     Array.from(appearedLineNumbers)
       .sort((a, b) => a - b)
-      .forEach((lineno, ranking) => {
-        this.linenoMapping.set(lineno, ranking + 1); // Level starts with 1, leaving level 0 to InitialValue nodes
+      .forEach((lineno, level) => {
+        this.linenoToLevel.set(lineno, level + 1); // Level starts with 1, leaving level 0 to InitialValue nodes
       });
   }
 
