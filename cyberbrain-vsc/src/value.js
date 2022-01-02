@@ -11,7 +11,7 @@ let cl = console.log;
 const Types = Object.freeze({
   NULL: "Null",
   UNDEFINED: "Undefined",
-  STRING: "String",
+  STRING: "String"
 });
 
 // From https://bonsaiden.github.io/JavaScript-Garden/#types.typeof

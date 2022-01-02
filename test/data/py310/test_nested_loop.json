@@ -15,12 +15,14 @@
             {
                 "startOffset": 28,
                 "endOffset": 40,
-                "startLineno": 9
+                "startLineno": 9,
+                "endLineno": 10
             },
             {
                 "startOffset": 16,
                 "endOffset": 42,
-                "startLineno": 8
+                "startLineno": 8,
+                "endLineno": 10
             }
         ],
         "events": [
@@ -98,7 +100,7 @@
                 "type": "JumpBackToLoopStart"
             },
             {
-                "lineno": 9,
+                "lineno": 10,
                 "index": 7,
                 "offset": 42,
                 "filename": "test_nested_loop.py",
@@ -180,7 +182,7 @@
                 "type": "JumpBackToLoopStart"
             },
             {
-                "lineno": 9,
+                "lineno": 10,
                 "index": 15,
                 "offset": 42,
                 "filename": "test_nested_loop.py",
@@ -347,7 +349,7 @@
             "__class__": "JumpBackToLoopStart"
         },
         {
-            "lineno": 9,
+            "lineno": 10,
             "index": 7,
             "offset": 42,
             "filename": "test_nested_loop.py",
@@ -495,7 +497,7 @@
             "__class__": "JumpBackToLoopStart"
         },
         {
-            "lineno": 9,
+            "lineno": 10,
             "index": 15,
             "offset": 42,
             "filename": "test_nested_loop.py",

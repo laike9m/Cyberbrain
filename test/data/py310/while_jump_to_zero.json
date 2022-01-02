@@ -4,7 +4,7 @@
             "frame_id": "while_jump_to_zero",
             "frame_name": "while_jump_to_zero",
             "filename": "test_while_loop.py",
-            "defined_lineno": 67
+            "defined_lineno": 70
         },
         "identifiers": [
             "count"
@@ -13,12 +13,13 @@
             {
                 "startOffset": 8,
                 "endOffset": 22,
-                "startLineno": 69
+                "startLineno": 72,
+                "endLineno": 72
             }
         ],
         "events": [
             {
-                "lineno": 67,
+                "lineno": 70,
                 "index": 0,
                 "offset": 0,
                 "filename": "test_while_loop.py",
@@ -29,7 +30,7 @@
                 "type": "InitialValue"
             },
             {
-                "lineno": 69,
+                "lineno": 72,
                 "index": 1,
                 "offset": 14,
                 "filename": "test_while_loop.py",
@@ -40,7 +41,7 @@
                 "type": "Binding"
             },
             {
-                "lineno": 68,
+                "lineno": 72,
                 "index": 2,
                 "offset": 22,
                 "filename": "test_while_loop.py",
@@ -49,7 +50,7 @@
                 "type": "JumpBackToLoopStart"
             },
             {
-                "lineno": 69,
+                "lineno": 72,
                 "index": 3,
                 "offset": 14,
                 "filename": "test_while_loop.py",
@@ -60,7 +61,7 @@
                 "type": "Binding"
             },
             {
-                "lineno": 68,
+                "lineno": 71,
                 "index": 4,
                 "offset": 26,
                 "filename": "test_while_loop.py",
@@ -81,7 +82,7 @@
     },
     "tracer.events": [
         {
-            "lineno": 67,
+            "lineno": 70,
             "index": 0,
             "offset": 0,
             "filename": "test_while_loop.py",
@@ -95,7 +96,7 @@
             "__class__": "InitialValue"
         },
         {
-            "lineno": 69,
+            "lineno": 72,
             "index": 1,
             "offset": 14,
             "filename": "test_while_loop.py",
@@ -120,7 +121,7 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 68,
+            "lineno": 72,
             "index": 2,
             "offset": 22,
             "filename": "test_while_loop.py",
@@ -129,7 +130,7 @@
             "__class__": "JumpBackToLoopStart"
         },
         {
-            "lineno": 69,
+            "lineno": 72,
             "index": 3,
             "offset": 14,
             "filename": "test_while_loop.py",
@@ -154,7 +155,7 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 68,
+            "lineno": 71,
             "index": 4,
             "offset": 26,
             "filename": "test_while_loop.py",

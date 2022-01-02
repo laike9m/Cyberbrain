@@ -233,6 +233,7 @@ class Loop:
     start_offset: int = attr.ib(kw_only=True)
     end_offset: int = attr.ib(kw_only=True)
     start_lineno: int = attr.ib(kw_only=True)
+    end_lineno: int = attr.ib(kw_only=True)
 
 
 """

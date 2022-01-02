@@ -14,27 +14,32 @@
             {
                 "startOffset": 16,
                 "endOffset": 24,
-                "startLineno": 8
+                "startLineno": 8,
+                "endLineno": 9
             },
             {
                 "startOffset": 56,
                 "endOffset": 60,
-                "startLineno": 15
+                "startLineno": 15,
+                "endLineno": 16
             },
             {
                 "startOffset": 76,
                 "endOffset": 88,
-                "startLineno": 19
+                "startLineno": 19,
+                "endLineno": 21
             },
             {
                 "startOffset": 100,
                 "endOffset": 110,
-                "startLineno": 23
+                "startLineno": 23,
+                "endLineno": 24
             },
             {
                 "startOffset": 148,
                 "endOffset": 152,
-                "startLineno": 32
+                "startLineno": 32,
+                "endLineno": 33
             }
         ],
         "events": [

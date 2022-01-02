@@ -14,27 +14,32 @@
             {
                 "startOffset": 16,
                 "endOffset": 24,
-                "startLineno": 8
+                "startLineno": 8,
+                "endLineno": 9
             },
             {
                 "startOffset": 48,
                 "endOffset": 52,
-                "startLineno": 15
+                "startLineno": 15,
+                "endLineno": 16
             },
             {
                 "startOffset": 62,
                 "endOffset": 76,
-                "startLineno": 19
+                "startLineno": 19,
+                "endLineno": 21
             },
             {
                 "startOffset": 86,
                 "endOffset": 102,
-                "startLineno": 23
+                "startLineno": 23,
+                "endLineno": 25
             },
             {
                 "startOffset": 132,
                 "endOffset": 136,
-                "startLineno": 32
+                "startLineno": 32,
+                "endLineno": 33
             }
         ],
         "events": [
@@ -163,7 +168,7 @@
                 "type": "Binding"
             },
             {
-                "lineno": 20,
+                "lineno": 21,
                 "index": 12,
                 "offset": 76,
                 "filename": "test_for_loop.py",
@@ -183,7 +188,7 @@
                 "type": "Binding"
             },
             {
-                "lineno": 24,
+                "lineno": 25,
                 "index": 14,
                 "offset": 102,
                 "filename": "test_for_loop.py",
@@ -433,7 +438,7 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 20,
+            "lineno": 21,
             "index": 12,
             "offset": 76,
             "filename": "test_for_loop.py",
@@ -457,7 +462,7 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 24,
+            "lineno": 25,
             "index": 14,
             "offset": 102,
             "filename": "test_for_loop.py",

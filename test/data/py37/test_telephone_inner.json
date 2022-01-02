@@ -20,7 +20,8 @@
             {
                 "startOffset": 100,
                 "endOffset": 158,
-                "startLineno": 23
+                "startLineno": 23,
+                "endLineno": 25
             }
         ],
         "events": [

@@ -4,7 +4,7 @@
             "frame_id": "test_continue_in_finally_with_exception",
             "frame_name": "test_continue_in_finally_with_exception",
             "filename": "test_block_py38.py",
-            "defined_lineno": 38
+            "defined_lineno": 39
         },
         "identifiers": [
             "x"
@@ -13,12 +13,13 @@
             {
                 "startOffset": 16,
                 "endOffset": 40,
-                "startLineno": 49
+                "startLineno": 50,
+                "endLineno": 54
             }
         ],
         "events": [
             {
-                "lineno": 49,
+                "lineno": 50,
                 "index": 0,
                 "offset": 18,
                 "filename": "test_block_py38.py",
@@ -29,7 +30,7 @@
                 "type": "Binding"
             },
             {
-                "lineno": 53,
+                "lineno": 54,
                 "index": 1,
                 "offset": 40,
                 "filename": "test_block_py38.py",
@@ -38,7 +39,7 @@
                 "type": "JumpBackToLoopStart"
             },
             {
-                "lineno": 49,
+                "lineno": 50,
                 "index": 2,
                 "offset": 18,
                 "filename": "test_block_py38.py",
@@ -49,7 +50,7 @@
                 "type": "Binding"
             },
             {
-                "lineno": 53,
+                "lineno": 54,
                 "index": 3,
                 "offset": 40,
                 "filename": "test_block_py38.py",
@@ -62,7 +63,7 @@
     },
     "tracer.events": [
         {
-            "lineno": 49,
+            "lineno": 50,
             "index": 0,
             "offset": 18,
             "filename": "test_block_py38.py",
@@ -77,7 +78,7 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 53,
+            "lineno": 54,
             "index": 1,
             "offset": 40,
             "filename": "test_block_py38.py",
@@ -86,7 +87,7 @@
             "__class__": "JumpBackToLoopStart"
         },
         {
-            "lineno": 49,
+            "lineno": 50,
             "index": 2,
             "offset": 18,
             "filename": "test_block_py38.py",
@@ -101,7 +102,7 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 53,
+            "lineno": 54,
             "index": 3,
             "offset": 40,
             "filename": "test_block_py38.py",

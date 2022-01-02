@@ -14,7 +14,8 @@
             {
                 "startOffset": 42,
                 "endOffset": 46,
-                "startLineno": 189
+                "startLineno": 189,
+                "endLineno": 190
             }
         ],
         "events": [
