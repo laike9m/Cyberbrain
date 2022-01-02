@@ -659,7 +659,7 @@ class BaseValueStack:
             # Could be a None that is stored in a variable or a None used by exception handling
             # (e.g. at the end of a py37 try..except..finally block with no exceptions,
             #  LOAD_CONST pushes a None and it's checked in END_FINALLY)
-            self._push(SymbolWithCustomValueStackItem(-1, [], None))
+            self._push(SymbolWithCustomValueStackItem(self.last_starts_line, [], None))
         else:
             self._push(self._placeholder)
 
