@@ -256,7 +256,7 @@ class Frame:
         elif event_info.type is JumpBackToLoopStart:
             # [start|end]_[offset|lineno] all refer to the current loop.
             start_offset = event_info.jump_target
-            start_lineno = event_info.lineno
+            start_lineno = self.offset_to_lineno[start_offset]
             end_offset = instr.offset
             end_lineno = self.increasing_offset_to_lineno[end_offset]
             self.events.append(

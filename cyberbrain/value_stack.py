@@ -290,7 +290,7 @@ class BaseValueStack:
     @property
     def _placeholder(self) -> SymbolStackItem:
         """Placeholder for the items on the stack with sources we don't care about.
-        
+
         e.g. this could be from a LOAD_CONST but since we can get the value later, we
         don't care about the value pushed on the stack. We do need updated lineno though.
         """
