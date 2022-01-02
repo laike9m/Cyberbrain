@@ -94,6 +94,7 @@ class RpcClient:
                     "startOffset": loop.start_offset,
                     "endOffset": loop.end_offset,
                     "startLineno": loop.start_lineno,
+                    "endLineno": loop.end_lineno,
                 }
                 for loop in frame.loops.values()
             ],

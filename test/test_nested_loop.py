@@ -16,10 +16,12 @@ def test_nested_loop(tracer, check_golden_file):
             start_offset=get_value({"default": 28, "py37": 32}),
             end_offset=get_value({"default": 40, "py37": 44}),
             start_lineno=9,
+            end_lineno=10,
         ),
         Loop(
             start_offset=get_value({"default": 16, "py37": 18}),
             end_offset=get_value({"default": 42, "py37": 48}),
             start_lineno=8,
+            end_lineno=10,
         ),
     ]

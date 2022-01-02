@@ -68,6 +68,7 @@ class Frame:
         )
         # For now, use frame name as frame id. Eventually this should be a unique uuid.
         self.frame_id: str = self.frame_name
+        self.parameters: Set[str] = utils.get_parameters(raw_frame)
         self.defined_lineno: int = raw_frame.f_code.co_firstlineno
         self.instructions: dict[int, Instruction] = {
             instr.offset: instr for instr in dis.get_instructions(raw_frame.f_code)
@@ -75,7 +76,16 @@ class Frame:
         self.offset_to_lineno: dict[int, int] = utils.map_bytecode_offset_to_lineno(
             raw_frame
         )
-        self.parameters: Set[str] = utils.get_parameters(raw_frame)
+        # An increasing mapping for determining loops' end_lineno correctly.
+        # See https://git.io/JSLTB for details.
+        # TODO: Can we use the increasing version in all places?
+        self.increasing_offset_to_lineno = dict(sorted(self.offset_to_lineno.items()))
+        previous_lineno = -1
+        for offset, lineno in self.increasing_offset_to_lineno.items():
+            if lineno < previous_lineno:
+                self.increasing_offset_to_lineno[offset] = previous_lineno
+            else:
+                previous_lineno = lineno
 
         # ################### Mutable state ####################
         self.value_stack: value_stack.BaseValueStack = value_stack.create_value_stack()
@@ -243,25 +253,33 @@ class Frame:
                 )
             )
         elif event_info.type is JumpBackToLoopStart:
-            loop_start = event_info.jump_target
+            # [start|end]_[offset|lineno] all refer to the current loop.
+            start_offset = event_info.jump_target
+            start_lineno = self.offset_to_lineno[start_offset]
+            end_offset = instr.offset
+            end_lineno = self.increasing_offset_to_lineno[end_offset]
             self.events.append(
                 JumpBackToLoopStart(
                     filename=self.filename,
-                    lineno=self.offset_to_lineno[instr.offset],
+                    lineno=end_lineno,
                     offset=instr.offset,
                     index=len(self.events),
-                    jump_target=loop_start,
+                    jump_target=start_offset,
                 )
             )
-            if loop_start in self.loops:
-                self.loops[loop_start].end_offset = max(
-                    self.loops[loop_start].end_offset, instr.offset
+            if start_offset in self.loops:
+                self.loops[start_offset].end_offset = max(
+                    self.loops[start_offset].end_offset, end_offset
+                )
+                self.loops[start_offset].end_lineno = max(
+                    self.loops[start_offset].end_lineno, end_lineno
                 )
             else:
-                self.loops[loop_start] = Loop(
-                    start_offset=loop_start,
-                    end_offset=instr.offset,
-                    start_lineno=self.offset_to_lineno[loop_start],
+                self.loops[start_offset] = Loop(
+                    start_offset=start_offset,
+                    end_offset=end_offset,
+                    start_lineno=start_lineno,
+                    end_lineno=end_lineno,
                 )
 
     def _add_new_event(self, event: Event):

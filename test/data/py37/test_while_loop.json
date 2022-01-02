@@ -14,17 +14,20 @@
             {
                 "startOffset": 14,
                 "endOffset": 34,
-                "startLineno": 9
+                "startLineno": 9,
+                "endLineno": 11
             },
             {
                 "startOffset": 64,
                 "endOffset": 80,
-                "startLineno": 18
+                "startLineno": 18,
+                "endLineno": 20
             },
             {
                 "startOffset": 92,
                 "endOffset": 116,
-                "startLineno": 23
+                "startLineno": 23,
+                "endLineno": 26
             }
         ],
         "events": [

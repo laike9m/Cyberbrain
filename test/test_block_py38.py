@@ -31,6 +31,7 @@ def test_continue_in_finally(tracer, check_golden_file):
             start_offset=16,
             end_offset=get_value({"py38": 32, "default": 24}),
             start_lineno=21,
+            end_lineno=25,
         )
     ]
 

@@ -22,7 +22,8 @@
             {
                 "startOffset": 342,
                 "endOffset": 368,
-                "startLineno": 41
+                "startLineno": 41,
+                "endLineno": 43
             }
         ],
         "events": [
@@ -137,7 +138,7 @@
                 "type": "Binding"
             },
             {
-                "lineno": 42,
+                "lineno": 43,
                 "index": 10,
                 "offset": 368,
                 "filename": "test_with.py",
@@ -384,7 +385,7 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 42,
+            "lineno": 43,
             "index": 10,
             "offset": 368,
             "filename": "test_with.py",

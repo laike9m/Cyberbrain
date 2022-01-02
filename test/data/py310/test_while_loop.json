@@ -14,17 +14,20 @@
             {
                 "startOffset": 20,
                 "endOffset": 38,
-                "startLineno": 10
+                "startLineno": 10,
+                "endLineno": 11
             },
             {
                 "startOffset": 58,
                 "endOffset": 74,
-                "startLineno": 18
+                "startLineno": 18,
+                "endLineno": 20
             },
             {
                 "startOffset": 80,
                 "endOffset": 104,
-                "startLineno": 23
+                "startLineno": 23,
+                "endLineno": 26
             }
         ],
         "events": [
@@ -62,7 +65,7 @@
                 "type": "Binding"
             },
             {
-                "lineno": 9,
+                "lineno": 11,
                 "index": 3,
                 "offset": 38,
                 "filename": "test_while_loop.py",
@@ -305,7 +308,7 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 9,
+            "lineno": 11,
             "index": 3,
             "offset": 38,
             "filename": "test_while_loop.py",

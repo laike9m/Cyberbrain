@@ -15,12 +15,14 @@
             {
                 "startOffset": 28,
                 "endOffset": 40,
-                "startLineno": 9
+                "startLineno": 9,
+                "endLineno": 10
             },
             {
                 "startOffset": 16,
                 "endOffset": 42,
-                "startLineno": 8
+                "startLineno": 8,
+                "endLineno": 10
             }
         ],
         "events": [
