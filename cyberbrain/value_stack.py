@@ -13,7 +13,7 @@ import functools
 import inspect
 import sys
 from types import FrameType
-from typing import Optional
+from typing import Optional, Union
 
 try:
     from typing import TYPE_CHECKING, Literal
@@ -307,7 +307,7 @@ class BaseValueStack:
                 f", but only has {len(self.stack)}.",
             )
 
-    def _push(self, *values):
+    def _push(self, *values: Union[SymbolStackItem, CustomValueStackItem]):
         """Pushes values onto the simulated value stack.
 
         StackItems are copied onto the stack
