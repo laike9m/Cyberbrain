@@ -39,11 +39,6 @@ class ValueStackException(Exception):
     pass
 
 
-# Sometimes we need to put a _placeholder on TOS because we don't care about its value,
-# like LOAD_CONST. We convert it to [] when putting it on the stack.
-_placeholder = None
-
-
 class _NullClass:
     def __repr__(self):
         return "NULL"
@@ -75,6 +70,7 @@ class EventInfo:
     target: Symbol = None
     sources: set[Symbol] = dataclasses.field(default_factory=set)
     jump_target: int = None
+    lineno: int = -1
 
 
 class Why(enum.Enum):
@@ -88,6 +84,106 @@ class Why(enum.Enum):
     SILENCED = 8  # Exception silenced by 'with'
 
 
+class SymbolStackItem:
+    """Class representing an item on the value stack to be tracked by Cyberbrain.
+
+    Attributes:
+        start_lineno: The starting lineno of the item.
+        sources: A list of symbols that are the sources of the item.
+    """
+
+    def __init__(
+        self,
+        start_lineno: int,
+        sources: List[Symbol],
+    ):
+        self.start_lineno = start_lineno
+        self.sources = sources
+
+    def __repr__(self) -> str:
+        return "{" + repr(self.start_lineno) + " " + repr(self.sources) + "}"
+
+    @property
+    def top_source(self) -> Symbol:
+        if len(self.sources) == 0:
+            # This happens when variables (e.g. globals) that we don't care about are mutated.
+            # e.g. Assume we have imported os globally and started tracing after the import.
+            # Then, for os.environ['foo'] = 'bar', os is pushed onto the stack as a placeholder with no sources.
+            # Therefore, we check if sources is empty and return None to skip creating the mutation event.
+            return None
+        return self.sources[0]
+
+    def copy(self) -> SymbolStackItem:
+        return SymbolStackItem(self.start_lineno, [copy(sym) for sym in self.sources])
+
+
+class CustomValueStackItem:
+    """Class representing a custom value (Exceptions, Why's, anything not tracked by Cyberbrain) on the value stack
+
+    Attributes:
+        custom_value: The value of the custom item.
+    """
+
+    def __init__(
+        self,
+        custom_value: any = None,
+    ):
+        self.custom_value = custom_value
+
+    def __repr__(self) -> str:
+        return repr(self.custom_value)
+
+    def copy(self) -> CustomValueStackItem:
+        return CustomValueStackItem(self.custom_value)
+
+
+class SymbolWithCustomValueStackItem(SymbolStackItem, CustomValueStackItem):
+    """Class representing a both a symbol and a custom value on the value stack
+
+    Some types like None's and Exceptions can be pushed onto the stack as either
+    a normal SymbolStackItem or a CustomValueStackItem used for exceptions.
+    Therefore, this class inherits from both SymbolStackItem and CustomValueStackItem for flexibility.
+    """
+
+    def __init__(self, start_lineno: int, sources: List[Symbol], custom_value=None):
+        SymbolStackItem.__init__(self, start_lineno, sources)
+        CustomValueStackItem.__init__(self, custom_value)
+
+    def copy(self) -> SymbolWithCustomValueStackItem:
+        return SymbolWithCustomValueStackItem(
+            self.start_lineno, self.sources, self.custom_value
+        )
+
+    def __repr__(self) -> str:
+        return "SymbolWithCustomValueStackItem{" + repr(self.custom_value) + "}"
+
+
+def merge_stack_items(
+    *stack_items,
+):
+    """Merges multiple SymbolStackItem into one SymbolStackItem.
+
+    A new SymbolStackItem is created with the combined sources
+    and the start_lineno is the minimum of all the start_lineno's.
+    """
+    start_lineno = -1
+    sources = []
+    for item in stack_items:
+        if not isinstance(item, SymbolStackItem):
+            # If any non-SymbolStackItem is encountered, it is returned. This can happen when
+            # an operation that usually combines SymbolStackItems is used on other items
+            # (e.g. comparing two exceptions using _BINARY_operation_handler).
+            return item
+        if item.start_lineno != -1:
+            start_lineno = (
+                min(item.start_lineno, start_lineno)
+                if start_lineno != -1
+                else item.start_lineno
+            )
+        sources.extend(item.sources)
+    return SymbolStackItem(start_lineno, sources)
+
+
 class BaseValueStack:
     """Class that simulates the a frame's value stack.
 
@@ -98,7 +194,8 @@ class BaseValueStack:
         self.stack = []
         self.block_stack = BlockStack()
         self.last_exception: Optional[ExceptionInfo] = None
-        self.return_value = _placeholder
+        self.last_starts_line = -1
+        self.return_value = SymbolStackItem(-1, [])
         self.handler_signature_cache: dict[str, set[str]] = {}  # keyed by opname.
         self.snapshot = None
 
@@ -114,9 +211,10 @@ class BaseValueStack:
         to update.
         """
         for item in self.stack:
-            for symbol in item:
-                if symbol.name == mutated_identifier:
-                    symbol.snapshot = new_snapshot
+            if isinstance(item, SymbolStackItem):
+                for symbol in item.sources:
+                    if symbol.name == mutated_identifier:
+                        symbol.snapshot = new_snapshot
 
     def emit_event_and_update_stack(
         self,
@@ -125,6 +223,7 @@ class BaseValueStack:
         jumped: bool,
         exc_info: Optional[ExceptionInfo],
         snapshot: Snapshot,
+        lineno: int,
     ) -> Optional[EventInfo]:
         """Given a instruction, emits EventInfo if any, and updates the stack.
 
@@ -137,6 +236,7 @@ class BaseValueStack:
         """
         self.snapshot = snapshot
         opname = instr.opname
+        self.last_starts_line = lineno
 
         if opname.startswith("BINARY") or opname.startswith("INPLACE"):
             # Binary operations are all the same.
@@ -187,6 +287,15 @@ class BaseValueStack:
     def tos2(self):
         return self._tos(2)
 
+    @property
+    def _placeholder(self) -> SymbolStackItem:
+        """Placeholder for the items on the stack with sources we don't care about.
+
+        e.g. this could be from a LOAD_CONST but since we can get the value later, we
+        don't care about the value pushed on the stack. We do need updated lineno though.
+        """
+        return SymbolStackItem(self.last_starts_line, [])
+
     def _tos(self, n):
         """Returns the i-th element on the stack. Stack keeps unchanged."""
         index = -1 - n
@@ -201,35 +310,30 @@ class BaseValueStack:
     def _push(self, *values):
         """Pushes values onto the simulated value stack.
 
-        This method will automatically convert single value to a list. _placeholder will
-        be converted to an empty list, so that it never exists on the value stack.
-
-        Str is converted to Symbol.
+        StackItems are copied onto the stack
+        Str (name of variable) is converted to Symbol and then wrapped into a SymbolStackItem.
+        If it is none of the above, the value is stored as a custom value.
         """
         for value in values:
-            if value is _placeholder:
-                value = []
-            elif isinstance(value, str):  # For representing identifiers.
-                value = [Symbol(name=value, snapshot=self.snapshot)]
-            elif isinstance(value, list):
-                for index, item in enumerate(value):
-                    if isinstance(item, str):
-                        value[index] = Symbol(item, snapshot=self.snapshot)
-                    else:  # Already a Symbol.
-                        # Why copy? Because the symbols on the stack might be modified
-                        # later in the update_snapshot method. If we don't copy, a
-                        # symbol that's already been popped out of the stack will be
-                        # affected by the change (if it has the same name with the
-                        # modified symbol on the stack). A copy will make symbols
-                        # isolated from each other.
-                        value[index] = copy(value[index])
-            # For NULL or int used by block related handlers, keep the original value.
-            self.stack.append(value)
+            if isinstance(value, SymbolStackItem) or isinstance(
+                value, CustomValueStackItem
+            ):
+                # Why copy? Because the symbols on the stack might be modified
+                # later in the update_snapshot method. If we don't copy, a
+                # symbol that's already been popped out of the stack will be
+                # affected by the change (if it has the same name with the
+                # modified symbol on the stack). A copy will make symbols
+                # isolated from each other.
+                newValue = value.copy()
+                self.stack.append(newValue)
+                continue
+            else:
+                raise Exception("Pushed an unknown item to the stack.")
 
-    def _pop(self, n=1):
+    def _pop(self, n=1, return_list=False):
         """Pops and returns n item from stack."""
         try:
-            if n == 1:
+            if n == 1 and not return_list:
                 return self.stack.pop()
             return [self.stack.pop() for _ in range(n)]
         except IndexError:
@@ -242,11 +346,8 @@ class BaseValueStack:
         """
         elements = []
         for _ in range(n):
-            tos = self._pop()
-            if isinstance(tos, list):
-                # Flattens identifiers in TOS, leave out others (NULL, int).
-                elements.extend(tos)
-        self._push(elements)
+            elements.append(self._pop())
+        self._push(merge_stack_items(*elements))
 
     def _pop_one_push_n(self, n):
         """Pops one elements from TOS, and pushes n elements to TOS.
@@ -320,7 +421,7 @@ class BaseValueStack:
     def _BINARY_operation_handler(self, exc_info):
         tos, tos1 = self._pop(2)
         if self._instruction_successfully_executed(exc_info, "BINARY op"):
-            self._push(utils.flatten(tos, tos1))
+            self._push(merge_stack_items(tos, tos1))
 
     @emit_event
     def _STORE_SUBSCR_handler(self, exc_info):
@@ -328,18 +429,27 @@ class BaseValueStack:
         if self._instruction_successfully_executed(exc_info, "STORE_SUBSCR"):
             # We use to `assert len(tos1) == 1`, but in certain cases, like
             # os.environ["foo"] = "2", tos1 is [].
-            if tos1:
+            if tos1.top_source is not None:
                 return EventInfo(
-                    type=Mutation, target=tos1[0], sources=set(tos + tos1 + tos2)
+                    type=Mutation,
+                    target=tos1.top_source,
+                    sources=set(tos.sources + tos1.sources + tos2.sources),
+                    lineno=tos2.start_lineno,
                 )
 
     # noinspection DuplicatedCode
     @emit_event
     def _DELETE_SUBSCR_handler(self, exc_info):
         tos, tos1 = self._pop(2)
-        assert len(tos1) == 1
+        assert len(tos1.sources) == 1
         if self._instruction_successfully_executed(exc_info, "DELETE_SUBSCR"):
-            return EventInfo(type=Mutation, target=tos1[0], sources=set(tos + tos1))
+            if tos1.top_source is not None:
+                return EventInfo(
+                    type=Mutation,
+                    target=tos1.top_source,
+                    sources=set(tos.sources + tos1.sources),
+                    lineno=tos1.start_lineno,
+                )
 
     def _YIELD_VALUE_handler(self):
         """
@@ -354,7 +464,7 @@ class BaseValueStack:
         # this value.
         # See https://github.com/python/cpython/blob/master/Objects/genobject.c#L197
         # and https://www.cnblogs.com/coder2012/p/4990834.html for a code walk through.
-        self._push(_placeholder)
+        self._push(self._placeholder)
 
     def _YIELD_FROM_handler(self):
         self._pop()
@@ -369,7 +479,10 @@ class BaseValueStack:
     @emit_event
     def _STORE_NAME_handler(self, instr):
         binding = EventInfo(
-            type=Binding, target=Symbol(instr.argval), sources=set(self.tos)
+            type=Binding,
+            target=Symbol(instr.argval),
+            sources=set(self.tos.sources),
+            lineno=min(self.last_starts_line, self.tos.start_lineno),
         )
         self._pop()
         return binding
@@ -377,7 +490,11 @@ class BaseValueStack:
     @emit_event
     def _DELETE_NAME_handler(self, instr, exc_info):
         if self._instruction_successfully_executed(exc_info, "DELETE_NAME"):
-            return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
+            return EventInfo(
+                type=Deletion,
+                target=Symbol(instr.argrepr),
+                lineno=self.last_starts_line,
+            )
 
     def _UNPACK_SEQUENCE_handler(self, instr, exc_info):
         seq = self._pop()
@@ -397,16 +514,28 @@ class BaseValueStack:
     @emit_event
     def _STORE_ATTR_handler(self, exc_info):
         tos, tos1 = self._pop(2)
-        assert len(tos) == 1
+        assert len(tos.sources) == 1
         if self._instruction_successfully_executed(exc_info, "STORE_ATTR"):
-            return EventInfo(type=Mutation, target=tos[0], sources=set(tos + tos1))
+            if tos.top_source is not None:
+                return EventInfo(
+                    type=Mutation,
+                    target=tos.top_source,
+                    sources=set(tos.sources + tos1.sources),
+                    lineno=tos1.start_lineno,
+                )
 
     @emit_event
     def _DELETE_ATTR_handler(self, exc_info):
         tos = self._pop()
-        assert len(tos) == 1
+        assert len(tos.sources) == 1
         if self._instruction_successfully_executed(exc_info, "DELETE_ATTR"):
-            return EventInfo(type=Mutation, target=tos[0], sources=set(tos))
+            if tos.top_source is not None:
+                return EventInfo(
+                    type=Mutation,
+                    target=tos.top_source,
+                    sources=set(tos.sources),
+                    lineno=tos.start_lineno,
+                )
 
     @emit_event
     def _STORE_GLOBAL_handler(self, instr):
@@ -415,7 +544,11 @@ class BaseValueStack:
     @emit_event
     def _DELETE_GLOBAL_handler(self, instr, exc_info):
         if self._instruction_successfully_executed(exc_info, "DELETE_GLOBAL"):
-            return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
+            return EventInfo(
+                type=Deletion,
+                target=Symbol(instr.argrepr),
+                lineno=self.last_starts_line,
+            )
 
     def _BUILD_TUPLE_handler(self, instr):
         self._pop_n_push_one(instr.arg)
@@ -424,14 +557,14 @@ class BaseValueStack:
         self._BUILD_TUPLE_handler(instr)
 
     def _BUILD_SET_handler(self, instr, exc_info):
-        items = self._pop(instr.arg)
+        items = self._pop(instr.arg, return_list=True)
         if self._instruction_successfully_executed(exc_info, "BUILD_SET"):
-            self._push(utils.flatten(items))
+            self._push(merge_stack_items(*items))
 
     def _BUILD_MAP_handler(self, instr, exc_info):
         items = self._pop(instr.arg * 2)
         if self._instruction_successfully_executed(exc_info, "BUILD_MAP"):
-            self._push(utils.flatten(items))
+            self._push(merge_stack_items(*items))
 
     def _BUILD_CONST_KEY_MAP_handler(self, instr):
         self._pop_n_push_one(instr.arg + 1)
@@ -440,38 +573,38 @@ class BaseValueStack:
         self._pop_n_push_one(instr.arg)
 
     def _BUILD_TUPLE_UNPACK_handler(self, instr, exc_info):
-        items = self._pop(instr.arg)
+        items = self._pop(instr.arg, return_list=True)
         if self._instruction_successfully_executed(exc_info, "BUILD_TUPLE_UNPACK"):
-            self._push(utils.flatten(items))
+            self._push(merge_stack_items(*items))
 
     def _BUILD_TUPLE_UNPACK_WITH_CALL_handler(self, instr, exc_info):
-        items = self._pop(instr.arg)
+        items = self._pop(instr.arg, return_list=True)
         if self._instruction_successfully_executed(
             exc_info, "BUILD_TUPLE_UNPACK_WITH_CALL"
         ):
-            self._push(utils.flatten(items))
+            self._push(merge_stack_items(*items))
 
     def _BUILD_LIST_UNPACK_handler(self, instr, exc_info):
-        items = self._pop(instr.arg)
+        items = self._pop(instr.arg, return_list=True)
         if self._instruction_successfully_executed(exc_info, "BUILD_LIST_UNPACK"):
-            self._push(utils.flatten(items))
+            self._push(merge_stack_items(*items))
 
     def _BUILD_SET_UNPACK_handler(self, instr, exc_info):
-        items = self._pop(instr.arg)
+        items = self._pop(instr.arg, return_list=True)
         if self._instruction_successfully_executed(exc_info, "BUILD_SET_UNPACK"):
-            self._push(utils.flatten(items))
+            self._push(merge_stack_items(*items))
 
     def _BUILD_MAP_UNPACK_handler(self, instr, exc_info):
-        items = self._pop(instr.arg)
+        items = self._pop(instr.arg, return_list=True)
         if self._instruction_successfully_executed(exc_info, "BUILD_MAP_UNPACK"):
-            self._push(utils.flatten(items))
+            self._push(merge_stack_items(*items))
 
     def _BUILD_MAP_UNPACK_WITH_CALL_handler(self, instr, exc_info):
-        items = self._pop(instr.arg)
+        items = self._pop(instr.arg, return_list=True)
         if self._instruction_successfully_executed(
             exc_info, "BUILD_MAP_UNPACK_WITH_CALL"
         ):
-            self._push(utils.flatten(items))
+            self._push(merge_stack_items(*items))
 
     def _LOAD_ATTR_handler(self, exc_info):
         """Event the behavior of LOAD_ATTR.
@@ -514,14 +647,21 @@ class BaseValueStack:
     def _IMPORT_NAME_handler(self, exc_info):
         self._pop(2)
         if self._instruction_successfully_executed(exc_info, "IMPORT_NAME"):
-            self._push(_placeholder)
+            self._push(self._placeholder)
 
     def _IMPORT_FROM_handler(self, exc_info):
         if self._instruction_successfully_executed(exc_info, "IMPORT_FROM"):
-            self._push(_placeholder)
+            self._push(self._placeholder)
 
-    def _LOAD_CONST_handler(self):
-        self._push(_placeholder)
+    def _LOAD_CONST_handler(self, instr):
+        if instr.argrepr == "None":
+            # Placeholder for a None on the stack
+            # Could be a None that is stored in a variable or a None used by exception handling
+            # (e.g. at the end of a py37 try..except..finally block with no exceptions,
+            #  LOAD_CONST pushes a None and it's checked in END_FINALLY)
+            self._push(SymbolWithCustomValueStackItem(self.last_starts_line, [], None))
+        else:
+            self._push(self._placeholder)
 
     def _LOAD_NAME_handler(self, instr, frame, exc_info):
         if self._instruction_successfully_executed(exc_info, "LOAD_NAME"):
@@ -548,12 +688,14 @@ class BaseValueStack:
 
         if utils.is_exception(val):
             # Keeps exceptions as they are so that they can be identified.
-            return val
+            return CustomValueStackItem(val)
 
         if utils.should_ignore_event(target=name, value=val, frame=frame):
-            return []
+            return self._placeholder
 
-        return name
+        return SymbolStackItem(
+            self.last_starts_line, [Symbol(name=name, snapshot=self.snapshot)]
+        )
 
     @emit_event
     def _STORE_FAST_handler(self, instr):
@@ -571,7 +713,7 @@ class BaseValueStack:
             try:
                 value = self._fetch_value_for_load_instruction(instr.argrepr, frame)
             except AssertionError:
-                value = []
+                value = self._placeholder
             self._push(value)
 
     def _LOAD_DEREF_handler(self, instr, frame, exc_info):
@@ -585,12 +727,20 @@ class BaseValueStack:
     @emit_event
     def _DELETE_DEREF_handler(self, instr, exc_info):
         if self._instruction_successfully_executed(exc_info, "DELETE_DEREF"):
-            return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
+            return EventInfo(
+                type=Deletion,
+                target=Symbol(instr.argrepr),
+                lineno=self.last_starts_line,
+            )
 
     @emit_event
     def _DELETE_FAST_handler(self, instr, exc_info):
         if self._instruction_successfully_executed(exc_info, "DELETE_FAST"):
-            return EventInfo(type=Deletion, target=Symbol(instr.argrepr))
+            return EventInfo(
+                type=Deletion,
+                target=Symbol(instr.argrepr),
+                lineno=self.last_starts_line,
+            )
 
     def _LOAD_METHOD_handler(self, exc_info):
         if self._instruction_successfully_executed(exc_info, "LOAD_METHOD"):
@@ -600,82 +750,76 @@ class BaseValueStack:
             self._push(self.tos)
 
     def _push_arguments_or_exception(self, callable_obj, args):
-        if utils.is_exception_class(callable_obj):
+        if isinstance(callable_obj, SymbolStackItem):
+            # Normal, return the callable and all arguments in a new symbol
+            self._push(merge_stack_items(callable_obj, *args))
+        elif utils.is_exception_class(callable_obj.custom_value):
             # In `raise IndexError()`
             # We need to make sure the result of `IndexError()` is an exception inst,
             # so that _do_raise sees the correct value type.
-            self._push(callable_obj())
+            self._push(CustomValueStackItem(callable_obj.custom_value()))
         else:
-            # Return value is a list containing the callable and all arguments
-            self._push(utils.flatten(callable_obj, args))
+            # Non-exception custom value
+            self._push(CustomValueStackItem(callable_obj))
 
     def _CALL_FUNCTION_handler(self, instr, exc_info):
-        args = self._pop(instr.arg)
+        args = self._pop(instr.arg, return_list=True)
         callable_obj = self._pop()
         if self._instruction_successfully_executed(exc_info, "CALL_FUNCTION"):
-            if utils.is_exception(args):
-                args = (args,)
             self._push_arguments_or_exception(callable_obj, args)
 
     def _CALL_FUNCTION_KW_handler(self, instr: Instruction, exc_info):
         args_num = instr.arg
         _ = self._pop()  # A tuple of keyword argument names.
-        args = self._pop(args_num)
+        args = self._pop(args_num, return_list=True)
         callable_obj = self._pop()
         if self._instruction_successfully_executed(exc_info, "CALL_FUNCTION_KW"):
-            if utils.is_exception(args):
-                args = (args,)
             self._push_arguments_or_exception(callable_obj, args)
 
     def _CALL_FUNCTION_EX_handler(self, instr, exc_info):
-        kwargs = self._pop() if (instr.arg & 0x01) else []
+        kwargs = self._pop() if (instr.arg & 0x01) else SymbolStackItem(-1, [])
         args = self._pop()
-        args.extend(kwargs)
+        args = merge_stack_items(args, kwargs)
         callable_obj = self._pop()
         if self._instruction_successfully_executed(exc_info, "CALL_FUNCTION_EX"):
-            if utils.is_exception(args):
-                args = (args,)
-            self._push_arguments_or_exception(callable_obj, args)
+            self._push_arguments_or_exception(callable_obj, (args,))
 
     @emit_event
     def _CALL_METHOD_handler(self, instr, exc_info):
-        args = self._pop(instr.arg)
+        args = self._pop(instr.arg, return_list=True)
         inst_or_callable = self._pop()
         method_or_null = self._pop()  # method or NULL
         if self._instruction_successfully_executed(exc_info, "CALL_METHOD"):
-            if utils.is_exception(args):
-                args = (args,)
-            self._push(utils.flatten(inst_or_callable, method_or_null, *args))
+            self._push(merge_stack_items(inst_or_callable, method_or_null, *args))
 
         # The real callable can be omitted for various reasons.
         # See the _fetch_value_for_load method.
-        if not inst_or_callable:
-            return
-
-        # Actually, there could be multiple identifiers in inst_or_callable, but right
-        # now we'll assume there's just one, and improve it as part of fine-grained
-        # symbol tracing (main feature of version 3).
-        return EventInfo(
-            type=Mutation,
-            target=inst_or_callable[0],
-            sources=set(utils.flatten(args, inst_or_callable)),
-        )
+        if inst_or_callable.top_source:
+            # Actually, there could be multiple identifiers in inst_or_callable, but right
+            # now we'll assume there's just one, and improve it as part of fine-grained
+            # symbol tracing (main feature of version 3).
+            return EventInfo(
+                type=Mutation,
+                target=inst_or_callable.top_source,
+                sources=set(merge_stack_items(inst_or_callable, *args).copy().sources),
+                lineno=inst_or_callable.start_lineno,
+            )
 
     def _MAKE_FUNCTION_handler(self, instr):
         function_obj = []
-        function_obj.extend(self._pop())  # qualified_name
-        function_obj.extend(self._pop())  # code_obj
+        function_obj.append(self._pop())  # qualified_name
+        function_obj.append(self._pop())  # code_obj
 
         if instr.argval & 0x08:
-            function_obj.extend(self._pop())  # closure
+            function_obj.append(self._pop())  # closure
         if instr.argval & 0x04:
-            function_obj.extend(self._pop())  # annotations
+            function_obj.append(self._pop())  # annotations
         if instr.argval & 0x02:
-            function_obj.extend(self._pop())  # kwargs defaults
+            function_obj.append(self._pop())  # kwargs defaults
         if instr.argval & 0x01:
-            function_obj.extend(self._pop())  # args defaults
+            function_obj.append(self._pop())  # args defaults
 
-        self._push(function_obj)
+        self._push(merge_stack_items(*function_obj))
 
     def _BUILD_SLICE_handler(self, instr):
         if instr.arg == 2:
@@ -691,11 +835,11 @@ class BaseValueStack:
         # See https://git.io/JvjTg to learn what this opcode is doing.
         elements = []
         if (instr.arg & 0x04) == 0x04:
-            elements.extend(self._pop())
-        elements.extend(self._pop())
+            elements.append(self._pop())
+        elements.append(self._pop())
 
         if self._instruction_successfully_executed(exc_info, "FORMAT_VALUE"):
-            self._push(elements)
+            self._push(merge_stack_items(*elements))
 
     def _JUMP_FORWARD_handler(self, instr, jumped):
         pass
@@ -756,7 +900,7 @@ class BaseValueStack:
             self._instruction_successfully_executed(exc_info, "FOR_ITER")
 
     def _LOAD_BUILD_CLASS_handler(self):
-        self._push(_placeholder)  # builtins.__build_class__()
+        self._push(self._placeholder)  # builtins.__build_class__()
 
     def _SETUP_WITH_handler(self, exc_info):
         if self._instruction_successfully_executed(exc_info, "SETUP_WITH"):
@@ -769,15 +913,17 @@ class BaseValueStack:
     def _return_jump_back_event_if_exists(self, instr):
         jump_target = utils.get_jump_target_or_none(instr)
         if jump_target is not None and jump_target < instr.offset:
-            return EventInfo(type=JumpBackToLoopStart, jump_target=jump_target)
+            return EventInfo(
+                type=JumpBackToLoopStart,
+                jump_target=jump_target,
+                lineno=self.last_starts_line,
+            )
 
     def _unwind_except_handler(self, b: Block):
         assert self.stack_level >= b.b_level + 3
         while self.stack_level > b.b_level + 3:
             self._pop()
-        exc_type = self._pop()
-        value = self._pop()
-        tb = self._pop()
+        exc_type, value, tb = (x.custom_value for x in self._pop(3))
         self.last_exception = ExceptionInfo(type=exc_type, value=value, traceback=tb)
 
     def _do_raise(self, exc, cause) -> bool:
@@ -844,12 +990,12 @@ class Py37ValueStack(BaseValueStack):
         # exception raised in `with`, it is properly handled. e.g.
         #         with pytest.raises(TypeError)
         res = self._pop()
-        exc = self._pop()
+        exc = self._pop().custom_value
         if res and utils.is_exception(exc):
-            self._push(Why.SILENCED)
+            self._push(CustomValueStackItem(Why.SILENCED))
 
     def _RETURN_VALUE_handler(self):
-        self.return_value = self._pop()
+        self.return_value = self._pop().custom_value
         self.why = Why.RETURN
         self._fast_block_end()
 
@@ -896,9 +1042,9 @@ class Py37ValueStack(BaseValueStack):
 
         cause = exc = None
         if instr.arg == 2:
-            cause, exc = self._pop(2)
+            cause, exc = (x.custom_value for x in self._pop(2))
         elif instr.arg == 1:
-            exc = self._pop()
+            exc = self._pop().custom_value
 
         # In CPython's source code, it uses the result of _do_raise to decide whether to
         # raise an exception, then execute exception_unwind. Our value stack doesn't
@@ -911,9 +1057,9 @@ class Py37ValueStack(BaseValueStack):
 
     # noinspection DuplicatedCode
     def _WITH_CLEANUP_START_handler(self, exc_info):
-        exc = self.tos
+        exc = self.tos.custom_value
         exit_func: any
-        if not exc:  # Checks if tos is None, which in our stack, is []
+        if exc is None:
             exit_func = self.stack.pop(-2)
         elif isinstance(exc, Why):
             if exc in {Why.RETURN, Why.CONTINUE}:
@@ -925,7 +1071,7 @@ class Py37ValueStack(BaseValueStack):
             tp2, exc2, tb2 = self._pop(3)
             exit_func = self._pop()
             self._push(tp2, exc2, tb2)
-            self._push(None)
+            self._push(CustomValueStackItem(None))
             self._push(w, v, u)
             block = self.block_stack.tos
             assert block.b_type == BlockType.EXCEPT_HANDLER
@@ -934,11 +1080,11 @@ class Py37ValueStack(BaseValueStack):
             assert False, f"Unrecognized type: {exc}"
 
         if self._instruction_successfully_executed(exc_info, "WITH_CLEANUP_START"):
-            self._push(exc)
+            self._push(CustomValueStackItem(exc))
             self._push(exit_func)
 
     def _END_FINALLY_handler(self, instr):
-        status = self._pop()
+        status = self._pop().custom_value
         if isinstance(status, Why):
             self.why = status
             assert self.why not in {Why.YIELD, Why.EXCEPTION}
@@ -953,15 +1099,14 @@ class Py37ValueStack(BaseValueStack):
             self._fast_block_end()
         elif utils.is_exception_class(status):
             exc_type = status
-            value = self._pop()
-            tb = self._pop()
+            value, tb = (x.custom_value for x in self._pop(2))
             self.last_exception = ExceptionInfo(
                 type=exc_type, value=value, traceback=tb
             )
             self.why = Why.EXCEPTION
             self._fast_block_end()
-
-        assert status is not None
+        else:
+            assert status is None
 
     def _fast_block_end(self):
         assert self.why is not Why.NOT
@@ -989,12 +1134,12 @@ class Py37ValueStack(BaseValueStack):
                 block.b_type in {BlockType.SETUP_EXCEPT, BlockType.SETUP_FINALLY}
             ):
                 self._push_block(BlockType.EXCEPT_HANDLER)
-                self._push(self.last_exception.traceback)
-                self._push(self.last_exception.value)
+                self._push(CustomValueStackItem(self.last_exception.traceback))
+                self._push(CustomValueStackItem(self.last_exception.value))
                 if self.last_exception.type is not NULL:
-                    self._push(self.last_exception.type)
+                    self._push(CustomValueStackItem(self.last_exception.type))
                 else:
-                    self._push(None)
+                    self._push(CustomValueStackItem(None))
 
                 exc_type, value, tb = (
                     self.last_exception.type,
@@ -1002,14 +1147,18 @@ class Py37ValueStack(BaseValueStack):
                     self.last_exception.traceback,
                 )
                 # PyErr_NormalizeException is ignored, add it if needed.
-                self._push(tb, value, exc_type)
+                self._push(
+                    CustomValueStackItem(tb),
+                    CustomValueStackItem(value),
+                    CustomValueStackItem(exc_type),
+                )
                 self.why = Why.NOT
                 break
 
             if block.b_type is BlockType.SETUP_FINALLY:
                 if self.why in {Why.RETURN, Why.CONTINUE}:
-                    self._push(self.return_value)
-                self._push(self.why)
+                    self._push(CustomValueStackItem(self.return_value))
+                self._push(CustomValueStackItem(self.why))
                 self.why = Why.NOT
                 break
 
@@ -1043,15 +1192,15 @@ class Py38ValueStack(Py37ValueStack):
         # exception raised in `with`, it is properly handled. e.g.
         #         with pytest.raises(TypeError)
         res = self._pop()
-        exc = self._pop()
+        exc = self._pop().custom_value
         if res and utils.is_exception(exc):
             block = self.block_stack.pop()
             assert block.b_type == BlockType.EXCEPT_HANDLER
             self._unwind_except_handler(block)
-            self._push(NULL)
+            self._push(CustomValueStackItem(NULL))
 
     def _RETURN_VALUE_handler(self):
-        self.return_value = self._pop()
+        self.return_value = self._pop().custom_value
         # TODO: add exit_returning
 
     def _SETUP_FINALLY_handler(self):
@@ -1060,9 +1209,9 @@ class Py38ValueStack(Py37ValueStack):
     def _RAISE_VARARGS_handler(self, instr):
         cause = exc = None
         if instr.arg == 2:
-            cause, exc = self._pop(2)
+            cause, exc = (x.custom_value for x in self._pop(2))
         elif instr.arg == 1:
-            exc = self._pop()
+            exc = self._pop().custom_value
 
         # In CPython's source code, it uses the result of _do_raise to decide whether to
         # raise an exception, then execute exception_unwind. Our value stack doesn't
@@ -1076,26 +1225,30 @@ class Py38ValueStack(Py37ValueStack):
         block = self._pop_block()
         assert block.b_type == BlockType.EXCEPT_HANDLER
         assert block.b_level + 3 <= self.stack_level <= block.b_level + 4
-        exc_type = self._pop()
-        value = self._pop()
-        tb = self._pop()
-        self.last_exception = ExceptionInfo(type=exc_type, value=value, traceback=tb)
+        exc_type, value, tb = (x.custom_value for x in self._pop(3))
+        self.last_exception = ExceptionInfo(
+            type=exc_type,
+            value=value,
+            traceback=tb,
+        )
 
     def _POP_FINALLY_handler(self, instr):
         preserve_tos = instr.arg
         if preserve_tos:
             res = self._pop()
 
-        if self.tos is NULL or isinstance(self.tos, int):
+        if self.tos.custom_value is NULL or isinstance(self.tos.custom_value, int):
             _ = self._pop()
         else:
             _, _, _ = self._pop(3)
             block = self._pop_block()
             assert block.b_type is BlockType.EXCEPT_HANDLER
             assert self.stack_level == block.b_level + 3
-            exc_type, value, tb = self._pop(3)
+            exc_type, value, tb = (x.custom_value for x in self._pop(3))
             self.last_exception = ExceptionInfo(
-                type=exc_type, value=value, traceback=tb
+                type=exc_type,
+                value=value,
+                traceback=tb,
             )
 
         if preserve_tos:
@@ -1105,39 +1258,39 @@ class Py38ValueStack(Py37ValueStack):
         self._pop_block()
 
     def _BEGIN_FINALLY_handler(self):
-        self._push(NULL)
+        self._push(CustomValueStackItem(NULL))
 
     def _END_FINALLY_handler(self, instr):
-        if self.tos is NULL or isinstance(self.tos, int):
+        if self.tos.custom_value is NULL or isinstance(self.tos.custom_value, int):
             self._pop()
-        elif utils.is_exception_class(self.tos):
-            exc_type = self._pop()
-            value = self._pop()
-            tb = self._pop()
+        elif utils.is_exception_class(self.tos.custom_value):
+            exc_type, value, tb = (x.custom_value for x in self._pop(3))
             self.last_exception = ExceptionInfo(
-                type=exc_type, value=value, traceback=tb
+                type=exc_type,
+                value=value,
+                traceback=tb,
             )
             self._exception_unwind()
         else:
             raise ValueStackException(f"TOS has wrong value: {self.tos}")
 
     def _WITH_CLEANUP_START_handler(self, exc_info):
-        exc = self.tos
-        if self.tos == NULL:  # Pushed by BEGIN_FINALLY
+        exc = self.tos.custom_value
+        if self.tos.custom_value == NULL:  # Pushed by BEGIN_FINALLY
             exit_func = self.stack.pop(-2)
         else:
             w, v, u = self._pop(3)
             tp2, exc2, tb2 = self._pop(3)
             exit_func = self._pop()
             self._push(tp2, exc2, tb2)
-            self._push(None)
+            self._push(CustomValueStackItem(None))
             self._push(w, v, u)
             block = self.block_stack.tos
             assert block.b_type == BlockType.EXCEPT_HANDLER
             block.b_level -= 1
 
         if self._instruction_successfully_executed(exc_info, "WITH_CLEANUP_START"):
-            self._push(exc)
+            self._push(CustomValueStackItem(exc))
             self._push(exit_func)
 
     def _exception_unwind(self):
@@ -1157,8 +1310,16 @@ class Py38ValueStack(Py37ValueStack):
                     self.last_exception.value,
                     self.last_exception.traceback,
                 )
-                self._push(tb, value, exc_type)
-                self._push(tb, value, exc_type)
+                self._push(
+                    CustomValueStackItem(tb),
+                    CustomValueStackItem(value),
+                    CustomValueStackItem(exc_type),
+                )
+                self._push(
+                    CustomValueStackItem(tb),
+                    CustomValueStackItem(value),
+                    CustomValueStackItem(exc_type),
+                )
                 break  # goto main_loop.
 
 
@@ -1173,7 +1334,7 @@ class Py39ValueStack(Py38ValueStack):
         self._BINARY_operation_handler(exc_info)
 
     def _LOAD_ASSERTION_ERROR_handler(self):
-        self._push(AssertionError())
+        self._push(CustomValueStackItem(AssertionError()))
 
     def _LIST_TO_TUPLE_handler(self, instr):
         pass
@@ -1182,31 +1343,33 @@ class Py39ValueStack(Py38ValueStack):
         # list.extend(TOS1[-i], TOS), which essentially merges tos and tos1.
         items = self._pop(2)
         if self._instruction_successfully_executed(exc_info, "LIST_EXTEND"):
-            self._push(utils.flatten(items))
+            self._push(merge_stack_items(*items))
 
     def _SET_UPDATE_handler(self, exc_info):
         # list.extend(TOS1[-i], TOS), which essentially merges tos and tos1.
         items = self._pop(2)
         if self._instruction_successfully_executed(exc_info, "SET_UPDATE"):
-            self._push(utils.flatten(items))
+            self._push(merge_stack_items(*items))
 
     def _DICT_UPDATE_handler(self, exc_info):
         # dict.extend(TOS1[-i], TOS), which essentially merges tos and tos1.
         items = self._pop(2)
         if self._instruction_successfully_executed(exc_info, "DICT_UPDATE"):
-            self._push(utils.flatten(items))
+            self._push(merge_stack_items(*items))
 
     def _DICT_MERGE_handler(self, exc_info):
         items = self._pop(2)
         if self._instruction_successfully_executed(exc_info, "DICT_MERGE"):
-            self._push(utils.flatten(items))
+            self._push(merge_stack_items(*items))
 
     def _RERAISE_handler(self):
-        exc_type = self._pop()
-        value = self._pop()
-        tb = self._pop()
+        exc_type, value, tb = (x.custom_value for x in self._pop(3))
         assert utils.is_exception_class(exc_type)
-        self.last_exception = ExceptionInfo(type=exc_type, value=value, traceback=tb)
+        self.last_exception = ExceptionInfo(
+            type=exc_type,
+            value=value,
+            traceback=tb,
+        )
         self._exception_unwind()
 
     def _WITH_EXCEPT_START_handler(self):

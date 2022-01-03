@@ -147,7 +147,7 @@ class Frame:
                 lineno=self.offset_to_lineno[frame.f_lasti],
                 filename=self.filename,
                 offset=frame.f_lasti,
-                sources=set(utils.flatten(self.value_stack._pop())),
+                sources=set(self.value_stack._pop().sources),
                 index=len(self.events),
             )
         )
@@ -204,6 +204,7 @@ class Frame:
             jumped=jumped,
             exc_info=exc_info,
             snapshot=self.latest_snapshot,
+            lineno=self.offset_to_lineno[instr.offset],
         )
         if not event_info:
             return
@@ -225,7 +226,7 @@ class Frame:
                     value=json,
                     repr=utils.get_repr(value),
                     filename=self.filename,
-                    lineno=self.offset_to_lineno[instr.offset],
+                    lineno=event_info.lineno,
                     sources=event_info.sources,
                     offset=instr.offset,
                 )
@@ -239,7 +240,7 @@ class Frame:
                     repr=utils.get_repr(value),
                     sources=event_info.sources,
                     filename=self.filename,
-                    lineno=self.offset_to_lineno[instr.offset],
+                    lineno=event_info.lineno,
                     offset=instr.offset,
                 )
             )
@@ -248,7 +249,7 @@ class Frame:
                 Deletion(
                     target=target,
                     filename=self.filename,
-                    lineno=self.offset_to_lineno[instr.offset],
+                    lineno=event_info.lineno,
                     offset=instr.offset,
                 )
             )

@@ -13,9 +13,9 @@
         "loops": [],
         "events": [
             {
-                "lineno": 9,
+                "lineno": 8,
                 "index": 0,
-                "offset": 20,
+                "offset": 14,
                 "filename": "test_pandas.py",
                 "id": "test_pandas:0",
                 "target": "baby_data_set",
@@ -26,7 +26,7 @@
             {
                 "lineno": 15,
                 "index": 1,
-                "offset": 38,
+                "offset": 32,
                 "filename": "test_pandas.py",
                 "id": "test_pandas:1",
                 "target": "df",
@@ -43,9 +43,9 @@
     },
     "tracer.events": [
         {
-            "lineno": 9,
+            "lineno": 8,
             "index": 0,
-            "offset": 20,
+            "offset": 14,
             "filename": "test_pandas.py",
             "id": "test_pandas:0",
             "target": {
@@ -60,7 +60,7 @@
         {
             "lineno": 15,
             "index": 1,
-            "offset": 38,
+            "offset": 32,
             "filename": "test_pandas.py",
             "id": "test_pandas:1",
             "target": {
