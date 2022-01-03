@@ -7,7 +7,7 @@ from types import FrameType
 from typing import Optional
 
 from . import utils
-from .basis import ExcInfoType, ExceptionInfo
+from .basis import ExcInfoType, ExceptionInfo, JumpBackToLoopStart, EventInfo
 from .frame import Frame
 from .utils import pprint, computed_gotos_enabled
 
@@ -207,6 +207,20 @@ class FrameLogger:
             if self.instr_pointer >= last_i:
                 break
 
+        current_line = self.frame.offset_to_lineno[instr.offset]
+        next_line = self.frame.offset_to_lineno[self.instructions[last_i].offset]
+        if all([current_line, next_line]) and current_line > next_line:
+            print(
+                f"should emit JumpBackToLoopStart {instr} \n{self.instructions[last_i]}\n{self.frame.offset_to_lineno}"
+            )
+            self.frame.log_jump_back_event(
+                instr,
+                EventInfo(
+                    type=JumpBackToLoopStart,
+                    jump_target=self.instructions[last_i].offset,
+                ),
+            )
+
         # Log InitialValue events that's relevant to the line that's about to be
         # executed, this way we record the value before it's (potentially) being
         # modified.
@@ -214,6 +228,9 @@ class FrameLogger:
         self.last_exception = None
 
 
+# TODO: Move jump detector to its own file, and let it hold a value stack.
+#       Move jump instruction handlers to jump detector. let it call value stack's pop
+#       when needed.
 class JumpDetector:
     """Detects jump behavior."""
 

@@ -271,3 +271,11 @@ class Symbol:
 
     def __repr__(self):
         return f"Symbol('{self.name}')"
+
+
+@dataclasses.dataclass
+class EventInfo:
+    type: Literal[Binding, Mutation, Deletion, JumpBackToLoopStart]
+    target: Symbol = None
+    sources: set[Symbol] = dataclasses.field(default_factory=set)
+    jump_target: int = None

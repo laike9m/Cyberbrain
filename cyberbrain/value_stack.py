@@ -28,6 +28,7 @@ from .basis import (
     Deletion,
     JumpBackToLoopStart,
     ExceptionInfo,
+    EventInfo,
 )
 from .block_stack import BlockStack, BlockType, Block
 
@@ -67,14 +68,6 @@ def emit_event(f):
 
     inner.emit_event = True
     return inner
-
-
-@dataclasses.dataclass
-class EventInfo:
-    type: Literal[Binding, Mutation, Deletion, JumpBackToLoopStart]
-    target: Symbol = None
-    sources: set[Symbol] = dataclasses.field(default_factory=set)
-    jump_target: int = None
 
 
 class Why(enum.Enum):
@@ -767,8 +760,12 @@ class BaseValueStack:
             self._push(enter_func)  # The return value of __enter__()
 
     def _return_jump_back_event_if_exists(self, instr):
+        return
         jump_target = utils.get_jump_target_or_none(instr)
         if jump_target is not None and jump_target < instr.offset:
+            print(
+                f"emit {EventInfo(type=JumpBackToLoopStart, jump_target=jump_target)}"
+            )
             return EventInfo(type=JumpBackToLoopStart, jump_target=jump_target)
 
     def _unwind_except_handler(self, b: Block):

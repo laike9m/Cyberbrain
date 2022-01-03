@@ -35,6 +35,10 @@ def test_for_loop(tracer, check_golden_file):
         a = 1
 
     tracer.stop()
+    #
+    # from cyberbrain.utils import pprint
+    #
+    # pprint(tracer.events)
 
     assert tracer.loops == [
         Loop(

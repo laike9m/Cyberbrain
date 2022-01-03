@@ -253,34 +253,37 @@ class Frame:
                 )
             )
         elif event_info.type is JumpBackToLoopStart:
-            # [start|end]_[offset|lineno] all refer to the current loop.
-            start_offset = event_info.jump_target
-            start_lineno = self.offset_to_lineno[start_offset]
-            end_offset = instr.offset
-            end_lineno = self.increasing_offset_to_lineno[end_offset]
-            self.events.append(
-                JumpBackToLoopStart(
-                    filename=self.filename,
-                    lineno=end_lineno,
-                    offset=instr.offset,
-                    index=len(self.events),
-                    jump_target=start_offset,
-                )
+            self.log_jump_back_event(instr, event_info)
+
+    def log_jump_back_event(self, instr: Instruction, event_info: EventInfo):
+        # [start|end]_[offset|lineno] all refer to the current loop.
+        start_offset = event_info.jump_target
+        start_lineno = self.offset_to_lineno[start_offset]
+        end_offset = instr.offset
+        end_lineno = self.increasing_offset_to_lineno[end_offset]
+        self.events.append(
+            JumpBackToLoopStart(
+                filename=self.filename,
+                lineno=end_lineno,
+                offset=instr.offset,
+                index=len(self.events),
+                jump_target=start_offset,
             )
-            if start_offset in self.loops:
-                self.loops[start_offset].end_offset = max(
-                    self.loops[start_offset].end_offset, end_offset
-                )
-                self.loops[start_offset].end_lineno = max(
-                    self.loops[start_offset].end_lineno, end_lineno
-                )
-            else:
-                self.loops[start_offset] = Loop(
-                    start_offset=start_offset,
-                    end_offset=end_offset,
-                    start_lineno=start_lineno,
-                    end_lineno=end_lineno,
-                )
+        )
+        if start_offset in self.loops:
+            self.loops[start_offset].end_offset = max(
+                self.loops[start_offset].end_offset, end_offset
+            )
+            self.loops[start_offset].end_lineno = max(
+                self.loops[start_offset].end_lineno, end_lineno
+            )
+        else:
+            self.loops[start_offset] = Loop(
+                start_offset=start_offset,
+                end_offset=end_offset,
+                start_lineno=start_lineno,
+                end_lineno=end_lineno,
+            )
 
     def _add_new_event(self, event: Event):
         target = event.target.name
