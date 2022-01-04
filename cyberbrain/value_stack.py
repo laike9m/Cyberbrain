@@ -170,9 +170,9 @@ def merge_stack_items(
     sources = []
     for item in stack_items:
         if not isinstance(item, SymbolStackItem):
-            # If any non-SymbolStackItem is encountered, it is returned. This can happen when
-            # an operation that usually combines SymbolStackItems is used on other items
-            # (e.g. comparing two exceptions using _BINARY_operation_handler).
+            # If any non-SymbolStackItem is encountered, it is returned. This can happen
+            # when an operation that usually combines SymbolStackItems is used on other
+            # items (e.g. comparing two exceptions using _BINARY_operation_handler).
             return item
         if item.start_lineno != -1:
             start_lineno = (
@@ -324,11 +324,9 @@ class BaseValueStack:
                 # affected by the change (if it has the same name with the
                 # modified symbol on the stack). A copy will make symbols
                 # isolated from each other.
-                newValue = value.copy()
-                self.stack.append(newValue)
-                continue
+                self.stack.append(value.copy())
             else:
-                raise Exception("Pushed an unknown item to the stack.")
+                raise ValueStackException("Pushed an unknown item to the stack.")
 
     def _pop(self, n=1, return_list=False):
         """Pops and returns n item from stack."""
