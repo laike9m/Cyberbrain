@@ -1,0 +1,309 @@
+{
+    "response": {
+        "metadata": {
+            "frame_id": "walrus_in_while",
+            "frame_name": "walrus_in_while",
+            "filename": "test_walrus.py",
+            "defined_lineno": 7
+        },
+        "identifiers": [
+            "i",
+            "a"
+        ],
+        "loops": [
+            {
+                "startOffset": 4,
+                "endOffset": 24,
+                "startLineno": 9,
+                "endLineno": 10
+            }
+        ],
+        "events": [
+            {
+                "lineno": 8,
+                "index": 0,
+                "offset": 2,
+                "filename": "test_walrus.py",
+                "id": "test_walrus_in_while:0",
+                "target": "i",
+                "value": "0",
+                "repr": "0",
+                "type": "Binding"
+            },
+            {
+                "lineno": 9,
+                "index": 1,
+                "offset": 12,
+                "filename": "test_walrus.py",
+                "id": "test_walrus_in_while:1",
+                "target": "i",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            },
+            {
+                "lineno": 10,
+                "index": 2,
+                "offset": 22,
+                "filename": "test_walrus.py",
+                "id": "test_walrus_in_while:2",
+                "target": "a",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            },
+            {
+                "lineno": 10,
+                "index": 3,
+                "offset": 24,
+                "filename": "test_walrus.py",
+                "id": "test_walrus_in_while:3",
+                "jump_target": 4,
+                "type": "JumpBackToLoopStart"
+            },
+            {
+                "lineno": 9,
+                "index": 4,
+                "offset": 12,
+                "filename": "test_walrus.py",
+                "id": "test_walrus_in_while:4",
+                "target": "i",
+                "value": "2",
+                "repr": "2",
+                "type": "Binding"
+            },
+            {
+                "lineno": 10,
+                "index": 5,
+                "offset": 22,
+                "filename": "test_walrus.py",
+                "id": "test_walrus_in_while:5",
+                "target": "a",
+                "value": "2",
+                "repr": "2",
+                "type": "Binding"
+            },
+            {
+                "lineno": 10,
+                "index": 6,
+                "offset": 24,
+                "filename": "test_walrus.py",
+                "id": "test_walrus_in_while:6",
+                "jump_target": 4,
+                "type": "JumpBackToLoopStart"
+            },
+            {
+                "lineno": 9,
+                "index": 7,
+                "offset": 12,
+                "filename": "test_walrus.py",
+                "id": "test_walrus_in_while:7",
+                "target": "i",
+                "value": "3",
+                "repr": "3",
+                "type": "Binding"
+            },
+            {
+                "lineno": 10,
+                "index": 8,
+                "offset": 28,
+                "filename": "test_walrus.py",
+                "id": "test_walrus_in_while:8",
+                "value": "null",
+                "repr": "None",
+                "type": "Return"
+            }
+        ],
+        "tracingResult": {
+            "test_walrus_in_while:1": [
+                "test_walrus_in_while:0"
+            ],
+            "test_walrus_in_while:2": [
+                "test_walrus_in_while:1"
+            ],
+            "test_walrus_in_while:4": [
+                "test_walrus_in_while:1"
+            ],
+            "test_walrus_in_while:5": [
+                "test_walrus_in_while:4"
+            ],
+            "test_walrus_in_while:7": [
+                "test_walrus_in_while:4"
+            ]
+        }
+    },
+    "tracer.events": [
+        {
+            "lineno": 8,
+            "index": 0,
+            "offset": 2,
+            "filename": "test_walrus.py",
+            "id": "test_walrus_in_while:0",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 9,
+            "index": 1,
+            "offset": 12,
+            "filename": "test_walrus.py",
+            "id": "test_walrus_in_while:1",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "i": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 10,
+            "index": 2,
+            "offset": 22,
+            "filename": "test_walrus.py",
+            "id": "test_walrus_in_while:2",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "i": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 10,
+            "index": 3,
+            "offset": 24,
+            "filename": "test_walrus.py",
+            "id": "test_walrus_in_while:3",
+            "jump_target": 4,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 9,
+            "index": 4,
+            "offset": 12,
+            "filename": "test_walrus.py",
+            "id": "test_walrus_in_while:4",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "i": 1,
+                            "a": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 10,
+            "index": 5,
+            "offset": 22,
+            "filename": "test_walrus.py",
+            "id": "test_walrus_in_while:5",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "i": 2,
+                            "a": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 10,
+            "index": 6,
+            "offset": 24,
+            "filename": "test_walrus.py",
+            "id": "test_walrus_in_while:6",
+            "jump_target": 4,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 9,
+            "index": 7,
+            "offset": 12,
+            "filename": "test_walrus.py",
+            "id": "test_walrus_in_while:7",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "3",
+            "repr": "3",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "i": 2,
+                            "a": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 10,
+            "index": 8,
+            "offset": 28,
+            "filename": "test_walrus.py",
+            "id": "test_walrus_in_while:8",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
+}

@@ -11,6 +11,7 @@ _python_version = sys.version_info[:2]
 
 if _python_version == (3, 7):
     collect_ignore.append("test/test_block_py38.py")
+    collect_ignore.append("test/test_walrus.py")
 
 if _python_version == (3, 10):
     collect_ignore.append("test/test_generator.py")
