@@ -115,6 +115,10 @@ def map_bytecode_offset_to_lineno(frame: FrameType) -> dict[int, int]:
                 break
             mapping[offset] = lineno
 
+    # This is for handling GEN_START, which is at offset 0 without a lineno.
+    if 0 not in mapping:
+        mapping[0] = mapping[2]
+
     return mapping
 
 

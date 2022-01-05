@@ -1,10 +1,10 @@
 {
     "response": {
         "metadata": {
-            "frame_id": "generator_function",
-            "frame_name": "generator_function",
+            "frame_id": "generator_function_send",
+            "frame_name": "generator_function_send",
             "filename": "test_generator.py",
-            "defined_lineno": 7
+            "defined_lineno": 22
         },
         "identifiers": [
             "count",
@@ -12,113 +12,104 @@
         ],
         "loops": [
             {
-                "startOffset": 0,
-                "endOffset": 22,
-                "startLineno": 8,
-                "endLineno": 10
+                "startOffset": 10,
+                "endOffset": 30,
+                "startLineno": 24,
+                "endLineno": 25
             }
         ],
         "events": [
             {
-                "lineno": 7,
+                "lineno": 22,
                 "index": 0,
-                "offset": 0,
+                "offset": 2,
                 "filename": "test_generator.py",
-                "id": "test_generator_function:0",
+                "id": "test_generator_function_send:0",
                 "target": "count",
                 "value": "2",
                 "repr": "2",
                 "type": "InitialValue"
             },
             {
-                "lineno": 9,
+                "lineno": 24,
                 "index": 1,
-                "offset": 12,
+                "offset": 14,
                 "filename": "test_generator.py",
-                "id": "test_generator_function:1",
+                "id": "test_generator_function_send:1",
                 "target": "x",
                 "value": "\"foo\"",
                 "repr": "\"foo\"",
                 "type": "Binding"
             },
             {
-                "lineno": 10,
+                "lineno": 25,
                 "index": 2,
-                "offset": 20,
+                "offset": 22,
                 "filename": "test_generator.py",
-                "id": "test_generator_function:2",
+                "id": "test_generator_function_send:2",
                 "target": "count",
                 "value": "1",
                 "repr": "1",
                 "type": "Binding"
             },
             {
-                "lineno": 10,
+                "lineno": 25,
                 "index": 3,
-                "offset": 22,
+                "offset": 30,
                 "filename": "test_generator.py",
-                "id": "test_generator_function:3",
-                "jump_target": 0,
+                "id": "test_generator_function_send:3",
+                "jump_target": 10,
                 "type": "JumpBackToLoopStart"
             },
             {
-                "lineno": 9,
+                "lineno": 24,
                 "index": 4,
-                "offset": 12,
+                "offset": 14,
                 "filename": "test_generator.py",
-                "id": "test_generator_function:4",
+                "id": "test_generator_function_send:4",
                 "target": "x",
                 "value": "null",
                 "repr": "None",
                 "type": "Binding"
             },
             {
-                "lineno": 10,
+                "lineno": 25,
                 "index": 5,
-                "offset": 20,
+                "offset": 22,
                 "filename": "test_generator.py",
-                "id": "test_generator_function:5",
+                "id": "test_generator_function_send:5",
                 "target": "count",
                 "value": "0",
                 "repr": "0",
                 "type": "Binding"
             },
             {
-                "lineno": 10,
+                "lineno": 23,
                 "index": 6,
-                "offset": 22,
+                "offset": 34,
                 "filename": "test_generator.py",
-                "id": "test_generator_function:6",
-                "jump_target": 0,
-                "type": "JumpBackToLoopStart"
-            },
-            {
-                "lineno": 10,
-                "index": 7,
-                "offset": 26,
-                "filename": "test_generator.py",
-                "id": "test_generator_function:7",
+                "id": "test_generator_function_send:6",
                 "value": "null",
                 "repr": "None",
                 "type": "Return"
             }
         ],
         "tracingResult": {
-            "test_generator_function:2": [
-                "test_generator_function:0"
+            "test_generator_function_send:2": [
+                "test_generator_function_send:0"
             ],
-            "test_generator_function:5": [
-                "test_generator_function:2"
+            "test_generator_function_send:5": [
+                "test_generator_function_send:2"
             ]
         }
     },
     "tracer.events": [
         {
-            "lineno": 7,
+            "lineno": 22,
             "index": 0,
-            "offset": 0,
+            "offset": 2,
             "filename": "test_generator.py",
-            "id": "test_generator_function:0",
+            "id": "test_generator_function_send:0",
             "target": {
                 "name": "count",
                 "snapshot": null
@@ -128,11 +119,11 @@
             "__class__": "InitialValue"
         },
         {
-            "lineno": 9,
+            "lineno": 24,
             "index": 1,
-            "offset": 12,
+            "offset": 14,
             "filename": "test_generator.py",
-            "id": "test_generator_function:1",
+            "id": "test_generator_function_send:1",
             "target": {
                 "name": "x",
                 "snapshot": null
@@ -143,11 +134,11 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 10,
+            "lineno": 25,
             "index": 2,
-            "offset": 20,
+            "offset": 22,
             "filename": "test_generator.py",
-            "id": "test_generator_function:2",
+            "id": "test_generator_function_send:2",
             "target": {
                 "name": "count",
                 "snapshot": null
@@ -169,20 +160,20 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 10,
+            "lineno": 25,
             "index": 3,
-            "offset": 22,
+            "offset": 30,
             "filename": "test_generator.py",
-            "id": "test_generator_function:3",
-            "jump_target": 0,
+            "id": "test_generator_function_send:3",
+            "jump_target": 10,
             "__class__": "JumpBackToLoopStart"
         },
         {
-            "lineno": 9,
+            "lineno": 24,
             "index": 4,
-            "offset": 12,
+            "offset": 14,
             "filename": "test_generator.py",
-            "id": "test_generator_function:4",
+            "id": "test_generator_function_send:4",
             "target": {
                 "name": "x",
                 "snapshot": null
@@ -193,11 +184,11 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 10,
+            "lineno": 25,
             "index": 5,
-            "offset": 20,
+            "offset": 22,
             "filename": "test_generator.py",
-            "id": "test_generator_function:5",
+            "id": "test_generator_function_send:5",
             "target": {
                 "name": "count",
                 "snapshot": null
@@ -219,20 +210,11 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 10,
+            "lineno": 23,
             "index": 6,
-            "offset": 22,
+            "offset": 34,
             "filename": "test_generator.py",
-            "id": "test_generator_function:6",
-            "jump_target": 0,
-            "__class__": "JumpBackToLoopStart"
-        },
-        {
-            "lineno": 10,
-            "index": 7,
-            "offset": 26,
-            "filename": "test_generator.py",
-            "id": "test_generator_function:7",
+            "id": "test_generator_function_send:6",
             "value": "null",
             "repr": "None",
             "sources": [],

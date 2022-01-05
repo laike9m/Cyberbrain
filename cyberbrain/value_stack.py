@@ -1377,7 +1377,17 @@ class Py39ValueStack(Py38ValueStack):
 
 class Py310ValueStack(Py39ValueStack):
     def _GEN_START_handler(self):
-        """Left unhandled for now."""
+        """
+        We should pop tos, but since tos is pushed outside of the function,
+        there's nothing to pop.
+        https://github.com/python/cpython/blob/3.10/Objects/genobject.c#L193-L197
+
+        Note that GEN_START is removed again in 3.11 (replaced by POP_TOP)
+        https://github.com/python/cpython/pull/30367
+        Generator function will fail by then.
+        TODO: Modify POP_TOP to bear with empty stack when 3.11 comes out.
+        """
+        pass
 
 
 def create_value_stack():
