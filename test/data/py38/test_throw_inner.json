@@ -1,0 +1,66 @@
+{
+    "response": {
+        "metadata": {
+            "frame_id": "test_throw_inner",
+            "frame_name": "test_throw_inner",
+            "filename": "test_normal_exceptions.py",
+            "defined_lineno": 22
+        },
+        "identifiers": [
+            "a"
+        ],
+        "loops": [],
+        "events": [
+            {
+                "lineno": 24,
+                "index": 0,
+                "offset": 18,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_throw:0",
+                "target": "a",
+                "value": "{}",
+                "repr": "ZeroDivisionError('A')",
+                "type": "Binding"
+            },
+            {
+                "lineno": 26,
+                "index": 1,
+                "offset": 44,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_throw:1",
+                "value": "null",
+                "repr": "None",
+                "type": "Return"
+            }
+        ],
+        "tracingResult": {}
+    },
+    "tracer.events": [
+        {
+            "lineno": 24,
+            "index": 0,
+            "offset": 18,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_throw:0",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "ZeroDivisionError('A')",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 26,
+            "index": 1,
+            "offset": 44,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_throw:1",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
+}

@@ -1,0 +1,246 @@
+{
+    "response": {
+        "metadata": {
+            "frame_id": "test_simple",
+            "frame_name": "test_simple",
+            "filename": "test_normal_exceptions.py",
+            "defined_lineno": 3
+        },
+        "identifiers": [
+            "CustomException",
+            "a",
+            "b",
+            "c"
+        ],
+        "loops": [],
+        "events": [
+            {
+                "lineno": 5,
+                "index": 0,
+                "offset": 22,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_simple:0",
+                "target": "CustomException",
+                "value": "{\"py/type\":\"test_normal_exceptions.test_simple.<locals>.CustomException\"}",
+                "repr": "<class 'test_normal_exceptio...le.<locals>.CustomException'>",
+                "type": "Binding"
+            },
+            {
+                "lineno": 7,
+                "index": 1,
+                "offset": 30,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_simple:1",
+                "target": "a",
+                "value": "{}",
+                "repr": "ImportError('A')",
+                "type": "Binding"
+            },
+            {
+                "lineno": 8,
+                "index": 2,
+                "offset": 38,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_simple:2",
+                "target": "b",
+                "value": "{}",
+                "repr": "CustomException('B')",
+                "type": "Binding"
+            },
+            {
+                "lineno": 9,
+                "index": 3,
+                "offset": 44,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_simple:3",
+                "target": "c",
+                "value": "{}",
+                "repr": "AssertionError()",
+                "type": "Binding"
+            },
+            {
+                "lineno": 13,
+                "index": 4,
+                "offset": 72,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_simple:4",
+                "target": "c",
+                "value": "{}",
+                "repr": "CustomException('B')",
+                "type": "Binding"
+            },
+            {
+                "lineno": 15,
+                "index": 5,
+                "offset": 82,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_simple:5",
+                "target": "a",
+                "type": "Deletion"
+            },
+            {
+                "lineno": 16,
+                "index": 6,
+                "offset": 84,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_simple:6",
+                "target": "b",
+                "type": "Deletion"
+            },
+            {
+                "lineno": 17,
+                "index": 7,
+                "offset": 86,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_simple:7",
+                "target": "c",
+                "type": "Deletion"
+            }
+        ],
+        "tracingResult": {
+            "test_simple:2": [
+                "test_simple:0"
+            ],
+            "test_simple:4": [
+                "test_simple:2"
+            ]
+        }
+    },
+    "tracer.events": [
+        {
+            "lineno": 5,
+            "index": 0,
+            "offset": 22,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_simple:0",
+            "target": {
+                "name": "CustomException",
+                "snapshot": null
+            },
+            "value": "{\"py/type\":\"test_normal_exceptions.test_simple.<locals>.CustomException\"}",
+            "repr": "<class 'test_normal_exceptio...le.<locals>.CustomException'>",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 7,
+            "index": 1,
+            "offset": 30,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_simple:1",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "ImportError('A')",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 8,
+            "index": 2,
+            "offset": 38,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_simple:2",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "CustomException('B')",
+            "sources": [
+                {
+                    "name": "CustomException",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "CustomException": 0,
+                            "a": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 9,
+            "index": 3,
+            "offset": 44,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_simple:3",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "AssertionError()",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 13,
+            "index": 4,
+            "offset": 72,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_simple:4",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "CustomException('B')",
+            "sources": [
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "CustomException": 0,
+                            "a": 0,
+                            "b": 0,
+                            "c": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 15,
+            "index": 5,
+            "offset": 82,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_simple:5",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "__class__": "Deletion"
+        },
+        {
+            "lineno": 16,
+            "index": 6,
+            "offset": 84,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_simple:6",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
+            "__class__": "Deletion"
+        },
+        {
+            "lineno": 17,
+            "index": 7,
+            "offset": 86,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_simple:7",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
+            "__class__": "Deletion"
+        }
+    ]
+}

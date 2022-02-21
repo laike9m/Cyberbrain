@@ -155,7 +155,15 @@ class SymbolWithCustomValueStackItem(SymbolStackItem, CustomValueStackItem):
         )
 
     def __repr__(self) -> str:
-        return "SymbolWithCustomValueStackItem{" + repr(self.custom_value) + "}"
+        return (
+            "SymbolWithCustomValueStackItem{"
+            + repr(self.start_lineno)
+            + " "
+            + repr(self.sources)
+            + "}{"
+            + repr(self.custom_value)
+            + "}"
+        )
 
 
 def merge_stack_items(
@@ -168,12 +176,17 @@ def merge_stack_items(
     """
     start_lineno = -1
     sources = []
+    has_custom_value = False
+    custom_value = None
     for item in stack_items:
         if not isinstance(item, SymbolStackItem):
             # If any non-SymbolStackItem is encountered, it is returned. This can happen
             # when an operation that usually combines SymbolStackItems is used on other
             # items (e.g. comparing two exceptions using _BINARY_operation_handler).
             return item
+        if isinstance(item, SymbolWithCustomValueStackItem):
+            has_custom_value = True
+            custom_value = item.custom_value
         if item.start_lineno != -1:
             start_lineno = (
                 min(item.start_lineno, start_lineno)
@@ -181,6 +194,8 @@ def merge_stack_items(
                 else item.start_lineno
             )
         sources.extend(item.sources)
+    if has_custom_value:
+        return SymbolWithCustomValueStackItem(start_lineno, sources, custom_value)
     return SymbolStackItem(start_lineno, sources)
 
 
@@ -685,8 +700,18 @@ class BaseValueStack:
         val = utils.get_value_from_frame(name, frame)
 
         if utils.is_exception(val):
-            # Keeps exceptions as they are so that they can be identified.
-            return CustomValueStackItem(val)
+            # Exceptions can be thrown or be the value of normal variable
+            # so using the flexible class to store on stack.
+            if name in frame.f_builtins:
+                # Built-in exception class or instance
+                return SymbolWithCustomValueStackItem(self.last_starts_line, [], val)
+            else:
+                # User defined exception class or instance
+                return SymbolWithCustomValueStackItem(
+                    self.last_starts_line,
+                    [Symbol(name=name, snapshot=self.snapshot)],
+                    val,
+                )
 
         if utils.should_ignore_event(target=name, value=val, frame=frame):
             return self._placeholder
@@ -1133,7 +1158,11 @@ class Py37ValueStack(BaseValueStack):
             ):
                 self._push_block(BlockType.EXCEPT_HANDLER)
                 self._push(CustomValueStackItem(self.last_exception.traceback))
-                self._push(CustomValueStackItem(self.last_exception.value))
+                self._push(
+                    SymbolWithCustomValueStackItem(
+                        self.last_starts_line, [], self.last_exception.value
+                    )
+                )
                 if self.last_exception.type is not NULL:
                     self._push(CustomValueStackItem(self.last_exception.type))
                 else:
@@ -1147,7 +1176,7 @@ class Py37ValueStack(BaseValueStack):
                 # PyErr_NormalizeException is ignored, add it if needed.
                 self._push(
                     CustomValueStackItem(tb),
-                    CustomValueStackItem(value),
+                    SymbolWithCustomValueStackItem(self.last_starts_line, [], value),
                     CustomValueStackItem(exc_type),
                 )
                 self.why = Why.NOT
@@ -1310,12 +1339,12 @@ class Py38ValueStack(Py37ValueStack):
                 )
                 self._push(
                     CustomValueStackItem(tb),
-                    CustomValueStackItem(value),
+                    SymbolWithCustomValueStackItem(self.last_starts_line, [], value),
                     CustomValueStackItem(exc_type),
                 )
                 self._push(
                     CustomValueStackItem(tb),
-                    CustomValueStackItem(value),
+                    SymbolWithCustomValueStackItem(self.last_starts_line, [], value),
                     CustomValueStackItem(exc_type),
                 )
                 break  # goto main_loop.
