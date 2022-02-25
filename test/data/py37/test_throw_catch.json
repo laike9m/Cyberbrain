@@ -4,7 +4,7 @@
             "frame_id": "test_throw_catch",
             "frame_name": "test_throw_catch",
             "filename": "test_normal_exceptions.py",
-            "defined_lineno": 30
+            "defined_lineno": 37
         },
         "identifiers": [
             "b",
@@ -14,7 +14,7 @@
         "loops": [],
         "events": [
             {
-                "lineno": 32,
+                "lineno": 39,
                 "index": 0,
                 "offset": 14,
                 "filename": "test_normal_exceptions.py",
@@ -25,7 +25,7 @@
                 "type": "Binding"
             },
             {
-                "lineno": 35,
+                "lineno": 42,
                 "index": 1,
                 "offset": 26,
                 "filename": "test_normal_exceptions.py",
@@ -36,9 +36,9 @@
                 "type": "Binding"
             },
             {
-                "lineno": 36,
+                "lineno": 45,
                 "index": 2,
-                "offset": 84,
+                "offset": 90,
                 "filename": "test_normal_exceptions.py",
                 "id": "test_throw_catch:2",
                 "target": "e",
@@ -47,86 +47,55 @@
                 "type": "Binding"
             },
             {
-                "lineno": 40,
+                "lineno": 47,
                 "index": 3,
-                "offset": 100,
+                "offset": 98,
                 "filename": "test_normal_exceptions.py",
                 "id": "test_throw_catch:3",
-                "target": "e",
-                "value": "null",
-                "repr": "None",
-                "type": "Binding"
-            },
-            {
-                "lineno": 40,
-                "index": 4,
-                "offset": 102,
-                "filename": "test_normal_exceptions.py",
-                "id": "test_throw_catch:4",
-                "target": "e",
-                "type": "Deletion"
-            },
-            {
-                "lineno": 40,
-                "index": 5,
-                "offset": 126,
-                "filename": "test_normal_exceptions.py",
-                "id": "test_throw_catch:5",
-                "target": "e",
-                "value": "{}",
-                "repr": "RuntimeError('A')",
-                "type": "Binding"
-            },
-            {
-                "lineno": 42,
-                "index": 6,
-                "offset": 134,
-                "filename": "test_normal_exceptions.py",
-                "id": "test_throw_catch:6",
                 "target": "b",
                 "value": "{}",
                 "repr": "RuntimeError('A')",
                 "type": "Binding"
             },
             {
-                "lineno": 42,
-                "index": 7,
-                "offset": 142,
+                "lineno": 47,
+                "index": 4,
+                "offset": 106,
                 "filename": "test_normal_exceptions.py",
-                "id": "test_throw_catch:7",
+                "id": "test_throw_catch:4",
                 "target": "e",
                 "value": "null",
                 "repr": "None",
                 "type": "Binding"
             },
             {
-                "lineno": 42,
-                "index": 8,
-                "offset": 144,
+                "lineno": 47,
+                "index": 5,
+                "offset": 108,
                 "filename": "test_normal_exceptions.py",
-                "id": "test_throw_catch:8",
+                "id": "test_throw_catch:5",
                 "target": "e",
                 "type": "Deletion"
             },
             {
-                "lineno": 44,
-                "index": 9,
-                "offset": 162,
+                "lineno": 49,
+                "index": 6,
+                "offset": 126,
                 "filename": "test_normal_exceptions.py",
-                "id": "test_throw_catch:9",
+                "id": "test_throw_catch:6",
                 "target": "b",
                 "type": "Deletion"
             }
         ],
         "tracingResult": {
-            "test_throw_catch:6": [
-                "test_throw_catch:5"
+            "test_throw_catch:3": [
+                "test_throw_catch:2"
             ]
         }
     },
     "tracer.events": [
         {
-            "lineno": 32,
+            "lineno": 39,
             "index": 0,
             "offset": 14,
             "filename": "test_normal_exceptions.py",
@@ -141,7 +110,7 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 35,
+            "lineno": 42,
             "index": 1,
             "offset": 26,
             "filename": "test_normal_exceptions.py",
@@ -156,9 +125,9 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 36,
+            "lineno": 45,
             "index": 2,
-            "offset": 84,
+            "offset": 90,
             "filename": "test_normal_exceptions.py",
             "id": "test_throw_catch:2",
             "target": {
@@ -171,53 +140,11 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 40,
+            "lineno": 47,
             "index": 3,
-            "offset": 100,
+            "offset": 98,
             "filename": "test_normal_exceptions.py",
             "id": "test_throw_catch:3",
-            "target": {
-                "name": "e",
-                "snapshot": null
-            },
-            "value": "null",
-            "repr": "None",
-            "sources": [],
-            "__class__": "Binding"
-        },
-        {
-            "lineno": 40,
-            "index": 4,
-            "offset": 102,
-            "filename": "test_normal_exceptions.py",
-            "id": "test_throw_catch:4",
-            "target": {
-                "name": "e",
-                "snapshot": null
-            },
-            "__class__": "Deletion"
-        },
-        {
-            "lineno": 40,
-            "index": 5,
-            "offset": 126,
-            "filename": "test_normal_exceptions.py",
-            "id": "test_throw_catch:5",
-            "target": {
-                "name": "e",
-                "snapshot": null
-            },
-            "value": "{}",
-            "repr": "RuntimeError('A')",
-            "sources": [],
-            "__class__": "Binding"
-        },
-        {
-            "lineno": 42,
-            "index": 6,
-            "offset": 134,
-            "filename": "test_normal_exceptions.py",
-            "id": "test_throw_catch:6",
             "target": {
                 "name": "b",
                 "snapshot": null
@@ -232,7 +159,7 @@
                         "events_pointer": {
                             "b": 0,
                             "a": 0,
-                            "e": 3
+                            "e": 0
                         }
                     }
                 }
@@ -240,11 +167,11 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 42,
-            "index": 7,
-            "offset": 142,
+            "lineno": 47,
+            "index": 4,
+            "offset": 106,
             "filename": "test_normal_exceptions.py",
-            "id": "test_throw_catch:7",
+            "id": "test_throw_catch:4",
             "target": {
                 "name": "e",
                 "snapshot": null
@@ -255,11 +182,11 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 42,
-            "index": 8,
-            "offset": 144,
+            "lineno": 47,
+            "index": 5,
+            "offset": 108,
             "filename": "test_normal_exceptions.py",
-            "id": "test_throw_catch:8",
+            "id": "test_throw_catch:5",
             "target": {
                 "name": "e",
                 "snapshot": null
@@ -267,11 +194,11 @@
             "__class__": "Deletion"
         },
         {
-            "lineno": 44,
-            "index": 9,
-            "offset": 162,
+            "lineno": 49,
+            "index": 6,
+            "offset": 126,
             "filename": "test_normal_exceptions.py",
-            "id": "test_throw_catch:9",
+            "id": "test_throw_catch:6",
             "target": {
                 "name": "b",
                 "snapshot": null

@@ -4,7 +4,7 @@
             "frame_id": "test_throw_custom_inner",
             "frame_name": "test_throw_custom_inner",
             "filename": "test_normal_exceptions.py",
-            "defined_lineno": 52
+            "defined_lineno": 58
         },
         "identifiers": [
             "CustomException",
@@ -25,7 +25,7 @@
                 "type": "InitialValue"
             },
             {
-                "lineno": 54,
+                "lineno": 60,
                 "index": 1,
                 "offset": 18,
                 "filename": "test_normal_exceptions.py",
@@ -36,7 +36,7 @@
                 "type": "Binding"
             },
             {
-                "lineno": 55,
+                "lineno": 61,
                 "index": 2,
                 "offset": 22,
                 "filename": "test_normal_exceptions.py",
@@ -47,7 +47,7 @@
                 "type": "Binding"
             },
             {
-                "lineno": 56,
+                "lineno": 62,
                 "index": 3,
                 "offset": 24,
                 "filename": "test_normal_exceptions.py",
@@ -56,7 +56,7 @@
                 "type": "Deletion"
             },
             {
-                "lineno": 58,
+                "lineno": 64,
                 "index": 4,
                 "offset": 50,
                 "filename": "test_normal_exceptions.py",
@@ -91,7 +91,7 @@
             "__class__": "InitialValue"
         },
         {
-            "lineno": 54,
+            "lineno": 60,
             "index": 1,
             "offset": 18,
             "filename": "test_normal_exceptions.py",
@@ -116,7 +116,7 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 55,
+            "lineno": 61,
             "index": 2,
             "offset": 22,
             "filename": "test_normal_exceptions.py",
@@ -142,7 +142,7 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 56,
+            "lineno": 62,
             "index": 3,
             "offset": 24,
             "filename": "test_normal_exceptions.py",
@@ -154,7 +154,7 @@
             "__class__": "Deletion"
         },
         {
-            "lineno": 58,
+            "lineno": 64,
             "index": 4,
             "offset": 50,
             "filename": "test_normal_exceptions.py",

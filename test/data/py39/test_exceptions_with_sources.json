@@ -1,0 +1,1967 @@
+{
+    "response": {
+        "metadata": {
+            "frame_id": "test_exceptions_with_sources",
+            "frame_name": "test_exceptions_with_sources",
+            "filename": "test_normal_exceptions.py",
+            "defined_lineno": 85
+        },
+        "identifiers": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "p",
+            "i",
+            "e"
+        ],
+        "loops": [
+            {
+                "startOffset": 60,
+                "endOffset": 96,
+                "startLineno": 92,
+                "endLineno": 95
+            },
+            {
+                "startOffset": 106,
+                "endOffset": 120,
+                "startLineno": 96,
+                "endLineno": 97
+            }
+        ],
+        "events": [
+            {
+                "lineno": 87,
+                "index": 0,
+                "offset": 10,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:0",
+                "target": "a",
+                "value": "\"A\"",
+                "repr": "\"A\"",
+                "type": "Binding"
+            },
+            {
+                "lineno": 88,
+                "index": 1,
+                "offset": 18,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:1",
+                "target": "b",
+                "value": "{}",
+                "repr": "ImportError('A')",
+                "type": "Binding"
+            },
+            {
+                "lineno": 89,
+                "index": 2,
+                "offset": 26,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:2",
+                "target": "c",
+                "value": "{}",
+                "repr": "ImportError(ImportError('A'))",
+                "type": "Binding"
+            },
+            {
+                "lineno": 90,
+                "index": 3,
+                "offset": 46,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:3",
+                "target": "d",
+                "value": "{}",
+                "repr": "ImportError('AA')",
+                "type": "Binding"
+            },
+            {
+                "lineno": 91,
+                "index": 4,
+                "offset": 50,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:4",
+                "target": "p",
+                "value": "[]",
+                "repr": "[]",
+                "type": "Binding"
+            },
+            {
+                "lineno": 92,
+                "index": 5,
+                "offset": 62,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:5",
+                "target": "i",
+                "value": "0",
+                "repr": "0",
+                "type": "Binding"
+            },
+            {
+                "lineno": 93,
+                "index": 6,
+                "offset": 70,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:6",
+                "target": "e",
+                "value": "{}",
+                "repr": "ImportError(0)",
+                "type": "Binding"
+            },
+            {
+                "lineno": 94,
+                "index": 7,
+                "offset": 78,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:7",
+                "target": "p",
+                "value": "[{}]",
+                "repr": "[ImportError(0)]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 95,
+                "index": 8,
+                "offset": 92,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:8",
+                "target": "p",
+                "value": "[{},{}]",
+                "repr": "[ImportError(0), ImportError(ImportError('AA'))]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 95,
+                "index": 9,
+                "offset": 96,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:9",
+                "jump_target": 60,
+                "type": "JumpBackToLoopStart"
+            },
+            {
+                "lineno": 92,
+                "index": 10,
+                "offset": 62,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:10",
+                "target": "i",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            },
+            {
+                "lineno": 93,
+                "index": 11,
+                "offset": 70,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:11",
+                "target": "e",
+                "value": "{}",
+                "repr": "ImportError(1)",
+                "type": "Binding"
+            },
+            {
+                "lineno": 94,
+                "index": 12,
+                "offset": 78,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:12",
+                "target": "p",
+                "value": "[{},{},{}]",
+                "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1)]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 95,
+                "index": 13,
+                "offset": 92,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:13",
+                "target": "p",
+                "value": "[{},{},{},{}]",
+                "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ImportError(ImportError('AA'))]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 95,
+                "index": 14,
+                "offset": 96,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:14",
+                "jump_target": 60,
+                "type": "JumpBackToLoopStart"
+            },
+            {
+                "lineno": 92,
+                "index": 15,
+                "offset": 62,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:15",
+                "target": "i",
+                "value": "2",
+                "repr": "2",
+                "type": "Binding"
+            },
+            {
+                "lineno": 93,
+                "index": 16,
+                "offset": 70,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:16",
+                "target": "e",
+                "value": "{}",
+                "repr": "ImportError(2)",
+                "type": "Binding"
+            },
+            {
+                "lineno": 94,
+                "index": 17,
+                "offset": 78,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:17",
+                "target": "p",
+                "value": "[{},{},{},{},{}]",
+                "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ImportError(ImportError('AA')), ImportError(2)]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 95,
+                "index": 18,
+                "offset": 92,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:18",
+                "target": "p",
+                "value": "[{},{},{},{},{},{}]",
+                "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ImportError(ImportError('AA')), ImportError(2), ImportError(ImportError('AA'))]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 95,
+                "index": 19,
+                "offset": 96,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:19",
+                "jump_target": 60,
+                "type": "JumpBackToLoopStart"
+            },
+            {
+                "lineno": 92,
+                "index": 20,
+                "offset": 62,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:20",
+                "target": "i",
+                "value": "3",
+                "repr": "3",
+                "type": "Binding"
+            },
+            {
+                "lineno": 93,
+                "index": 21,
+                "offset": 70,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:21",
+                "target": "e",
+                "value": "{}",
+                "repr": "ImportError(3)",
+                "type": "Binding"
+            },
+            {
+                "lineno": 94,
+                "index": 22,
+                "offset": 78,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:22",
+                "target": "p",
+                "value": "[{},{},{},{},{},{},{}]",
+                "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ..., ImportError(2), ImportError(ImportError('AA')), ImportError(3)]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 95,
+                "index": 23,
+                "offset": 92,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:23",
+                "target": "p",
+                "value": "[{},{},{},{},{},{},{},{}]",
+                "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ..., ImportError(ImportError('AA')), ImportError(3), ImportError(ImportError('AA'))]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 95,
+                "index": 24,
+                "offset": 96,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:24",
+                "jump_target": 60,
+                "type": "JumpBackToLoopStart"
+            },
+            {
+                "lineno": 92,
+                "index": 25,
+                "offset": 62,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:25",
+                "target": "i",
+                "value": "4",
+                "repr": "4",
+                "type": "Binding"
+            },
+            {
+                "lineno": 93,
+                "index": 26,
+                "offset": 70,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:26",
+                "target": "e",
+                "value": "{}",
+                "repr": "ImportError(4)",
+                "type": "Binding"
+            },
+            {
+                "lineno": 94,
+                "index": 27,
+                "offset": 78,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:27",
+                "target": "p",
+                "value": "[{},{},{},{},{},{},{},{},{}]",
+                "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ..., ImportError(3), ImportError(ImportError('AA')), ImportError(4)]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 95,
+                "index": 28,
+                "offset": 92,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:28",
+                "target": "p",
+                "value": "[{},{},{},{},{},{},{},{},{},{}]",
+                "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ..., ImportError(ImportError('AA')), ImportError(4), ImportError(ImportError('AA'))]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 95,
+                "index": 29,
+                "offset": 96,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:29",
+                "jump_target": 60,
+                "type": "JumpBackToLoopStart"
+            },
+            {
+                "lineno": 96,
+                "index": 30,
+                "offset": 108,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:30",
+                "target": "i",
+                "value": "0",
+                "repr": "0",
+                "type": "Binding"
+            },
+            {
+                "lineno": 97,
+                "index": 31,
+                "offset": 118,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:31",
+                "target": "p",
+                "value": "[{},{},{},{},{},{},{},{},{}]",
+                "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ..., ImportError(ImportError('AA')), ImportError(4), ImportError(ImportError('AA'))]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 97,
+                "index": 32,
+                "offset": 120,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:32",
+                "jump_target": 106,
+                "type": "JumpBackToLoopStart"
+            },
+            {
+                "lineno": 96,
+                "index": 33,
+                "offset": 108,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:33",
+                "target": "i",
+                "value": "1",
+                "repr": "1",
+                "type": "Binding"
+            },
+            {
+                "lineno": 97,
+                "index": 34,
+                "offset": 118,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:34",
+                "target": "p",
+                "value": "[{},{},{},{},{},{},{},{}]",
+                "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ..., ImportError(ImportError('AA')), ImportError(4), ImportError(ImportError('AA'))]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 97,
+                "index": 35,
+                "offset": 120,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:35",
+                "jump_target": 106,
+                "type": "JumpBackToLoopStart"
+            },
+            {
+                "lineno": 96,
+                "index": 36,
+                "offset": 108,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:36",
+                "target": "i",
+                "value": "2",
+                "repr": "2",
+                "type": "Binding"
+            },
+            {
+                "lineno": 97,
+                "index": 37,
+                "offset": 118,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:37",
+                "target": "p",
+                "value": "[{},{},{},{},{},{},{}]",
+                "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(ImportError('AA')), ..., ImportError(ImportError('AA')), ImportError(4), ImportError(ImportError('AA'))]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 97,
+                "index": 38,
+                "offset": 120,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:38",
+                "jump_target": 106,
+                "type": "JumpBackToLoopStart"
+            },
+            {
+                "lineno": 96,
+                "index": 39,
+                "offset": 108,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:39",
+                "target": "i",
+                "value": "3",
+                "repr": "3",
+                "type": "Binding"
+            },
+            {
+                "lineno": 97,
+                "index": 40,
+                "offset": 118,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:40",
+                "target": "p",
+                "value": "[{},{},{},{},{},{}]",
+                "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(3), ImportError(ImportError('AA')), ImportError(4), ImportError(ImportError('AA'))]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 97,
+                "index": 41,
+                "offset": 120,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:41",
+                "jump_target": 106,
+                "type": "JumpBackToLoopStart"
+            },
+            {
+                "lineno": 96,
+                "index": 42,
+                "offset": 108,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:42",
+                "target": "i",
+                "value": "4",
+                "repr": "4",
+                "type": "Binding"
+            },
+            {
+                "lineno": 97,
+                "index": 43,
+                "offset": 118,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:43",
+                "target": "p",
+                "value": "[{},{},{},{},{}]",
+                "repr": "[ImportError(ImportError('AA')), ImportError(3), ImportError(ImportError('AA')), ImportError(4), ImportError(ImportError('AA'))]",
+                "type": "Mutation"
+            },
+            {
+                "lineno": 97,
+                "index": 44,
+                "offset": 120,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_exceptions_with_sources:44",
+                "jump_target": 106,
+                "type": "JumpBackToLoopStart"
+            }
+        ],
+        "tracingResult": {
+            "test_exceptions_with_sources:1": [
+                "test_exceptions_with_sources:0"
+            ],
+            "test_exceptions_with_sources:2": [
+                "test_exceptions_with_sources:1"
+            ],
+            "test_exceptions_with_sources:3": [
+                "test_exceptions_with_sources:1",
+                "test_exceptions_with_sources:2"
+            ],
+            "test_exceptions_with_sources:6": [
+                "test_exceptions_with_sources:5"
+            ],
+            "test_exceptions_with_sources:7": [
+                "test_exceptions_with_sources:6",
+                "test_exceptions_with_sources:4"
+            ],
+            "test_exceptions_with_sources:8": [
+                "test_exceptions_with_sources:3",
+                "test_exceptions_with_sources:7"
+            ],
+            "test_exceptions_with_sources:11": [
+                "test_exceptions_with_sources:10"
+            ],
+            "test_exceptions_with_sources:12": [
+                "test_exceptions_with_sources:11",
+                "test_exceptions_with_sources:8"
+            ],
+            "test_exceptions_with_sources:13": [
+                "test_exceptions_with_sources:3",
+                "test_exceptions_with_sources:12"
+            ],
+            "test_exceptions_with_sources:16": [
+                "test_exceptions_with_sources:15"
+            ],
+            "test_exceptions_with_sources:17": [
+                "test_exceptions_with_sources:16",
+                "test_exceptions_with_sources:13"
+            ],
+            "test_exceptions_with_sources:18": [
+                "test_exceptions_with_sources:3",
+                "test_exceptions_with_sources:17"
+            ],
+            "test_exceptions_with_sources:21": [
+                "test_exceptions_with_sources:20"
+            ],
+            "test_exceptions_with_sources:22": [
+                "test_exceptions_with_sources:21",
+                "test_exceptions_with_sources:18"
+            ],
+            "test_exceptions_with_sources:23": [
+                "test_exceptions_with_sources:3",
+                "test_exceptions_with_sources:22"
+            ],
+            "test_exceptions_with_sources:26": [
+                "test_exceptions_with_sources:25"
+            ],
+            "test_exceptions_with_sources:27": [
+                "test_exceptions_with_sources:26",
+                "test_exceptions_with_sources:23"
+            ],
+            "test_exceptions_with_sources:28": [
+                "test_exceptions_with_sources:3",
+                "test_exceptions_with_sources:27"
+            ],
+            "test_exceptions_with_sources:31": [
+                "test_exceptions_with_sources:30",
+                "test_exceptions_with_sources:28"
+            ],
+            "test_exceptions_with_sources:34": [
+                "test_exceptions_with_sources:33",
+                "test_exceptions_with_sources:31"
+            ],
+            "test_exceptions_with_sources:37": [
+                "test_exceptions_with_sources:36",
+                "test_exceptions_with_sources:34"
+            ],
+            "test_exceptions_with_sources:40": [
+                "test_exceptions_with_sources:39",
+                "test_exceptions_with_sources:37"
+            ],
+            "test_exceptions_with_sources:43": [
+                "test_exceptions_with_sources:42",
+                "test_exceptions_with_sources:40"
+            ]
+        }
+    },
+    "tracer.events": [
+        {
+            "lineno": 87,
+            "index": 0,
+            "offset": 10,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:0",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "\"A\"",
+            "repr": "\"A\"",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 88,
+            "index": 1,
+            "offset": 18,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:1",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "ImportError('A')",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 89,
+            "index": 2,
+            "offset": 26,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:2",
+            "target": {
+                "name": "c",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "ImportError(ImportError('A'))",
+            "sources": [
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 90,
+            "index": 3,
+            "offset": 46,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:3",
+            "target": {
+                "name": "d",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "ImportError('AA')",
+            "sources": [
+                {
+                    "name": "b",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0
+                        }
+                    }
+                },
+                {
+                    "name": "c",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 91,
+            "index": 4,
+            "offset": 50,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:4",
+            "target": {
+                "name": "p",
+                "snapshot": null
+            },
+            "value": "[]",
+            "repr": "[]",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 92,
+            "index": 5,
+            "offset": 62,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:5",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 93,
+            "index": 6,
+            "offset": 70,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:6",
+            "target": {
+                "name": "e",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "ImportError(0)",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 0,
+                            "i": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 94,
+            "index": 7,
+            "offset": 78,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:7",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 0,
+                        "i": 0,
+                        "e": 0
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "e",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 0,
+                            "i": 0,
+                            "e": 0
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 0,
+                            "i": 0,
+                            "e": 0
+                        }
+                    }
+                }
+            ],
+            "value": "[{}]",
+            "repr": "[ImportError(0)]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 95,
+            "index": 8,
+            "offset": 92,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:8",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 1,
+                        "i": 0,
+                        "e": 0
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "d",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 1,
+                            "i": 0,
+                            "e": 0
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 1,
+                            "i": 0,
+                            "e": 0
+                        }
+                    }
+                }
+            ],
+            "value": "[{},{}]",
+            "repr": "[ImportError(0), ImportError(ImportError('AA'))]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 95,
+            "index": 9,
+            "offset": 96,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:9",
+            "jump_target": 60,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 92,
+            "index": 10,
+            "offset": 62,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:10",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 93,
+            "index": 11,
+            "offset": 70,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:11",
+            "target": {
+                "name": "e",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "ImportError(1)",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 2,
+                            "i": 1,
+                            "e": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 94,
+            "index": 12,
+            "offset": 78,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:12",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 2,
+                        "i": 1,
+                        "e": 1
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "e",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 2,
+                            "i": 1,
+                            "e": 1
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 2,
+                            "i": 1,
+                            "e": 1
+                        }
+                    }
+                }
+            ],
+            "value": "[{},{},{}]",
+            "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1)]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 95,
+            "index": 13,
+            "offset": 92,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:13",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 3,
+                        "i": 1,
+                        "e": 1
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "d",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 3,
+                            "i": 1,
+                            "e": 1
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 3,
+                            "i": 1,
+                            "e": 1
+                        }
+                    }
+                }
+            ],
+            "value": "[{},{},{},{}]",
+            "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ImportError(ImportError('AA'))]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 95,
+            "index": 14,
+            "offset": 96,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:14",
+            "jump_target": 60,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 92,
+            "index": 15,
+            "offset": 62,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:15",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 93,
+            "index": 16,
+            "offset": 70,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:16",
+            "target": {
+                "name": "e",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "ImportError(2)",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 4,
+                            "i": 2,
+                            "e": 1
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 94,
+            "index": 17,
+            "offset": 78,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:17",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 4,
+                        "i": 2,
+                        "e": 2
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "e",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 4,
+                            "i": 2,
+                            "e": 2
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 4,
+                            "i": 2,
+                            "e": 2
+                        }
+                    }
+                }
+            ],
+            "value": "[{},{},{},{},{}]",
+            "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ImportError(ImportError('AA')), ImportError(2)]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 95,
+            "index": 18,
+            "offset": 92,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:18",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 5,
+                        "i": 2,
+                        "e": 2
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "d",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 5,
+                            "i": 2,
+                            "e": 2
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 5,
+                            "i": 2,
+                            "e": 2
+                        }
+                    }
+                }
+            ],
+            "value": "[{},{},{},{},{},{}]",
+            "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ImportError(ImportError('AA')), ImportError(2), ImportError(ImportError('AA'))]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 95,
+            "index": 19,
+            "offset": 96,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:19",
+            "jump_target": 60,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 92,
+            "index": 20,
+            "offset": 62,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:20",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "3",
+            "repr": "3",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 93,
+            "index": 21,
+            "offset": 70,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:21",
+            "target": {
+                "name": "e",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "ImportError(3)",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 6,
+                            "i": 3,
+                            "e": 2
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 94,
+            "index": 22,
+            "offset": 78,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:22",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 6,
+                        "i": 3,
+                        "e": 3
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "e",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 6,
+                            "i": 3,
+                            "e": 3
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 6,
+                            "i": 3,
+                            "e": 3
+                        }
+                    }
+                }
+            ],
+            "value": "[{},{},{},{},{},{},{}]",
+            "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ..., ImportError(2), ImportError(ImportError('AA')), ImportError(3)]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 95,
+            "index": 23,
+            "offset": 92,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:23",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 7,
+                        "i": 3,
+                        "e": 3
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "d",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 7,
+                            "i": 3,
+                            "e": 3
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 7,
+                            "i": 3,
+                            "e": 3
+                        }
+                    }
+                }
+            ],
+            "value": "[{},{},{},{},{},{},{},{}]",
+            "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ..., ImportError(ImportError('AA')), ImportError(3), ImportError(ImportError('AA'))]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 95,
+            "index": 24,
+            "offset": 96,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:24",
+            "jump_target": 60,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 92,
+            "index": 25,
+            "offset": 62,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:25",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "4",
+            "repr": "4",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 93,
+            "index": 26,
+            "offset": 70,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:26",
+            "target": {
+                "name": "e",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "ImportError(4)",
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 8,
+                            "i": 4,
+                            "e": 3
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 94,
+            "index": 27,
+            "offset": 78,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:27",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 8,
+                        "i": 4,
+                        "e": 4
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "e",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 8,
+                            "i": 4,
+                            "e": 4
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 8,
+                            "i": 4,
+                            "e": 4
+                        }
+                    }
+                }
+            ],
+            "value": "[{},{},{},{},{},{},{},{},{}]",
+            "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ..., ImportError(3), ImportError(ImportError('AA')), ImportError(4)]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 95,
+            "index": 28,
+            "offset": 92,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:28",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 9,
+                        "i": 4,
+                        "e": 4
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "d",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 9,
+                            "i": 4,
+                            "e": 4
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 9,
+                            "i": 4,
+                            "e": 4
+                        }
+                    }
+                }
+            ],
+            "value": "[{},{},{},{},{},{},{},{},{},{}]",
+            "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ..., ImportError(ImportError('AA')), ImportError(4), ImportError(ImportError('AA'))]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 95,
+            "index": 29,
+            "offset": 96,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:29",
+            "jump_target": 60,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 96,
+            "index": 30,
+            "offset": 108,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:30",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "0",
+            "repr": "0",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 97,
+            "index": 31,
+            "offset": 118,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:31",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 10,
+                        "i": 5,
+                        "e": 4
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 10,
+                            "i": 5,
+                            "e": 4
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 10,
+                            "i": 5,
+                            "e": 4
+                        }
+                    }
+                }
+            ],
+            "value": "[{},{},{},{},{},{},{},{},{}]",
+            "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ..., ImportError(ImportError('AA')), ImportError(4), ImportError(ImportError('AA'))]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 97,
+            "index": 32,
+            "offset": 120,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:32",
+            "jump_target": 106,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 96,
+            "index": 33,
+            "offset": 108,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:33",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "1",
+            "repr": "1",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 97,
+            "index": 34,
+            "offset": 118,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:34",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 11,
+                        "i": 6,
+                        "e": 4
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 11,
+                            "i": 6,
+                            "e": 4
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 11,
+                            "i": 6,
+                            "e": 4
+                        }
+                    }
+                }
+            ],
+            "value": "[{},{},{},{},{},{},{},{}]",
+            "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(1), ..., ImportError(ImportError('AA')), ImportError(4), ImportError(ImportError('AA'))]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 97,
+            "index": 35,
+            "offset": 120,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:35",
+            "jump_target": 106,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 96,
+            "index": 36,
+            "offset": 108,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:36",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "2",
+            "repr": "2",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 97,
+            "index": 37,
+            "offset": 118,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:37",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 12,
+                        "i": 7,
+                        "e": 4
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 12,
+                            "i": 7,
+                            "e": 4
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 12,
+                            "i": 7,
+                            "e": 4
+                        }
+                    }
+                }
+            ],
+            "value": "[{},{},{},{},{},{},{}]",
+            "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(ImportError('AA')), ..., ImportError(ImportError('AA')), ImportError(4), ImportError(ImportError('AA'))]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 97,
+            "index": 38,
+            "offset": 120,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:38",
+            "jump_target": 106,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 96,
+            "index": 39,
+            "offset": 108,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:39",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "3",
+            "repr": "3",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 97,
+            "index": 40,
+            "offset": 118,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:40",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 13,
+                        "i": 8,
+                        "e": 4
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 13,
+                            "i": 8,
+                            "e": 4
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 13,
+                            "i": 8,
+                            "e": 4
+                        }
+                    }
+                }
+            ],
+            "value": "[{},{},{},{},{},{}]",
+            "repr": "[ImportError(0), ImportError(ImportError('AA')), ImportError(3), ImportError(ImportError('AA')), ImportError(4), ImportError(ImportError('AA'))]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 97,
+            "index": 41,
+            "offset": 120,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:41",
+            "jump_target": 106,
+            "__class__": "JumpBackToLoopStart"
+        },
+        {
+            "lineno": 96,
+            "index": 42,
+            "offset": 108,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:42",
+            "target": {
+                "name": "i",
+                "snapshot": null
+            },
+            "value": "4",
+            "repr": "4",
+            "sources": [],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 97,
+            "index": 43,
+            "offset": 118,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:43",
+            "target": {
+                "name": "p",
+                "snapshot": {
+                    "location": null,
+                    "events_pointer": {
+                        "a": 0,
+                        "b": 0,
+                        "c": 0,
+                        "d": 0,
+                        "p": 14,
+                        "i": 9,
+                        "e": 4
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "name": "i",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 14,
+                            "i": 9,
+                            "e": 4
+                        }
+                    }
+                },
+                {
+                    "name": "p",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "a": 0,
+                            "b": 0,
+                            "c": 0,
+                            "d": 0,
+                            "p": 14,
+                            "i": 9,
+                            "e": 4
+                        }
+                    }
+                }
+            ],
+            "value": "[{},{},{},{},{}]",
+            "repr": "[ImportError(ImportError('AA')), ImportError(3), ImportError(ImportError('AA')), ImportError(4), ImportError(ImportError('AA'))]",
+            "__class__": "Mutation"
+        },
+        {
+            "lineno": 97,
+            "index": 44,
+            "offset": 120,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_exceptions_with_sources:44",
+            "jump_target": 106,
+            "__class__": "JumpBackToLoopStart"
+        }
+    ]
+}

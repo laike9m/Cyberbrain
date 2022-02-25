@@ -4,7 +4,7 @@
             "frame_id": "test_throw_inner",
             "frame_name": "test_throw_inner",
             "filename": "test_normal_exceptions.py",
-            "defined_lineno": 22
+            "defined_lineno": 28
         },
         "identifiers": [
             "a"
@@ -12,7 +12,7 @@
         "loops": [],
         "events": [
             {
-                "lineno": 24,
+                "lineno": 30,
                 "index": 0,
                 "offset": 18,
                 "filename": "test_normal_exceptions.py",
@@ -23,7 +23,7 @@
                 "type": "Binding"
             },
             {
-                "lineno": 26,
+                "lineno": 32,
                 "index": 1,
                 "offset": 64,
                 "filename": "test_normal_exceptions.py",
@@ -37,7 +37,7 @@
     },
     "tracer.events": [
         {
-            "lineno": 24,
+            "lineno": 30,
             "index": 0,
             "offset": 18,
             "filename": "test_normal_exceptions.py",
@@ -52,7 +52,7 @@
             "__class__": "Binding"
         },
         {
-            "lineno": 26,
+            "lineno": 32,
             "index": 1,
             "offset": 64,
             "filename": "test_normal_exceptions.py",

@@ -15,6 +15,8 @@ def test_simple(tracer, check_golden_file):
     print(c)
     c = b
     print(c)
+    d = (b, a)
+    b = d[1]
     del a
     del b
     del c
@@ -40,8 +42,6 @@ def test_throw_catch(tracer, check_golden_file):
             a = RuntimeError("A")
             raise a
         except b.__class__ as e:
-            raise e
-        except RuntimeError as e:
             raise e
     except Exception as e:
         b = e
@@ -71,14 +71,28 @@ def test_throw_catch_custom(tracer, check_golden_file):
         pass
 
     tracer.start()
-    b = TypeError("B")
+    b = CustomException("B")
     try:
         a = CustomException("A")
         raise a
     except b.__class__ as e:
-        raise e
-    except CustomException as e:
         b = e
     print(b)
     del b
+    tracer.stop()
+
+
+def test_exceptions_with_sources(tracer, check_golden_file):
+    tracer.start()
+    a = "A"
+    b = ImportError(a)
+    c = ImportError(b)
+    d = ImportError(str(b) + str(c))
+    p = []
+    for i in range(5):
+        e = ImportError(i)
+        p.append(e)
+        p.append(ImportError(d))
+    for i in range(5):
+        del p[4 - i]
     tracer.stop()
