@@ -7,7 +7,7 @@ def test_binary_operation(tracer, check_golden_file):
 
     tracer.start()
 
-    c = a ** b  # BINARY_POWER
+    c = a**b  # BINARY_POWER
     c = a * b  # BINARY_MULTIPLY
     c = a // b  # BINARY_FLOOR_DIVIDE
     c = a / b  # BINARY_TRUE_DIVIDE

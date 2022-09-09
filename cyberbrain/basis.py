@@ -106,15 +106,11 @@ class InitialValue(Event):
     repr: str = ""
 
     def __eq__(self, other: InitialValue):
-        return (
-            isinstance(other, InitialValue)
-            and (
-                self.target,
-                self.value,
-                self.lineno,
-            )
-            == (other.target, other.value, other.lineno)
-        )
+        return isinstance(other, InitialValue) and (
+            self.target,
+            self.value,
+            self.lineno,
+        ) == (other.target, other.value, other.lineno)
 
 
 @attr.s(auto_attribs=True, eq=False)
@@ -135,16 +131,12 @@ class Binding(Event):
     sources: set[Symbol] = set()  # Source can be empty, like a = 1
 
     def __eq__(self, other: Binding):
-        return (
-            isinstance(other, Binding)
-            and (
-                self.target,
-                self.value,
-                self.sources,
-                self.lineno,
-            )
-            == (other.target, other.value, other.sources, other.lineno)
-        )
+        return isinstance(other, Binding) and (
+            self.target,
+            self.value,
+            self.sources,
+            self.lineno,
+        ) == (other.target, other.value, other.sources, other.lineno)
 
 
 @attr.s(auto_attribs=True, eq=False)
@@ -166,16 +158,12 @@ class Mutation(Event):
     repr: str = ""
 
     def __eq__(self, other: Mutation):
-        return (
-            isinstance(other, Mutation)
-            and (
-                self.target,
-                self.value,
-                self.sources,
-                self.lineno,
-            )
-            == (other.target, other.value, other.sources, other.lineno)
-        )
+        return isinstance(other, Mutation) and (
+            self.target,
+            self.value,
+            self.sources,
+            self.lineno,
+        ) == (other.target, other.value, other.sources, other.lineno)
 
 
 @attr.s(auto_attribs=True, eq=False)
