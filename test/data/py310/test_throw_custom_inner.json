@@ -1,0 +1,168 @@
+{
+    "response": {
+        "metadata": {
+            "frame_id": "test_throw_custom_inner",
+            "frame_name": "test_throw_custom_inner",
+            "filename": "test_normal_exceptions.py",
+            "defined_lineno": 58
+        },
+        "identifiers": [
+            "CustomException",
+            "a",
+            "b"
+        ],
+        "loops": [],
+        "events": [
+            {
+                "lineno": -1,
+                "index": 0,
+                "offset": 4,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_throw_custom:0",
+                "target": "CustomException",
+                "value": "{\"py/type\":\"test_normal_exceptions.test_throw_custom.<locals>.CustomException\"}",
+                "repr": "<class 'test_normal_exceptio...om.<locals>.CustomException'>",
+                "type": "InitialValue"
+            },
+            {
+                "lineno": 60,
+                "index": 1,
+                "offset": 18,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_throw_custom:1",
+                "target": "a",
+                "value": "{}",
+                "repr": "CustomException('A')",
+                "type": "Binding"
+            },
+            {
+                "lineno": 61,
+                "index": 2,
+                "offset": 22,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_throw_custom:2",
+                "target": "b",
+                "value": "{}",
+                "repr": "CustomException('A')",
+                "type": "Binding"
+            },
+            {
+                "lineno": 62,
+                "index": 3,
+                "offset": 24,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_throw_custom:3",
+                "target": "a",
+                "type": "Deletion"
+            },
+            {
+                "lineno": 59,
+                "index": 4,
+                "offset": 56,
+                "filename": "test_normal_exceptions.py",
+                "id": "test_throw_custom:4",
+                "value": "null",
+                "repr": "None",
+                "type": "Return"
+            }
+        ],
+        "tracingResult": {
+            "test_throw_custom:1": [
+                "test_throw_custom:0"
+            ],
+            "test_throw_custom:2": [
+                "test_throw_custom:1"
+            ]
+        }
+    },
+    "tracer.events": [
+        {
+            "lineno": -1,
+            "index": 0,
+            "offset": 4,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_throw_custom:0",
+            "target": {
+                "name": "CustomException",
+                "snapshot": null
+            },
+            "value": "{\"py/type\":\"test_normal_exceptions.test_throw_custom.<locals>.CustomException\"}",
+            "repr": "<class 'test_normal_exceptio...om.<locals>.CustomException'>",
+            "__class__": "InitialValue"
+        },
+        {
+            "lineno": 60,
+            "index": 1,
+            "offset": 18,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_throw_custom:1",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "CustomException('A')",
+            "sources": [
+                {
+                    "name": "CustomException",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "CustomException": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 61,
+            "index": 2,
+            "offset": 22,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_throw_custom:2",
+            "target": {
+                "name": "b",
+                "snapshot": null
+            },
+            "value": "{}",
+            "repr": "CustomException('A')",
+            "sources": [
+                {
+                    "name": "a",
+                    "snapshot": {
+                        "location": null,
+                        "events_pointer": {
+                            "CustomException": 0,
+                            "a": 0
+                        }
+                    }
+                }
+            ],
+            "__class__": "Binding"
+        },
+        {
+            "lineno": 62,
+            "index": 3,
+            "offset": 24,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_throw_custom:3",
+            "target": {
+                "name": "a",
+                "snapshot": null
+            },
+            "__class__": "Deletion"
+        },
+        {
+            "lineno": 59,
+            "index": 4,
+            "offset": 56,
+            "filename": "test_normal_exceptions.py",
+            "id": "test_throw_custom:4",
+            "value": "null",
+            "repr": "None",
+            "sources": [],
+            "__class__": "Return"
+        }
+    ]
+}
